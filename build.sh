@@ -126,7 +126,7 @@ check)
 esac
 
 if command -v xsel >/dev/null 2>&1; then
-    xsel="xsel"
+    xsel="xsel -i -b"
 else
     xsel="cat"
 fi
