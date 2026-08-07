@@ -2,7 +2,7 @@
 
 # shellcheck disable=SC2086
 
-set -eu
+set -e
 
 if [ -n "${BASH_VERSION:-}" ]; then
     # shellcheck disable=SC3044
@@ -18,7 +18,13 @@ program_path="bin/$program"
 library_path="bin/$program.so"
 cd "$dir" || exit
 
-target=${1:-debug}
+script=$(basename "$0")
+target=${1:-build}
+
+printf "
+${script} ${RED}${1:-} ${2:-}$RES
+"
+
 if [ "$#" -gt 0 ]; then
     shift
 fi
@@ -108,6 +114,10 @@ case "$target" in
 build|all|run|lib)
     CFLAGS="$CFLAGS $GNUSOURCE -O2 -g"
     ;;
+fast_feedback)
+    CC=clang
+    CFLAGS="$CFLAGS $GNUSOURCE -Werror"
+    ;;
 debug)
     CFLAGS="$CFLAGS $GNUSOURCE -g3 -O0 -fsanitize=undefined"
     CPPFLAGS="$CPPFLAGS -DDEBUGGING=1 -Wno-unused-function"
@@ -145,6 +155,7 @@ commands:
     run      build and run the executable with the remaining args
     test     build and run embedded module tests
     debug    build with debug flags and UBSan
+    fast_feedback build with clang and Werror, then run
     check    build with GCC and Clang static analyzers
     clean    remove generated build outputs
     help     show this message
@@ -242,6 +253,12 @@ uninstall_opt () {
 case "$target" in
 build|all)
     build_program
+    ;;
+fast_feedback)
+    build_program
+    trace_on
+    "$program_path"
+    trace_off
     ;;
 lib)
     build_library
