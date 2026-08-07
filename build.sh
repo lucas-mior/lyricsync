@@ -125,7 +125,7 @@ test)
     CFLAGS="$CFLAGS $GNUSOURCE -g3 -O0 -DDEBUGGING=1"
     CFLAGS="$CFLAGS -Wno-unused-function -Wno-unused-variable"
     if [ "$CC" != "tcc" ]; then
-        CFLAGS="$CFLAGS -fsanitize=undefined -Wno-address"
+        CFLAGS="$CFLAGS -fsanitize=undefined"
     fi
     ;;
 check)
