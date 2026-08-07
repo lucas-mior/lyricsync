@@ -19,7 +19,7 @@ library_path="bin/$program.so"
 cd "$dir" || exit
 
 script=$(basename "$0")
-target=${1:-build}
+target=${1:-debug}
 
 printf "
 ${script} ${RED}${1:-} ${2:-}$RES
