@@ -9,3 +9,8 @@ mistral
 *.tar.gz
 step-*
 models/mms-onnx/onnx/
+*temp_delete_me*
+*.cmd
+*.o
+bin/
+*.tar.gz
