@@ -36,13 +36,14 @@ DESTDIR=${DESTDIR:-}
 DEFAULT_MODEL_DIR=${DEFAULT_MODEL_DIR:-models}
 
 requested_cc=${CC:-}
-if { [ "$target" = "test" ] || [ "$target" = "debug" ]; } \
-   && [ -z "$requested_cc" ] \
-   && command -v tcc >/dev/null 2>&1; then
-    CC=tcc
-else
+case "$target" in
+debug|test|fast_feedback)
+    CC=${requested_cc:-tcc}
+    ;;
+*)
     CC=${requested_cc:-cc}
-fi
+    ;;
+esac
 
 CPPFLAGS="${CPPFLAGS:-}"
 CFLAGS="${CFLAGS:-}"
@@ -115,7 +116,6 @@ build|all|run|lib)
     CFLAGS="$CFLAGS $GNUSOURCE -O2 -g"
     ;;
 fast_feedback)
-    CC=clang
     CFLAGS="$CFLAGS $GNUSOURCE -Werror"
     ;;
 debug)
@@ -155,7 +155,7 @@ commands:
     run      build and run the executable with the remaining args
     test     build and run embedded module tests
     debug    build with debug flags and UBSan
-    fast_feedback build with clang and Werror, then run
+    fast_feedback build with the default feedback compiler and Werror, then run
     check    build with GCC and Clang static analyzers
     clean    remove generated build outputs
     help     show this message
