@@ -1820,6 +1820,7 @@ lrc_pipeline_audio_rms_db(float rms) {
 static int32
 lrc_pipeline_audio_db_bin(float db) {
     int32 bin;
+    float binf;
 
     if (!isfinite(db) || (db <= LRC_AUDIO_DB_FLOOR)) {
         return 0;
@@ -1828,7 +1829,8 @@ lrc_pipeline_audio_db_bin(float db) {
         return LRC_AUDIO_DB_BIN_COUNT - 1;
     }
 
-    bin = (int32)floorf(db - LRC_AUDIO_DB_FLOOR);
+    binf = floorf(db - LRC_AUDIO_DB_FLOOR);
+    bin = (int32)binf;
     if (bin < 0) {
         bin = 0;
     }
