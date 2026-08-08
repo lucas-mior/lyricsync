@@ -189,7 +189,7 @@ build_program() {
 
     trace_on
     $CC $CPPFLAGS $model_cppflags -DLRC_CTC_INFERENCE_ENABLE_ORT=1 \
-        $CFLAGS src/main.c $LDFLAGS $pkg_config_flags $DEFAULT_LDLIBS \
+        $CFLAGS src/main.c $LDFLAGS $pkg_config_flags \
         -o "$program_path"
     trace_off
 }
@@ -203,7 +203,7 @@ build_library() {
     trace_on
     $CC $CPPFLAGS $model_cppflags -DLRC_CTC_INFERENCE_ENABLE_ORT=1 \
         $CFLAGS -DLYRICS_BUILD_SHARED=1 -fPIC -shared src/main.c \
-        $LDFLAGS $pkg_config_flags $DEFAULT_LDLIBS \
+        $LDFLAGS $pkg_config_flags \
         -o "$library_path"
     trace_off
 }
@@ -304,7 +304,7 @@ test)
         trace_on
         if $CC $CPPFLAGS $CFLAGS \
               "-DTESTING_$name=1" -DTESTING=1 "$module" \
-              $LDFLAGS $pkg_config_flags $DEFAULT_LDLIBS $flags \
+              $LDFLAGS $pkg_config_flags $flags \
               -o "$test_exe"; then
             if ! "$test_exe"; then
                 if command -v gdb >/dev/null 2>&1; then
