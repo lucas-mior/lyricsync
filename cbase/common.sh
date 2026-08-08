@@ -1,5 +1,7 @@
 # shellcheck shell=sh
 
+# shellcheck disable=SC2086
+
 set -e
 
 error () {
@@ -143,3 +145,15 @@ compile_with_other () {
 
     return 0
 }
+
+CC="${CC:-cc}"
+
+compile_cbase () {
+    trace_on
+    $CC -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -c "cbase.c" -o "cbase-$CC.o"
+    trace_off
+}
+
+if [ "$(basename "$0")" = "common.sh" ]; then
+    compile_cbase
+fi
