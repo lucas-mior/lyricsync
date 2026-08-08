@@ -128,10 +128,6 @@ commands:
     check    build with GCC and Clang static analyzers
     clean    remove generated build outputs
     help     show this message
-
-environment:
-    CC                   C compiler, default: cc or tcc for tests
-    CFLAGS               extra compiler flags
 USAGE
 }
 
