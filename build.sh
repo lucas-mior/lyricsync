@@ -81,9 +81,6 @@ CFLAGS="$CFLAGS -Wno-float-equal"
 CFLAGS="$CFLAGS -Wno-format-pedantic"
 CFLAGS="$CFLAGS -Wno-padded"
 CFLAGS="$CFLAGS -Wno-reserved-identifier"
-CFLAGS="$CFLAGS -Wno-undefined-internal"
-CFLAGS="$CFLAGS -Wno-unknown-pragmas"
-CFLAGS="$CFLAGS -Wno-unknown-warning-option"
 CFLAGS="$CFLAGS -Wno-unused-function"
 CFLAGS="$CFLAGS -Wno-unused-macros"
 
@@ -101,7 +98,6 @@ if [ "$CC" = "clang" ]; then
     CFLAGS="$CFLAGS -Wno-implicit-int-enum-cast"
     CFLAGS="$CFLAGS -Wno-assign-enum"
     CFLAGS="$CFLAGS -Wno-bad-function-cast"
-    CFLAGS="$CFLAGS -Wno-fixed-enum-extension"
     CFLAGS="$CFLAGS -Wno-cast-align"
 fi
 
