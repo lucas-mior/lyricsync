@@ -44,6 +44,7 @@ CPPFLAGS="${CPPFLAGS:-}"
 
 CFLAGS="${CFLAGS:-}"
 LDFLAGS="${LDFLAGS:-}"
+LDFLAGS="$LDFLAGS -lm"
 
 CPPFLAGS="$CPPFLAGS -D_DEFAULT_SOURCE"
 CPPFLAGS="$CPPFLAGS -Icbase -I. -Isrc"
@@ -304,7 +305,7 @@ test)
         trace_on
         if $CC $CPPFLAGS $CFLAGS \
               "-DTESTING_$name=1" -DTESTING=1 "$module" \
-              $LDFLAGS $pkg_config_flags $flags \
+              $pkg_config_flags $flags $LDFLAGS \
               -o "$test_exe"; then
             if ! "$test_exe"; then
                 if command -v gdb >/dev/null 2>&1; then

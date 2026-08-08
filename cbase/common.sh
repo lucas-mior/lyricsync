@@ -146,9 +146,9 @@ compile_with_other () {
     return 0
 }
 
-CC="${CC:-cc}"
-
 compile_cbase () {
+    CC="${CC:-cc}"
+
     trace_on
     $CC -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -c "cbase.c" -o "cbase-${CC}.o"
     trace_off
