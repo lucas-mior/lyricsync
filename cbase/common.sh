@@ -21,6 +21,26 @@ fi
 alias trace_on='set -x'
 alias trace_off='{ set +x; } 2>/dev/null'
 
+get_compiler() {
+    case "$1" in
+    debug|test)
+        CC="${CC:-tcc}"
+        ;;
+    fast_feedback)
+        CC="${CC:-clang}"
+        ;;
+    *)
+        CC="${CC:-cc}"
+        ;;
+    esac
+
+    if ! command -v "$CC" > /dev/null 2>&1; then
+        CC=cc
+    fi
+
+    echo "$CC"
+}
+
 get_program() {
     if [ -z "$1" ]; then
         error "get_program <full_path_to_build.sh>"

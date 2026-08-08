@@ -16,21 +16,7 @@ target=${1:-debug}
 
 printf "\n${script} ${RED}${1:-} ${2:-}$RES\n"
 
-case "$target" in
-debug|test)
-    CC="${CC:-tcc}"
-    ;;
-fast_feedback)
-    CC="${CC:-clang}"
-    ;;
-*)
-    CC="${CC:-cc}"
-    ;;
-esac
-
-if ! command -v "$CC" > /dev/null 2>&1; then
-    CC=cc
-fi
+CC=$(get_compiler "$target")
 
 if [ "$#" -gt 0 ]; then
     shift
