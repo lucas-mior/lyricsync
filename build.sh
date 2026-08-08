@@ -76,7 +76,6 @@ CFLAGS="$CFLAGS -Werror"  # Only uncomment occasionally, keep this line
 CFLAGS="$CFLAGS -Wno-cast-qual"
 CFLAGS="$CFLAGS -Wno-char-subscripts"
 CFLAGS="$CFLAGS -Wno-constant-logical-operand"
-CFLAGS="$CFLAGS -Wno-format-pedantic"
 CFLAGS="$CFLAGS -Wno-padded"
 CFLAGS="$CFLAGS -Wno-unused-macros"
 
