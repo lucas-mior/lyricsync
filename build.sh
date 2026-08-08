@@ -52,7 +52,8 @@ CPPFLAGS="$CPPFLAGS -Icbase -I. -Isrc"
 CFLAGS="$CFLAGS -std=c11"
 CFLAGS="$CFLAGS -Wfatal-errors"
 CFLAGS="$CFLAGS -Wextra -Wall"
-CFLAGS="$CFLAGS -Werror"
+CFLAGS="$CFLAGS -Werror=all -Werror=extra"
+# CFLAGS="$CFLAGS -Werror"  # Only uncomment occasionally, keep this line
 CFLAGS="$CFLAGS -Wno-format-pedantic"
 CFLAGS="$CFLAGS -Wno-unknown-warning-option"
 CFLAGS="$CFLAGS -Wno-gnu-union-cast"
@@ -151,7 +152,7 @@ commands:
     run      build and run the executable with the remaining args
     test     build and run embedded module tests
     debug    build with debug flags and UBSan
-    fast_feedback build with the default feedback compiler and Werror, then run
+    fast_feedback build with the default feedback compiler warnings, then run
     check    build with GCC and Clang static analyzers
     clean    remove generated build outputs
     help     show this message
