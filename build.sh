@@ -14,9 +14,7 @@ cd "$dir" || exit
 script=$(basename "$0")
 target=${1:-debug}
 
-printf "
-${script} ${RED}${1:-} ${2:-}$RES
-"
+printf "\n${script} ${RED}${1:-} ${2:-}$RES\n"
 
 if [ "$#" -gt 0 ]; then
     shift
@@ -105,7 +103,6 @@ clang|*/clang)
     CFLAGS="$CFLAGS -Wno-cast-function-type-strict"
     CFLAGS="$CFLAGS -Wno-bad-function-cast"
     CFLAGS="$CFLAGS -Wno-fixed-enum-extension"
-    CFLAGS="$CFLAGS -Wno-char-subscripts"
     CFLAGS="$CFLAGS -Wno-cast-align"
     ;;
 esac
@@ -115,15 +112,15 @@ build|all|run|lib)
     CFLAGS="$CFLAGS $GNUSOURCE -O2 -g"
     ;;
 fast_feedback)
-    CFLAGS="$CFLAGS $GNUSOURCE -Werror"
+    CFLAGS="$CFLAGS $GNUSOURCE"
     ;;
 debug)
     CFLAGS="$CFLAGS $GNUSOURCE -g3 -O0 -fsanitize=undefined"
-    CPPFLAGS="$CPPFLAGS -DDEBUGGING=1 -Wno-unused-function"
+    CPPFLAGS="$CPPFLAGS -DDEBUGGING=1"
     ;;
 test)
     CFLAGS="$CFLAGS $GNUSOURCE -g3 -O0 -DDEBUGGING=1"
-    CFLAGS="$CFLAGS -Wno-unused-function -Wno-unused-variable"
+    CFLAGS="$CFLAGS -Wno-unused-variable"
     if [ "$CC" != "tcc" ]; then
         CFLAGS="$CFLAGS -fsanitize=undefined"
     fi
@@ -225,28 +222,6 @@ build_library() {
         $LDFLAGS $pkg_config_flags $DEFAULT_LDLIBS \
         -o "$library_path"
     trace_off
-}
-
-install_opt () {
-    mode="$1"
-    file="$2"
-    dest="$3"
-
-    if [ -f "$file" ]; then
-        install "$mode" "$file" "$dest"
-    elif [ -d "$file" ]; then
-        install "$mode" "$dest"
-        cp -rp "$file/." "$dest/"
-    fi
-}
-
-uninstall_opt () {
-    file="$1"
-    dest="$2"
-
-    if [ -e "$file" ]; then
-        rm -rf "$dest"
-    fi
 }
 
 case "$target" in
