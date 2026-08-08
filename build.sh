@@ -16,16 +16,6 @@ target=${1:-debug}
 
 printf "\n${script} ${RED}${1:-} ${2:-}$RES\n"
 
-if [ "$#" -gt 0 ]; then
-    shift
-fi
-
-target_arg=${1:-}
-DEFAULT_LDLIBS=${DEFAULT_LDLIBS:-"-lm"}
-PREFIX=${PREFIX:-/usr/local}
-DESTDIR=${DESTDIR:-}
-DEFAULT_MODEL_DIR=${DEFAULT_MODEL_DIR:-models}
-
 case "$target" in
 debug|test)
     CC="${CC:-tcc}"
@@ -42,12 +32,41 @@ if ! command -v "$CC" > /dev/null 2>&1; then
     CC=cc
 fi
 
+if [ "$#" -gt 0 ]; then
+    shift
+fi
+
+target_arg=${1:-}
+DEFAULT_LDLIBS=${DEFAULT_LDLIBS:-"-lm"}
+PREFIX=${PREFIX:-/usr/local}
+DESTDIR=${DESTDIR:-}
+DEFAULT_MODEL_DIR=${DEFAULT_MODEL_DIR:-models}
+
 CPPFLAGS="${CPPFLAGS:-}"
+
 CFLAGS="${CFLAGS:-}"
 LDFLAGS="${LDFLAGS:-}"
 
 CPPFLAGS="$CPPFLAGS -D_DEFAULT_SOURCE"
 CPPFLAGS="$CPPFLAGS -Icbase -I. -Isrc"
+
+OS=$(uname -a)
+GNUSOURCE=
+if echo "$OS" | grep -q "Linux"; then
+    if echo "$OS" | grep -q "GNU"; then
+        GNUSOURCE="-D_GNU_SOURCE"
+    fi
+fi
+
+case "$OS" in
+*Linux*)
+    CPPFLAGS="$CPPFLAGS -D_XOPEN_SOURCE=700"
+    DEFAULT_LDLIBS="$DEFAULT_LDLIBS -ldl"
+    ;;
+*Darwin*)
+    CPPFLAGS="$CPPFLAGS -D_XOPEN_SOURCE=700 -D_DARWIN_C_SOURCE"
+    ;;
+esac
 
 CFLAGS="$CFLAGS -std=c11"
 CFLAGS="$CFLAGS -Wfatal-errors"
@@ -69,26 +88,7 @@ CFLAGS="$CFLAGS -Wno-unknown-warning-option"
 CFLAGS="$CFLAGS -Wno-unused-function"
 CFLAGS="$CFLAGS -Wno-unused-macros"
 
-OS=$(uname -a)
-GNUSOURCE=
-if echo "$OS" | grep -q "Linux"; then
-    if echo "$OS" | grep -q "GNU"; then
-        GNUSOURCE="-D_GNU_SOURCE"
-    fi
-fi
-
-case "$OS" in
-*Linux*)
-    CPPFLAGS="$CPPFLAGS -D_XOPEN_SOURCE=700"
-    DEFAULT_LDLIBS="$DEFAULT_LDLIBS -ldl"
-    ;;
-*Darwin*)
-    CPPFLAGS="$CPPFLAGS -D_XOPEN_SOURCE=700 -D_DARWIN_C_SOURCE"
-    ;;
-esac
-
-case "$CC" in
-clang|*/clang)
+if [ "$CC" = "clang" ]; then
     CFLAGS="$CFLAGS -Weverything"
     CFLAGS="$CFLAGS -Wno-unsafe-buffer-usage"
     CFLAGS="$CFLAGS -Wno-format-nonliteral"
@@ -105,8 +105,7 @@ clang|*/clang)
     CFLAGS="$CFLAGS -Wno-bad-function-cast"
     CFLAGS="$CFLAGS -Wno-fixed-enum-extension"
     CFLAGS="$CFLAGS -Wno-cast-align"
-    ;;
-esac
+fi
 
 case "$target" in
 build|all|run|lib)
