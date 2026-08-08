@@ -150,7 +150,7 @@ CC="${CC:-cc}"
 
 compile_cbase () {
     trace_on
-    $CC -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -c "cbase.c" -o "cbase-$CC.o"
+    $CC -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -c "cbase.c" -o "cbase-${CC}.o"
     trace_off
 }
 
