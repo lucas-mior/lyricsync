@@ -37,10 +37,8 @@ if [ "$#" -gt 0 ]; then
 fi
 
 target_arg=${1:-}
-DEFAULT_LDLIBS=${DEFAULT_LDLIBS:-"-lm"}
 PREFIX=${PREFIX:-/usr/local}
 DESTDIR=${DESTDIR:-}
-DEFAULT_MODEL_DIR=${DEFAULT_MODEL_DIR:-models}
 
 CPPFLAGS="${CPPFLAGS:-}"
 
@@ -61,7 +59,7 @@ fi
 case "$OS" in
 *Linux*)
     CPPFLAGS="$CPPFLAGS -D_XOPEN_SOURCE=700"
-    DEFAULT_LDLIBS="$DEFAULT_LDLIBS -ldl"
+    LDFLAGS="$LDFLAGS -ldl"
     ;;
 *Darwin*)
     CPPFLAGS="$CPPFLAGS -D_XOPEN_SOURCE=700 -D_DARWIN_C_SOURCE"
@@ -147,8 +145,6 @@ commands:
 environment:
     CC                   C compiler, default: cc or tcc for tests
     CFLAGS               extra compiler flags
-    DEFAULT_LDLIBS       default libraries, default: -lm
-    DEFAULT_MODEL_DIR    compiled model directory, default: models
 USAGE
 }
 
