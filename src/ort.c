@@ -10,6 +10,7 @@
 #if CC_CLANG
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wshift-sign-overflow"
+#pragma clang diagnostic ignored "-Wdocumentation"
 #endif
 
 #include <onnxruntime_c_api.h>
