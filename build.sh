@@ -262,40 +262,8 @@ install)
     ;;
 test)
     setup_pkg_config_flags
-
-    find src cbase -iname "*.c" | grep -v '/main[^/]*\.c$' | sort \
-        | while read -r module; do
-        name=$(basename "$module" | sed 's/\.c$//')
-        test_exe="/tmp/${name}_test"
-
-        if [ -n "$target_arg" ] \
-           && [ "$target_arg" != "$name" ] \
-           && [ "$target_arg" != "${name}.c" ]; then
-            continue
-        fi
-
-        printf '\nTesting %s ...\n' "$module"
-
-        flags=$(awk '/\/\/ flags:/ { $1=$2=""; print $0 }' "$module")
-
-        trace_on
-        if $CC $CPPFLAGS $CFLAGS \
-              "-DTESTING_$name=1" -DTESTING=1 "$module" \
-              $pkg_config_flags $flags $LDFLAGS \
-              -o "$test_exe"; then
-            if ! "$test_exe"; then
-                if command -v gdb >/dev/null 2>&1; then
-                    gdb --quiet \
-                        -ex run -ex backtrace -ex quit \
-                        "$test_exe" 2>&1
-                fi
-                exit 1
-            fi
-        else
-            exit 1
-        fi
-        trace_off
-    done
+    TEST_LDFLAGS="$pkg_config_flags" \
+        test "$target_arg" src cbase
     ;;
 debug)
     build_program
