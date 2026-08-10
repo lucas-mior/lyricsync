@@ -1,5 +1,5 @@
-#include "lyricsync.h"
 #include "cbase.h"
+#include "lyricsync.h"
 #include "ctc_assets.h"
 
 #if !defined(TESTING_ctc_assets)

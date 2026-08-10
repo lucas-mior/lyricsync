@@ -1,7 +1,6 @@
+#include "cbase.h"
 #include "lyricsync.h"
 #include "ctc_align.h"
-
-#include "cbase.h"
 
 #if !defined(TESTING_ctc_align)
 #define TESTING_ctc_align 0

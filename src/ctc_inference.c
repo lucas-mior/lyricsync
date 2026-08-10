@@ -1,7 +1,6 @@
+#include "cbase.h"
 #include "lyricsync.h"
 #include "ctc_inference.h"
-
-#include "cbase.h"
 #include "progress.c"
 
 #if !defined(TESTING_ctc_inference)

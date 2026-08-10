@@ -1,5 +1,5 @@
-#include "lyricsync.h"
 #include "cbase.h"
+#include "lyricsync.h"
 #include "vocals.h"
 #include "ort.h"
 #include "stft.h"

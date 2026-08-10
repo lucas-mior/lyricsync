@@ -41,7 +41,7 @@ typedef struct MainOptions {
     bool print_usage_on_error;
 } MainOptions;
 
-#define MAIN_FIELD(field) ((int64)OFFSET_OF(MainOptions, field))
+#define MAIN_FIELD(field) ((int64)offsetof(MainOptions, field))
 #define MAIN_NO_FIELD 0
 
 #define MAIN_TASK_VALUE_OPTIONS(X) \

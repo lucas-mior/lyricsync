@@ -1,9 +1,8 @@
+#include "cbase.h"
 #include "lyricsync.h"
 #include "ctc_text.h"
 #include "lyrics.h"
 #include "unicode_norm.h"
-
-#include "cbase.h"
 
 #if !defined(TESTING_ctc_text)
 #define TESTING_ctc_text 0

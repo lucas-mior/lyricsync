@@ -6,8 +6,8 @@
 #define LRC_PIPELINE_ENABLE_GENERATE TESTING_pipeline
 #endif
 
-#include "lyricsync.h"
 #include "cbase.h"
+#include "lyricsync.h"
 #include "pipeline.h"
 
 static const float LRC_PIPELINE_CLEAR_SILENCE_SECONDS = 1.0f;

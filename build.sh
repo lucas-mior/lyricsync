@@ -32,24 +32,14 @@ CFLAGS="${CFLAGS:-}"
 LDFLAGS="${LDFLAGS:-}"
 LDFLAGS="$LDFLAGS -lm"
 
-CPPFLAGS="$CPPFLAGS -D_DEFAULT_SOURCE"
 CPPFLAGS="$CPPFLAGS -Icbase -I. -Isrc"
-
-OS=$(uname -a)
-GNUSOURCE=
-if echo "$OS" | grep -q "Linux"; then
-    if echo "$OS" | grep -q "GNU"; then
-        GNUSOURCE="-D_GNU_SOURCE"
-    fi
-fi
 
 case "$OS" in
 *Linux*)
-    CPPFLAGS="$CPPFLAGS -D_XOPEN_SOURCE=700"
     LDFLAGS="$LDFLAGS -ldl"
     ;;
 *Darwin*)
-    CPPFLAGS="$CPPFLAGS -D_XOPEN_SOURCE=700 -D_DARWIN_C_SOURCE"
+    CPPFLAGS="$CPPFLAGS -D_DARWIN_C_SOURCE"
     ;;
 esac
 
@@ -82,17 +72,16 @@ fi
 
 case "$target" in
 build|all|run|lib)
-    CFLAGS="$CFLAGS $GNUSOURCE -O2 -g"
+    CFLAGS="$CFLAGS -O2 -g"
     ;;
 fast_feedback)
-    CFLAGS="$CFLAGS $GNUSOURCE"
     ;;
 debug)
-    CFLAGS="$CFLAGS $GNUSOURCE -g3 -O0 -fsanitize=undefined"
+    CFLAGS="$CFLAGS -g3 -O0 -fsanitize=undefined"
     CPPFLAGS="$CPPFLAGS -DDEBUGGING=1"
     ;;
 test)
-    CFLAGS="$CFLAGS $GNUSOURCE -g3 -O0 -DDEBUGGING=1"
+    CFLAGS="$CFLAGS -g3 -O0 -DDEBUGGING=1"
     CFLAGS="$CFLAGS -Wno-unused-variable"
     if [ "$CC" != "tcc" ]; then
         CFLAGS="$CFLAGS -fsanitize=undefined"

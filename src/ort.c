@@ -1,9 +1,10 @@
+#include "cbase.h"
 #include "lyricsync.h"
+
 #if !defined(TESTING_ort)
 #define TESTING_ort 0
 #endif
 
-#include "cbase.h"
 #include "progress.c"
 #include "ort.h"
 

@@ -1,5 +1,5 @@
-#include "lyricsync.h"
 #include "cbase.h"
+#include "lyricsync.h"
 #include "fftw.h"
 
 #if !defined(TESTING_fftw)

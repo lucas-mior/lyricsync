@@ -1,7 +1,6 @@
+#include "cbase.h"
 #include "lyricsync.h"
 #include "lrc.h"
-
-#include "cbase.h"
 
 #if !defined(TESTING_lrc)
 #define TESTING_lrc 0

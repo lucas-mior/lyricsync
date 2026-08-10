@@ -1,7 +1,6 @@
+#include "cbase.h"
 #include "lyricsync.h"
 #include "lyrics.h"
-
-#include "cbase.h"
 
 #if !defined(TESTING_lyrics)
 #define TESTING_lyrics 0

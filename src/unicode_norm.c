@@ -1,7 +1,6 @@
+#include "cbase.h"
 #include "lyricsync.h"
 #include "unicode_norm.h"
-
-#include "cbase.h"
 
 #if LRC_UNICODE_ENABLE_ICU
 #include <unicode/ucasemap.h>
