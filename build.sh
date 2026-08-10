@@ -104,12 +104,6 @@ check)
     ;;
 esac
 
-if command -v xsel >/dev/null 2>&1; then
-    xsel="xsel -i -b"
-else
-    xsel="cat"
-fi
-
 pkg_config_flags=
 pkg_config_setup_done=0
 
@@ -293,7 +287,7 @@ test)
                 if command -v gdb >/dev/null 2>&1; then
                     gdb --quiet \
                         -ex run -ex backtrace -ex quit \
-                        "$test_exe" 2>&1 | $xsel
+                        "$test_exe" 2>&1
                 fi
                 exit 1
             fi
