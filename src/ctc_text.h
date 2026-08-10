@@ -3,7 +3,6 @@
 
 #include "cbase.h"
 
-
 typedef struct LrcLyrics LrcLyrics;
 
 #define ENUM_NAME LrcLyricsPreprocessSplitSize

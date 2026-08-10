@@ -7,7 +7,6 @@
 #define TESTING_lyrics 0
 #endif
 
-
 static void
 lrc_lyrics_destroy(LrcLyrics *lyrics) {
     if (lyrics == NULL) {

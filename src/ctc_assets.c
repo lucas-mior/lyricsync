@@ -6,7 +6,6 @@
 #define TESTING_ctc_assets 0
 #endif
 
-
 static void
 lrc_ctc_assets_result_init(LrcCtcAssetsResult *result) {
     if (result == NULL) {
@@ -17,7 +16,6 @@ lrc_ctc_assets_result_init(LrcCtcAssetsResult *result) {
 
     return;
 }
-
 
 static void
 lrc_ctc_assets_result_set(
