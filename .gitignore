@@ -10,3 +10,5 @@ step-*
 *temp_delete_me*
 temp_delete_me*
 *.zip
+*.obj
+*/.cache/

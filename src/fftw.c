@@ -1,11 +1,11 @@
 #include "cbase.h"
 #include "lyricsync.h"
-#include "fftw.h"
 
 #if !defined(TESTING_fftw)
 #define TESTING_fftw 0
 #endif
 
+#define FFTW_NO_Complex 1
 #include <fftw3.h>
 
 static void
