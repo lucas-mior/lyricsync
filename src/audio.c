@@ -647,7 +647,7 @@ audio_test_generate_sine_wav(
     for (int64 i = 0; i < frame_count; i += 1) {
         double fidx = (double)i;
         double A = (double)options->amplitude;
-        double phase = π2*options->frequency_hz*fidx/A;
+        double phase = PI*2*options->frequency_hz*fidx/A;
         float sample = (float)(A*sin(phase));
 
         audio.left[i] = sample;
