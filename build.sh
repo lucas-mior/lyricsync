@@ -259,6 +259,8 @@ debug)
     build_program
     ;;
 check)
+    set +e
+
     if [ -n "$target_arg" ]; then
         CC=gcc CFLAGS="-fanalyzer" "$0" debug "$target_arg"
     else
@@ -275,6 +277,7 @@ check)
     else
         CC=clang CFLAGS="$analyzer_flags" "$0" debug
     fi
+    exit
     ;;
 clean)
     rm -rf bin
