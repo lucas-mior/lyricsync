@@ -78,11 +78,11 @@ build|all|run|lib)
 fast_feedback)
     ;;
 debug)
-    CFLAGS="$CFLAGS -g3 -O0 -fsanitize=undefined"
+    CFLAGS="$CFLAGS -g3 -Og -fsanitize=undefined"
     CPPFLAGS="$CPPFLAGS -DDEBUGGING=1"
     ;;
 test)
-    CFLAGS="$CFLAGS -g3 -O0 -DDEBUGGING=1"
+    CFLAGS="$CFLAGS -g3 -Og -DDEBUGGING=1"
     CFLAGS="$CFLAGS -Wno-unused-variable"
     if [ "$CC" != "tcc" ]; then
         CFLAGS="$CFLAGS -fsanitize=undefined"
@@ -260,9 +260,9 @@ debug)
     ;;
 check)
     if [ -n "$target_arg" ]; then
-        CC=gcc CFLAGS="-fanalyzer" "$0" build "$target_arg"
+        CC=gcc CFLAGS="-fanalyzer" "$0" debug "$target_arg"
     else
-        CC=gcc CFLAGS="-fanalyzer" "$0" build
+        CC=gcc CFLAGS="-fanalyzer" "$0" debug
     fi
 
     analyzer_flags="--analyze -Xanalyzer -analyzer-output=text"
@@ -271,9 +271,9 @@ check)
     analyzer_flags="$analyzer_flags -Wno-unused-command-line-argument"
 
     if [ -n "$target_arg" ]; then
-        CC=clang CFLAGS="$analyzer_flags" "$0" build "$target_arg"
+        CC=clang CFLAGS="$analyzer_flags" "$0" debug "$target_arg"
     else
-        CC=clang CFLAGS="$analyzer_flags" "$0" build
+        CC=clang CFLAGS="$analyzer_flags" "$0" debug
     fi
     ;;
 clean)
