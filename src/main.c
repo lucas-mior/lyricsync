@@ -278,7 +278,7 @@ main_print_flag_option_usage(char *name, char *description) {
     return;
 }
 
-static void __attribute((noreturn))
+static noreturn void
 main_print_usage(FILE *stream) {
     error2(
         "usage: %s (--input-song SONG | --input-vocals VOCALS) [options]\n",

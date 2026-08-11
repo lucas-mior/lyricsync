@@ -14,7 +14,7 @@ fftw_real_plan_init_empty(FftwRealPlan *plan) {
     plan->complex_count = 0;
 
     plan->real = NULL;
-    plan->complex = NULL;
+    plan->spectrum = NULL;
     plan->forward_plan = NULL;
     plan->inverse_plan = NULL;
 
@@ -23,7 +23,7 @@ fftw_real_plan_init_empty(FftwRealPlan *plan) {
 
 static bool
 fftw_real_plan_init(FftwRealPlan *plan, int32 n_fft) {
-    fftwf_complex *complex;
+    fftwf_complex *spectrum;
     int32 complex_count;
 
     fftw_real_plan_init_empty(plan);
@@ -33,19 +33,19 @@ fftw_real_plan_init(FftwRealPlan *plan, int32 n_fft) {
 
     complex_count = n_fft/2 + 1;
     plan->real = fftwf_malloc((size_t)(n_fft*SIZEOF(*plan->real)));
-    complex = fftwf_malloc((size_t)(complex_count*SIZEOF(*complex)));
-    plan->complex = complex;
-    if ((plan->real == NULL) || (plan->complex == NULL)) {
+    spectrum = fftwf_malloc((size_t)(complex_count*SIZEOF(*spectrum)));
+    plan->spectrum = spectrum;
+    if ((plan->real == NULL) || (plan->spectrum == NULL)) {
         fftw_real_plan_destroy(plan);
         return false;
     }
 
     plan->forward_plan = fftwf_plan_dft_r2c_1d(n_fft,
                                                plan->real,
-                                               plan->complex,
+                                               plan->spectrum,
                                                FFTW_ESTIMATE);
     plan->inverse_plan = fftwf_plan_dft_c2r_1d(n_fft,
-                                               plan->complex,
+                                               plan->spectrum,
                                                plan->real,
                                                FFTW_ESTIMATE);
     if ((plan->forward_plan == NULL) || (plan->inverse_plan == NULL)) {
@@ -66,7 +66,7 @@ fftw_real_forward(
     float *output_real,
     float *output_imag
 ) {
-    fftwf_complex *complex;
+    fftwf_complex *spectrum;
 
     if ((plan == NULL) || (input == NULL) || (output_real == NULL)
         || (output_imag == NULL)) {
@@ -75,7 +75,7 @@ fftw_real_forward(
     if ((plan->n_fft <= 0) || (plan->complex_count <= 0)) {
         return false;
     }
-    if ((plan->real == NULL) || (plan->complex == NULL)
+    if ((plan->real == NULL) || (plan->spectrum == NULL)
         || (plan->forward_plan == NULL)) {
         return false;
     }
@@ -86,10 +86,10 @@ fftw_real_forward(
 
     fftwf_execute((fftwf_plan)plan->forward_plan);
 
-    complex = (fftwf_complex *)plan->complex;
+    spectrum = (fftwf_complex *)plan->spectrum;
     for (int32 i = 0; i < plan->complex_count; i += 1) {
-        output_real[i] = complex[i][0];
-        output_imag[i] = complex[i][1];
+        output_real[i] = spectrum[i][0];
+        output_imag[i] = spectrum[i][1];
     }
 
     return true;
@@ -102,7 +102,7 @@ fftw_real_inverse(
     float *input_imag,
     float *output
 ) {
-    fftwf_complex *complex;
+    fftwf_complex *spectrum;
     float scale;
 
     if ((plan == NULL) || (input_real == NULL) || (input_imag == NULL)
@@ -112,15 +112,15 @@ fftw_real_inverse(
     if ((plan->n_fft <= 0) || (plan->complex_count <= 0)) {
         return false;
     }
-    if ((plan->real == NULL) || (plan->complex == NULL)
+    if ((plan->real == NULL) || (plan->spectrum == NULL)
         || (plan->inverse_plan == NULL)) {
         return false;
     }
 
-    complex = (fftwf_complex *)plan->complex;
+    spectrum = (fftwf_complex *)plan->spectrum;
     for (int32 i = 0; i < plan->complex_count; i += 1) {
-        complex[i][0] = input_real[i];
-        complex[i][1] = input_imag[i];
+        spectrum[i][0] = input_real[i];
+        spectrum[i][1] = input_imag[i];
     }
 
     fftwf_execute((fftwf_plan)plan->inverse_plan);
@@ -144,8 +144,8 @@ fftw_real_plan_destroy(FftwRealPlan *plan) {
     if (plan->real) {
         fftwf_free(plan->real);
     }
-    if (plan->complex) {
-        fftwf_free(plan->complex);
+    if (plan->spectrum) {
+        fftwf_free(plan->spectrum);
     }
 
     fftw_real_plan_init_empty(plan);

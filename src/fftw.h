@@ -8,7 +8,7 @@ typedef struct FftwRealPlan {
     int32 complex_count;
 
     float *real;
-    void *complex;
+    void *spectrum;
     void *forward_plan;
     void *inverse_plan;
 } FftwRealPlan;
