@@ -2475,8 +2475,8 @@ ctc_inference_test_progress_counts_chunks(void) {
         fatal(ctc_inference_test_fail("run chunk progress backend"));
     }
 
-    ASSERT(strstr(output, "2/2"));
-    ASSERT(strstr(output, "4/4") == NULL);
+    ASSERT_CONTAINS(output, strlen32(output), "2/2");
+    ASSERT_NOT_CONTAINS(output, strlen32(output), "4/4");
     lrc_ctc_emissions_destroy(&emissions);
 
     return;
