@@ -251,8 +251,8 @@ install)
     ;;
 test)
     setup_pkg_config_flags
-    TEST_LDFLAGS="$pkg_config_flags" \
-        common_test "$target" src cbase
+    LDFLAGS="$LDFLAGS $pkg_config_flags"
+    common_test "$target" src cbase
     ;;
 debug)
     build_program

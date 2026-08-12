@@ -600,8 +600,8 @@ CAT(hash_lookup_pre_calc_, HASH_TYPE)(struct Map *map,
 #if HASH_KEY_FIXED_LEN
     if (CAT(hash_probe_, HASH_TYPE)(map, key, hash, base_index, &target_idx))
 #else
-    if (CAT(hash_probe_, HASH_TYPE)(map, key, key_length, hash,
-                                         base_index, &target_idx))
+    if (CAT(hash_probe_, HASH_TYPE)(map, key, key_length,
+                                    hash, base_index, &target_idx))
 #endif
     {
 #if defined(HASH_VALUE_TYPE)
