@@ -12,17 +12,16 @@ library_path="bin/$program.so"
 cd "$dir" || exit
 
 script=$(basename "$0")
-target=${1:-debug}
+build_parse_args "$@"
 
-printf "\n${script} ${RED}${1:-} ${2:-}$RES\n"
+build_print_invocation "$script"
 
-CC=$(get_compiler "$target")
+CC=$(get_compiler "$mode")
 
 if [ "$#" -gt 0 ]; then
     shift
 fi
 
-target_arg=${1:-}
 PREFIX=${PREFIX:-/usr/local}
 DESTDIR=${DESTDIR:-}
 
@@ -71,7 +70,7 @@ if [ "$CC" = "clang" ]; then
     CFLAGS="$CFLAGS -Wno-used-but-marked-unused"
 fi
 
-case "$target" in
+case "$mode" in
 build|all|run|lib)
     CFLAGS="$CFLAGS -O2 -g"
     ;;
@@ -99,9 +98,9 @@ pkg_config_setup_done=0
 
 usage() {
     cat <<'USAGE'
-usage: ./build.sh [command] [args]
+usage: ./build.sh [mode] [target]
 
-commands:
+modes:
     build    build the executable
     lib      build the shared library
     install  install program, library, header, models, man page, completions
@@ -175,7 +174,7 @@ build_library() {
     trace_off
 }
 
-case "$target" in
+case "$mode" in
 build|all)
     build_program
     ;;
@@ -253,7 +252,7 @@ install)
 test)
     setup_pkg_config_flags
     TEST_LDFLAGS="$pkg_config_flags" \
-        test "$target_arg" src cbase
+        test "$target" src cbase
     ;;
 debug)
     build_program
@@ -261,8 +260,8 @@ debug)
 check)
     set +e
 
-    if [ -n "$target_arg" ]; then
-        CC=gcc CFLAGS="-fanalyzer" "$0" debug "$target_arg"
+    if [ -n "$target" ]; then
+        CC=gcc CFLAGS="-fanalyzer" "$0" debug "$target"
     else
         CC=gcc CFLAGS="-fanalyzer" "$0" debug
     fi
@@ -272,8 +271,8 @@ check)
     analyzer_flags="$analyzer_flags -Xanalyzer -analyzer-opt-analyze-headers"
     analyzer_flags="$analyzer_flags -Wno-unused-command-line-argument"
 
-    if [ -n "$target_arg" ]; then
-        CC=clang CFLAGS="$analyzer_flags" "$0" debug "$target_arg"
+    if [ -n "$target" ]; then
+        CC=clang CFLAGS="$analyzer_flags" "$0" debug "$target"
     else
         CC=clang CFLAGS="$analyzer_flags" "$0" debug
     fi
