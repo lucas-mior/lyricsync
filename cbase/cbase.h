@@ -24,7 +24,7 @@ static time_t timezone_offset = 0;
 static int64 here_counter = 0;
 
 #define error(...) \
-    error_impl(__FILE__, __LINE__, (char *)__func__, __VA_ARGS__)
+    error_impl(__FILE__, __LINE__, FUNC__, __VA_ARGS__)
 #define error2(...) fprintf(stderr, __VA_ARGS__)
 CBASE_API_DECL int32 optional_strlen32(char *);
 CBASE_API_DECL int32 strlen32(char *);
@@ -47,7 +47,8 @@ CBASE_API_DECL void *memrchr64(void *, int32, int64);
 
 CBASE_API_DECL int32 random_utf8_string(char *, int32, int32);
 CBASE_API_DECL int32 utf8_byte_position(char *, int32, int32);
-CBASE_API_DECL int32 utf8_capitalize_first_letters(char *, int32, char *, int32);
+CBASE_API_DECL int32 utf8_capitalize_first_letters(char *, int32,
+                                                   char *, int32);
 CBASE_API_DECL int32 utf8_char_width(uint32);
 CBASE_API_DECL int32 utf8_characters(char *, int32);
 CBASE_API_DECL int32 utf8_cut_width(char *, int32, int32);
@@ -111,14 +112,8 @@ CBASE_API_DECL void *memchr64(void *, int32, int64);
 CBASE_API_DECL void normalize(char *restrict, int32 *restrict);
 CBASE_API_DECL bool parse_option(char **, char *, char *);
 CBASE_API_DECL char *path_basename(char *, int32);
-CBASE_API_DECL void print_timings(
-    char *,
-    int32,
-    char *,
-    int64,
-    struct timespec,
-    struct timespec
-);
+CBASE_API_DECL void print_timings(char *, int32, char *, int64,
+                                  struct timespec, struct timespec);
 CBASE_API_DECL void qsort64(void *, int64, int64, int (*)(void *, void *));
 CBASE_API_DECL uint32 rand_int(void);
 CBASE_API_DECL double rad2deg(double);
@@ -143,14 +138,18 @@ CBASE_API_DECL char *sb_opt_cstr(StrBuilder *buffer);
 CBASE_API_DECL void send_signal(char *, int32);
 CBASE_API_DECL int32 snprintf2(char *, int64, char *, ...);
 CBASE_API_DECL StrBuilder *str_builder_array_append(StrBuilderArray *);
-CBASE_API_DECL bool str_builder_array_append_copy(StrBuilderArray *, StrBuilder *);
+CBASE_API_DECL bool str_builder_array_append_copy(StrBuilderArray *,
+                                                  StrBuilder *);
 CBASE_API_DECL void str_builder_array_clear(StrBuilderArray *);
-CBASE_API_DECL bool str_builder_array_copy(StrBuilderArray *, StrBuilderArray *);
+CBASE_API_DECL bool str_builder_array_copy(StrBuilderArray *,
+                                           StrBuilderArray *);
 CBASE_API_DECL void str_builder_array_destroy(StrBuilderArray *);
 CBASE_API_DECL void str_builder_array_init(StrBuilderArray *);
-CBASE_API_DECL void str_builder_array_move(StrBuilderArray *, StrBuilderArray *);
+CBASE_API_DECL void str_builder_array_move(StrBuilderArray *,
+                                           StrBuilderArray *);
 CBASE_API_DECL bool str_builder_array_reserve(StrBuilderArray *, int32);
-CBASE_API_DECL void str_builder_array_swap(StrBuilderArray *, StrBuilderArray *);
+CBASE_API_DECL void str_builder_array_swap(StrBuilderArray *,
+                                           StrBuilderArray *);
 CBASE_API_DECL int32 string_from_strings(char *, int32, char *, char **, int32);
 CBASE_API_DECL int32 string_from_doubles(char *, int32, char *, double *, int32);
 CBASE_API_DECL double clamp_double(double, double, double);
@@ -272,6 +271,14 @@ _Generic((VAR), \
     default: square_int64 \
 )(VAR)
 
+#define strequal2_3(A, A_LEN, B)        strequal2(A, A_LEN, B, strlen32(B))
+#define strequal2_4(A, A_LEN, B, B_LEN) strequal2(A, A_LEN, B, B_LEN)
+#define STREQUAL(...) SELECT_ON_NUM_ARGS(strequal2_, __VA_ARGS__)
+
+#define striqual2_3(A, A_LEN, B)        striqual2(A, A_LEN, B, strlen32(B))
+#define striqual2_4(A, A_LEN, B, B_LEN) striqual2(A, A_LEN, B, B_LEN)
+#define STRIQUAL(...) SELECT_ON_NUM_ARGS(striqual2_, __VA_ARGS__)
+
 #define MEMMEM_3(LONG, LONG_LEN, SHORT) \
     memmem64(LONG, LONG_LEN, SHORT, strlen32(SHORT))
 #define MEMMEM_4(LONG, LONG_LEN, SHORT, LEN) \
@@ -315,21 +322,13 @@ _Generic((VAR), \
     sb_append(BUILDER, STRING, (int32)(LEN))
 #define SB_APPEND(...) SELECT_ON_NUM_ARGS(SB_APPEND_, __VA_ARGS__)
 
-#define strequal2_3(A, A_LEN, B)        strequal2(A, A_LEN, B, strlen32(B))
-#define strequal2_4(A, A_LEN, B, B_LEN) strequal2(A, A_LEN, B, B_LEN)
-#define STREQUAL(...) SELECT_ON_NUM_ARGS(strequal2_, __VA_ARGS__)
-
-#define striqual2_3(A, A_LEN, B)        striqual2(A, A_LEN, B, strlen32(B))
-#define striqual2_4(A, A_LEN, B, B_LEN) striqual2(A, A_LEN, B, B_LEN)
-#define STRIQUAL(...) SELECT_ON_NUM_ARGS(striqual2_, __VA_ARGS__)
-
 #define HERE here_impl(__FILE__, __LINE__, (char *)__func__)
 
 #define NCALLS(INTERVAL) do { \
     static int64 ncalls_ncalls = 1; \
     if ((ncalls_ncalls % (INTERVAL)) == 0) { \
         fprintf(stderr, "%s:%d:%s: called %lld times\n", \
-                __FILE__, __LINE__, __func__, ncalls_ncalls); \
+                __FILE__, __LINE__, FUNC__, ncalls_ncalls); \
     } \
     ncalls_ncalls += 1; \
 } while (0)

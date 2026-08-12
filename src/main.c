@@ -2,8 +2,6 @@
 #define TESTING_app 0
 #endif
 
-#define CBASE_API_DECL static
-#define CBASE_API_DEF static
 #define CBASE_IMPLEMENT
 #include "cbase.h"
 
