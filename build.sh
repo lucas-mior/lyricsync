@@ -6,17 +6,17 @@ dir=$(dirname "$(readlink -f "$0")")
 # shellcheck source=/dev/null
 . "$dir/cbase/common.sh"
 
-program=$(get_program "$0")
+program=$(common_get_program "$0")
 program_path="bin/$program"
 library_path="bin/$program.so"
 cd "$dir" || exit
 
 script=$(basename "$0")
-build_parse_args "$@"
+common_build_parse_args "$@"
 
-build_print_invocation "$script"
+common_build_print_invocation "$script"
 
-CC=$(get_compiler "$mode")
+CC=$(common_get_compiler "$mode")
 
 if [ "$#" -gt 0 ]; then
     shift
@@ -105,7 +105,7 @@ modes:
     lib      build the shared library
     install  install program, library, header, models, man page, completions
     run      build and run the executable with the remaining args
-    test     build and run embedded module tests
+    test            build and run embedded module tests
     debug    build with debug flags and UBSan
     fast_feedback build with the default feedback compiler warnings, then run
     check    build with GCC and Clang static analyzers
@@ -206,11 +206,11 @@ uninstall)
     rm -f "${DESTDIR}${PREFIX}/share/zsh/site-functions/_${program}"
     rm -f "${DESTDIR}${PREFIX}/share/fish/vendor_completions.d/${program}.fish"
 
-    uninstall_opt \
+    common_uninstall_opt \
         "${program}.1" \
         "${DESTDIR}${PREFIX}/share/man/man1/${program}.1"
-    uninstall_opt "etc" "${DESTDIR}/etc/${program}"
-    uninstall_opt \
+    common_uninstall_opt "etc" "${DESTDIR}/etc/${program}"
+    common_uninstall_opt \
         "${program}.desktop" \
         "${DESTDIR}/usr/share/applications/${program}.desktop"
 
@@ -227,22 +227,22 @@ install)
     install -Dm755 "$program_path" "${DESTDIR}${PREFIX}/bin/${program}"
     install -Dm755 "$library_path" "${DESTDIR}${PREFIX}/lib/${program}.so"
     install -Dm644 src/${program}.h "${DESTDIR}${PREFIX}/include/${program}.h"
-    install_opt -dm755 "models" \
+    common_install_opt -dm755 "models" \
         "${DESTDIR}${PREFIX}/share/${program}/models"
-    install_opt \
+    common_install_opt \
         -Dm644 "${program}.1" \
         "${DESTDIR}${PREFIX}/share/man/man1/${program}.1"
-    install_opt \
+    common_install_opt \
         -Dm644 "completions/${program}" \
         "${DESTDIR}${PREFIX}/share/bash-completion/completions/${program}"
-    install_opt \
+    common_install_opt \
         -Dm644 "completions/_${program}" \
         "${DESTDIR}${PREFIX}/share/zsh/site-functions/_${program}"
-    install_opt \
+    common_install_opt \
         -Dm644 "completions/${program}.fish" \
         "${DESTDIR}${PREFIX}/share/fish/vendor_completions.d/${program}.fish"
-    install_opt -dm755 "etc" "${DESTDIR}/etc/${program}"
-    install_opt -Dm755 \
+    common_install_opt -dm755 "etc" "${DESTDIR}/etc/${program}"
+    common_install_opt -Dm755 \
         "${program}.desktop" \
         "${DESTDIR}/usr/share/applications/${program}.desktop"
 
@@ -252,7 +252,7 @@ install)
 test)
     setup_pkg_config_flags
     TEST_LDFLAGS="$pkg_config_flags" \
-        test "$target" src cbase
+        common_test "$target" src cbase
     ;;
 debug)
     build_program
