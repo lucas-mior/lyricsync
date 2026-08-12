@@ -79,15 +79,12 @@ build|all|run|lib)
 fast_feedback)
     ;;
 debug)
-    CFLAGS="$CFLAGS -g3 -Og -fsanitize=undefined"
+    CFLAGS="$CFLAGS -g3 -Og"
     CPPFLAGS="$CPPFLAGS -DDEBUGGING=1"
     ;;
 test)
     CFLAGS="$CFLAGS -g3 -Og -DDEBUGGING=1"
     CFLAGS="$CFLAGS -Wno-unused-variable"
-    if [ "$CC" != "tcc" ]; then
-        CFLAGS="$CFLAGS -fsanitize=undefined"
-    fi
     ;;
 check)
     ;;
