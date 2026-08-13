@@ -6,7 +6,7 @@ dir=$(dirname "$(readlink -f "$0")")
 cd "$dir" || exit
 
 # shellcheck source=./cbase/common.sh
-. "./cbase/common.sh"
+. ./cbase/common.sh
 
 program=$(common_get_program "$0")
 program_path="bin/$program"
