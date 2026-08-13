@@ -41,7 +41,7 @@ CFLAGS="${CFLAGS:-}"
 LDFLAGS="${LDFLAGS:-}"
 LDFLAGS="$LDFLAGS -lm"
 
-CPPFLAGS="$CPPFLAGS -Icbase -I. -Isrc"
+CPPFLAGS="$CPPFLAGS -I. -Icbase -Isrc"
 
 case "$OS" in
 *Linux*)
