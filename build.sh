@@ -263,3 +263,13 @@ clean)
     rm -rf bin
     ;;
 esac
+
+
+case "$mode" in
+all|build|check|clean|debug|fast_feedback|install|lib|run|test|uninstall)
+    ;;
+*)
+    echo "Unknown mode $mode"
+    exit 1
+    ;;
+esac
