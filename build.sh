@@ -95,24 +95,6 @@ esac
 pkg_config_flags=
 pkg_config_setup_done=0
 
-usage() {
-    cat <<'USAGE'
-usage: ./build.sh [mode] [target]
-
-modes:
-    build    build the executable
-    lib      build the shared library
-    install  install program, library, header, models, man page, completions
-    run      build and run the executable with the remaining args
-    test            build and run embedded module tests
-    debug    build with debug flags and UBSan
-    fast_feedback build with the default feedback compiler warnings, then run
-    check    build with GCC and Clang static analyzers
-    clean    remove generated build outputs
-    help     show this message
-USAGE
-}
-
 pkg_config_add_flags() {
     pkg="$1"
     trace_on
@@ -279,9 +261,6 @@ check)
     ;;
 clean)
     rm -rf bin
-    ;;
-help|-h|--help)
-    usage
     ;;
 *)
     usage >&2
