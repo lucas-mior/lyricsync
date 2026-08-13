@@ -262,8 +262,4 @@ check)
 clean)
     rm -rf bin
     ;;
-*)
-    usage >&2
-    exit 1
-    ;;
 esac
