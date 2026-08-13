@@ -16,6 +16,14 @@ cd "$dir" || exit
 script=$(basename "$0")
 common_build_parse_args "$@"
 
+case "$mode" in
+all|build|check|clean|debug|fast_feedback|install|lib|run|test|uninstall)
+    ;;
+*)
+    common_build_unknown_mode
+    ;;
+esac
+
 common_build_print_invocation "$script"
 
 CC=$(common_get_compiler "$mode")
@@ -88,7 +96,10 @@ test)
     ;;
 check)
     ;;
+all|build|check|clean|debug|fast_feedback|install|lib|run|test|uninstall)
+    ;;
 *)
+    common_build_unknown_mode
     ;;
 esac
 
@@ -261,15 +272,5 @@ check)
     ;;
 clean)
     rm -rf bin
-    ;;
-esac
-
-
-case "$mode" in
-all|build|check|clean|debug|fast_feedback|install|lib|run|test|uninstall)
-    ;;
-*)
-    echo "Unknown mode $mode"
-    exit 1
     ;;
 esac
