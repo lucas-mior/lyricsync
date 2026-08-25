@@ -379,7 +379,7 @@ audio_write_file_format(
     ITOA(output_sample_rate_arg, file_format.sample_rate);
 
     command_push_array(&command, LENGTH(argv) - 1, argv);
-    if (!command_stdin_buffer_set(&command, interleaved, interleaved_size)) {
+    if (command_stdin_buffer_set(&command, interleaved, interleaved_size) < 0) {
         goto cleanup;
     }
     if (!command_run_capture_all(&command)) {
