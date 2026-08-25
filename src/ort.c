@@ -1158,7 +1158,7 @@ ort_test_write_identity_model(char *path, char *temp_dir) {
 
     command = (Command){0};
     COMMAND_PUSH(&command, "python3", script_path, path);
-    ok = command_run_sync(&command, &exit_status);
+    ok = command_run_sync(&command, &exit_status) == 0;
     command_free(&command);
     if (!ok || (exit_status != 0)) {
         return false;
