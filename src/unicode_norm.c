@@ -72,7 +72,7 @@ ctc_unicode_norm_copy_fallback(
     if (text_len < 0) {
         return false;
     }
-    if (!sb_set(&result->text, text, text_len)) {
+    if (sb_set(&result->text, text, text_len) < 0) {
         return false;
     }
 
