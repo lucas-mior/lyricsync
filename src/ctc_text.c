@@ -2571,9 +2571,8 @@ ctc_text_test_reference_fixtures_load(void) {
     int32 text_len;
     int32 line_start;
 
-    if (!read_entire_file("testdata/ctc_text_reference_fixtures.txt",
-                           &text,
-                           &text_len)) {
+    if ((text_len = read_entire_file(
+             "testdata/ctc_text_reference_fixtures.txt", &text)) < 0) {
         return ctc_text_test_fail("load reference fixtures");
     }
 
@@ -2725,9 +2724,8 @@ ctc_text_reference_load_word_fixture(
 
     memset64(fixture, 0, SIZEOF(*fixture));
 
-    if (!read_entire_file("testdata/ctc_text_reference_fixtures.txt",
-                           &text,
-                           &text_len)) {
+    if ((text_len = read_entire_file(
+             "testdata/ctc_text_reference_fixtures.txt", &text)) < 0) {
         return false;
     }
 

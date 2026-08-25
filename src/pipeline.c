@@ -3526,7 +3526,7 @@ pipeline_test_file_contains(
     int32 text_len;
     bool found;
 
-    if (!read_entire_file(path, &text, &text_len)) {
+    if ((text_len = read_entire_file(path, &text)) < 0) {
         return false;
     }
     found = false;

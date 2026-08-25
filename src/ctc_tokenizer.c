@@ -921,7 +921,7 @@ lrc_ctc_tokenizer_load_file(
         );
         return false;
     }
-    if (!read_entire_file(path, &file_text, &file_len)) {
+    if ((file_len = read_entire_file(path, &file_text)) < 0) {
         lrc_ctc_tokenizer_result_set(
             result,
             LS_ERROR_CTC_TOKENIZER_READ_FAILED,

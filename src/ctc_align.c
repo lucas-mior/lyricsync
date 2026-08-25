@@ -5250,7 +5250,7 @@ ctc_align_parse_lrc_file(
         return false;
     }
 
-    if (!read_entire_file(path, file_text, file_text_len)) {
+    if ((*file_text_len = read_entire_file(path, file_text)) < 0) {
         return false;
     }
     if (!lrc_parse_text(parsed, *file_text, *file_text_len, &result)) {
@@ -7564,7 +7564,7 @@ ctc_align_test_synthetic_lrc_uses_active_token_boundaries(void) {
         ok = false;
     }
     if (ok) {
-        if (!read_entire_file(lrc_path, &written_lrc, &written_lrc_len)) {
+        if ((written_lrc_len = read_entire_file(lrc_path, &written_lrc)) < 0) {
             ok = false;
         } else if (!STREQUAL(written_lrc, written_lrc_len, expected_lrc)) {
             ok = false;
@@ -8646,7 +8646,7 @@ ctc_align_test_maxwell_line_timestamp_comparison(void) {
         fatal(ctc_align_test_fail("normalize maxwell line lyrics"));
     }
 
-    if (!read_entire_file(lrc_path, &lrc_text, &lrc_text_len)) {
+    if ((lrc_text_len = read_entire_file(lrc_path, &lrc_text)) < 0) {
         fatal(ctc_align_test_fail("read maxwell expected lrc"));
     }
     if (!lrc_parse_text(&parsed, lrc_text, lrc_text_len, &parse_result)) {
@@ -9192,7 +9192,7 @@ ctc_align_test_full_synthetic_lrc_pipeline(void) {
         ok = false;
     }
     if (ok) {
-        if (!read_entire_file(lrc_path, &written_lrc, &written_lrc_len)) {
+        if ((written_lrc_len = read_entire_file(lrc_path, &written_lrc)) < 0) {
             ok = false;
         } else if (!STREQUAL(written_lrc, written_lrc_len, expected_lrc)) {
             ok = false;

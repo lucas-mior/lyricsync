@@ -209,7 +209,7 @@ lrc_lyrics_load_file(
     lrc_lyrics_destroy(lyrics);
     file_text = NULL;
     file_len = 0;
-    if (!read_entire_file(path, &file_text, &file_len)) {
+    if ((file_len = read_entire_file(path, &file_text)) < 0) {
         lrc_lyrics_load_result_set(
             result,
             LS_ERROR_LYRICS_LOAD_READ_FAILED,
