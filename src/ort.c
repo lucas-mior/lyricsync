@@ -1152,7 +1152,7 @@ ort_test_write_identity_model(char *path, char *temp_dir) {
         "model.ir_version = 7\n"
         "onnx.save(model, sys.argv[1])\n";
 
-    if (!write_entire_file(script_path, script, strlen32(script))) {
+    if (write_entire_file(script_path, script, strlen32(script)) < 0) {
         return false;
     }
 

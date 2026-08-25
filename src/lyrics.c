@@ -270,7 +270,7 @@ lyrics_test_fail(char *name) {
 
 static bool
 lyrics_test_write(char *path, char *text, int32 text_len) {
-    return write_entire_file(path, text, text_len);
+    return write_entire_file(path, text, text_len) >= 0;
 }
 
 static bool

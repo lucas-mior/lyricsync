@@ -5056,7 +5056,7 @@ ctc_align_load_alphabet_tokenizer_with_options(
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "ctc_align_tokens");
     test_join_path(path, SIZEOF(path), temp_dir, "tokens.txt");
-    if (!write_entire_file(path, builder.data, builder.len)) {
+    if (write_entire_file(path, builder.data, builder.len) < 0) {
         test_remove_tree(temp_dir);
         sb_free(&builder);
         return false;
@@ -5093,7 +5093,7 @@ ctc_align_load_lyrics_text(
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "ctc_align_lyrics");
     test_join_path(path, SIZEOF(path), temp_dir, "lyrics.txt");
-    if (!write_entire_file(path, text, text_len)) {
+    if (write_entire_file(path, text, text_len) < 0) {
         test_remove_tree(temp_dir);
         return false;
     }

@@ -3511,7 +3511,7 @@ pipeline_test_fail(char *name) {
 
 static bool
 pipeline_test_write_file(char *path) {
-    return write_entire_file(path, STRLIT("x"));
+    return write_entire_file(path, STRLIT("x")) >= 0;
 }
 
 

@@ -2252,7 +2252,7 @@ ctc_text_load_lyrics(
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), name);
     test_join_path(path, SIZEOF(path), temp_dir, "lyrics.txt");
-    if (!write_entire_file(path, text, strlen32(text))) {
+    if (write_entire_file(path, text, strlen32(text)) < 0) {
         test_remove_tree(temp_dir);
         return false;
     }

@@ -109,7 +109,7 @@ ctc_assets_test_fail(char *name) {
 
 static bool
 ctc_assets_write_file(char *path, char *text) {
-    return write_entire_file(path, text, strlen32(text));
+    return write_entire_file(path, text, strlen32(text)) >= 0;
 }
 
 

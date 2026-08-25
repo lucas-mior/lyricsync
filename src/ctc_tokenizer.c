@@ -986,7 +986,7 @@ ctc_tokenizer_test_fail(char *name) {
 
 static bool
 ctc_tokenizer_write_file(char *path, char *text) {
-    return write_entire_file(path, text, strlen32(text));
+    return write_entire_file(path, text, strlen32(text)) >= 0;
 }
 
 
@@ -1030,7 +1030,7 @@ ctc_tokenizer_normalize_lyrics_text(
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), name);
     test_join_path(path, SIZEOF(path), temp_dir, "lyrics.txt");
-    if (!write_entire_file(path, text, strlen32(text))) {
+    if (write_entire_file(path, text, strlen32(text)) < 0) {
         test_remove_tree(temp_dir);
         return false;
     }
@@ -1219,7 +1219,7 @@ ctc_tokenizer_test_rejects_invalid_utf8(void) {
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "ctc_tokenizer_utf8");
     test_join_path(path, SIZEOF(path), temp_dir, "tokens.txt");
-    if (!write_entire_file(path, invalid, SIZEOF(invalid) - 1)) {
+    if (write_entire_file(path, invalid, SIZEOF(invalid) - 1) < 0) {
         test_remove_tree(temp_dir);
         fatal(ctc_tokenizer_test_fail("write invalid UTF-8 vocabulary"));
     }
