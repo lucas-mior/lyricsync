@@ -83,7 +83,7 @@ audio_run_process(int32 argc, char **argv) {
     bool result;
 
     command_push_array(&command, argc, argv);
-    result = command_run_capture_all(&command);
+    result = (command_run_capture_all(&command) == 0);
     if (result) {
         result = command.result.exited
                  && (command.result.exit_status == 0);
@@ -167,7 +167,7 @@ audio_read_file_format(
 
     audio_buffer_destroy(audio);
     command_push_array(&command, LENGTH(argv) - 1, argv);
-    if (!command_run_capture_all(&command)) {
+    if (command_run_capture_all(&command) < 0) {
         goto cleanup;
     }
     if (!command.result.exited || (command.result.exit_status != 0)) {
@@ -382,7 +382,7 @@ audio_write_file_format(
     if (command_stdin_buffer_set(&command, interleaved, interleaved_size) < 0) {
         goto cleanup;
     }
-    if (!command_run_capture_all(&command)) {
+    if (command_run_capture_all(&command) < 0) {
         goto cleanup;
     }
 
@@ -541,7 +541,7 @@ audio_file_info_read(
 
     audio_file_info_init(info);
     command_push_array(&command, LENGTH(argv) - 1, argv);
-    if (!command_run_capture_all(&command)) {
+    if (command_run_capture_all(&command) < 0) {
         goto cleanup;
     }
     if (!command.result.exited || (command.result.exit_status != 0)) {
