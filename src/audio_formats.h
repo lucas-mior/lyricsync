@@ -7,17 +7,17 @@
 #define LRC_AUDIO_FORMAT_DEFAULT_ENUM LRC_AUDIO_FORMAT_WAV
 #define LRC_AUDIO_FORMAT_NAMES "wav|flac|mp3|opus"
 
-#define LRC_AUDIO_FORMAT_VALUES(X) \
-    X(LRC_AUDIO_FORMAT_WAV,  "wav",  "wav",  true,  true)  \
-    X(LRC_AUDIO_FORMAT_FLAC, "flac", "flac", true,  true)  \
-    X(LRC_AUDIO_FORMAT_MP3,  "mp3",  "mp3",  true,  false) \
-    X(LRC_AUDIO_FORMAT_OPUS, "opus", "opus", true,  false)
+#define LRC_AUDIO_FORMAT_VALUES(XX) \
+    XX(LRC_AUDIO_FORMAT_WAV,  "wav",  "wav",  true,  true)  \
+    XX(LRC_AUDIO_FORMAT_FLAC, "flac", "flac", true,  true)  \
+    XX(LRC_AUDIO_FORMAT_MP3,  "mp3",  "mp3",  true,  false) \
+    XX(LRC_AUDIO_FORMAT_OPUS, "opus", "opus", true,  false)
 
 #define ENUM_NAME LrcAudioFormat
 #define ENUM_BITFLAGS 0
 #define ENUM_PREFIX_ LRC_AUDIO_FORMAT_
 #define LRC_AUDIO_FORMAT_ENUM_FIELD(e, name, extension, streaming, lossless) \
-    X(e)
+    XX(e)
 #define ENUM_FIELDS LRC_AUDIO_FORMAT_VALUES(LRC_AUDIO_FORMAT_ENUM_FIELD)
 #define XENUMS_NO_TESTS 1
 #include "cbase/xenums.c"
