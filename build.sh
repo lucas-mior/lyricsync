@@ -17,7 +17,7 @@ script=$(basename "$0")
 common_build_parse_args "$@"
 
 case "$mode" in
-all|build|check|clean|debug|fast_feedback|install|lib|run|test|uninstall)
+all|build|check|clean|debug|debug-fast|fast_feedback|install|lib|run|test|uninstall)
     ;;
 *)
     common_build_unknown_mode
@@ -84,6 +84,10 @@ case "$mode" in
 build|all|run|lib)
     CFLAGS="$CFLAGS -O2 -g"
     ;;
+debug-fast)
+    CFLAGS="$CFLAGS -g2 -O2"
+    CPPFLAGS="$CPPFLAGS -DDEBUGGING=1"
+    ;;
 fast_feedback)
     ;;
 debug)
@@ -96,7 +100,7 @@ test)
     ;;
 check)
     ;;
-all|build|check|clean|debug|fast_feedback|install|lib|run|test|uninstall)
+all|build|check|clean|debug|debug-fast|fast_feedback|install|lib|run|test|uninstall)
     ;;
 *)
     common_build_unknown_mode
@@ -167,7 +171,7 @@ build_library() {
 }
 
 case "$mode" in
-build|all)
+build|all|debug-fast)
     build_program
     ;;
 fast_feedback)
