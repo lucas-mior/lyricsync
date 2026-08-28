@@ -2104,7 +2104,7 @@ lrc_lyrics_normalize_with_options(
                                                 end);
             break;
         case LRC_LYRICS_PREPROCESS_SPLIT_SIZE_SENTENCE:
-        case LRC_LYRICS_PREPROCESS_SPLIT_SIZE_LAST:
+        case LRC_LYRICS_PREPROCESS_SPLIT_SIZE_COUNT:
         default:
             ok = false;
             break;

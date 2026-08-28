@@ -814,7 +814,7 @@ lrc_ctc_emissions_convert_to_log_probabilities(
             }
         }
         return true;
-    case LRC_CTC_EMISSION_VALUES_LAST:
+    case LRC_CTC_EMISSION_VALUES_COUNT:
     default:
         lrc_ctc_inference_result_set(
             result,

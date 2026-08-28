@@ -800,7 +800,7 @@ lrc_pipeline_preprocess_split_size_name(
 ) {
     static char buffer[32];
 
-    if (split_size >= LRC_LYRICS_PREPROCESS_SPLIT_SIZE_LAST) {
+    if (split_size >= LRC_LYRICS_PREPROCESS_SPLIT_SIZE_COUNT) {
         return "invalid";
     }
 
@@ -818,7 +818,7 @@ lrc_pipeline_preprocess_star_frequency_name(
 ) {
     static char buffer[32];
 
-    if (star_frequency >= LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_LAST) {
+    if (star_frequency >= LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_COUNT) {
         return "invalid";
     }
 
@@ -836,7 +836,7 @@ lrc_pipeline_preprocess_romanization_name(
 ) {
     static char buffer[32];
 
-    if (romanization >= LRC_LYRICS_PREPROCESS_ROMANIZATION_LAST) {
+    if (romanization >= LRC_LYRICS_PREPROCESS_ROMANIZATION_COUNT) {
         return "invalid";
     }
 
@@ -857,7 +857,7 @@ lrc_pipeline_parse_preprocess_split_size(
         return false;
     }
 
-    for (uint32 i = 0; i < LRC_LYRICS_PREPROCESS_SPLIT_SIZE_LAST; i += 1) {
+    for (uint32 i = 0; i < LRC_LYRICS_PREPROCESS_SPLIT_SIZE_COUNT; i += 1) {
         enum LrcLyricsPreprocessSplitSize split_size =
             (enum LrcLyricsPreprocessSplitSize)i;
 
@@ -885,7 +885,7 @@ lrc_pipeline_parse_preprocess_star_frequency(
         return false;
     }
 
-    for (uint32 i = 0; i < LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_LAST;
+    for (uint32 i = 0; i < LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_COUNT;
          i += 1) {
         enum LrcLyricsPreprocessStarFrequency star_frequency =
             (enum LrcLyricsPreprocessStarFrequency)i;
@@ -914,7 +914,7 @@ lrc_pipeline_parse_preprocess_romanization(
         return false;
     }
 
-    for (uint32 i = 0; i < LRC_LYRICS_PREPROCESS_ROMANIZATION_LAST;
+    for (uint32 i = 0; i < LRC_LYRICS_PREPROCESS_ROMANIZATION_COUNT;
          i += 1) {
         enum LrcLyricsPreprocessRomanization romanization =
             (enum LrcLyricsPreprocessRomanization)i;
@@ -1599,7 +1599,7 @@ lrc_pipeline_ctc_align_plan_init(
     case LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_SEGMENT:
         star_mode = LRC_CTC_ALIGN_STAR_MODE_SEGMENT;
         break;
-    case LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_LAST:
+    case LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_COUNT:
     default:
         lrc_pipeline_generate_result_set(
             result,

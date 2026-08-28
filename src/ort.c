@@ -278,7 +278,7 @@ ort_session_options_configure_provider(
     case ORT_EXECUTION_PROVIDER_CUDA:
         required = true;
         return ort_session_options_append_cuda(context, options, required);
-    case ORT_EXECUTION_PROVIDER_LAST:
+    case ORT_EXECUTION_PROVIDER_COUNT:
     default:
         lrc_progress_end_line();
         error2("unknown ONNX provider.\n");
