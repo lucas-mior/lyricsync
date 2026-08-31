@@ -5044,7 +5044,7 @@ ctc_align_load_alphabet_tokenizer_with_options(
     char path[PATH_MAX];
     bool ok;
 
-    sb_init(&builder);
+    builder = (StrBuilder){0}
     SB_APPEND(&builder, "<blank>\n");
     if (include_space) {
         SB_APPEND(&builder, "<space>\n");

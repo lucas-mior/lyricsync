@@ -911,7 +911,7 @@ lrc_write_output_file(
         return false;
     }
 
-    sb_init(&builder);
+    builder = (StrBuilder){0};
     if (!lrc_format_output_lines(&builder, lines, line_count, result)) {
         sb_free(&builder);
         return false;
@@ -1246,7 +1246,7 @@ lrc_test_format_timestamped_line_preserves_text(void) {
     StrBuilder builder;
     char text[] = "Bang, bang, Café's hammer!";
 
-    sb_init(&builder);
+    builder = (StrBuilder){0};
     if (!lrc_format_timestamped_line(&builder,
                                       14.14f,
                                       text,
@@ -1266,7 +1266,7 @@ lrc_test_format_timestamped_empty_line(void) {
     LrcFormatResult result;
     StrBuilder builder;
 
-    sb_init(&builder);
+    builder = (StrBuilder){0};
     if (!lrc_format_timestamped_line(&builder,
                                       3.40f,
                                       NULL,
@@ -1288,7 +1288,7 @@ lrc_test_format_reject_bad_inputs(void) {
     char buffer[4];
     int32 hundredths;
 
-    sb_init(&builder);
+    builder = (StrBuilder){0};
 
     if (lrc_timestamp_hundredths_from_seconds(-0.01f,
                                               &hundredths,
@@ -1587,7 +1587,7 @@ lrc_test_optional_maxwell_formatting(void) {
         fatal(lrc_test_fail("parse maxwell lrc before formatting"));
     }
 
-    sb_init(&builder);
+    builder = (StrBuilder){0};
     for (int32 i = 0; i < parsed.line_count; i += 1) {
         LrcParsedLine *line = parsed.lines + i;
 

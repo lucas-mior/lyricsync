@@ -533,7 +533,7 @@ lrc_ctc_tokenizer_init(LrcCtcTokenizer *tokenizer) {
     }
 
     memset64(tokenizer, 0, SIZEOF(*tokenizer));
-    sb_init(&tokenizer->text_storage);
+    tokenizer->text_storage = (StrBuilder){0};
     tokenizer->blank_id = -1;
     tokenizer->unknown_id = -1;
 

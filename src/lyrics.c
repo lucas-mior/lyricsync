@@ -81,7 +81,7 @@ lrc_lyrics_normalize_text(
         start = 3;
     }
 
-    sb_init(&normalized);
+    normalized = (StrBuilder){0};
     sb_reserve(&normalized, file_len - start);
     for (int32 i = start; i < file_len; i += 1) {
         if (file_text[i] == '\r') {
