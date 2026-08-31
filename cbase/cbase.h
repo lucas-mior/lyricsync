@@ -8,7 +8,7 @@
 #define DEBUGGING 0
 #endif
 
-#if !defined(DEBUGGING)
+#if !defined(TESTING)
 #define TESTING 0
 #endif
 
