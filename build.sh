@@ -56,11 +56,6 @@ CFLAGS="$CFLAGS -std=c11"
 CFLAGS="$CFLAGS -Wfatal-errors"
 CFLAGS="$CFLAGS -Werror"  # Only uncomment occasionally, keep this line
 
-if [ "$CC" = "clang" ] || [ "$CC" = "zig cc" ]; then
-    CFLAGS="$CFLAGS -Wno-cast-align"
-    CFLAGS="$CFLAGS -Wno-unused-function"
-fi
-
 case "$mode" in
 build|all|run|lib)
     CFLAGS="$CFLAGS -O2 -g"
@@ -77,7 +72,6 @@ debug)
     ;;
 test)
     CFLAGS="$CFLAGS -g3 -Og -DDEBUGGING=1"
-    CFLAGS="$CFLAGS -Wno-unused-variable"
     ;;
 check)
     ;;
