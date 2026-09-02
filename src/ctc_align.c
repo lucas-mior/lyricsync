@@ -8995,7 +8995,6 @@ ctc_align_test_full_synthetic_lrc_pipeline(void) {
     char wav_path[PATH_MAX];
     char lrc_path[PATH_MAX];
     char lyrics_text[] = "ab cd\n\nef\n";
-    char expected_lrc[] = "[00:00.01]ab cd\n\n[00:00.07]ef\n";
     char *written_lrc;
     int32 written_lrc_len;
     int32 *target_token_ids;
@@ -9194,7 +9193,8 @@ ctc_align_test_full_synthetic_lrc_pipeline(void) {
     if (ok) {
         if ((written_lrc_len = read_entire_file(lrc_path, &written_lrc)) < 0) {
             ok = false;
-        } else if (!STREQUAL(written_lrc, written_lrc_len, expected_lrc)) {
+        } else if (!STREQUAL(written_lrc, written_lrc_len,
+                             "[00:00.01]ab cd\n\n[00:00.07]ef\n")) {
             ok = false;
         }
     }
