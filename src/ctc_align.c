@@ -7380,7 +7380,6 @@ ctc_align_test_synthetic_lrc_uses_active_token_boundaries(void) {
     char temp_dir[PATH_MAX];
     char lrc_path[PATH_MAX];
     char text[] = "a\nb\nc\n";
-    char expected_lrc[] = "[00:00.10]a\n[00:00.90]b\n[00:01.00]c\n";
     char *written_lrc;
     int32 written_lrc_len;
     int32 target_token_ids[3];
@@ -7566,7 +7565,8 @@ ctc_align_test_synthetic_lrc_uses_active_token_boundaries(void) {
     if (ok) {
         if ((written_lrc_len = read_entire_file(lrc_path, &written_lrc)) < 0) {
             ok = false;
-        } else if (!STREQUAL(written_lrc, written_lrc_len, expected_lrc)) {
+        } else if (!STREQUAL(written_lrc, written_lrc_len,
+                             "[00:00.10]a\n[00:00.90]b\n[00:01.00]c\n")) {
             ok = false;
         }
     }
