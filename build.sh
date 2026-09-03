@@ -61,6 +61,7 @@ build|all|run|lib)
     ;;
 debug-fast)
     CFLAGS="$CFLAGS -g2 -O2"
+    CFLAGS="$CFLAGS -fsanitize=undefined"
     CPPFLAGS="$CPPFLAGS -DDEBUGGING=1"
     ;;
 fast_feedback)
