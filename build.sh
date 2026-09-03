@@ -247,6 +247,7 @@ check)
     else
         CC=clang CFLAGS="$analyzer_flags" "$0" debug
     fi
+    echo "static analysis finished."
     exit
     ;;
 clean)
