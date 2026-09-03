@@ -12,3 +12,4 @@ temp_delete_me*
 *.zip
 *.obj
 */.cache/
+static-analyzers-warnings.txt
