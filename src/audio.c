@@ -1202,7 +1202,7 @@ audio_test_compare_helpers(void) {
         fatal(audio_test_fail("compare mode string"));
     }
     AUDIO_COMPARE_MODE_str_free(mode_name);
-    if (AUDIO_COMPARE_MODE_parse("SNR") != AUDIO_COMPARE_MODE_SNR) {
+    if (AUDIO_COMPARE_MODE_parse(STRLIT("SNR")) != AUDIO_COMPARE_MODE_SNR) {
         fatal(audio_test_fail("compare mode parse"));
     }
 
