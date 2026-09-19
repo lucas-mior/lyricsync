@@ -1877,8 +1877,8 @@ ctc_inference_test_empty_initializers(void) {
     ASSERT(fake.value_count == 0);
     ASSERT(fake.shape_len == 0);
 
-    ASSERT_EQUAL(backend.backend, &fake);
-    ASSERT_EQUAL(backend.run, lrc_ctc_fake_inference_run);
+    ASSERT(backend.backend == &fake);
+    ASSERT(backend.run == lrc_ctc_fake_inference_run);
 
     ASSERT(!onnx.loaded);
 

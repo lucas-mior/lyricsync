@@ -4214,7 +4214,7 @@ pipeline_test_line_timing_audio_available(void) {
         fatal(pipeline_test_fail("line timing audio context"));
     }
     ASSERT(result.path_header.header.error == LS_ERROR_NONE);
-    ASSERT_EQUAL(line_audio.samples, samples);
+    ASSERT(line_audio.samples == samples);
     ASSERT(line_audio.sample_count == LENGTH(samples));
     ASSERT_EQUAL(line_audio.sample_rate, 16000);
     ASSERT_EQUAL(line_audio.samples[1], -0.50f);
