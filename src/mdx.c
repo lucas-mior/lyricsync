@@ -991,7 +991,7 @@ main(void) {
     ASSERT_SILENT_FAILURE(mdx_config_prepare(&config));
 
     mdx_config_init(&config);
-    ASSERT_LESS(mdx_input_tensor_len(&config), 0);
+    ASSERT_NEGATIVE(mdx_input_tensor_len(&config));
     config.n_fft = 8;
     config.hop = 4;
     config.dim_f = 3;
