@@ -3058,10 +3058,8 @@ ctc_text_test_assert_target_item(
     int32 target_len = segment->target_end - segment->target_start;
 
     ASSERT_NON_NEGATIVE(target_len);
-    ASSERT_EQUAL(normalized->target_text + segment->target_start,
-                 target_len,
-                 expected,
-                 expected_len);
+    ASSERT_EQUAL(normalized->target_text + segment->target_start, target_len,
+                 expected, expected_len);
 
     return;
 }
