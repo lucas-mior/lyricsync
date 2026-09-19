@@ -497,8 +497,8 @@ CAT(ENUM_PREFIX_, functions_sink)(void) {
 #undef ENUM_UNDERLYING_TYPE
 #undef ENUM_UNDERLYING_TYPE_SPEC
 
-#if TESTING_xenums                                                             \
-    && !defined(TESTING_xenums_started)                                        \
+#if TESTING_xenums                                \
+    && !defined(TESTING_xenums_started)           \
     && !defined(XENUMS_NO_TESTS)
 #define TESTING_xenums_started
 
