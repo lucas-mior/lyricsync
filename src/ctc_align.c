@@ -2142,7 +2142,7 @@ lrc_ctc_path_count_segments(LrcCtcPath *path) {
 
     ASSERT(path);
     ASSERT(path->steps);
-    ASSERT(path->step_count > 0);
+    ASSERT_MORE(path->step_count, 0);
 
     count = 1;
     for (int32 i = 1; i < path->step_count; i += 1) {
@@ -2205,8 +2205,8 @@ lrc_ctc_path_segment_finish(
 ) {
     ASSERT(segment);
     ASSERT_MORE_EQUAL(segment->start_frame, 0);
-    ASSERT(segment->end_frame > segment->start_frame);
-    ASSERT(score_count > 0);
+    ASSERT_MORE(segment->end_frame, segment->start_frame);
+    ASSERT_MORE(score_count, 0);
 
     segment->start_seconds = (float)segment->start_frame*frame_duration_seconds;
     segment->end_seconds = (float)segment->end_frame*frame_duration_seconds;
@@ -2680,7 +2680,7 @@ lrc_ctc_blank_midpoint_frame(LrcCtcPathSegment *segment) {
     ASSERT(segment);
     ASSERT(segment->is_blank);
     ASSERT_MORE_EQUAL(segment->start_frame, 0);
-    ASSERT(segment->end_frame > segment->start_frame);
+    ASSERT_MORE(segment->end_frame, segment->start_frame);
 
     return (segment->start_frame + segment->end_frame)/2;
 }
@@ -2828,8 +2828,8 @@ lrc_ctc_token_span_finish(
 ) {
     ASSERT(span);
     ASSERT_MORE_EQUAL(span->start_frame, 0);
-    ASSERT(span->end_frame > span->start_frame);
-    ASSERT(score_count > 0);
+    ASSERT_MORE(span->end_frame, span->start_frame);
+    ASSERT_MORE(score_count, 0);
 
     span->start_seconds = (float)span->start_frame*frame_duration_seconds;
     span->end_seconds = (float)span->end_frame*frame_duration_seconds;
@@ -3479,7 +3479,7 @@ lrc_ctc_normalized_range_is_space(
     ASSERT(normalized);
     ASSERT(normalized->text);
     ASSERT_MORE_EQUAL(start, 0);
-    ASSERT(end > start);
+    ASSERT_MORE(end, start);
     ASSERT(end <= normalized->text_len);
 
     for (int32 i = start; i < end; i += 1) {
@@ -3500,7 +3500,7 @@ lrc_ctc_normalized_range_has_space(
     ASSERT(normalized);
     ASSERT(normalized->text);
     ASSERT_MORE_EQUAL(start, 0);
-    ASSERT(end > start);
+    ASSERT_MORE(end, start);
     ASSERT(end <= normalized->text_len);
 
     for (int32 i = start; i < end; i += 1) {
@@ -4456,7 +4456,7 @@ lrc_ctc_line_timestamp_set_timed(
     ASSERT_MORE_EQUAL(index, 0);
     ASSERT_LESS(index, timestamps->line_count);
     ASSERT_MORE_EQUAL(first_word_index, 0);
-    ASSERT(end_word_index > first_word_index);
+    ASSERT_MORE(end_word_index, first_word_index);
     ASSERT(end_word_index <= word_spans->span_count);
 
     first = word_spans->spans + first_word_index;
@@ -5195,7 +5195,7 @@ ctc_align_assert_word_text(
     int32 text_len
 ) {
     ASSERT_MORE_EQUAL(word->normalized_start, 0);
-    ASSERT(word->normalized_end > word->normalized_start);
+    ASSERT_MORE(word->normalized_end, word->normalized_start);
     ASSERT(word->normalized_end <= normalized->text_len);
     ASSERT(STREQUAL(normalized->text + word->normalized_start,
                      word->normalized_end - word->normalized_start,
@@ -5296,7 +5296,7 @@ ctc_align_seconds_to_frame(float seconds, float frame_duration_seconds) {
     ASSERT(isfinite(seconds));
     ASSERT_MORE_EQUAL(seconds, 0.0f);
     ASSERT(isfinite(frame_duration_seconds));
-    ASSERT(frame_duration_seconds > 0.0f);
+    ASSERT_MORE(frame_duration_seconds, 0.0f);
 
     frame = (double)seconds/(double)frame_duration_seconds + 0.5;
     if (frame > (double)INT64_MAX) {
@@ -8894,7 +8894,7 @@ ctc_align_test_maxwell_fake_token_timing(void) {
                                                &tokenize_result)) {
         fatal(ctc_align_test_fail("tokenize maxwell lyrics"));
     }
-    ASSERT(tokens.token_count > 0);
+    ASSERT_MORE(tokens.token_count, 0);
 
     token_count = tokens.token_count;
     frame_count = token_count + 2;
