@@ -1615,10 +1615,10 @@ lrc_test_assert_same_parsed_structure(
         ASSERT(a->lines[i].kind == b->lines[i].kind);
         ASSERT(a->lines[i].timestamp_hundredths
                == b->lines[i].timestamp_hundredths);
-        ASSERT(STREQUAL(a->lines[i].text,
-                         a->lines[i].text_len,
-                         b->lines[i].text,
-                         b->lines[i].text_len));
+        ASSERT_EQUAL(a->lines[i].text,
+                     a->lines[i].text_len,
+                     b->lines[i].text,
+                     b->lines[i].text_len);
     }
 
     return;
