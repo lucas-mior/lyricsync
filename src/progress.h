@@ -17,12 +17,8 @@ typedef struct LrcProgress {
     bool finished;
 } LrcProgress;
 
-static void lrc_progress_init(
-    LrcProgress *progress,
-    bool enabled,
-    char *label,
-    int64 total
-);
+static void lrc_progress_init(LrcProgress *progress, bool enabled, char *label,
+                              int64 total);
 static void lrc_progress_begin(LrcProgress *progress);
 static void lrc_progress_update(LrcProgress *progress, int64 current);
 static void lrc_progress_finish(LrcProgress *progress);

@@ -21,10 +21,8 @@ typedef struct LrcCtcAssets {
 } LrcCtcAssets;
 
 static void lrc_ctc_assets_result_init(LrcCtcAssetsResult *result);
-static bool lrc_ctc_assets_validate(
-    LrcCtcAssets *assets,
-    LrcCtcAssetsConfig *config,
-    LrcCtcAssetsResult *result
-);
+static bool lrc_ctc_assets_validate(LrcCtcAssets *assets,
+                                    LrcCtcAssetsConfig *config,
+                                    LrcCtcAssetsResult *result);
 
 #endif /* CTC_ASSETS_H */

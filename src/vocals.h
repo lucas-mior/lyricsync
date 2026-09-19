@@ -31,9 +31,7 @@ typedef struct LrcVocalsExtractResult {
 
 static void lrc_vocals_extract_request_init(LrcVocalsExtractRequest *request);
 static void lrc_vocals_extract_result_init(LrcVocalsExtractResult *result);
-static bool lrc_extract_vocals(
-    LrcVocalsExtractRequest *request,
-    LrcVocalsExtractResult *result
-);
+static bool lrc_extract_vocals(LrcVocalsExtractRequest *request,
+                               LrcVocalsExtractResult *result);
 
 #endif /* VOCALS_H */

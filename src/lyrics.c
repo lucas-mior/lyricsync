@@ -34,13 +34,8 @@ lrc_lyrics_load_result_init(LrcLyricsLoadResult *result) {
 }
 
 static void
-lrc_lyrics_load_result_set(
-    LrcLyricsLoadResult *result,
-    enum LsError error,
-    char *message,
-    char *path,
-    int32 byte_offset
-) {
+lrc_lyrics_load_result_set(LrcLyricsLoadResult *result, enum LsError error,
+                           char *message, char *path, int32 byte_offset) {
     if (result == NULL) {
         return;
     }
@@ -53,13 +48,8 @@ lrc_lyrics_load_result_set(
 }
 
 static bool
-lrc_lyrics_normalize_text(
-    LrcLyrics *lyrics,
-    char *file_text,
-    int32 file_len,
-    LrcLyricsLoadResult *result,
-    char *path
-) {
+lrc_lyrics_normalize_text(LrcLyrics *lyrics, char *file_text, int32 file_len,
+                          LrcLyricsLoadResult *result, char *path) {
     int32 bad_offset;
     int32 start;
     StrBuilder normalized;
@@ -174,11 +164,8 @@ lrc_lyrics_split_lines(LrcLyrics *lyrics) {
 }
 
 static bool
-lrc_lyrics_load_file(
-    LrcLyrics *lyrics,
-    char *path,
-    LrcLyricsLoadResult *result
-) {
+lrc_lyrics_load_file(LrcLyrics *lyrics, char *path,
+                     LrcLyricsLoadResult *result) {
     char *file_text;
     int32 file_len;
 
@@ -299,12 +286,8 @@ lyrics_test_load_text(LrcLyrics *lyrics, char *text, int32 text_len) {
 }
 
 static void
-lyrics_test_assert_line_range(
-    LrcLyricsNormalized *normalized,
-    int32 line_index,
-    int32 expected_start,
-    int32 expected_end
-) {
+lyrics_test_assert_line_range(LrcLyricsNormalized *normalized, int32 line_index,
+                              int32 expected_start, int32 expected_end) {
     int32 start;
     int32 end;
 
@@ -320,10 +303,8 @@ lyrics_test_assert_line_range(
 
 static void
 lyrics_test_assert_no_line_range(
-    LrcLyricsNormalized *normalized,
-    int32 line_index,
-    enum LrcLyricsNormalizedLineKind expected_kind
-) {
+    LrcLyricsNormalized *normalized, int32 line_index,
+    enum LrcLyricsNormalizedLineKind expected_kind) {
     int32 start;
     int32 end;
 

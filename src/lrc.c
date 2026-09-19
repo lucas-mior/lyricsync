@@ -51,13 +51,8 @@ lrc_write_result_init(LrcWriteResult *result) {
 }
 
 static void
-lrc_write_result_set(
-    LrcWriteResult *result,
-    enum LsError error,
-    char *message,
-    char *path,
-    int32 line_index
-) {
+lrc_write_result_set(LrcWriteResult *result, enum LsError error, char *message,
+                     char *path, int32 line_index) {
     if (result == NULL) {
         return;
     }
@@ -101,11 +96,9 @@ lrc_timestamp_formatted_len(int32 timestamp_hundredths) {
 }
 
 static bool
-lrc_timestamp_hundredths_from_seconds(
-    float seconds,
-    int32 *timestamp_hundredths,
-    LrcFormatResult *result
-) {
+lrc_timestamp_hundredths_from_seconds(float seconds,
+                                      int32 *timestamp_hundredths,
+                                      LrcFormatResult *result) {
     double rounded;
 
     if (result) {
@@ -144,13 +137,9 @@ lrc_timestamp_hundredths_from_seconds(
 }
 
 static bool
-lrc_format_timestamp_hundredths(
-    int32 timestamp_hundredths,
-    char *buffer,
-    int32 buffer_len,
-    int32 *formatted_len,
-    LrcFormatResult *result
-) {
+lrc_format_timestamp_hundredths(int32 timestamp_hundredths, char *buffer,
+                                int32 buffer_len, int32 *formatted_len,
+                                LrcFormatResult *result) {
     int32 minutes;
     int32 seconds;
     int32 hundredths;
@@ -204,13 +193,10 @@ lrc_format_timestamp_hundredths(
 }
 
 static bool
-lrc_format_timestamped_line_hundredths(
-    StrBuilder *builder,
-    int32 timestamp_hundredths,
-    char *text,
-    int32 text_len,
-    LrcFormatResult *result
-) {
+lrc_format_timestamped_line_hundredths(StrBuilder *builder,
+                                       int32 timestamp_hundredths, char *text,
+                                       int32 text_len,
+                                       LrcFormatResult *result) {
     char timestamp[32];
     int32 timestamp_len;
 
@@ -271,13 +257,8 @@ lrc_parse_result_init(LrcParseResult *result) {
 }
 
 static void
-lrc_parse_result_set(
-    LrcParseResult *result,
-    enum LsError error,
-    char *message,
-    int32 line_index,
-    int32 byte_offset
-) {
+lrc_parse_result_set(LrcParseResult *result, enum LsError error, char *message,
+                     int32 line_index, int32 byte_offset) {
     if (result == NULL) {
         return;
     }
@@ -339,12 +320,8 @@ lrc_parse_two_digits(char *text, int32 index, int32 text_len, int32 *out) {
 }
 
 static bool
-lrc_parse_timestamp(
-    char *text,
-    int32 text_len,
-    int32 *timestamp_hundredths,
-    int32 *end_offset
-) {
+lrc_parse_timestamp(char *text, int32 text_len, int32 *timestamp_hundredths,
+                    int32 *end_offset) {
     int32 minutes;
     int32 seconds;
     int32 hundredths;
@@ -423,14 +400,9 @@ lrc_parsed_file_reserve_lines(LrcParsedFile *parsed, int32 extra) {
 }
 
 static bool
-lrc_parsed_file_append_line(
-    LrcParsedFile *parsed,
-    enum LrcParsedLineKind kind,
-    int32 source_line_index,
-    int32 timestamp_hundredths,
-    int32 text_start,
-    int32 text_len
-) {
+lrc_parsed_file_append_line(LrcParsedFile *parsed, enum LrcParsedLineKind kind,
+                            int32 source_line_index, int32 timestamp_hundredths,
+                            int32 text_start, int32 text_len) {
     LrcParsedLine *line;
 
     if (!lrc_parsed_file_reserve_lines(parsed, 1)) {
@@ -458,13 +430,8 @@ lrc_parsed_file_append_line(
 }
 
 static bool
-lrc_parse_line(
-    LrcParsedFile *parsed,
-    int32 source_line_index,
-    int32 line_start,
-    int32 line_end,
-    LrcParseResult *result
-) {
+lrc_parse_line(LrcParsedFile *parsed, int32 source_line_index, int32 line_start,
+               int32 line_end, LrcParseResult *result) {
     char *line_text = parsed->text + line_start;
     int32 line_len = line_end - line_start;
     int32 timestamp_hundredths;
@@ -520,12 +487,8 @@ lrc_parse_line(
 }
 
 static bool
-lrc_parsed_file_copy_text(
-    LrcParsedFile *parsed,
-    char *text,
-    int32 text_len,
-    LrcParseResult *result
-) {
+lrc_parsed_file_copy_text(LrcParsedFile *parsed, char *text, int32 text_len,
+                          LrcParseResult *result) {
     if (text_len < 0) {
         lrc_parse_result_set(result,
                              LS_ERROR_PARSE_INVALID_ARGUMENT,
@@ -554,12 +517,8 @@ lrc_parsed_file_copy_text(
 }
 
 static bool
-lrc_parse_text(
-    LrcParsedFile *parsed,
-    char *text,
-    int32 text_len,
-    LrcParseResult *result
-) {
+lrc_parse_text(LrcParsedFile *parsed, char *text, int32 text_len,
+               LrcParseResult *result) {
     int32 line_start;
     int32 line_index;
 
@@ -621,11 +580,8 @@ lrc_parse_text(
 #endif
 
 static bool
-lrc_output_line_validate(
-    LrcOutputLine *line,
-    int32 line_index,
-    LrcWriteResult *result
-) {
+lrc_output_line_validate(LrcOutputLine *line, int32 line_index,
+                         LrcWriteResult *result) {
     if (line == NULL) {
         lrc_write_result_set(result,
                              LS_ERROR_WRITE_INVALID_ARGUMENT,
@@ -677,12 +633,8 @@ lrc_output_line_validate(
 }
 
 static bool
-lrc_format_output_lines(
-    StrBuilder *builder,
-    LrcOutputLine *lines,
-    int32 line_count,
-    LrcWriteResult *result
-) {
+lrc_format_output_lines(StrBuilder *builder, LrcOutputLine *lines,
+                        int32 line_count, LrcWriteResult *result) {
     if (result) {
         lrc_write_result_init(result);
     }
@@ -784,12 +736,8 @@ lrc_write_all_fd(int32 fd, char *text, int32 text_len) {
 }
 
 static bool
-lrc_write_text_file_atomic(
-    char *path,
-    char *text,
-    int32 text_len,
-    LrcWriteResult *result
-) {
+lrc_write_text_file_atomic(char *path, char *text, int32 text_len,
+                           LrcWriteResult *result) {
     char temp_path[PATH_MAX];
     int32 fd;
 
@@ -879,12 +827,8 @@ lrc_write_text_file_atomic(
 }
 
 static bool
-lrc_write_output_file(
-    char *path,
-    LrcOutputLine *lines,
-    int32 line_count,
-    LrcWriteResult *result
-) {
+lrc_write_output_file(char *path, LrcOutputLine *lines, int32 line_count,
+                      LrcWriteResult *result) {
     StrBuilder builder;
 
     if (result) {
@@ -930,13 +874,8 @@ lrc_write_output_file(
 #include "cbase.h"
 
 static bool
-lrc_format_timestamp_seconds(
-    float seconds,
-    char *buffer,
-    int32 buffer_len,
-    int32 *formatted_len,
-    LrcFormatResult *result
-) {
+lrc_format_timestamp_seconds(float seconds, char *buffer, int32 buffer_len,
+                             int32 *formatted_len, LrcFormatResult *result) {
     int32 timestamp_hundredths;
 
     if (result) {
@@ -956,13 +895,8 @@ lrc_format_timestamp_seconds(
 }
 
 static bool
-lrc_format_timestamped_line(
-    StrBuilder *builder,
-    float seconds,
-    char *text,
-    int32 text_len,
-    LrcFormatResult *result
-) {
+lrc_format_timestamped_line(StrBuilder *builder, float seconds, char *text,
+                            int32 text_len, LrcFormatResult *result) {
     int32 timestamp_hundredths;
 
     if (result) {
@@ -989,14 +923,10 @@ lrc_test_fail(char *name) {
 }
 
 static void
-lrc_test_assert_line(
-    LrcParsedFile *parsed,
-    int32 line_index,
-    enum LrcParsedLineKind expected_kind,
-    int32 expected_hundredths,
-    char *expected_text,
-    int32 expected_text_len
-) {
+lrc_test_assert_line(LrcParsedFile *parsed, int32 line_index,
+                     enum LrcParsedLineKind expected_kind,
+                     int32 expected_hundredths, char *expected_text,
+                     int32 expected_text_len) {
     LrcParsedLine *line;
 
     ASSERT_NON_NEGATIVE(line_index);
@@ -1153,11 +1083,8 @@ lrc_test_duplicate_timestamps_are_preserved(void) {
 }
 
 static void
-lrc_test_assert_timestamp(
-    int32 timestamp_hundredths,
-    char *expected,
-    int32 expected_len
-) {
+lrc_test_assert_timestamp(int32 timestamp_hundredths, char *expected,
+                          int32 expected_len) {
     LrcFormatResult result;
     char buffer[32];
     int32 len;
@@ -1327,13 +1254,9 @@ lrc_test_format_reject_bad_inputs(void) {
 }
 
 static void
-lrc_test_set_output_line(
-    LrcOutputLine *line,
-    enum LrcOutputLineKind kind,
-    int32 timestamp_hundredths,
-    char *text,
-    int32 text_len
-) {
+lrc_test_set_output_line(LrcOutputLine *line, enum LrcOutputLineKind kind,
+                         int32 timestamp_hundredths, char *text,
+                         int32 text_len) {
     line->text = text;
     line->text_len = text_len;
     line->timestamp_hundredths = timestamp_hundredths;
@@ -1599,10 +1522,7 @@ lrc_test_optional_maxwell_formatting(void) {
 }
 
 static void
-lrc_test_assert_same_parsed_structure(
-    LrcParsedFile *a,
-    LrcParsedFile *b
-) {
+lrc_test_assert_same_parsed_structure(LrcParsedFile *a, LrcParsedFile *b) {
     ASSERT_EQUAL(a->line_count, b->line_count);
     ASSERT_EQUAL(a->timestamped_line_count, b->timestamped_line_count);
     ASSERT_EQUAL(a->blank_line_count, b->blank_line_count);
@@ -1621,10 +1541,7 @@ lrc_test_assert_same_parsed_structure(
 }
 
 static void
-lrc_test_output_lines_from_parsed(
-    LrcParsedFile *parsed,
-    LrcOutputLine *lines
-) {
+lrc_test_output_lines_from_parsed(LrcParsedFile *parsed, LrcOutputLine *lines) {
     for (int32 i = 0; i < parsed->line_count; i += 1) {
         LrcParsedLine *parsed_line = parsed->lines + i;
         enum LrcOutputLineKind kind;

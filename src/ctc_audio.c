@@ -32,13 +32,8 @@ lrc_ctc_audio_result_init(LrcCtcAudioResult *result) {
 }
 
 static void
-lrc_ctc_audio_result_set(
-    LrcCtcAudioResult *result,
-    enum LsError error,
-    char *message,
-    char *path,
-    int64 sample_index
-) {
+lrc_ctc_audio_result_set(LrcCtcAudioResult *result, enum LsError error,
+                         char *message, char *path, int64 sample_index) {
     if (result == NULL) {
         return;
     }
@@ -74,11 +69,8 @@ lrc_ctc_audio_abs_sample(float sample) {
 }
 
 static bool
-lrc_ctc_audio_validate_samples(
-    LrcCtcAudio *audio,
-    LrcCtcAudioResult *result,
-    char *path
-) {
+lrc_ctc_audio_validate_samples(LrcCtcAudio *audio, LrcCtcAudioResult *result,
+                               char *path) {
     audio->max_abs_sample = 0.0f;
     for (int64 i = 0; i < audio->sample_count; i += 1) {
         float sample = audio->samples[i];
@@ -105,12 +97,9 @@ lrc_ctc_audio_validate_samples(
 }
 
 static bool
-lrc_ctc_audio_decode_file(
-    LrcCtcAudio *audio,
-    char *path,
-    LrcCtcAudioConfig *config,
-    LrcCtcAudioResult *result
-) {
+lrc_ctc_audio_decode_file(LrcCtcAudio *audio, char *path,
+                          LrcCtcAudioConfig *config,
+                          LrcCtcAudioResult *result) {
     AudioBuffer decoded;
     AudioIoFormat format;
     LrcCtcAudioConfig default_config;
@@ -283,13 +272,10 @@ ctc_audio_test_defaults_and_invalid_inputs(void) {
 }
 
 static void
-ctc_audio_test_generated_decode(
-    int32 source_sample_rate,
-    int32 source_channel_count,
-    double duration_seconds,
-    int32 target_sample_rate,
-    char *name
-) {
+ctc_audio_test_generated_decode(int32 source_sample_rate,
+                                int32 source_channel_count,
+                                double duration_seconds,
+                                int32 target_sample_rate, char *name) {
     AudioFileInfo info;
     AudioTestSineOptions sine;
     LrcCtcAudio audio = {0};

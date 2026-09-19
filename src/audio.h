@@ -84,17 +84,12 @@ typedef struct AudioTestSineOptions {
 } AudioTestSineOptions;
 
 static void audio_test_sine_options_init(AudioTestSineOptions *options);
-static bool audio_test_generate_sine_wav(
-    char *path,
-    AudioTestSineOptions *options,
-    char *ffmpeg_path
-);
+static bool audio_test_generate_sine_wav(char *path,
+                                         AudioTestSineOptions *options,
+                                         char *ffmpeg_path);
 static void audio_file_info_init(AudioFileInfo *info);
-static bool audio_file_info_read(
-    AudioFileInfo *info,
-    char *path,
-    char *ffprobe_path
-);
+static bool audio_file_info_read(AudioFileInfo *info, char *path,
+                                 char *ffprobe_path);
 static bool audio_read_file(AudioBuffer *audio, char *path, char *ffmpeg_path);
 #endif
 
@@ -104,18 +99,11 @@ static void audio_buffer_init(AudioBuffer *audio);
 static void audio_buffer_destroy(AudioBuffer *audio);
 static bool audio_check_ffmpeg(char *ffmpeg_path);
 static bool audio_can_decode_file(char *path, char *ffmpeg_path);
-static bool audio_read_file_format(
-    AudioBuffer *audio,
-    char *path,
-    AudioIoFormat *format,
-    char *ffmpeg_path
-);
-static bool audio_write_file_format(
-    AudioBuffer *audio,
-    char *path,
-    char *container_format,
-    AudioIoFormat *output_format,
-    char *ffmpeg_path
-);
+static bool audio_read_file_format(AudioBuffer *audio, char *path,
+                                   AudioIoFormat *format, char *ffmpeg_path);
+static bool audio_write_file_format(AudioBuffer *audio, char *path,
+                                    char *container_format,
+                                    AudioIoFormat *output_format,
+                                    char *ffmpeg_path);
 
 #endif /* AUDIO_H */

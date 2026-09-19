@@ -81,25 +81,15 @@ static void lrc_ctc_model_config_init(LrcCtcModelConfig *config);
 static void lrc_ctc_model_input_result_init(LrcCtcModelInputResult *result);
 static void lrc_ctc_model_input_destroy(LrcCtcModelInput *input);
 static bool lrc_ctc_model_samples_to_emission_frames(
-    int64 sample_count,
-    int32 inputs_to_logits_ratio,
-    int64 *frame_count
-);
+    int64 sample_count, int32 inputs_to_logits_ratio, int64 *frame_count);
 static bool lrc_ctc_model_samples_to_emission_frames_floor(
-    int64 sample_count,
-    int32 inputs_to_logits_ratio,
-    int64 *frame_count
-);
-static bool lrc_ctc_model_input_prepare(
-    LrcCtcModelInput *input,
-    LrcCtcAudio *audio,
-    LrcCtcModelConfig *config,
-    LrcCtcModelInputResult *result
-);
+    int64 sample_count, int32 inputs_to_logits_ratio, int64 *frame_count);
+static bool lrc_ctc_model_input_prepare(LrcCtcModelInput *input,
+                                        LrcCtcAudio *audio,
+                                        LrcCtcModelConfig *config,
+                                        LrcCtcModelInputResult *result);
 static bool lrc_ctc_model_input_validate_model_io(
-    LrcCtcModelInput *input,
-    LrcCtcModelIoInfo *info,
-    LrcCtcModelInputResult *result
-);
+    LrcCtcModelInput *input, LrcCtcModelIoInfo *info,
+    LrcCtcModelInputResult *result);
 
 #endif /* CTC_MODEL_H */

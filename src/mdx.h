@@ -77,38 +77,21 @@ typedef struct MdxModelInfo {
 static void mdx_config_init(MdxConfig *config);
 static bool mdx_config_prepare(MdxConfig *config);
 static int64 mdx_input_tensor_len(MdxConfig *config);
-static bool mdx_pack_input(
-    MdxConfig *config,
-    StftPlan *stft_plan,
-    float *left,
-    float *right,
-    int64 frame_count,
-    float *tensor,
-    int64 tensor_len
-);
-static bool mdx_unpack_output(
-    MdxConfig *config,
-    StftPlan *stft_plan,
-    float *tensor,
-    int64 tensor_len,
-    float *left,
-    float *right,
-    int64 frame_count
-);
-static bool mdx_process_song_with_progress(
-    MdxConfig *config,
-    StftPlan *stft_plan,
-    OrtContext *ort_context,
-    OrtModel *ort_model,
-    AudioBuffer *input,
-    AudioBuffer *output,
-    bool print_progress
-);
+static bool mdx_pack_input(MdxConfig *config, StftPlan *stft_plan, float *left,
+                           float *right, int64 frame_count, float *tensor,
+                           int64 tensor_len);
+static bool mdx_unpack_output(MdxConfig *config, StftPlan *stft_plan,
+                              float *tensor, int64 tensor_len, float *left,
+                              float *right, int64 frame_count);
+static bool mdx_process_song_with_progress(MdxConfig *config,
+                                           StftPlan *stft_plan,
+                                           OrtContext *ort_context,
+                                           OrtModel *ort_model,
+                                           AudioBuffer *input,
+                                           AudioBuffer *output,
+                                           bool print_progress);
 static void mdx_model_info_init_empty(MdxModelInfo *info);
-static bool mdx_model_inspect(
-    MdxModelInfo *info,
-    MdxConfig *config,
-    OrtModel *model
-);
+static bool mdx_model_inspect(MdxModelInfo *info, MdxConfig *config,
+                              OrtModel *model);
 
 #endif /* MDX_H */

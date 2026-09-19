@@ -166,11 +166,8 @@ lrc_result_header_init(LrcResultHeader *header) {
 }
 
 static void
-lrc_result_header_set(
-    LrcResultHeader *header,
-    enum LsError error,
-    char *message
-) {
+lrc_result_header_set(LrcResultHeader *header, enum LsError error,
+                      char *message) {
     if (header == NULL) {
         return;
     }
@@ -194,12 +191,8 @@ lrc_path_result_header_init(LrcPathResultHeader *header) {
 }
 
 static void
-lrc_path_result_header_set(
-    LrcPathResultHeader *header,
-    enum LsError error,
-    char *message,
-    char *path
-) {
+lrc_path_result_header_set(LrcPathResultHeader *header, enum LsError error,
+                           char *message, char *path) {
     if (header == NULL) {
         return;
     }

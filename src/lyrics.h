@@ -32,10 +32,7 @@ typedef struct LrcLyricsLoadResult {
 
 static void lrc_lyrics_destroy(LrcLyrics *lyrics);
 static void lrc_lyrics_load_result_init(LrcLyricsLoadResult *result);
-static bool lrc_lyrics_load_file(
-    LrcLyrics *lyrics,
-    char *path,
-    LrcLyricsLoadResult *result
-);
+static bool lrc_lyrics_load_file(LrcLyrics *lyrics, char *path,
+                                 LrcLyricsLoadResult *result);
 
 #endif /* LYRICS_FILE_H */

@@ -15,15 +15,9 @@ typedef struct CtcUnicodeNormResult {
 
 static void ctc_unicode_norm_result_init(CtcUnicodeNormResult *result);
 static void ctc_unicode_norm_result_destroy(CtcUnicodeNormResult *result);
-static bool ctc_unicode_norm_nfkc_lower(
-    char *text,
-    int32 text_len,
-    CtcUnicodeNormResult *result
-);
-static bool ctc_unicode_norm_transliterate_latin(
-    char *text,
-    int32 text_len,
-    CtcUnicodeNormResult *result
-);
+static bool ctc_unicode_norm_nfkc_lower(char *text, int32 text_len,
+                                        CtcUnicodeNormResult *result);
+static bool ctc_unicode_norm_transliterate_latin(char *text, int32 text_len,
+                                                 CtcUnicodeNormResult *result);
 
 #endif /* UNICODE_NORM_H */

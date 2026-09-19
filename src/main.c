@@ -246,12 +246,8 @@ typedef struct MainEnumValue {
 } MainEnumValue;
 
 static void
-main_print_value_option_usage(
-    char *name,
-    char *metavar,
-    char *description,
-    char *default_text
-) {
+main_print_value_option_usage(char *name, char *metavar, char *description,
+                              char *default_text) {
     char option[64];
     int32 len;
 
@@ -424,13 +420,8 @@ static MainEnumValue main_emission_values_kind_values[] = {
 #undef MAIN_ENUM_VALUE
 
 static bool
-main_parse_enum_value(
-    char *option,
-    char *value,
-    MainEnumValue *values,
-    int32 value_count,
-    int32 *out
-) {
+main_parse_enum_value(char *option, char *value, MainEnumValue *values,
+                      int32 value_count, int32 *out) {
     if ((value == NULL) || (out == NULL)) {
         return false;
     }
@@ -565,11 +556,8 @@ main_value_option_name(enum MainValueOptionKind kind) {
 }
 
 static bool
-main_apply_value_option(
-    MainOptions *options,
-    MainValueOption *option,
-    char *value
-) {
+main_apply_value_option(MainOptions *options, MainValueOption *option,
+                        char *value) {
     enum OrtExecutionProvider provider;
     void *field = (char *)options + option->offset;
     int32 parsed;
@@ -893,13 +881,8 @@ main_apply_model_defaults(LrcPipelineConfig *config) {
 }
 
 static bool
-main_input_prefix_path(
-    MainOptions *options,
-    char *output_path,
-    int64 output_size,
-    char *extension,
-    char *description
-) {
+main_input_prefix_path(MainOptions *options, char *output_path,
+                       int64 output_size, char *extension, char *description) {
     LrcPipelineConfig *config = &options->config;
     char *input_path = config->song_path;
     int32 input_len;
@@ -1183,10 +1166,8 @@ lyrics_config_init(LrcPipelineConfig *config) {
 }
 
 LYRICS_API bool
-lyrics_extract_vocals(
-    LrcPipelineConfig *config,
-    LrcVocalsExtractResult *result
-) {
+lyrics_extract_vocals(LrcPipelineConfig *config,
+                      LrcVocalsExtractResult *result) {
     LrcPipeline pipeline;
     bool ok;
 
@@ -1208,10 +1189,8 @@ lyrics_extract_vocals(
 }
 
 LYRICS_API bool
-lyrics_generate_lrc(
-    LrcPipelineConfig *config,
-    LrcPipelineGenerateResult *result
-) {
+lyrics_generate_lrc(LrcPipelineConfig *config,
+                    LrcPipelineGenerateResult *result) {
     LrcPipeline pipeline;
     bool ok;
 

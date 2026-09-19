@@ -31,12 +31,8 @@ lrc_vocals_extract_result_init(LrcVocalsExtractResult *result) {
 }
 
 static void
-vocals_extract_result_set(
-    LrcVocalsExtractResult *result,
-    enum LsError error,
-    char *message,
-    char *path
-) {
+vocals_extract_result_set(LrcVocalsExtractResult *result, enum LsError error,
+                          char *message, char *path) {
     if (result == NULL) {
         return;
     }
@@ -71,10 +67,8 @@ lrc_vocals_extract_request_init(LrcVocalsExtractRequest *request) {
 }
 
 static void
-vocals_extraction_config_from_request(
-    VocalsExtractionConfig *config,
-    LrcVocalsExtractRequest *request
-) {
+vocals_extraction_config_from_request(VocalsExtractionConfig *config,
+                                      LrcVocalsExtractRequest *request) {
     config->model_path = request->model_path;
     config->ffmpeg_path = request->ffmpeg_path;
     config->mdx_config = request->mdx_config;
@@ -110,10 +104,8 @@ vocals_print_model_info(MdxModelInfo *info, MdxConfig *config) {
 }
 
 static bool
-vocals_request_valid(
-    LrcVocalsExtractRequest *request,
-    LrcVocalsExtractResult *result
-) {
+vocals_request_valid(LrcVocalsExtractRequest *request,
+                     LrcVocalsExtractResult *result) {
     if (request == NULL) {
         vocals_extract_result_set(
             result,
@@ -200,16 +192,10 @@ vocals_request_valid(
 }
 
 static bool
-vocals_prepare_runtime(
-    VocalsExtractionConfig *config,
-    char *input_path,
-    MdxConfig *mdx_config,
-    StftPlan *stft_plan,
-    MdxModelInfo *mdx_info,
-    OrtContext *ort_context,
-    OrtModel *ort_model,
-    LrcVocalsExtractResult *result
-) {
+vocals_prepare_runtime(VocalsExtractionConfig *config, char *input_path,
+                       MdxConfig *mdx_config, StftPlan *stft_plan,
+                       MdxModelInfo *mdx_info, OrtContext *ort_context,
+                       OrtModel *ort_model, LrcVocalsExtractResult *result) {
     *mdx_config = config->mdx_config;
 
     if (!audio_check_ffmpeg(config->ffmpeg_path)) {
@@ -298,13 +284,9 @@ vocals_prepare_runtime(
 }
 
 static bool
-vocals_read_input_audio(
-    AudioBuffer *input_audio,
-    char *input_path,
-    MdxConfig *mdx_config,
-    char *ffmpeg_path,
-    LrcVocalsExtractResult *result
-) {
+vocals_read_input_audio(AudioBuffer *input_audio, char *input_path,
+                        MdxConfig *mdx_config, char *ffmpeg_path,
+                        LrcVocalsExtractResult *result) {
     AudioIoFormat input_format;
 
     audio_io_format_init(&input_format);
@@ -335,12 +317,9 @@ vocals_read_input_audio(
 }
 
 static bool
-vocals_extract_audio(
-    AudioBuffer *output_audio,
-    char *input_path,
-    VocalsExtractionConfig *config,
-    LrcVocalsExtractResult *result
-) {
+vocals_extract_audio(AudioBuffer *output_audio, char *input_path,
+                     VocalsExtractionConfig *config,
+                     LrcVocalsExtractResult *result) {
     AudioBuffer input_audio;
     MdxConfig mdx_config;
     MdxModelInfo mdx_info;
@@ -430,10 +409,8 @@ cleanup:
 }
 
 static bool
-lrc_extract_vocals(
-    LrcVocalsExtractRequest *request,
-    LrcVocalsExtractResult *result
-) {
+lrc_extract_vocals(LrcVocalsExtractRequest *request,
+                   LrcVocalsExtractResult *result) {
     AudioBuffer output_audio;
     VocalsExtractionConfig config;
     LrcProgress progress;

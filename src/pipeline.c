@@ -35,12 +35,8 @@ typedef struct LrcPipelineLineTimingAudio {
 } LrcPipelineLineTimingAudio;
 
 static void
-lrc_pipeline_error_set(
-    LrcPipeline *pipeline,
-    enum LsError error,
-    char *message,
-    char *path
-) {
+lrc_pipeline_error_set(LrcPipeline *pipeline, enum LsError error, char *message,
+                       char *path) {
     if (pipeline == NULL) {
         return;
     }
@@ -53,12 +49,8 @@ lrc_pipeline_error_set(
 }
 
 static void
-lrc_pipeline_vocals_result_set(
-    LrcVocalsExtractResult *result,
-    enum LsError error,
-    char *message,
-    char *path
-) {
+lrc_pipeline_vocals_result_set(LrcVocalsExtractResult *result,
+                               enum LsError error, char *message, char *path) {
     if (result == NULL) {
         return;
     }
@@ -285,10 +277,8 @@ lrc_pipeline_cleanup(LrcPipeline *pipeline) {
 }
 
 static bool
-lrc_pipeline_vocals_request(
-    LrcPipeline *pipeline,
-    LrcVocalsExtractRequest *request
-) {
+lrc_pipeline_vocals_request(LrcPipeline *pipeline,
+                            LrcVocalsExtractRequest *request) {
     if ((pipeline == NULL) || (request == NULL)) {
         if (pipeline) {
             lrc_pipeline_error_set(
@@ -331,10 +321,8 @@ lrc_pipeline_vocals_request(
 }
 
 static void
-lrc_pipeline_ctc_assets_config(
-    LrcPipeline *pipeline,
-    LrcCtcAssetsConfig *config
-) {
+lrc_pipeline_ctc_assets_config(LrcPipeline *pipeline,
+                               LrcCtcAssetsConfig *config) {
     if (config == NULL) {
         return;
     }
@@ -351,10 +339,8 @@ lrc_pipeline_ctc_assets_config(
 }
 
 static bool
-lrc_pipeline_validate_ctc_assets(
-    LrcPipeline *pipeline,
-    LrcCtcAssetsResult *result
-) {
+lrc_pipeline_validate_ctc_assets(LrcPipeline *pipeline,
+                                 LrcCtcAssetsResult *result) {
     LrcCtcAssetsConfig config;
 
     if (pipeline == NULL) {
@@ -388,10 +374,8 @@ lrc_pipeline_validate_ctc_assets(
 }
 
 static bool
-lrc_pipeline_extract_vocals(
-    LrcPipeline *pipeline,
-    LrcVocalsExtractResult *result
-) {
+lrc_pipeline_extract_vocals(LrcPipeline *pipeline,
+                            LrcVocalsExtractResult *result) {
     LrcVocalsExtractRequest request;
 
     lrc_pipeline_vocals_result_set(
@@ -450,12 +434,9 @@ lrc_pipeline_generate_result_init(LrcPipelineGenerateResult *result) {
 }
 
 static void
-lrc_pipeline_generate_result_set(
-    LrcPipelineGenerateResult *result,
-    enum LsError error,
-    char *message,
-    char *path
-) {
+lrc_pipeline_generate_result_set(LrcPipelineGenerateResult *result,
+                                 enum LsError error, char *message,
+                                 char *path) {
     if (result == NULL) {
         return;
     }
@@ -486,10 +467,7 @@ lrc_ctc_debug_dump_writer_init(LrcCtcDebugDumpWriter *writer) {
 }
 
 static bool
-lrc_ctc_debug_dump_writer_open(
-    LrcCtcDebugDumpWriter *writer,
-    char *path
-) {
+lrc_ctc_debug_dump_writer_open(LrcCtcDebugDumpWriter *writer, char *path) {
     if ((writer == NULL) || path_missing(path)) {
         return false;
     }
@@ -525,11 +503,7 @@ lrc_ctc_debug_dump_writer_close(LrcCtcDebugDumpWriter *writer) {
 }
 
 static void
-lrc_ctc_debug_dump_printf(
-    LrcCtcDebugDumpWriter *writer,
-    char *format,
-    ...
-) {
+lrc_ctc_debug_dump_printf(LrcCtcDebugDumpWriter *writer, char *format, ...) {
     va_list args;
 
     if ((writer == NULL) || (writer->file == NULL) || !writer->ok) {
@@ -546,10 +520,7 @@ lrc_ctc_debug_dump_printf(
 }
 
 static void
-lrc_ctc_debug_dump_write_byte(
-    LrcCtcDebugDumpWriter *writer,
-    char byte
-) {
+lrc_ctc_debug_dump_write_byte(LrcCtcDebugDumpWriter *writer, char byte) {
     if ((writer == NULL) || (writer->file == NULL) || !writer->ok) {
         return;
     }
@@ -562,11 +533,8 @@ lrc_ctc_debug_dump_write_byte(
 }
 
 static void
-lrc_ctc_debug_dump_write_escaped_text(
-    LrcCtcDebugDumpWriter *writer,
-    char *text,
-    int32 text_len
-) {
+lrc_ctc_debug_dump_write_escaped_text(LrcCtcDebugDumpWriter *writer, char *text,
+                                      int32 text_len) {
     static char hex[] = "0123456789ABCDEF";
 
     if ((writer == NULL) || (writer->file == NULL) || !writer->ok) {
@@ -613,11 +581,8 @@ lrc_ctc_debug_dump_write_escaped_text(
 }
 
 static void
-lrc_ctc_debug_dump_write_nullable_text(
-    LrcCtcDebugDumpWriter *writer,
-    char *text,
-    int32 text_len
-) {
+lrc_ctc_debug_dump_write_nullable_text(LrcCtcDebugDumpWriter *writer,
+                                       char *text, int32 text_len) {
     if (text == NULL) {
         lrc_ctc_debug_dump_write_escaped_text(writer, STRLIT("<null>"));
         return;
@@ -629,10 +594,7 @@ lrc_ctc_debug_dump_write_nullable_text(
 }
 
 static void
-lrc_ctc_debug_dump_write_cstring(
-    LrcCtcDebugDumpWriter *writer,
-    char *text
-) {
+lrc_ctc_debug_dump_write_cstring(LrcCtcDebugDumpWriter *writer, char *text) {
     if (text == NULL) {
         lrc_ctc_debug_dump_write_escaped_text(writer, STRLIT("<null>"));
         return;
@@ -644,10 +606,7 @@ lrc_ctc_debug_dump_write_cstring(
 }
 
 static void
-lrc_ctc_debug_dump_write_section(
-    LrcCtcDebugDumpWriter *writer,
-    char *name
-) {
+lrc_ctc_debug_dump_write_section(LrcCtcDebugDumpWriter *writer, char *name) {
     lrc_ctc_debug_dump_printf(writer, "\n[");
     lrc_ctc_debug_dump_write_cstring(writer, name);
     lrc_ctc_debug_dump_printf(writer, "]\n");
@@ -656,11 +615,8 @@ lrc_ctc_debug_dump_write_section(
 }
 
 static void
-lrc_ctc_debug_dump_write_key_value(
-    LrcCtcDebugDumpWriter *writer,
-    char *key,
-    char *value
-) {
+lrc_ctc_debug_dump_write_key_value(LrcCtcDebugDumpWriter *writer, char *key,
+                                   char *value) {
     lrc_ctc_debug_dump_write_cstring(writer, key);
     lrc_ctc_debug_dump_printf(writer, "=");
     lrc_ctc_debug_dump_write_cstring(writer, value);
@@ -670,11 +626,8 @@ lrc_ctc_debug_dump_write_key_value(
 }
 
 static void
-lrc_ctc_debug_dump_write_key_int32(
-    LrcCtcDebugDumpWriter *writer,
-    char *key,
-    int32 value
-) {
+lrc_ctc_debug_dump_write_key_int32(LrcCtcDebugDumpWriter *writer, char *key,
+                                   int32 value) {
     lrc_ctc_debug_dump_write_cstring(writer, key);
     lrc_ctc_debug_dump_printf(writer, "=%d\n", value);
 
@@ -682,11 +635,8 @@ lrc_ctc_debug_dump_write_key_int32(
 }
 
 static void
-lrc_ctc_debug_dump_write_key_int64(
-    LrcCtcDebugDumpWriter *writer,
-    char *key,
-    int64 value
-) {
+lrc_ctc_debug_dump_write_key_int64(LrcCtcDebugDumpWriter *writer, char *key,
+                                   int64 value) {
     lrc_ctc_debug_dump_write_cstring(writer, key);
     lrc_ctc_debug_dump_printf(writer, "=%lld\n", value);
 
@@ -694,11 +644,8 @@ lrc_ctc_debug_dump_write_key_int64(
 }
 
 static void
-lrc_ctc_debug_dump_write_key_double(
-    LrcCtcDebugDumpWriter *writer,
-    char *key,
-    double value
-) {
+lrc_ctc_debug_dump_write_key_double(LrcCtcDebugDumpWriter *writer, char *key,
+                                    double value) {
     lrc_ctc_debug_dump_write_cstring(writer, key);
     lrc_ctc_debug_dump_printf(writer, "=%.9g\n", value);
 
@@ -731,12 +678,8 @@ lrc_pipeline_enum_prefix_matches(char *name, char *prefix) {
 }
 
 static char *
-lrc_pipeline_enum_lower_suffix(
-    char *name,
-    char *prefix,
-    char *buffer,
-    int32 buffer_cap
-) {
+lrc_pipeline_enum_lower_suffix(char *name, char *prefix, char *buffer,
+                               int32 buffer_cap) {
     int32 prefix_len;
     int32 suffix_len;
     char *suffix;
@@ -764,11 +707,7 @@ lrc_pipeline_enum_lower_suffix(
 }
 
 static bool
-lrc_pipeline_enum_value_matches(
-    char *name,
-    char *prefix,
-    char *value
-) {
+lrc_pipeline_enum_value_matches(char *name, char *prefix, char *value) {
     int32 prefix_len;
     char *suffix;
 
@@ -796,8 +735,7 @@ lrc_pipeline_enum_value_matches(
 
 static char *
 lrc_pipeline_preprocess_split_size_name(
-    enum LrcLyricsPreprocessSplitSize split_size
-) {
+    enum LrcLyricsPreprocessSplitSize split_size) {
     static char buffer[32];
 
     if (split_size >= LRC_LYRICS_PREPROCESS_SPLIT_SIZE_COUNT) {
@@ -814,8 +752,7 @@ lrc_pipeline_preprocess_split_size_name(
 
 static char *
 lrc_pipeline_preprocess_star_frequency_name(
-    enum LrcLyricsPreprocessStarFrequency star_frequency
-) {
+    enum LrcLyricsPreprocessStarFrequency star_frequency) {
     static char buffer[32];
 
     if (star_frequency >= LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_COUNT) {
@@ -832,8 +769,7 @@ lrc_pipeline_preprocess_star_frequency_name(
 
 static char *
 lrc_pipeline_preprocess_romanization_name(
-    enum LrcLyricsPreprocessRomanization romanization
-) {
+    enum LrcLyricsPreprocessRomanization romanization) {
     static char buffer[32];
 
     if (romanization >= LRC_LYRICS_PREPROCESS_ROMANIZATION_COUNT) {
@@ -849,10 +785,8 @@ lrc_pipeline_preprocess_romanization_name(
 }
 
 static bool
-lrc_pipeline_parse_preprocess_split_size(
-    LrcPipelineConfig *config,
-    char *value
-) {
+lrc_pipeline_parse_preprocess_split_size(LrcPipelineConfig *config,
+                                         char *value) {
     if ((config == NULL) || (value == NULL)) {
         return false;
     }
@@ -877,10 +811,8 @@ lrc_pipeline_parse_preprocess_split_size(
 }
 
 static bool
-lrc_pipeline_parse_preprocess_star_frequency(
-    LrcPipelineConfig *config,
-    char *value
-) {
+lrc_pipeline_parse_preprocess_star_frequency(LrcPipelineConfig *config,
+                                             char *value) {
     if ((config == NULL) || (value == NULL)) {
         return false;
     }
@@ -906,10 +838,8 @@ lrc_pipeline_parse_preprocess_star_frequency(
 }
 
 static bool
-lrc_pipeline_parse_preprocess_romanization(
-    LrcPipelineConfig *config,
-    char *value
-) {
+lrc_pipeline_parse_preprocess_romanization(LrcPipelineConfig *config,
+                                           char *value) {
     if ((config == NULL) || (value == NULL)) {
         return false;
     }
@@ -947,10 +877,7 @@ lrc_pipeline_enable_preprocess_romanization(LrcPipelineConfig *config) {
 }
 
 static bool
-lrc_pipeline_parse_preprocess_language(
-    LrcPipelineConfig *config,
-    char *value
-) {
+lrc_pipeline_parse_preprocess_language(LrcPipelineConfig *config, char *value) {
     int32 value_len;
 
     if ((config == NULL) || (value == NULL)) {
@@ -971,10 +898,8 @@ lrc_pipeline_parse_preprocess_language(
 }
 
 static void
-lrc_ctc_debug_dump_write_config(
-    LrcCtcDebugDumpWriter *writer,
-    LrcPipeline *pipeline
-) {
+lrc_ctc_debug_dump_write_config(LrcCtcDebugDumpWriter *writer,
+                                LrcPipeline *pipeline) {
     LrcLyricsPreprocessOptions *options;
 
     lrc_ctc_debug_dump_write_section(writer, "config");
@@ -1019,11 +944,8 @@ lrc_ctc_debug_dump_write_config(
 }
 
 static void
-lrc_pipeline_debug_dump_target_text(
-    LrcLyricsNormalized *normalized,
-    char **text,
-    int32 *text_len
-) {
+lrc_pipeline_debug_dump_target_text(LrcLyricsNormalized *normalized,
+                                    char **text, int32 *text_len) {
     *text = NULL;
     *text_len = 0;
 
@@ -1043,10 +965,7 @@ lrc_pipeline_debug_dump_target_text(
 }
 
 static LrcCtcToken *
-lrc_pipeline_debug_dump_token(
-    LrcCtcTokenizer *tokenizer,
-    int32 token_id
-) {
+lrc_pipeline_debug_dump_token(LrcCtcTokenizer *tokenizer, int32 token_id) {
     if ((tokenizer == NULL) || (tokenizer->tokens == NULL)) {
         return NULL;
     }
@@ -1058,12 +977,9 @@ lrc_pipeline_debug_dump_token(
 }
 
 static void
-lrc_ctc_debug_dump_write_text_section(
-    LrcCtcDebugDumpWriter *writer,
-    char *section_name,
-    char *text,
-    int32 text_len
-) {
+lrc_ctc_debug_dump_write_text_section(LrcCtcDebugDumpWriter *writer,
+                                      char *section_name, char *text,
+                                      int32 text_len) {
     lrc_ctc_debug_dump_write_section(writer, section_name);
     lrc_ctc_debug_dump_printf(writer, "text=");
     lrc_ctc_debug_dump_write_nullable_text(writer, text, text_len);
@@ -1073,11 +989,9 @@ lrc_ctc_debug_dump_write_text_section(
 }
 
 static void
-lrc_ctc_debug_dump_write_target_tokens(
-    LrcCtcDebugDumpWriter *writer,
-    LrcCtcTokenizer *tokenizer,
-    LrcCtcTokenizedText *tokens
-) {
+lrc_ctc_debug_dump_write_target_tokens(LrcCtcDebugDumpWriter *writer,
+                                       LrcCtcTokenizer *tokenizer,
+                                       LrcCtcTokenizedText *tokens) {
     lrc_ctc_debug_dump_write_section(writer, "target_tokens");
     lrc_ctc_debug_dump_printf(
         writer,
@@ -1124,13 +1038,11 @@ lrc_ctc_debug_dump_write_target_tokens(
 }
 
 static void
-lrc_ctc_debug_dump_write_text_and_tokens(
-    LrcCtcDebugDumpWriter *writer,
-    LrcPipeline *pipeline,
-    LrcLyricsNormalized *normalized,
-    LrcCtcTokenizer *tokenizer,
-    LrcCtcTokenizedText *tokens
-) {
+lrc_ctc_debug_dump_write_text_and_tokens(LrcCtcDebugDumpWriter *writer,
+                                         LrcPipeline *pipeline,
+                                         LrcLyricsNormalized *normalized,
+                                         LrcCtcTokenizer *tokenizer,
+                                         LrcCtcTokenizedText *tokens) {
     char *target_text;
     int32 target_text_len;
 
@@ -1153,15 +1065,12 @@ lrc_ctc_debug_dump_write_text_and_tokens(
 }
 
 static void
-lrc_ctc_debug_dump_write_audio_model(
-    LrcCtcDebugDumpWriter *writer,
-    LrcPipeline *pipeline,
-    LrcCtcAudio *audio,
-    LrcCtcModelInput *input,
-    LrcCtcEmissions *emissions,
-    LrcCtcTokenizer *tokenizer,
-    int32 star_token_id
-) {
+lrc_ctc_debug_dump_write_audio_model(LrcCtcDebugDumpWriter *writer,
+                                     LrcPipeline *pipeline, LrcCtcAudio *audio,
+                                     LrcCtcModelInput *input,
+                                     LrcCtcEmissions *emissions,
+                                     LrcCtcTokenizer *tokenizer,
+                                     int32 star_token_id) {
     double frame_duration_seconds;
 
     lrc_ctc_debug_dump_write_section(writer, "frames");
@@ -1228,11 +1137,9 @@ lrc_ctc_debug_dump_write_audio_model(
 }
 
 static void
-lrc_ctc_debug_dump_write_segment_token_text(
-    LrcCtcDebugDumpWriter *writer,
-    LrcCtcTokenizer *tokenizer,
-    LrcCtcPathSegment *segment
-) {
+lrc_ctc_debug_dump_write_segment_token_text(LrcCtcDebugDumpWriter *writer,
+                                            LrcCtcTokenizer *tokenizer,
+                                            LrcCtcPathSegment *segment) {
     LrcCtcToken *token;
 
     if (segment == NULL) {
@@ -1257,11 +1164,9 @@ lrc_ctc_debug_dump_write_segment_token_text(
 }
 
 static void
-lrc_ctc_debug_dump_write_path_segments(
-    LrcCtcDebugDumpWriter *writer,
-    LrcCtcTokenizer *tokenizer,
-    LrcCtcPathSegments *segments
-) {
+lrc_ctc_debug_dump_write_path_segments(LrcCtcDebugDumpWriter *writer,
+                                       LrcCtcTokenizer *tokenizer,
+                                       LrcCtcPathSegments *segments) {
     lrc_ctc_debug_dump_write_section(writer, "merged_path_segments");
     lrc_ctc_debug_dump_printf(
         writer,
@@ -1309,11 +1214,9 @@ lrc_ctc_debug_dump_write_path_segments(
 
 
 static void
-lrc_ctc_debug_dump_write_word_span_text(
-    LrcCtcDebugDumpWriter *writer,
-    LrcLyricsNormalized *normalized,
-    LrcCtcWordSpan *word
-) {
+lrc_ctc_debug_dump_write_word_span_text(LrcCtcDebugDumpWriter *writer,
+                                        LrcLyricsNormalized *normalized,
+                                        LrcCtcWordSpan *word) {
     int32 text_len;
 
     if ((normalized == NULL) || (word == NULL)
@@ -1335,12 +1238,10 @@ lrc_ctc_debug_dump_write_word_span_text(
 }
 
 static void
-lrc_ctc_debug_dump_write_word_spans(
-    LrcCtcDebugDumpWriter *writer,
-    char *section_name,
-    LrcLyricsNormalized *normalized,
-    LrcCtcWordSpans *word_spans
-) {
+lrc_ctc_debug_dump_write_word_spans(LrcCtcDebugDumpWriter *writer,
+                                    char *section_name,
+                                    LrcLyricsNormalized *normalized,
+                                    LrcCtcWordSpans *word_spans) {
     lrc_ctc_debug_dump_write_section(writer, section_name);
     lrc_ctc_debug_dump_printf(
         writer,
@@ -1381,11 +1282,9 @@ lrc_ctc_debug_dump_write_word_spans(
 }
 
 static bool
-lrc_pipeline_debug_dump_check_writer(
-    LrcPipeline *pipeline,
-    LrcCtcDebugDumpWriter *writer,
-    LrcPipelineGenerateResult *result
-) {
+lrc_pipeline_debug_dump_check_writer(LrcPipeline *pipeline,
+                                     LrcCtcDebugDumpWriter *writer,
+                                     LrcPipelineGenerateResult *result) {
     if ((writer == NULL) || writer->ok) {
         return true;
     }
@@ -1402,16 +1301,10 @@ lrc_pipeline_debug_dump_check_writer(
 
 static bool
 lrc_pipeline_debug_dump_write_active_word_spans(
-    LrcPipeline *pipeline,
-    LrcCtcDebugDumpWriter *writer,
-    LrcCtcPath *path,
-    LrcCtcEmissions *emissions,
-    LrcCtcTokenizedText *tokens,
-    LrcLyricsNormalized *normalized,
-    float frame_duration_seconds,
-    LrcCtcAlignResult *align_result,
-    LrcPipelineGenerateResult *result
-) {
+    LrcPipeline *pipeline, LrcCtcDebugDumpWriter *writer, LrcCtcPath *path,
+    LrcCtcEmissions *emissions, LrcCtcTokenizedText *tokens,
+    LrcLyricsNormalized *normalized, float frame_duration_seconds,
+    LrcCtcAlignResult *align_result, LrcPipelineGenerateResult *result) {
     LrcCtcTokenSpans active_token_spans = {0};
     LrcCtcWordSpans active_word_spans = {0};
     bool ok;
@@ -1463,12 +1356,9 @@ lrc_pipeline_debug_dump_write_active_word_spans(
 
 static bool
 lrc_pipeline_debug_dump_write_padded_word_spans(
-    LrcPipeline *pipeline,
-    LrcCtcDebugDumpWriter *writer,
-    LrcLyricsNormalized *normalized,
-    LrcCtcWordSpans *word_spans,
-    LrcPipelineGenerateResult *result
-) {
+    LrcPipeline *pipeline, LrcCtcDebugDumpWriter *writer,
+    LrcLyricsNormalized *normalized, LrcCtcWordSpans *word_spans,
+    LrcPipelineGenerateResult *result) {
     if (!lrc_pipeline_debug_dump_enabled(pipeline)) {
         return true;
     }
@@ -1482,16 +1372,14 @@ lrc_pipeline_debug_dump_write_padded_word_spans(
 }
 
 static bool
-lrc_pipeline_debug_dump_write_path_segments(
-    LrcPipeline *pipeline,
-    LrcCtcDebugDumpWriter *writer,
-    LrcCtcPath *path,
-    LrcCtcEmissions *emissions,
-    LrcCtcTokenizer *tokenizer,
-    float frame_duration_seconds,
-    LrcCtcAlignResult *align_result,
-    LrcPipelineGenerateResult *result
-) {
+lrc_pipeline_debug_dump_write_path_segments(LrcPipeline *pipeline,
+                                            LrcCtcDebugDumpWriter *writer,
+                                            LrcCtcPath *path,
+                                            LrcCtcEmissions *emissions,
+                                            LrcCtcTokenizer *tokenizer,
+                                            float frame_duration_seconds,
+                                            LrcCtcAlignResult *align_result,
+                                            LrcPipelineGenerateResult *result) {
     LrcCtcPathSegments segments = {0};
 
     if (!lrc_pipeline_debug_dump_enabled(pipeline)) {
@@ -1534,14 +1422,12 @@ lrc_pipeline_debug_dump_write_path_segments(
 }
 
 static bool
-lrc_pipeline_debug_dump_open_and_write_text(
-    LrcPipeline *pipeline,
-    LrcCtcDebugDumpWriter *writer,
-    LrcLyricsNormalized *normalized,
-    LrcCtcTokenizer *tokenizer,
-    LrcCtcTokenizedText *tokens,
-    LrcPipelineGenerateResult *result
-) {
+lrc_pipeline_debug_dump_open_and_write_text(LrcPipeline *pipeline,
+                                            LrcCtcDebugDumpWriter *writer,
+                                            LrcLyricsNormalized *normalized,
+                                            LrcCtcTokenizer *tokenizer,
+                                            LrcCtcTokenizedText *tokens,
+                                            LrcPipelineGenerateResult *result) {
     if (!lrc_pipeline_debug_dump_enabled(pipeline)) {
         return true;
     }
@@ -1577,16 +1463,12 @@ lrc_pipeline_debug_dump_open_and_write_text(
 }
 
 static bool
-lrc_pipeline_ctc_align_plan_init(
-    LrcPipeline *pipeline,
-    LrcCtcAlignPlan *plan,
-    int32 *target_token_ids,
-    bool *target_segment_starts,
-    int32 target_token_count,
-    int32 blank_token_id,
-    int32 star_token_id,
-    LrcPipelineGenerateResult *result
-) {
+lrc_pipeline_ctc_align_plan_init(LrcPipeline *pipeline, LrcCtcAlignPlan *plan,
+                                 int32 *target_token_ids,
+                                 bool *target_segment_starts,
+                                 int32 target_token_count, int32 blank_token_id,
+                                 int32 star_token_id,
+                                 LrcPipelineGenerateResult *result) {
     enum LrcCtcAlignStarMode star_mode;
 
     switch (pipeline->config.lyrics_preprocess_options.star_frequency) {
@@ -1622,11 +1504,8 @@ lrc_pipeline_ctc_align_plan_init(
 }
 
 static bool
-lrc_pipeline_ctc_align_ok(
-    bool ok,
-    LrcCtcAlignResult *align_result,
-    LrcPipelineGenerateResult *result
-) {
+lrc_pipeline_ctc_align_ok(bool ok, LrcCtcAlignResult *align_result,
+                          LrcPipelineGenerateResult *result) {
     char *message;
     int32 frame_index;
     int32 token_index;
@@ -1659,13 +1538,11 @@ lrc_pipeline_ctc_align_ok(
 }
 
 static bool
-lrc_pipeline_trellis_score_forward(
-    LrcCtcTrellis *trellis,
-    LrcCtcEmissions *emissions,
-    LrcCtcAlignPlan *plan,
-    LrcCtcAlignResult *align_result,
-    LrcPipelineGenerateResult *result
-) {
+lrc_pipeline_trellis_score_forward(LrcCtcTrellis *trellis,
+                                   LrcCtcEmissions *emissions,
+                                   LrcCtcAlignPlan *plan,
+                                   LrcCtcAlignResult *align_result,
+                                   LrcPipelineGenerateResult *result) {
     bool ok;
 
     ok = lrc_ctc_trellis_score_forward_with_plan(trellis,
@@ -1677,14 +1554,11 @@ lrc_pipeline_trellis_score_forward(
 }
 
 static bool
-lrc_pipeline_trellis_backtrack(
-    LrcCtcTrellis *trellis,
-    LrcCtcEmissions *emissions,
-    LrcCtcAlignPlan *plan,
-    LrcCtcPath *path,
-    LrcCtcAlignResult *align_result,
-    LrcPipelineGenerateResult *result
-) {
+lrc_pipeline_trellis_backtrack(LrcCtcTrellis *trellis,
+                               LrcCtcEmissions *emissions,
+                               LrcCtcAlignPlan *plan, LrcCtcPath *path,
+                               LrcCtcAlignResult *align_result,
+                               LrcPipelineGenerateResult *result) {
     bool ok;
 
     ok = lrc_ctc_trellis_backtrack_with_plan(trellis,
@@ -1697,15 +1571,13 @@ lrc_pipeline_trellis_backtrack(
 }
 
 static bool
-lrc_pipeline_path_to_padded_token_spans(
-    LrcCtcPath *path,
-    LrcCtcEmissions *emissions,
-    LrcCtcAlignPlan *plan,
-    float frame_duration_seconds,
-    LrcCtcTokenSpans *token_spans,
-    LrcCtcAlignResult *align_result,
-    LrcPipelineGenerateResult *result
-) {
+lrc_pipeline_path_to_padded_token_spans(LrcCtcPath *path,
+                                        LrcCtcEmissions *emissions,
+                                        LrcCtcAlignPlan *plan,
+                                        float frame_duration_seconds,
+                                        LrcCtcTokenSpans *token_spans,
+                                        LrcCtcAlignResult *align_result,
+                                        LrcPipelineGenerateResult *result) {
     bool ok;
 
     ok = lrc_ctc_path_to_padded_token_spans_with_plan(path,
@@ -1720,10 +1592,8 @@ lrc_pipeline_path_to_padded_token_spans(
 
 static bool
 lrc_pipeline_line_timing_audio_from_ctc_audio(
-    LrcPipelineLineTimingAudio *line_audio,
-    LrcCtcAudio *audio,
-    LrcPipelineGenerateResult *result
-) {
+    LrcPipelineLineTimingAudio *line_audio, LrcCtcAudio *audio,
+    LrcPipelineGenerateResult *result) {
     if (line_audio) {
         memset64(line_audio, 0, SIZEOF(*line_audio));
     }
@@ -1746,10 +1616,7 @@ lrc_pipeline_line_timing_audio_from_ctc_audio(
 }
 
 static int64
-lrc_pipeline_audio_second_to_sample(
-    float seconds,
-    int32 sample_rate
-) {
+lrc_pipeline_audio_second_to_sample(float seconds, int32 sample_rate) {
     double sample;
 
     if ((seconds <= 0.0f) || (sample_rate <= 0)) {
@@ -1765,10 +1632,7 @@ lrc_pipeline_audio_second_to_sample(
 }
 
 static int64
-lrc_pipeline_audio_second_to_sample_count(
-    float seconds,
-    int32 sample_rate
-) {
+lrc_pipeline_audio_second_to_sample_count(float seconds, int32 sample_rate) {
     double sample_count;
 
     if ((seconds <= 0.0f) || (sample_rate <= 0)) {
@@ -1784,11 +1648,8 @@ lrc_pipeline_audio_second_to_sample_count(
 }
 
 static float
-lrc_pipeline_audio_window_rms(
-    float *samples,
-    int64 start_index,
-    int64 sample_count
-) {
+lrc_pipeline_audio_window_rms(float *samples, int64 start_index,
+                              int64 sample_count) {
     double sum;
 
     if ((samples == NULL) || (start_index < 0) || (sample_count <= 0)) {
@@ -1842,14 +1703,10 @@ lrc_pipeline_audio_db_bin(float db) {
 }
 
 static float
-lrc_pipeline_audio_silence_threshold_db(
-    float *samples,
-    int64 search_start,
-    int64 search_end,
-    int64 window_count,
-    int64 hop_count,
-    float noise_margin_db
-) {
+lrc_pipeline_audio_silence_threshold_db(float *samples, int64 search_start,
+                                        int64 search_end, int64 window_count,
+                                        int64 hop_count,
+                                        float noise_margin_db) {
     int64 bins[LRC_AUDIO_DB_BIN_COUNT] = {0};
     int64 window_index;
     int64 target_index;
@@ -1916,16 +1773,13 @@ lrc_pipeline_audio_silence_threshold_db(
 }
 
 static bool
-lrc_pipeline_audio_find_silence_start(
-    float *samples,
-    int64 sample_count,
-    int32 sample_rate,
-    float search_start_seconds,
-    float search_end_seconds,
-    float noise_margin_db,
-    float sustained_silence_seconds,
-    float *silence_start_seconds
-) {
+lrc_pipeline_audio_find_silence_start(float *samples, int64 sample_count,
+                                      int32 sample_rate,
+                                      float search_start_seconds,
+                                      float search_end_seconds,
+                                      float noise_margin_db,
+                                      float sustained_silence_seconds,
+                                      float *silence_start_seconds) {
     int64 search_start;
     int64 search_end;
     int64 window_count;
@@ -2034,13 +1888,9 @@ lrc_pipeline_audio_find_silence_start(
 }
 
 static bool
-lrc_pipeline_output_line_set_timestamped(
-    LrcOutputLine *line,
-    char *text,
-    int32 text_len,
-    float seconds,
-    LrcPipelineGenerateResult *result
-) {
+lrc_pipeline_output_line_set_timestamped(LrcOutputLine *line, char *text,
+                                         int32 text_len, float seconds,
+                                         LrcPipelineGenerateResult *result) {
     LrcFormatResult format_result;
     int32 hundredths;
 
@@ -2065,10 +1915,8 @@ lrc_pipeline_output_line_set_timestamped(
 }
 
 static LrcCtcLineTimestamp *
-lrc_pipeline_next_timestamped_line(
-    LrcCtcLineTimestamps *timestamps,
-    int32 start_index
-) {
+lrc_pipeline_next_timestamped_line(LrcCtcLineTimestamps *timestamps,
+                                   int32 start_index) {
     if ((timestamps == NULL) || (timestamps->lines == NULL)
         || (timestamps->line_count <= 0) || (start_index < 0)) {
         return NULL;
@@ -2087,10 +1935,8 @@ lrc_pipeline_next_timestamped_line(
 
 static bool
 lrc_pipeline_line_timestamps_correct_ends_from_audio(
-    LrcCtcLineTimestamps *timestamps,
-    LrcPipelineLineTimingAudio *audio,
-    LrcPipelineGenerateResult *result
-) {
+    LrcCtcLineTimestamps *timestamps, LrcPipelineLineTimingAudio *audio,
+    LrcPipelineGenerateResult *result) {
     if ((timestamps == NULL) || (timestamps->lines == NULL)
         || (timestamps->line_count < 0) || (audio == NULL)
         || (audio->samples == NULL) || (audio->sample_count <= 0)
@@ -2155,10 +2001,8 @@ lrc_pipeline_line_timestamps_correct_ends_from_audio(
 }
 
 static bool
-lrc_pipeline_timestamp_needs_clear_line(
-    LrcCtcLineTimestamps *timestamps,
-    int32 timestamp_index
-) {
+lrc_pipeline_timestamp_needs_clear_line(LrcCtcLineTimestamps *timestamps,
+                                        int32 timestamp_index) {
     LrcCtcLineTimestamp *current = timestamps->lines + timestamp_index;
     LrcCtcLineTimestamp *next;
     float gap_seconds;
@@ -2182,14 +2026,11 @@ lrc_pipeline_timestamp_needs_clear_line(
 }
 
 static bool
-lrc_pipeline_output_lines_from_timestamps(
-    LrcLyrics *lyrics,
-    LrcCtcLineTimestamps *timestamps,
-    LrcOutputLine *lines,
-    int32 line_cap,
-    int32 *line_count,
-    LrcPipelineGenerateResult *result
-) {
+lrc_pipeline_output_lines_from_timestamps(LrcLyrics *lyrics,
+                                          LrcCtcLineTimestamps *timestamps,
+                                          LrcOutputLine *lines, int32 line_cap,
+                                          int32 *line_count,
+                                          LrcPipelineGenerateResult *result) {
     int32 out_index;
 
     if (line_count) {
@@ -2304,13 +2145,11 @@ lrc_pipeline_output_lines_from_timestamps(
 }
 
 static bool
-lrc_pipeline_generate_targets(
-    LrcCtcTokenizedText *tokens,
-    int32 **target_token_ids,
-    bool **target_segment_starts,
-    int32 *target_token_count,
-    LrcPipelineGenerateResult *result
-) {
+lrc_pipeline_generate_targets(LrcCtcTokenizedText *tokens,
+                              int32 **target_token_ids,
+                              bool **target_segment_starts,
+                              int32 *target_token_count,
+                              LrcPipelineGenerateResult *result) {
     int32 count;
 
     if ((tokens == NULL) || (target_token_ids == NULL)
@@ -2341,9 +2180,7 @@ lrc_pipeline_generate_targets(
 
 static bool
 lrc_pipeline_prepare_vocals_stage_for_generation(
-    LrcPipeline *pipeline,
-    LrcPipelineGenerateResult *result
-) {
+    LrcPipeline *pipeline, LrcPipelineGenerateResult *result) {
     LrcVocalsExtractResult vocals_result;
 
     if (!lrc_pipeline_prepare(pipeline)) {
@@ -2374,10 +2211,8 @@ lrc_pipeline_prepare_vocals_stage_for_generation(
 }
 
 static bool
-lrc_pipeline_generate_lrc(
-    LrcPipeline *pipeline,
-    LrcPipelineGenerateResult *result
-) {
+lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
+                          LrcPipelineGenerateResult *result) {
     LrcCtcAssetsResult assets_result;
     LrcLyrics lyrics = {0};
     LrcLyricsLoadResult lyrics_result;
@@ -2893,11 +2728,8 @@ lrc_lyrics_destroy(LrcLyrics *lyrics) {
 }
 
 static bool
-lrc_lyrics_load_file(
-    LrcLyrics *lyrics,
-    char *path,
-    LrcLyricsLoadResult *result
-) {
+lrc_lyrics_load_file(LrcLyrics *lyrics, char *path,
+                     LrcLyricsLoadResult *result) {
     (void)lyrics;
 
     if (result) {
@@ -2922,11 +2754,9 @@ lrc_lyrics_normalized_destroy(LrcLyricsNormalized *normalized) {
 }
 
 static bool
-lrc_lyrics_normalize_with_options(
-    LrcLyrics *lyrics,
-    LrcLyricsNormalized *normalized,
-    LrcLyricsPreprocessOptions *options
-) {
+lrc_lyrics_normalize_with_options(LrcLyrics *lyrics,
+                                  LrcLyricsNormalized *normalized,
+                                  LrcLyricsPreprocessOptions *options) {
     (void)lyrics;
     (void)normalized;
     (void)options;
@@ -2935,10 +2765,7 @@ lrc_lyrics_normalize_with_options(
 }
 
 static bool
-lrc_lyrics_normalize(
-    LrcLyrics *lyrics,
-    LrcLyricsNormalized *normalized
-) {
+lrc_lyrics_normalize(LrcLyrics *lyrics, LrcLyricsNormalized *normalized) {
     (void)lyrics;
     (void)normalized;
 
@@ -2991,11 +2818,8 @@ lrc_ctc_tokenizer_result_init(LrcCtcTokenizerResult *result) {
 }
 
 static bool
-lrc_ctc_tokenizer_load_file(
-    LrcCtcTokenizer *tokenizer,
-    char *path,
-    LrcCtcTokenizerResult *result
-) {
+lrc_ctc_tokenizer_load_file(LrcCtcTokenizer *tokenizer, char *path,
+                            LrcCtcTokenizerResult *result) {
     (void)tokenizer;
     (void)path;
     lrc_ctc_tokenizer_result_init(result);
@@ -3004,12 +2828,10 @@ lrc_ctc_tokenizer_load_file(
 }
 
 static bool
-lrc_ctc_tokenizer_tokenize_normalized(
-    LrcCtcTokenizer *tokenizer,
-    LrcLyricsNormalized *normalized,
-    LrcCtcTokenizedText *tokens,
-    LrcCtcTokenizeResult *result
-) {
+lrc_ctc_tokenizer_tokenize_normalized(LrcCtcTokenizer *tokenizer,
+                                      LrcLyricsNormalized *normalized,
+                                      LrcCtcTokenizedText *tokens,
+                                      LrcCtcTokenizeResult *result) {
     (void)tokenizer;
     (void)normalized;
     (void)tokens;
@@ -3037,12 +2859,9 @@ lrc_ctc_audio_destroy(LrcCtcAudio *audio) {
 }
 
 static bool
-lrc_ctc_audio_decode_file(
-    LrcCtcAudio *audio,
-    char *path,
-    LrcCtcAudioConfig *config,
-    LrcCtcAudioResult *result
-) {
+lrc_ctc_audio_decode_file(LrcCtcAudio *audio, char *path,
+                          LrcCtcAudioConfig *config,
+                          LrcCtcAudioResult *result) {
     (void)audio;
     (void)path;
     (void)config;
@@ -3060,12 +2879,9 @@ lrc_ctc_model_input_destroy(LrcCtcModelInput *input) {
 }
 
 static bool
-lrc_ctc_model_input_prepare(
-    LrcCtcModelInput *input,
-    LrcCtcAudio *audio,
-    LrcCtcModelConfig *config,
-    LrcCtcModelInputResult *result
-) {
+lrc_ctc_model_input_prepare(LrcCtcModelInput *input, LrcCtcAudio *audio,
+                            LrcCtcModelConfig *config,
+                            LrcCtcModelInputResult *result) {
     (void)input;
     (void)audio;
     (void)config;
@@ -3083,12 +2899,9 @@ lrc_ctc_onnx_inference_destroy(LrcCtcOnnxInference *onnx) {
 }
 
 static bool
-lrc_ctc_onnx_inference_load(
-    LrcCtcOnnxInference *onnx,
-    char *model_path,
-    OrtSessionConfig *session_config,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_onnx_inference_load(LrcCtcOnnxInference *onnx, char *model_path,
+                            OrtSessionConfig *session_config,
+                            LrcCtcInferenceResult *result) {
     (void)onnx;
     (void)model_path;
     (void)session_config;
@@ -3098,10 +2911,8 @@ lrc_ctc_onnx_inference_load(
 }
 
 static void
-lrc_ctc_onnx_inference_backend(
-    LrcCtcOnnxInference *onnx,
-    LrcCtcInferenceBackend *backend
-) {
+lrc_ctc_onnx_inference_backend(LrcCtcOnnxInference *onnx,
+                               LrcCtcInferenceBackend *backend) {
     backend->backend = onnx;
     backend->run = NULL;
 
@@ -3109,12 +2920,9 @@ lrc_ctc_onnx_inference_backend(
 }
 
 static bool
-lrc_ctc_inference_run(
-    LrcCtcInferenceBackend *backend,
-    LrcCtcModelInput *input,
-    LrcCtcEmissions *emissions,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_inference_run(LrcCtcInferenceBackend *backend, LrcCtcModelInput *input,
+                      LrcCtcEmissions *emissions,
+                      LrcCtcInferenceResult *result) {
     (void)backend;
     (void)input;
     (void)emissions;
@@ -3133,10 +2941,8 @@ lrc_ctc_emissions_destroy(LrcCtcEmissions *emissions) {
 
 static bool
 lrc_ctc_emissions_convert_to_log_probabilities(
-    LrcCtcEmissions *emissions,
-    enum LrcCtcEmissionValuesKind values_kind,
-    LrcCtcInferenceResult *result
-) {
+    LrcCtcEmissions *emissions, enum LrcCtcEmissionValuesKind values_kind,
+    LrcCtcInferenceResult *result) {
     (void)emissions;
     (void)values_kind;
     (void)result;
@@ -3153,15 +2959,11 @@ lrc_ctc_trellis_destroy(LrcCtcTrellis *trellis) {
 }
 
 static void
-lrc_ctc_align_plan_init(
-    LrcCtcAlignPlan *plan,
-    int32 *target_token_ids,
-    bool *target_segment_starts,
-    int32 target_token_count,
-    int32 blank_token_id,
-    enum LrcCtcAlignStarMode star_mode,
-    int32 star_token_id
-) {
+lrc_ctc_align_plan_init(LrcCtcAlignPlan *plan, int32 *target_token_ids,
+                        bool *target_segment_starts, int32 target_token_count,
+                        int32 blank_token_id,
+                        enum LrcCtcAlignStarMode star_mode,
+                        int32 star_token_id) {
     if (plan == NULL) {
         return;
     }
@@ -3177,12 +2979,10 @@ lrc_ctc_align_plan_init(
 }
 
 static bool
-lrc_ctc_trellis_score_forward_with_plan(
-    LrcCtcTrellis *trellis,
-    LrcCtcEmissions *emissions,
-    LrcCtcAlignPlan *plan,
-    LrcCtcAlignResult *result
-) {
+lrc_ctc_trellis_score_forward_with_plan(LrcCtcTrellis *trellis,
+                                        LrcCtcEmissions *emissions,
+                                        LrcCtcAlignPlan *plan,
+                                        LrcCtcAlignResult *result) {
     (void)trellis;
     (void)emissions;
     (void)plan;
@@ -3192,13 +2992,10 @@ lrc_ctc_trellis_score_forward_with_plan(
 }
 
 static bool
-lrc_ctc_trellis_backtrack_with_plan(
-    LrcCtcTrellis *trellis,
-    LrcCtcEmissions *emissions,
-    LrcCtcAlignPlan *plan,
-    LrcCtcPath *path,
-    LrcCtcAlignResult *result
-) {
+lrc_ctc_trellis_backtrack_with_plan(LrcCtcTrellis *trellis,
+                                    LrcCtcEmissions *emissions,
+                                    LrcCtcAlignPlan *plan, LrcCtcPath *path,
+                                    LrcCtcAlignResult *result) {
     (void)trellis;
     (void)emissions;
     (void)plan;
@@ -3224,13 +3021,10 @@ lrc_ctc_path_segments_destroy(LrcCtcPathSegments *segments) {
 }
 
 static bool
-lrc_ctc_path_to_segments(
-    LrcCtcPath *path,
-    LrcCtcEmissions *emissions,
-    float frame_duration_seconds,
-    LrcCtcPathSegments *segments,
-    LrcCtcAlignResult *result
-) {
+lrc_ctc_path_to_segments(LrcCtcPath *path, LrcCtcEmissions *emissions,
+                         float frame_duration_seconds,
+                         LrcCtcPathSegments *segments,
+                         LrcCtcAlignResult *result) {
     (void)path;
     (void)emissions;
     (void)frame_duration_seconds;
@@ -3241,13 +3035,10 @@ lrc_ctc_path_to_segments(
 }
 
 static bool
-lrc_ctc_path_to_token_spans(
-    LrcCtcPath *path,
-    LrcCtcEmissions *emissions,
-    float frame_duration_seconds,
-    LrcCtcTokenSpans *spans,
-    LrcCtcAlignResult *result
-) {
+lrc_ctc_path_to_token_spans(LrcCtcPath *path, LrcCtcEmissions *emissions,
+                            float frame_duration_seconds,
+                            LrcCtcTokenSpans *spans,
+                            LrcCtcAlignResult *result) {
     (void)path;
     (void)emissions;
     (void)frame_duration_seconds;
@@ -3258,14 +3049,12 @@ lrc_ctc_path_to_token_spans(
 }
 
 static bool
-lrc_ctc_path_to_padded_token_spans_with_plan(
-    LrcCtcPath *path,
-    LrcCtcEmissions *emissions,
-    LrcCtcAlignPlan *plan,
-    float frame_duration_seconds,
-    LrcCtcTokenSpans *spans,
-    LrcCtcAlignResult *result
-) {
+lrc_ctc_path_to_padded_token_spans_with_plan(LrcCtcPath *path,
+                                             LrcCtcEmissions *emissions,
+                                             LrcCtcAlignPlan *plan,
+                                             float frame_duration_seconds,
+                                             LrcCtcTokenSpans *spans,
+                                             LrcCtcAlignResult *result) {
     (void)path;
     (void)emissions;
     (void)plan;
@@ -3284,13 +3073,11 @@ lrc_ctc_token_spans_destroy(LrcCtcTokenSpans *spans) {
 }
 
 static bool
-lrc_ctc_token_spans_to_word_spans(
-    LrcCtcTokenSpans *token_spans,
-    LrcCtcTokenizedText *tokens,
-    LrcLyricsNormalized *normalized,
-    LrcCtcWordSpans *word_spans,
-    LrcCtcAlignResult *result
-) {
+lrc_ctc_token_spans_to_word_spans(LrcCtcTokenSpans *token_spans,
+                                  LrcCtcTokenizedText *tokens,
+                                  LrcLyricsNormalized *normalized,
+                                  LrcCtcWordSpans *word_spans,
+                                  LrcCtcAlignResult *result) {
     (void)token_spans;
     (void)tokens;
     (void)normalized;
@@ -3309,12 +3096,10 @@ lrc_ctc_word_spans_destroy(LrcCtcWordSpans *spans) {
 }
 
 static bool
-lrc_ctc_word_spans_to_line_timestamps(
-    LrcCtcWordSpans *word_spans,
-    LrcLyricsNormalized *normalized,
-    LrcCtcLineTimestamps *line_timestamps,
-    LrcCtcAlignResult *result
-) {
+lrc_ctc_word_spans_to_line_timestamps(LrcCtcWordSpans *word_spans,
+                                      LrcLyricsNormalized *normalized,
+                                      LrcCtcLineTimestamps *line_timestamps,
+                                      LrcCtcAlignResult *result) {
     (void)word_spans;
     (void)normalized;
     (void)line_timestamps;
@@ -3332,11 +3117,9 @@ lrc_ctc_line_timestamps_destroy(LrcCtcLineTimestamps *timestamps) {
 }
 
 static bool
-lrc_timestamp_hundredths_from_seconds(
-    float seconds,
-    int32 *timestamp_hundredths,
-    LrcFormatResult *result
-) {
+lrc_timestamp_hundredths_from_seconds(float seconds,
+                                      int32 *timestamp_hundredths,
+                                      LrcFormatResult *result) {
     double rounded;
 
     (void)result;
@@ -3358,12 +3141,8 @@ lrc_timestamp_hundredths_from_seconds(
 }
 
 static bool
-lrc_write_output_file(
-    char *path,
-    LrcOutputLine *lines,
-    int32 line_count,
-    LrcWriteResult *result
-) {
+lrc_write_output_file(char *path, LrcOutputLine *lines, int32 line_count,
+                      LrcWriteResult *result) {
     (void)path;
     (void)lines;
     (void)line_count;
@@ -3394,10 +3173,8 @@ lrc_vocals_extract_result_init(LrcVocalsExtractResult *result) {
 }
 
 static bool
-lrc_extract_vocals(
-    LrcVocalsExtractRequest *request,
-    LrcVocalsExtractResult *result
-) {
+lrc_extract_vocals(LrcVocalsExtractRequest *request,
+                   LrcVocalsExtractResult *result) {
     (void)request;
     (void)result;
 
@@ -3411,12 +3188,8 @@ lrc_extract_vocals(
 #include "ctc_assets.c"
 
 static bool
-lrc_generate_config_path_ready(
-    char *path,
-    enum LsError error,
-    char *message,
-    LrcPipelineGenerateResult *result
-) {
+lrc_generate_config_path_ready(char *path, enum LsError error, char *message,
+                               LrcPipelineGenerateResult *result) {
     if (!path_missing(path)) {
         return true;
     }
@@ -3427,10 +3200,8 @@ lrc_generate_config_path_ready(
 }
 
 static bool
-lrc_generate_from_song(
-    LrcPipelineConfig *config,
-    LrcPipelineGenerateResult *result
-) {
+lrc_generate_from_song(LrcPipelineConfig *config,
+                       LrcPipelineGenerateResult *result) {
     LrcPipeline pipeline;
     bool ok;
 
@@ -3517,11 +3288,7 @@ pipeline_test_write_file(char *path) {
 
 
 static bool
-pipeline_test_file_contains(
-    char *path,
-    char *needle,
-    int32 needle_len
-) {
+pipeline_test_file_contains(char *path, char *needle, int32 needle_len) {
     char *text;
     int32 text_len;
     bool found;
@@ -3545,11 +3312,7 @@ pipeline_test_output_text_equal(LrcOutputLine *line, char *text, int32 len) {
 }
 
 static void
-pipeline_test_audio_fill(
-    float *samples,
-    int64 sample_count,
-    float value
-) {
+pipeline_test_audio_fill(float *samples, int64 sample_count, float value) {
     for (int64 i = 0; i < sample_count; i += 1) {
         samples[i] = value;
     }
@@ -3558,14 +3321,9 @@ pipeline_test_audio_fill(
 }
 
 static void
-pipeline_test_audio_fill_seconds(
-    float *samples,
-    int64 sample_count,
-    int32 sample_rate,
-    float start_seconds,
-    float end_seconds,
-    float value
-) {
+pipeline_test_audio_fill_seconds(float *samples, int64 sample_count,
+                                 int32 sample_rate, float start_seconds,
+                                 float end_seconds, float value) {
     int64 start;
     int64 end;
 
@@ -3587,20 +3345,12 @@ pipeline_test_audio_fill_seconds(
 }
 
 static bool
-pipeline_test_float_near(
-    float a,
-    float b,
-    float epsilon
-) {
+pipeline_test_float_near(float a, float b, float epsilon) {
     return fabsf(a - b) <= epsilon;
 }
 
 static bool
-pipeline_test_hundredths_near(
-    int32 a,
-    int32 b,
-    int32 epsilon
-) {
+pipeline_test_hundredths_near(int32 a, int32 b, int32 epsilon) {
     int32 diff = a - b;
 
     if (diff < 0) {
@@ -3758,13 +3508,11 @@ pipeline_test_audio_silence_detector_scaled(void) {
 }
 
 static void
-pipeline_test_make_two_line_timestamps(
-    LrcCtcLineTimestamps *timestamps,
-    LrcCtcLineTimestamp *lines,
-    float first_start_seconds,
-    float first_end_seconds,
-    float second_start_seconds
-) {
+pipeline_test_make_two_line_timestamps(LrcCtcLineTimestamps *timestamps,
+                                       LrcCtcLineTimestamp *lines,
+                                       float first_start_seconds,
+                                       float first_end_seconds,
+                                       float second_start_seconds) {
     memset64(timestamps, 0, SIZEOF(*timestamps));
     memset64(lines, 0, 2*SIZEOF(*lines));
 
@@ -3786,12 +3534,9 @@ pipeline_test_make_two_line_timestamps(
 }
 
 static void
-pipeline_test_line_timing_audio_set(
-    LrcPipelineLineTimingAudio *audio,
-    float *samples,
-    int64 sample_count,
-    int32 sample_rate
-) {
+pipeline_test_line_timing_audio_set(LrcPipelineLineTimingAudio *audio,
+                                    float *samples, int64 sample_count,
+                                    int32 sample_rate) {
     memset64(audio, 0, SIZEOF(*audio));
 
     audio->samples = samples;
@@ -4223,14 +3968,11 @@ pipeline_test_line_timing_audio_available(void) {
 }
 
 static void
-pipeline_test_line_timestamp_clear_case(
-    char *name,
-    float first_end_seconds,
-    float second_start_seconds,
-    bool expect_clear,
-    int32 expected_clear_hundredths,
-    int32 expected_second_hundredths
-) {
+pipeline_test_line_timestamp_clear_case(char *name, float first_end_seconds,
+                                        float second_start_seconds,
+                                        bool expect_clear,
+                                        int32 expected_clear_hundredths,
+                                        int32 expected_second_hundredths) {
     LrcLyrics lyrics = {0};
     LrcLyricsLine lyric_lines[2];
     LrcCtcLineTimestamps timestamps = {0};
@@ -4449,14 +4191,9 @@ pipeline_test_line_timestamp_clear_keeps_blank_line(void) {
 
 
 static bool
-pipeline_test_sample_has_blank_line_between(
-    char *text,
-    int32 text_len,
-    char *first,
-    int32 first_len,
-    char *second,
-    int32 second_len
-) {
+pipeline_test_sample_has_blank_line_between(char *text, int32 text_len,
+                                            char *first, int32 first_len,
+                                            char *second, int32 second_len) {
     bool found_first = false;
     bool saw_blank = false;
     int32 pos = 0;

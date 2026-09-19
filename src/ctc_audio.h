@@ -32,11 +32,8 @@ typedef struct LrcCtcAudio {
 static void lrc_ctc_audio_config_init(LrcCtcAudioConfig *config);
 static void lrc_ctc_audio_result_init(LrcCtcAudioResult *result);
 static void lrc_ctc_audio_destroy(LrcCtcAudio *audio);
-static bool lrc_ctc_audio_decode_file(
-    LrcCtcAudio *audio,
-    char *path,
-    LrcCtcAudioConfig *config,
-    LrcCtcAudioResult *result
-);
+static bool lrc_ctc_audio_decode_file(LrcCtcAudio *audio, char *path,
+                                      LrcCtcAudioConfig *config,
+                                      LrcCtcAudioResult *result);
 
 #endif /* CTC_AUDIO_H */

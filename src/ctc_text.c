@@ -28,10 +28,8 @@ lrc_lyrics_normalized_destroy(LrcLyricsNormalized *normalized) {
 }
 
 static bool
-lrc_lyrics_normalized_alloc_lines(
-    LrcLyricsNormalized *normalized,
-    int32 line_count
-) {
+lrc_lyrics_normalized_alloc_lines(LrcLyricsNormalized *normalized,
+                                  int32 line_count) {
     if (line_count <= 0) {
         return true;
     }
@@ -49,10 +47,8 @@ lrc_lyrics_normalized_alloc_lines(
 }
 
 static bool
-lrc_lyrics_normalized_reserve_segments(
-    LrcLyricsNormalized *normalized,
-    int32 extra_segments
-) {
+lrc_lyrics_normalized_reserve_segments(LrcLyricsNormalized *normalized,
+                                       int32 extra_segments) {
     int64 needed;
 
     if (extra_segments <= 0) {
@@ -68,16 +64,11 @@ lrc_lyrics_normalized_reserve_segments(
 }
 
 static bool
-lrc_lyrics_normalized_append_segment(
-    LrcLyricsNormalized *normalized,
-    int32 line_index,
-    int32 source_start,
-    int32 source_end,
-    int32 normalized_start,
-    int32 normalized_end,
-    int32 target_start,
-    int32 target_end
-) {
+lrc_lyrics_normalized_append_segment(LrcLyricsNormalized *normalized,
+                                     int32 line_index, int32 source_start,
+                                     int32 source_end, int32 normalized_start,
+                                     int32 normalized_end, int32 target_start,
+                                     int32 target_end) {
     CtcTextSegment *segment;
 
     if (source_end <= source_start) {
@@ -128,12 +119,8 @@ typedef struct CtcTextMappedWriter {
 } CtcTextMappedWriter;
 
 static void
-ctc_text_normalized_byte_fill(
-    void *map_ptr,
-    int32 line_index,
-    int32 source_start,
-    int32 source_end
-) {
+ctc_text_normalized_byte_fill(void *map_ptr, int32 line_index,
+                              int32 source_start, int32 source_end) {
     LrcLyricsNormalizedByte *map = map_ptr;
 
     map->line_index = line_index;
@@ -144,12 +131,8 @@ ctc_text_normalized_byte_fill(
 }
 
 static void
-ctc_text_target_byte_fill(
-    void *map_ptr,
-    int32 line_index,
-    int32 normalized_start,
-    int32 normalized_end
-) {
+ctc_text_target_byte_fill(void *map_ptr, int32 line_index,
+                          int32 normalized_start, int32 normalized_end) {
     LrcLyricsTargetByte *map = map_ptr;
 
     map->line_index = line_index;
@@ -160,10 +143,8 @@ ctc_text_target_byte_fill(
 }
 
 static void
-ctc_text_normalized_writer(
-    CtcTextMappedWriter *writer,
-    LrcLyricsNormalized *normalized
-) {
+ctc_text_normalized_writer(CtcTextMappedWriter *writer,
+                           LrcLyricsNormalized *normalized) {
     memset64(writer, 0, SIZEOF(*writer));
 
     writer->text = &normalized->text;
@@ -177,10 +158,8 @@ ctc_text_normalized_writer(
 }
 
 static void
-ctc_text_target_writer(
-    CtcTextMappedWriter *writer,
-    LrcLyricsNormalized *normalized
-) {
+ctc_text_target_writer(CtcTextMappedWriter *writer,
+                       LrcLyricsNormalized *normalized) {
     memset64(writer, 0, SIZEOF(*writer));
 
     writer->text = &normalized->target_text;
@@ -194,10 +173,7 @@ ctc_text_target_writer(
 }
 
 static bool
-ctc_text_mapped_writer_reserve(
-    CtcTextMappedWriter *writer,
-    int32 extra_bytes
-) {
+ctc_text_mapped_writer_reserve(CtcTextMappedWriter *writer, int32 extra_bytes) {
     int64 needed;
 
     if (extra_bytes <= 0) {
@@ -221,14 +197,9 @@ ctc_text_mapped_writer_reserve(
 }
 
 static bool
-ctc_text_mapped_writer_append_bytes(
-    CtcTextMappedWriter *writer,
-    char *bytes,
-    int32 bytes_len,
-    int32 line_index,
-    int32 source_start,
-    int32 source_end
-) {
+ctc_text_mapped_writer_append_bytes(CtcTextMappedWriter *writer, char *bytes,
+                                    int32 bytes_len, int32 line_index,
+                                    int32 source_start, int32 source_end) {
     char *map_bytes;
 
     if (bytes_len < 0) {
@@ -261,12 +232,9 @@ ctc_text_mapped_writer_append_bytes(
 }
 
 static bool
-ctc_text_mapped_writer_append_space(
-    CtcTextMappedWriter *writer,
-    int32 line_index,
-    int32 source_start,
-    int32 source_end
-) {
+ctc_text_mapped_writer_append_space(CtcTextMappedWriter *writer,
+                                    int32 line_index, int32 source_start,
+                                    int32 source_end) {
     char space;
 
     if (*writer->text_len <= 0) {
@@ -302,14 +270,9 @@ ctc_text_mapped_writer_remove_trailing_space(CtcTextMappedWriter *writer) {
 }
 
 static bool
-lrc_lyrics_normalized_append_bytes(
-    LrcLyricsNormalized *normalized,
-    char *bytes,
-    int32 bytes_len,
-    int32 line_index,
-    int32 source_start,
-    int32 source_end
-) {
+lrc_lyrics_normalized_append_bytes(LrcLyricsNormalized *normalized, char *bytes,
+                                   int32 bytes_len, int32 line_index,
+                                   int32 source_start, int32 source_end) {
     CtcTextMappedWriter writer;
 
     ctc_text_normalized_writer(&writer, normalized);
@@ -322,12 +285,9 @@ lrc_lyrics_normalized_append_bytes(
 }
 
 static bool
-lrc_lyrics_normalized_append_space(
-    LrcLyricsNormalized *normalized,
-    int32 line_index,
-    int32 source_start,
-    int32 source_end
-) {
+lrc_lyrics_normalized_append_space(LrcLyricsNormalized *normalized,
+                                   int32 line_index, int32 source_start,
+                                   int32 source_end) {
     CtcTextMappedWriter writer;
 
     ctc_text_normalized_writer(&writer, normalized);
@@ -338,13 +298,9 @@ lrc_lyrics_normalized_append_space(
 }
 
 static bool
-lrc_lyrics_normalized_append_char(
-    LrcLyricsNormalized *normalized,
-    char c,
-    int32 line_index,
-    int32 source_start,
-    int32 source_end
-) {
+lrc_lyrics_normalized_append_char(LrcLyricsNormalized *normalized, char c,
+                                  int32 line_index, int32 source_start,
+                                  int32 source_end) {
     return lrc_lyrics_normalized_append_bytes(normalized,
                                               &c,
                                               1,
@@ -354,14 +310,11 @@ lrc_lyrics_normalized_append_char(
 }
 
 static bool
-lrc_lyrics_normalized_append_target_bytes(
-    LrcLyricsNormalized *normalized,
-    char *bytes,
-    int32 bytes_len,
-    int32 line_index,
-    int32 normalized_start,
-    int32 normalized_end
-) {
+lrc_lyrics_normalized_append_target_bytes(LrcLyricsNormalized *normalized,
+                                          char *bytes, int32 bytes_len,
+                                          int32 line_index,
+                                          int32 normalized_start,
+                                          int32 normalized_end) {
     CtcTextMappedWriter writer;
 
     ctc_text_target_writer(&writer, normalized);
@@ -374,12 +327,10 @@ lrc_lyrics_normalized_append_target_bytes(
 }
 
 static bool
-lrc_lyrics_normalized_append_target_space(
-    LrcLyricsNormalized *normalized,
-    int32 line_index,
-    int32 normalized_start,
-    int32 normalized_end
-) {
+lrc_lyrics_normalized_append_target_space(LrcLyricsNormalized *normalized,
+                                          int32 line_index,
+                                          int32 normalized_start,
+                                          int32 normalized_end) {
     CtcTextMappedWriter writer;
 
     ctc_text_target_writer(&writer, normalized);
@@ -391,13 +342,8 @@ lrc_lyrics_normalized_append_target_space(
 
 static bool
 lrc_lyrics_normalized_append_target_from_normalized(
-    LrcLyricsNormalized *normalized,
-    int32 line_index,
-    int32 normalized_start,
-    int32 normalized_end,
-    int32 *target_start_out,
-    int32 *target_end_out
-) {
+    LrcLyricsNormalized *normalized, int32 line_index, int32 normalized_start,
+    int32 normalized_end, int32 *target_start_out, int32 *target_end_out) {
     int32 target_start;
 
     if (target_start_out) {
@@ -503,11 +449,7 @@ lrc_lyrics_line_trim_end(LrcLyricsLine *line, int32 start) {
 }
 
 static bool
-lrc_lyrics_line_is_section_marker(
-    LrcLyrics *lyrics,
-    int32 start,
-    int32 end
-) {
+lrc_lyrics_line_is_section_marker(LrcLyrics *lyrics, int32 start, int32 end) {
     char first;
     char last;
 
@@ -783,10 +725,8 @@ ctc_text_is_reference_punctuation(uint32 rune) {
 }
 
 static bool
-ctc_text_reference_output_reserve(
-    CtcUnicodeNormResult *result,
-    int32 extra_bytes
-) {
+ctc_text_reference_output_reserve(CtcUnicodeNormResult *result,
+                                  int32 extra_bytes) {
     int64 needed;
 
     if (extra_bytes <= 0) {
@@ -807,11 +747,8 @@ ctc_text_reference_output_reserve(
 }
 
 static bool
-ctc_text_reference_output_append_bytes(
-    CtcUnicodeNormResult *result,
-    char *text,
-    int32 text_len
-) {
+ctc_text_reference_output_append_bytes(CtcUnicodeNormResult *result, char *text,
+                                       int32 text_len) {
     if (text_len < 0) {
         return false;
     }
@@ -831,10 +768,8 @@ ctc_text_reference_output_append_bytes(
 }
 
 static bool
-ctc_text_reference_output_append_rune(
-    CtcUnicodeNormResult *result,
-    uint32 rune
-) {
+ctc_text_reference_output_append_rune(CtcUnicodeNormResult *result,
+                                      uint32 rune) {
     char encoded[4];
     int32 encoded_len;
 
@@ -908,15 +843,11 @@ typedef bool CtcTextUtf8TransformRuneFn(
 typedef bool CtcTextUtf8TransformFinishFn(CtcTextUtf8Transform *);
 
 static bool
-ctc_text_utf8_transform_run(
-    char *text,
-    int32 text_len,
-    CtcUnicodeNormResult *result,
-    CtcTextUtf8TransformRuneFn *rune_fn,
-    CtcTextUtf8TransformFinishFn *finish_fn,
-    void *context,
-    bool trim_spaces
-) {
+ctc_text_utf8_transform_run(char *text, int32 text_len,
+                            CtcUnicodeNormResult *result,
+                            CtcTextUtf8TransformRuneFn *rune_fn,
+                            CtcTextUtf8TransformFinishFn *finish_fn,
+                            void *context, bool trim_spaces) {
     CtcTextUtf8Transform transform;
     uint32 previous_rune;
 
@@ -982,10 +913,7 @@ ctc_text_utf8_transform_run(
 }
 
 static bool
-ctc_text_reference_has_space_before(
-    char *text,
-    int32 byte_index
-) {
+ctc_text_reference_has_space_before(char *text, int32 byte_index) {
     uint32 rune;
     int32 step;
     int32 previous = -1;
@@ -1011,11 +939,8 @@ ctc_text_reference_has_space_before(
 }
 
 static bool
-ctc_text_reference_has_space_after(
-    char *text,
-    int32 text_len,
-    int32 byte_index
-) {
+ctc_text_reference_has_space_after(char *text, int32 text_len,
+                                   int32 byte_index) {
     uint32 rune;
     int32 step;
 
@@ -1032,11 +957,7 @@ ctc_text_reference_has_space_after(
 }
 
 static bool
-ctc_text_reference_is_digit_run(
-    char *text,
-    int32 start,
-    int32 end
-) {
+ctc_text_reference_is_digit_run(char *text, int32 start, int32 end) {
     for (int32 i = start; i < end;) {
         uint32 rune;
         int32 step;
@@ -1055,12 +976,8 @@ ctc_text_reference_is_digit_run(
 }
 
 static bool
-ctc_text_reference_should_remove_digit_run(
-    char *text,
-    int32 text_len,
-    int32 start,
-    int32 end
-) {
+ctc_text_reference_should_remove_digit_run(char *text, int32 text_len,
+                                           int32 start, int32 end) {
     bool before;
     bool after;
 
@@ -1084,12 +1001,10 @@ ctc_text_reference_should_remove_digit_run(
 }
 
 static bool
-ctc_text_reference_remove_parentheses_rune(
-    CtcTextUtf8Transform *transform,
-    CtcTextUtf8Rune *rune,
-    int32 *next_index,
-    uint32 *next_previous_rune
-) {
+ctc_text_reference_remove_parentheses_rune(CtcTextUtf8Transform *transform,
+                                           CtcTextUtf8Rune *rune,
+                                           int32 *next_index,
+                                           uint32 *next_previous_rune) {
     if (rune->rune == '(') {
         int32 close = -1;
         bool found_digit = false;
@@ -1129,11 +1044,8 @@ ctc_text_reference_remove_parentheses_rune(
 }
 
 static bool
-ctc_text_reference_remove_number_parentheses(
-    char *text,
-    int32 text_len,
-    CtcUnicodeNormResult *result
-) {
+ctc_text_reference_remove_number_parentheses(char *text, int32 text_len,
+                                             CtcUnicodeNormResult *result) {
     return ctc_text_utf8_transform_run(
         text,
         text_len,
@@ -1146,12 +1058,9 @@ ctc_text_reference_remove_number_parentheses(
 }
 
 static bool
-ctc_text_reference_apply_mappings_rune(
-    CtcTextUtf8Transform *transform,
-    CtcTextUtf8Rune *rune,
-    int32 *next_index,
-    uint32 *next_previous_rune
-) {
+ctc_text_reference_apply_mappings_rune(CtcTextUtf8Transform *transform,
+                                       CtcTextUtf8Rune *rune, int32 *next_index,
+                                       uint32 *next_previous_rune) {
     uint32 mapped_rune;
 
     if (BEGINS_WITH(rune->text + rune->byte_index,
@@ -1196,11 +1105,8 @@ ctc_text_reference_apply_mappings_rune(
 }
 
 static bool
-ctc_text_reference_apply_mappings(
-    char *text,
-    int32 text_len,
-    CtcUnicodeNormResult *result
-) {
+ctc_text_reference_apply_mappings(char *text, int32 text_len,
+                                  CtcUnicodeNormResult *result) {
     return ctc_text_utf8_transform_run(text,
                                        text_len,
                                        result,
@@ -1211,12 +1117,10 @@ ctc_text_reference_apply_mappings(
 }
 
 static bool
-ctc_text_reference_replace_punctuation_rune(
-    CtcTextUtf8Transform *transform,
-    CtcTextUtf8Rune *rune,
-    int32 *next_index,
-    uint32 *next_previous_rune
-) {
+ctc_text_reference_replace_punctuation_rune(CtcTextUtf8Transform *transform,
+                                            CtcTextUtf8Rune *rune,
+                                            int32 *next_index,
+                                            uint32 *next_previous_rune) {
     (void)next_index;
 
     if (ctc_text_is_reference_delete(rune->rune)) {
@@ -1234,11 +1138,8 @@ ctc_text_reference_replace_punctuation_rune(
 }
 
 static bool
-ctc_text_reference_replace_punctuation_delete(
-    char *text,
-    int32 text_len,
-    CtcUnicodeNormResult *result
-) {
+ctc_text_reference_replace_punctuation_delete(char *text, int32 text_len,
+                                              CtcUnicodeNormResult *result) {
     return ctc_text_utf8_transform_run(
         text,
         text_len,
@@ -1260,10 +1161,8 @@ typedef struct CtcTextDigitRunTransform {
 } CtcTextDigitRunTransform;
 
 static bool
-ctc_text_reference_remove_numbers_flush(
-    CtcTextUtf8Transform *transform,
-    int32 run_end
-) {
+ctc_text_reference_remove_numbers_flush(CtcTextUtf8Transform *transform,
+                                        int32 run_end) {
     CtcTextDigitRunTransform *context = transform->context;
 
     if (!context->in_digit_run) {
@@ -1292,12 +1191,9 @@ ctc_text_reference_remove_numbers_flush(
 }
 
 static bool
-ctc_text_reference_remove_numbers_rune(
-    CtcTextUtf8Transform *transform,
-    CtcTextUtf8Rune *rune,
-    int32 *next_index,
-    uint32 *next_previous_rune
-) {
+ctc_text_reference_remove_numbers_rune(CtcTextUtf8Transform *transform,
+                                       CtcTextUtf8Rune *rune, int32 *next_index,
+                                       uint32 *next_previous_rune) {
     CtcTextDigitRunTransform *context;
 
     (void)next_index;
@@ -1329,11 +1225,8 @@ ctc_text_reference_remove_numbers_finish(CtcTextUtf8Transform *transform) {
 }
 
 static bool
-ctc_text_reference_remove_numbers(
-    char *text,
-    int32 text_len,
-    CtcUnicodeNormResult *result
-) {
+ctc_text_reference_remove_numbers(char *text, int32 text_len,
+                                  CtcUnicodeNormResult *result) {
     CtcTextDigitRunTransform context;
 
     memset64(&context, 0, SIZEOF(context));
@@ -1351,12 +1244,10 @@ ctc_text_reference_remove_numbers(
 }
 
 static bool
-ctc_text_reference_collapse_spaces_rune(
-    CtcTextUtf8Transform *transform,
-    CtcTextUtf8Rune *rune,
-    int32 *next_index,
-    uint32 *next_previous_rune
-) {
+ctc_text_reference_collapse_spaces_rune(CtcTextUtf8Transform *transform,
+                                        CtcTextUtf8Rune *rune,
+                                        int32 *next_index,
+                                        uint32 *next_previous_rune) {
     (void)next_index;
 
     if (ctc_text_is_unicode_space(rune->rune)) {
@@ -1370,11 +1261,8 @@ ctc_text_reference_collapse_spaces_rune(
 }
 
 static bool
-ctc_text_reference_collapse_spaces(
-    char *text,
-    int32 text_len,
-    CtcUnicodeNormResult *result
-) {
+ctc_text_reference_collapse_spaces(char *text, int32 text_len,
+                                   CtcUnicodeNormResult *result) {
     return ctc_text_utf8_transform_run(text,
                                        text_len,
                                        result,
@@ -1385,12 +1273,10 @@ ctc_text_reference_collapse_spaces(
 }
 
 static bool
-ctc_text_reference_normalize_uroman_rune(
-    CtcTextUtf8Transform *transform,
-    CtcTextUtf8Rune *rune,
-    int32 *next_index,
-    uint32 *next_previous_rune
-) {
+ctc_text_reference_normalize_uroman_rune(CtcTextUtf8Transform *transform,
+                                         CtcTextUtf8Rune *rune,
+                                         int32 *next_index,
+                                         uint32 *next_previous_rune) {
     uint32 mapped_rune;
 
     (void)next_index;
@@ -1411,11 +1297,8 @@ ctc_text_reference_normalize_uroman_rune(
 }
 
 static bool
-ctc_text_reference_normalize_uroman(
-    char *text,
-    int32 text_len,
-    CtcUnicodeNormResult *result
-) {
+ctc_text_reference_normalize_uroman(char *text, int32 text_len,
+                                    CtcUnicodeNormResult *result) {
     return ctc_text_utf8_transform_run(text,
                                        text_len,
                                        result,
@@ -1426,9 +1309,7 @@ ctc_text_reference_normalize_uroman(
 }
 
 static bool
-ctc_text_reference_should_romanize(
-    LrcLyricsPreprocessOptions *options
-) {
+ctc_text_reference_should_romanize(LrcLyricsPreprocessOptions *options) {
     if (options == NULL) {
         return false;
     }
@@ -1440,12 +1321,9 @@ ctc_text_reference_should_romanize(
 }
 
 static bool
-ctc_text_reference_normalize_word(
-    char *text,
-    int32 text_len,
-    LrcLyricsPreprocessOptions *options,
-    CtcUnicodeNormResult *result
-) {
+ctc_text_reference_normalize_word(char *text, int32 text_len,
+                                  LrcLyricsPreprocessOptions *options,
+                                  CtcUnicodeNormResult *result) {
     CtcUnicodeNormResult stage1;
     CtcUnicodeNormResult stage2;
     CtcUnicodeNormResult stage3;
@@ -1530,9 +1408,7 @@ typedef struct CtcTextSegmentBuild {
 } CtcTextSegmentBuild;
 
 static void
-ctc_text_segment_build_init(
-    CtcTextSegmentBuild *segment
-) {
+ctc_text_segment_build_init(CtcTextSegmentBuild *segment) {
     memset64(segment, 0, SIZEOF(*segment));
 
     segment->line_index = -1;
@@ -1545,12 +1421,8 @@ ctc_text_segment_build_init(
 }
 
 static void
-ctc_text_segment_build_source(
-    CtcTextSegmentBuild *segment,
-    int32 line_index,
-    int32 source_start,
-    int32 source_end
-) {
+ctc_text_segment_build_source(CtcTextSegmentBuild *segment, int32 line_index,
+                              int32 source_start, int32 source_end) {
     if (!segment->active) {
         segment->active = true;
         segment->line_index = line_index;
@@ -1563,11 +1435,8 @@ ctc_text_segment_build_source(
 }
 
 static void
-ctc_text_segment_build_text(
-    CtcTextSegmentBuild *segment,
-    int32 normalized_start,
-    int32 normalized_end
-) {
+ctc_text_segment_build_text(CtcTextSegmentBuild *segment,
+                            int32 normalized_start, int32 normalized_end) {
     ASSERT(segment->active);
 
     if (!segment->has_text) {
@@ -1581,10 +1450,8 @@ ctc_text_segment_build_text(
 }
 
 static bool
-ctc_text_segment_build_finish(
-    LrcLyricsNormalized *normalized,
-    CtcTextSegmentBuild *segment
-) {
+ctc_text_segment_build_finish(LrcLyricsNormalized *normalized,
+                              CtcTextSegmentBuild *segment) {
     bool ok;
 
     if (!segment->active) {
@@ -1609,10 +1476,8 @@ ctc_text_segment_build_finish(
 }
 
 static void
-lrc_lyrics_normalized_line_finish(
-    LrcLyricsNormalized *normalized,
-    LrcLyricsNormalizedLine *line_range
-) {
+lrc_lyrics_normalized_line_finish(LrcLyricsNormalized *normalized,
+                                  LrcLyricsNormalizedLine *line_range) {
     if ((line_range->normalized_start >= 0)
         && (line_range->normalized_end > line_range->normalized_start)) {
         line_range->kind = LRC_LYRICS_NORMALIZED_LINE_KIND_ALIGNABLE;
@@ -1627,13 +1492,8 @@ lrc_lyrics_normalized_line_finish(
 }
 
 static bool
-lrc_lyrics_normalize_line(
-    LrcLyrics *lyrics,
-    LrcLyricsNormalized *normalized,
-    int32 line_index,
-    int32 start,
-    int32 end
-) {
+lrc_lyrics_normalize_line(LrcLyrics *lyrics, LrcLyricsNormalized *normalized,
+                          int32 line_index, int32 start, int32 end) {
     LrcLyricsNormalizedLine *line_range = &normalized->lines[line_index];
     CtcTextSegmentBuild segment;
     bool wrote_line;
@@ -1756,17 +1616,14 @@ lrc_lyrics_normalize_line(
 }
 
 static bool
-lrc_lyrics_normalize_split_segment(
-    LrcLyrics *lyrics,
-    LrcLyricsNormalized *normalized,
-    LrcLyricsNormalizedLine *line_range,
-    LrcLyricsPreprocessOptions *options,
-    int32 line_index,
-    int32 source_start,
-    int32 source_end,
-    bool separate_from_previous,
-    bool *wrote_line
-) {
+lrc_lyrics_normalize_split_segment(LrcLyrics *lyrics,
+                                   LrcLyricsNormalized *normalized,
+                                   LrcLyricsNormalizedLine *line_range,
+                                   LrcLyricsPreprocessOptions *options,
+                                   int32 line_index, int32 source_start,
+                                   int32 source_end,
+                                   bool separate_from_previous,
+                                   bool *wrote_line) {
     CtcUnicodeNormResult chunk;
     int32 normalized_start;
     int32 normalized_end;
@@ -1842,16 +1699,12 @@ done:
 }
 
 static bool
-lrc_lyrics_normalize_word_segment(
-    LrcLyrics *lyrics,
-    LrcLyricsNormalized *normalized,
-    LrcLyricsNormalizedLine *line_range,
-    LrcLyricsPreprocessOptions *options,
-    int32 line_index,
-    int32 word_start,
-    int32 word_end,
-    bool *wrote_line
-) {
+lrc_lyrics_normalize_word_segment(LrcLyrics *lyrics,
+                                  LrcLyricsNormalized *normalized,
+                                  LrcLyricsNormalizedLine *line_range,
+                                  LrcLyricsPreprocessOptions *options,
+                                  int32 line_index, int32 word_start,
+                                  int32 word_end, bool *wrote_line) {
     return lrc_lyrics_normalize_split_segment(lyrics,
                                               normalized,
                                               line_range,
@@ -1864,11 +1717,7 @@ lrc_lyrics_normalize_word_segment(
 }
 
 static int32
-lrc_lyrics_next_word_end(
-    LrcLyrics *lyrics,
-    int32 start,
-    int32 end
-) {
+lrc_lyrics_next_word_end(LrcLyrics *lyrics, int32 start, int32 end) {
     for (int32 i = start; i < end;) {
         uint32 rune;
         int32 step;
@@ -1892,10 +1741,8 @@ lrc_lyrics_next_word_end(
 }
 
 static bool
-lrc_lyrics_preprocess_language_is(
-    LrcLyricsPreprocessOptions *options,
-    char *language
-) {
+lrc_lyrics_preprocess_language_is(LrcLyricsPreprocessOptions *options,
+                                  char *language) {
     if ((options == NULL) || (language == NULL)) {
         return false;
     }
@@ -1908,8 +1755,7 @@ lrc_lyrics_preprocess_language_is(
 
 static enum LrcLyricsPreprocessSplitSize
 lrc_lyrics_preprocess_effective_split_size(
-    LrcLyricsPreprocessOptions *options
-) {
+    LrcLyricsPreprocessOptions *options) {
     if (options == NULL) {
         return LRC_LYRICS_PREPROCESS_SPLIT_SIZE_CURRENT;
     }
@@ -1925,14 +1771,10 @@ lrc_lyrics_preprocess_effective_split_size(
 }
 
 static bool
-lrc_lyrics_normalize_line_word(
-    LrcLyrics *lyrics,
-    LrcLyricsNormalized *normalized,
-    LrcLyricsPreprocessOptions *options,
-    int32 line_index,
-    int32 start,
-    int32 end
-) {
+lrc_lyrics_normalize_line_word(LrcLyrics *lyrics,
+                               LrcLyricsNormalized *normalized,
+                               LrcLyricsPreprocessOptions *options,
+                               int32 line_index, int32 start, int32 end) {
     LrcLyricsNormalizedLine *line_range = &normalized->lines[line_index];
     bool wrote_line = false;
 
@@ -1976,16 +1818,12 @@ lrc_lyrics_normalize_line_word(
 }
 
 static bool
-lrc_lyrics_normalize_char_segment(
-    LrcLyrics *lyrics,
-    LrcLyricsNormalized *normalized,
-    LrcLyricsNormalizedLine *line_range,
-    LrcLyricsPreprocessOptions *options,
-    int32 line_index,
-    int32 char_start,
-    int32 char_end,
-    bool *wrote_line
-) {
+lrc_lyrics_normalize_char_segment(LrcLyrics *lyrics,
+                                  LrcLyricsNormalized *normalized,
+                                  LrcLyricsNormalizedLine *line_range,
+                                  LrcLyricsPreprocessOptions *options,
+                                  int32 line_index, int32 char_start,
+                                  int32 char_end, bool *wrote_line) {
     return lrc_lyrics_normalize_split_segment(lyrics,
                                               normalized,
                                               line_range,
@@ -1998,14 +1836,10 @@ lrc_lyrics_normalize_char_segment(
 }
 
 static bool
-lrc_lyrics_normalize_line_char(
-    LrcLyrics *lyrics,
-    LrcLyricsNormalized *normalized,
-    LrcLyricsPreprocessOptions *options,
-    int32 line_index,
-    int32 start,
-    int32 end
-) {
+lrc_lyrics_normalize_line_char(LrcLyrics *lyrics,
+                               LrcLyricsNormalized *normalized,
+                               LrcLyricsPreprocessOptions *options,
+                               int32 line_index, int32 start, int32 end) {
     LrcLyricsNormalizedLine *line_range = &normalized->lines[line_index];
     bool wrote_line = false;
 
@@ -2037,11 +1871,9 @@ lrc_lyrics_normalize_line_char(
 }
 
 static bool
-lrc_lyrics_normalize_with_options(
-    LrcLyrics *lyrics,
-    LrcLyricsNormalized *normalized,
-    LrcLyricsPreprocessOptions *options
-) {
+lrc_lyrics_normalize_with_options(LrcLyrics *lyrics,
+                                  LrcLyricsNormalized *normalized,
+                                  LrcLyricsPreprocessOptions *options) {
     LrcLyricsPreprocessOptions local_options;
     enum LrcLyricsPreprocessSplitSize split_size;
 
@@ -2119,10 +1951,8 @@ lrc_lyrics_normalize_with_options(
 }
 
 static enum LrcLyricsNormalizedLineKind
-lrc_lyrics_normalized_line_kind(
-    LrcLyricsNormalized *normalized,
-    int32 line_index
-) {
+lrc_lyrics_normalized_line_kind(LrcLyricsNormalized *normalized,
+                                int32 line_index) {
     if (normalized == NULL) {
         return LRC_LYRICS_NORMALIZED_LINE_KIND_BLANK;
     }
@@ -2134,12 +1964,8 @@ lrc_lyrics_normalized_line_kind(
 }
 
 static bool
-lrc_lyrics_normalized_line_range(
-    LrcLyricsNormalized *normalized,
-    int32 line_index,
-    int32 *start,
-    int32 *end
-) {
+lrc_lyrics_normalized_line_range(LrcLyricsNormalized *normalized,
+                                 int32 line_index, int32 *start, int32 *end) {
     LrcLyricsNormalizedLine *line;
 
     if (start) {
@@ -2171,10 +1997,7 @@ lrc_lyrics_normalized_line_range(
 
 #if TESTING
 static bool
-lrc_lyrics_normalize(
-    LrcLyrics *lyrics,
-    LrcLyricsNormalized *normalized
-) {
+lrc_lyrics_normalize(LrcLyrics *lyrics, LrcLyricsNormalized *normalized) {
     LrcLyricsPreprocessOptions options;
 
     lrc_lyrics_preprocess_options_init(&options);
@@ -2183,10 +2006,8 @@ lrc_lyrics_normalize(
 }
 
 static int32
-lrc_lyrics_normalized_line_at(
-    LrcLyricsNormalized *normalized,
-    int32 byte_offset
-) {
+lrc_lyrics_normalized_line_at(LrcLyricsNormalized *normalized,
+                              int32 byte_offset) {
     if (normalized == NULL) {
         return -1;
     }
@@ -2206,9 +2027,7 @@ lrc_lyrics_normalized_line_at(
 #include "unicode_norm.c"
 
 static int32
-lrc_lyrics_normalized_segment_count(
-    LrcLyricsNormalized *normalized
-) {
+lrc_lyrics_normalized_segment_count(LrcLyricsNormalized *normalized) {
     if (normalized == NULL) {
         return 0;
     }
@@ -2217,10 +2036,8 @@ lrc_lyrics_normalized_segment_count(
 }
 
 static CtcTextSegment *
-lrc_lyrics_normalized_segment(
-    LrcLyricsNormalized *normalized,
-    int32 segment_index
-) {
+lrc_lyrics_normalized_segment(LrcLyricsNormalized *normalized,
+                              int32 segment_index) {
     if (normalized == NULL) {
         return NULL;
     }
@@ -2240,11 +2057,7 @@ ctc_text_test_fail(char *name) {
 
 
 static bool
-ctc_text_load_lyrics(
-    LrcLyrics *lyrics,
-    char *text,
-    char *name
-) {
+ctc_text_load_lyrics(LrcLyrics *lyrics, char *text, char *name) {
     LrcLyricsLoadResult result;
     char temp_dir[PATH_MAX];
     char path[PATH_MAX];
@@ -2265,17 +2078,12 @@ ctc_text_load_lyrics(
 }
 
 static void
-ctc_text_test_assert_segment(
-    LrcLyrics *lyrics,
-    LrcLyricsNormalized *normalized,
-    int32 segment_index,
-    int32 expected_line_index,
-    int32 expected_normalized_start,
-    int32 expected_normalized_end,
-    int32 expected_target_start,
-    int32 expected_target_end,
-    char *expected_source
-) {
+ctc_text_test_assert_segment(LrcLyrics *lyrics, LrcLyricsNormalized *normalized,
+                             int32 segment_index, int32 expected_line_index,
+                             int32 expected_normalized_start,
+                             int32 expected_normalized_end,
+                             int32 expected_target_start,
+                             int32 expected_target_end, char *expected_source) {
     CtcTextSegment *segment;
     int32 source_len;
 
@@ -2356,19 +2164,12 @@ typedef struct CtcTextReferenceFixtureCurrent {
 } CtcTextReferenceFixtureCurrent;
 
 static bool
-ctc_text_reference_field_equal(
-    char *field,
-    int32 field_len,
-    char *expected
-) {
+ctc_text_reference_field_equal(char *field, int32 field_len, char *expected) {
     return STREQUAL(field, field_len, expected, strlen32(expected));
 }
 
 static int32
-ctc_text_reference_line_tab(
-    char *line,
-    int32 line_len
-) {
+ctc_text_reference_line_tab(char *line, int32 line_len) {
     for (int32 i = 0; i < line_len; i += 1) {
         if (line[i] == '\t') {
             return i;
@@ -2379,12 +2180,9 @@ ctc_text_reference_line_tab(
 }
 
 static void
-ctc_text_reference_totals_mark_case(
-    CtcTextReferenceFixtureTotals *totals,
-    CtcTextReferenceFixtureCurrent *current,
-    char *value,
-    int32 value_len
-) {
+ctc_text_reference_totals_mark_case(CtcTextReferenceFixtureTotals *totals,
+                                    CtcTextReferenceFixtureCurrent *current,
+                                    char *value, int32 value_len) {
     if (ctc_text_reference_field_equal(value, value_len, "plain_english")) {
         current->case_id = CTC_TEXT_REFERENCE_CASE_PLAIN_ENGLISH;
         totals->saw_plain_english = true;
@@ -2460,14 +2258,10 @@ ctc_text_reference_validate_current(CtcTextReferenceFixtureCurrent *current) {
 }
 
 static void
-ctc_text_reference_parse_field(
-    CtcTextReferenceFixtureTotals *totals,
-    CtcTextReferenceFixtureCurrent *current,
-    char *field,
-    int32 field_len,
-    char *value,
-    int32 value_len
-) {
+ctc_text_reference_parse_field(CtcTextReferenceFixtureTotals *totals,
+                               CtcTextReferenceFixtureCurrent *current,
+                               char *field, int32 field_len, char *value,
+                               int32 value_len) {
     if (ctc_text_reference_field_equal(field, field_len, "format")) {
         ASSERT(!current->in_fixture);
         ASSERT(ctc_text_reference_field_equal(value, value_len, "1"));
@@ -2675,12 +2469,7 @@ ctc_text_hex_value(char c) {
 }
 
 static int32
-ctc_text_decode_hex(
-    char *buffer,
-    int32 buffer_cap,
-    char *hex,
-    int32 hex_len
-) {
+ctc_text_decode_hex(char *buffer, int32 buffer_cap, char *hex, int32 hex_len) {
     int32 len;
 
     if ((hex_len % 2) != 0) {
@@ -2709,10 +2498,8 @@ ctc_text_decode_hex(
 }
 
 static bool
-ctc_text_reference_load_word_fixture(
-    char *fixture_name,
-    CtcTextReferenceWordFixture *fixture
-) {
+ctc_text_reference_load_word_fixture(char *fixture_name,
+                                     CtcTextReferenceWordFixture *fixture) {
     char *text;
     int32 text_len;
     int32 line_start;
@@ -3047,12 +2834,9 @@ ctc_text_test_word_targets_match_reference_fixtures(void) {
 }
 
 static void
-ctc_text_test_assert_target_item(
-    LrcLyricsNormalized *normalized,
-    CtcTextSegment *segment,
-    char *expected,
-    int32 expected_len
-) {
+ctc_text_test_assert_target_item(LrcLyricsNormalized *normalized,
+                                 CtcTextSegment *segment, char *expected,
+                                 int32 expected_len) {
     int32 target_len = segment->target_end - segment->target_start;
 
     ASSERT_NON_NEGATIVE(target_len);
@@ -3190,10 +2974,8 @@ ctc_text_test_word_target_text_is_character_spaced(void) {
 }
 
 static void
-ctc_text_test_options_language(
-    LrcLyricsPreprocessOptions *options,
-    char *language
-) {
+ctc_text_test_options_language(LrcLyricsPreprocessOptions *options,
+                               char *language) {
     int32 language_len;
 
     language_len = strlen32(language);
@@ -3207,11 +2989,8 @@ ctc_text_test_options_language(
 }
 
 static int32
-ctc_text_test_char_fixture_case(
-    char *fixture_name,
-    char *language,
-    enum LrcLyricsPreprocessSplitSize split_size
-) {
+ctc_text_test_char_fixture_case(char *fixture_name, char *language,
+                                enum LrcLyricsPreprocessSplitSize split_size) {
     CtcTextReferenceWordFixture fixture;
     LrcLyricsPreprocessOptions options;
     LrcLyricsNormalized normalized = {0};

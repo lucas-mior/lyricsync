@@ -18,12 +18,8 @@ lrc_ctc_assets_result_init(LrcCtcAssetsResult *result) {
 }
 
 static void
-lrc_ctc_assets_result_set(
-    LrcCtcAssetsResult *result,
-    enum LsError error,
-    char *message,
-    char *path
-) {
+lrc_ctc_assets_result_set(LrcCtcAssetsResult *result, enum LsError error,
+                          char *message, char *path) {
     if (result == NULL) {
         return;
     }
@@ -34,11 +30,8 @@ lrc_ctc_assets_result_set(
 }
 
 static bool
-lrc_ctc_assets_validate(
-    LrcCtcAssets *assets,
-    LrcCtcAssetsConfig *config,
-    LrcCtcAssetsResult *result
-) {
+lrc_ctc_assets_validate(LrcCtcAssets *assets, LrcCtcAssetsConfig *config,
+                        LrcCtcAssetsResult *result) {
     if ((assets == NULL) || (config == NULL)) {
         lrc_ctc_assets_result_set(
             result,

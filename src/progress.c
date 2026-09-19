@@ -183,12 +183,8 @@ lrc_progress_render(LrcProgress *progress, bool end_line) {
 }
 
 static void
-lrc_progress_init(
-    LrcProgress *progress,
-    bool enabled,
-    char *label,
-    int64 total
-) {
+lrc_progress_init(LrcProgress *progress, bool enabled, char *label,
+                  int64 total) {
     if (progress == NULL) {
         return;
     }

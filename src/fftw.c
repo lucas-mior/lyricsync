@@ -60,12 +60,8 @@ fftw_real_plan_init(FftwRealPlan *plan, int32 n_fft) {
 }
 
 static bool
-fftw_real_forward(
-    FftwRealPlan *plan,
-    float *input,
-    float *output_real,
-    float *output_imag
-) {
+fftw_real_forward(FftwRealPlan *plan, float *input, float *output_real,
+                  float *output_imag) {
     fftwf_complex *spectrum;
 
     if ((plan == NULL) || (input == NULL) || (output_real == NULL)
@@ -96,12 +92,8 @@ fftw_real_forward(
 }
 
 static bool
-fftw_real_inverse(
-    FftwRealPlan *plan,
-    float *input_real,
-    float *input_imag,
-    float *output
-) {
+fftw_real_inverse(FftwRealPlan *plan, float *input_real, float *input_imag,
+                  float *output) {
     fftwf_complex *spectrum;
     float scale;
 

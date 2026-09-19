@@ -67,46 +67,26 @@ typedef struct LrcParsedFile {
 
 static void lrc_format_result_init(LrcFormatResult *result);
 static void lrc_write_result_init(LrcWriteResult *result);
-static bool lrc_timestamp_hundredths_from_seconds(
-    float seconds,
-    int32 *timestamp_hundredths,
-    LrcFormatResult *result
-);
-static bool lrc_format_timestamp_hundredths(
-    int32 timestamp_hundredths,
-    char *buffer,
-    int32 buffer_len,
-    int32 *formatted_len,
-    LrcFormatResult *result
-);
-static bool lrc_format_timestamped_line_hundredths(
-    StrBuilder *builder,
-    int32 timestamp_hundredths,
-    char *text,
-    int32 text_len,
-    LrcFormatResult *result
-);
+static bool lrc_timestamp_hundredths_from_seconds(float seconds,
+                                                  int32 *timestamp_hundredths,
+                                                  LrcFormatResult *result);
+static bool lrc_format_timestamp_hundredths(int32 timestamp_hundredths,
+                                            char *buffer, int32 buffer_len,
+                                            int32 *formatted_len,
+                                            LrcFormatResult *result);
+static bool lrc_format_timestamped_line_hundredths(StrBuilder *builder,
+                                                   int32 timestamp_hundredths,
+                                                   char *text, int32 text_len,
+                                                   LrcFormatResult *result);
 #if TESTING
 static void lrc_parse_result_init(LrcParseResult *result);
 static void lrc_parsed_file_destroy(LrcParsedFile *parsed);
-static bool lrc_parse_text(
-    LrcParsedFile *parsed,
-    char *text,
-    int32 text_len,
-    LrcParseResult *result
-);
+static bool lrc_parse_text(LrcParsedFile *parsed, char *text, int32 text_len,
+                           LrcParseResult *result);
 #endif
-static bool lrc_format_output_lines(
-    StrBuilder *builder,
-    LrcOutputLine *lines,
-    int32 line_count,
-    LrcWriteResult *result
-);
-static bool lrc_write_output_file(
-    char *path,
-    LrcOutputLine *lines,
-    int32 line_count,
-    LrcWriteResult *result
-);
+static bool lrc_format_output_lines(StrBuilder *builder, LrcOutputLine *lines,
+                                    int32 line_count, LrcWriteResult *result);
+static bool lrc_write_output_file(char *path, LrcOutputLine *lines,
+                                  int32 line_count, LrcWriteResult *result);
 
 #endif /* LRC_H */

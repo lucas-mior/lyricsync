@@ -25,12 +25,8 @@ lrc_ctc_inference_result_init(LrcCtcInferenceResult *result) {
 }
 
 static void
-lrc_ctc_inference_result_set(
-    LrcCtcInferenceResult *result,
-    enum LsError error,
-    char *message,
-    int64 output_index
-) {
+lrc_ctc_inference_result_set(LrcCtcInferenceResult *result, enum LsError error,
+                             char *message, int64 output_index) {
     if (result == NULL) {
         return;
     }
@@ -58,16 +54,11 @@ lrc_ctc_emissions_destroy(LrcCtcEmissions *emissions) {
 }
 
 static bool
-lrc_ctc_emissions_shape_valid(
-    int64 *shape,
-    int32 shape_len,
-    int64 *row_count,
-    int64 *row_emission_count,
-    int64 *total_emission_count,
-    int64 *vocabulary_size,
-    int64 *value_count,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_emissions_shape_valid(int64 *shape, int32 shape_len, int64 *row_count,
+                              int64 *row_emission_count,
+                              int64 *total_emission_count,
+                              int64 *vocabulary_size, int64 *value_count,
+                              LrcCtcInferenceResult *result) {
     int64 rows;
     int64 row_emissions;
     int64 total_emissions;
@@ -134,11 +125,8 @@ lrc_ctc_emissions_shape_valid(
 }
 
 static bool
-lrc_ctc_emissions_values_valid(
-    float *values,
-    int64 value_count,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_emissions_values_valid(float *values, int64 value_count,
+                               LrcCtcInferenceResult *result) {
     if ((values == NULL) || (value_count <= 0)) {
         lrc_ctc_inference_result_set(
             result,
@@ -165,14 +153,9 @@ lrc_ctc_emissions_values_valid(
 }
 
 static bool
-lrc_ctc_emissions_copy_shape(
-    LrcCtcEmissions *emissions,
-    float *values,
-    int64 value_count,
-    int64 *shape,
-    int32 shape_len,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_emissions_copy_shape(LrcCtcEmissions *emissions, float *values,
+                             int64 value_count, int64 *shape, int32 shape_len,
+                             LrcCtcInferenceResult *result) {
     int64 row_count;
     int64 row_emission_count;
     int64 total_emission_count;
@@ -241,12 +224,9 @@ lrc_ctc_emissions_copy_shape(
 }
 
 static bool
-lrc_ctc_emissions_value_count(
-    int64 emission_count,
-    int64 vocabulary_size,
-    int64 *value_count,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_emissions_value_count(int64 emission_count, int64 vocabulary_size,
+                              int64 *value_count,
+                              LrcCtcInferenceResult *result) {
     if (value_count == NULL) {
         lrc_ctc_inference_result_set(
             result,
@@ -291,11 +271,9 @@ lrc_ctc_emissions_value_count(
 }
 
 static bool
-lrc_ctc_emissions_input_chunks_ready(
-    LrcCtcModelInput *input,
-    int64 raw_chunk_count,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_emissions_input_chunks_ready(LrcCtcModelInput *input,
+                                     int64 raw_chunk_count,
+                                     LrcCtcInferenceResult *result) {
     if ((input == NULL) || (input->chunks == NULL)) {
         lrc_ctc_inference_result_set(
             result,
@@ -334,12 +312,10 @@ lrc_ctc_emissions_input_chunks_ready(
 }
 
 static bool
-lrc_ctc_emissions_output_frame_count(
-    LrcCtcModelInput *input,
-    int64 raw_chunk_emission_count,
-    int64 *output_frame_count,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_emissions_output_frame_count(LrcCtcModelInput *input,
+                                     int64 raw_chunk_emission_count,
+                                     int64 *output_frame_count,
+                                     LrcCtcInferenceResult *result) {
     if (output_frame_count == NULL) {
         lrc_ctc_inference_result_set(
             result,
@@ -379,15 +355,11 @@ lrc_ctc_emissions_output_frame_count(
 }
 
 static bool
-lrc_ctc_emissions_chunk_trim_range(
-    LrcCtcModelInput *input,
-    LrcCtcModelChunk *chunk,
-    int64 chunk_index,
-    int64 raw_chunk_emission_count,
-    int64 *kept_offset,
-    int64 *kept_count,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_emissions_chunk_trim_range(LrcCtcModelInput *input,
+                                   LrcCtcModelChunk *chunk, int64 chunk_index,
+                                   int64 raw_chunk_emission_count,
+                                   int64 *kept_offset, int64 *kept_count,
+                                   LrcCtcInferenceResult *result) {
     int64 offset;
     int64 count;
 
@@ -439,15 +411,11 @@ lrc_ctc_emissions_chunk_trim_range(
 }
 
 static bool
-lrc_ctc_emissions_copy_rank3_trimmed(
-    LrcCtcEmissions *emissions,
-    LrcCtcModelInput *input,
-    float *values,
-    int64 value_count,
-    int64 *shape,
-    bool print_progress,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_emissions_copy_rank3_trimmed(LrcCtcEmissions *emissions,
+                                     LrcCtcModelInput *input, float *values,
+                                     int64 value_count, int64 *shape,
+                                     bool print_progress,
+                                     LrcCtcInferenceResult *result) {
     int64 raw_chunk_count;
     int64 raw_chunk_emission_count;
     int64 raw_emission_count;
@@ -586,16 +554,11 @@ lrc_ctc_emissions_copy_rank3_trimmed(
 }
 
 static bool
-lrc_ctc_emissions_copy_model_output(
-    LrcCtcEmissions *emissions,
-    LrcCtcModelInput *input,
-    float *values,
-    int64 value_count,
-    int64 *shape,
-    int32 shape_len,
-    bool print_progress,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_emissions_copy_model_output(LrcCtcEmissions *emissions,
+                                    LrcCtcModelInput *input, float *values,
+                                    int64 value_count, int64 *shape,
+                                    int32 shape_len, bool print_progress,
+                                    LrcCtcInferenceResult *result) {
     if (result) {
         lrc_ctc_inference_result_init(result);
     }
@@ -638,10 +601,8 @@ lrc_ctc_emissions_copy_model_output(
 }
 
 static bool
-lrc_ctc_emissions_ready(
-    LrcCtcEmissions *emissions,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_emissions_ready(LrcCtcEmissions *emissions,
+                        LrcCtcInferenceResult *result) {
     if (emissions == NULL) {
         lrc_ctc_inference_result_set(
             result,
@@ -687,12 +648,9 @@ lrc_ctc_emissions_ready(
 }
 
 static bool
-lrc_ctc_emissions_log_softmax_row(
-    float *row,
-    int64 vocabulary_size,
-    int64 row_offset,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_emissions_log_softmax_row(float *row, int64 vocabulary_size,
+                                  int64 row_offset,
+                                  LrcCtcInferenceResult *result) {
     double sum;
     double log_denom;
     float max_value;
@@ -738,11 +696,8 @@ lrc_ctc_emissions_log_softmax_row(
 
 static bool
 lrc_ctc_emissions_log_probabilities_from_probabilities_row(
-    float *row,
-    int64 vocabulary_size,
-    int64 row_offset,
-    LrcCtcInferenceResult *result
-) {
+    float *row, int64 vocabulary_size, int64 row_offset,
+    LrcCtcInferenceResult *result) {
     if ((row == NULL) || (vocabulary_size <= 0)) {
         lrc_ctc_inference_result_set(
             result,
@@ -774,10 +729,8 @@ lrc_ctc_emissions_log_probabilities_from_probabilities_row(
 
 static bool
 lrc_ctc_emissions_convert_to_log_probabilities(
-    LrcCtcEmissions *emissions,
-    enum LrcCtcEmissionValuesKind values_kind,
-    LrcCtcInferenceResult *result
-) {
+    LrcCtcEmissions *emissions, enum LrcCtcEmissionValuesKind values_kind,
+    LrcCtcInferenceResult *result) {
     if (result) {
         lrc_ctc_inference_result_init(result);
     }
@@ -828,16 +781,10 @@ lrc_ctc_emissions_convert_to_log_probabilities(
 
 static bool
 lrc_ctc_emissions_build_trimmed_from_model_output(
-    LrcCtcEmissions *emissions,
-    LrcCtcModelInput *input,
-    float *values,
-    int64 value_count,
-    int64 *shape,
-    int32 shape_len,
-    enum LrcCtcEmissionValuesKind values_kind,
-    bool print_progress,
-    LrcCtcInferenceResult *result
-) {
+    LrcCtcEmissions *emissions, LrcCtcModelInput *input, float *values,
+    int64 value_count, int64 *shape, int32 shape_len,
+    enum LrcCtcEmissionValuesKind values_kind, bool print_progress,
+    LrcCtcInferenceResult *result) {
     if (!lrc_ctc_emissions_copy_model_output(emissions,
                                              input,
                                              values,
@@ -859,10 +806,8 @@ lrc_ctc_emissions_build_trimmed_from_model_output(
 }
 
 static bool
-lrc_ctc_inference_input_ready(
-    LrcCtcModelInput *input,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_inference_input_ready(LrcCtcModelInput *input,
+                              LrcCtcInferenceResult *result) {
     if (input == NULL) {
         lrc_ctc_inference_result_set(
             result,
@@ -887,12 +832,9 @@ lrc_ctc_inference_input_ready(
 }
 
 static bool
-lrc_ctc_inference_run(
-    LrcCtcInferenceBackend *backend,
-    LrcCtcModelInput *input,
-    LrcCtcEmissions *emissions,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_inference_run(LrcCtcInferenceBackend *backend, LrcCtcModelInput *input,
+                      LrcCtcEmissions *emissions,
+                      LrcCtcInferenceResult *result) {
     if (result) {
         lrc_ctc_inference_result_init(result);
     }
@@ -921,13 +863,9 @@ lrc_ctc_inference_run(
 
 #if TESTING
 static bool
-lrc_ctc_fake_inference_set_shape(
-    LrcCtcFakeInference *fake,
-    float *values,
-    int64 value_count,
-    int64 *shape,
-    int32 shape_len
-) {
+lrc_ctc_fake_inference_set_shape(LrcCtcFakeInference *fake, float *values,
+                                 int64 value_count, int64 *shape,
+                                 int32 shape_len) {
     int64 row_count;
     int64 row_emission_count;
     int64 total_emission_count;
@@ -967,12 +905,8 @@ lrc_ctc_fake_inference_set_shape(
 }
 
 static bool
-lrc_ctc_fake_inference_set(
-    LrcCtcFakeInference *fake,
-    float *values,
-    int64 frame_count,
-    int64 vocabulary_size
-) {
+lrc_ctc_fake_inference_set(LrcCtcFakeInference *fake, float *values,
+                           int64 frame_count, int64 vocabulary_size) {
     int64 shape[2];
 
     shape[0] = frame_count;
@@ -991,14 +925,10 @@ lrc_ctc_fake_inference_set(
 }
 
 static bool
-lrc_ctc_fake_inference_run(
-    void *backend,
-    LrcCtcModelInput *input,
-    LrcCtcEmissions *emissions,
-    enum LrcCtcEmissionValuesKind values_kind,
-    bool print_progress,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_fake_inference_run(void *backend, LrcCtcModelInput *input,
+                           LrcCtcEmissions *emissions,
+                           enum LrcCtcEmissionValuesKind values_kind,
+                           bool print_progress, LrcCtcInferenceResult *result) {
     LrcCtcFakeInference *fake = backend;
 
     if (fake == NULL) {
@@ -1025,10 +955,8 @@ lrc_ctc_fake_inference_run(
 }
 
 static void
-lrc_ctc_fake_inference_backend(
-    LrcCtcFakeInference *fake,
-    LrcCtcInferenceBackend *backend
-) {
+lrc_ctc_fake_inference_backend(LrcCtcFakeInference *fake,
+                               LrcCtcInferenceBackend *backend) {
     if (backend == NULL) {
         return;
     }
@@ -1063,10 +991,8 @@ lrc_ctc_onnx_inference_destroy(LrcCtcOnnxInference *onnx) {
 
 #if LRC_CTC_INFERENCE_ENABLE_ORT
 static bool
-lrc_ctc_onnx_model_input_info(
-    LrcCtcOnnxInference *onnx,
-    LrcCtcModelIoInfo *info
-) {
+lrc_ctc_onnx_model_input_info(LrcCtcOnnxInference *onnx,
+                              LrcCtcModelIoInfo *info) {
     OrtModelIoInfo ort_info;
 
     if ((onnx == NULL) || (info == NULL)) {
@@ -1093,11 +1019,9 @@ lrc_ctc_onnx_model_input_info(
 #endif
 
 static bool
-lrc_ctc_onnx_validate_model_input(
-    LrcCtcModelInput *input,
-    LrcCtcModelIoInfo *input_info,
-    LrcCtcModelInputResult *input_result
-) {
+lrc_ctc_onnx_validate_model_input(LrcCtcModelInput *input,
+                                  LrcCtcModelIoInfo *input_info,
+                                  LrcCtcModelInputResult *input_result) {
     LrcCtcModelInput chunk_input;
 
     if ((input == NULL) || (input_info == NULL)) {
@@ -1118,14 +1042,11 @@ lrc_ctc_onnx_validate_model_input(
 }
 
 static bool
-lrc_ctc_onnx_chunk_output_shape(
-    OrtTensor *output,
-    int64 chunk_index,
-    int64 *chunk_emission_count,
-    int64 *vocabulary_size,
-    int64 *chunk_value_count,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_onnx_chunk_output_shape(OrtTensor *output, int64 chunk_index,
+                                int64 *chunk_emission_count,
+                                int64 *vocabulary_size,
+                                int64 *chunk_value_count,
+                                LrcCtcInferenceResult *result) {
     int64 shape[3];
     int64 row_count;
     int64 row_emission_count;
@@ -1204,12 +1125,9 @@ lrc_ctc_onnx_chunk_output_shape(
 }
 
 static bool
-lrc_ctc_onnx_inference_load(
-    LrcCtcOnnxInference *onnx,
-    char *model_path,
-    OrtSessionConfig *session_config,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_onnx_inference_load(LrcCtcOnnxInference *onnx, char *model_path,
+                            OrtSessionConfig *session_config,
+                            LrcCtcInferenceResult *result) {
     if (result) {
         lrc_ctc_inference_result_init(result);
     }
@@ -1278,13 +1196,10 @@ lrc_ctc_onnx_chunked_free_values(float **values, int64 value_count) {
 }
 
 static bool
-lrc_ctc_onnx_chunked_prepare_values(
-    LrcCtcModelInput *input,
-    int64 chunk_value_count,
-    float **values,
-    int64 *value_count,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_onnx_chunked_prepare_values(LrcCtcModelInput *input,
+                                    int64 chunk_value_count, float **values,
+                                    int64 *value_count,
+                                    LrcCtcInferenceResult *result) {
     if ((input == NULL) || (values == NULL) || (value_count == NULL)
         || (chunk_value_count <= 0)) {
         lrc_ctc_inference_result_set(
@@ -1327,14 +1242,9 @@ lrc_ctc_onnx_chunked_prepare_values(
 }
 
 static bool
-lrc_ctc_onnx_run_one_chunk(
-    LrcCtcOnnxInference *onnx,
-    LrcCtcModelInput *input,
-    int64 chunk_index,
-    int64 *shape,
-    OrtTensor *output,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_onnx_run_one_chunk(LrcCtcOnnxInference *onnx, LrcCtcModelInput *input,
+                           int64 chunk_index, int64 *shape, OrtTensor *output,
+                           LrcCtcInferenceResult *result) {
     OrtTensor input_tensor;
     int64 sample_offset;
 
@@ -1375,17 +1285,12 @@ lrc_ctc_onnx_run_one_chunk(
 }
 
 static bool
-lrc_ctc_onnx_chunked_copy_output(
-    LrcCtcModelInput *input,
-    OrtTensor *output,
-    int64 chunk_index,
-    int64 *chunk_emission_count,
-    int64 *vocabulary_size,
-    int64 *chunk_value_count,
-    float **values,
-    int64 *value_count,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_onnx_chunked_copy_output(LrcCtcModelInput *input, OrtTensor *output,
+                                 int64 chunk_index, int64 *chunk_emission_count,
+                                 int64 *vocabulary_size,
+                                 int64 *chunk_value_count, float **values,
+                                 int64 *value_count,
+                                 LrcCtcInferenceResult *result) {
     int64 current_emission_count;
     int64 current_vocabulary_size;
     int64 current_value_count;
@@ -1432,14 +1337,12 @@ lrc_ctc_onnx_chunked_copy_output(
 }
 
 static bool
-lrc_ctc_onnx_inference_run_chunked(
-    LrcCtcOnnxInference *onnx,
-    LrcCtcModelInput *input,
-    LrcCtcEmissions *emissions,
-    enum LrcCtcEmissionValuesKind values_kind,
-    bool print_progress,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_onnx_inference_run_chunked(LrcCtcOnnxInference *onnx,
+                                   LrcCtcModelInput *input,
+                                   LrcCtcEmissions *emissions,
+                                   enum LrcCtcEmissionValuesKind values_kind,
+                                   bool print_progress,
+                                   LrcCtcInferenceResult *result) {
     LrcProgress progress;
     OrtTensor output;
     float *values = NULL;
@@ -1515,14 +1418,10 @@ lrc_ctc_onnx_inference_run_chunked(
 #endif
 
 static bool
-lrc_ctc_onnx_inference_run(
-    void *backend,
-    LrcCtcModelInput *input,
-    LrcCtcEmissions *emissions,
-    enum LrcCtcEmissionValuesKind values_kind,
-    bool print_progress,
-    LrcCtcInferenceResult *result
-) {
+lrc_ctc_onnx_inference_run(void *backend, LrcCtcModelInput *input,
+                           LrcCtcEmissions *emissions,
+                           enum LrcCtcEmissionValuesKind values_kind,
+                           bool print_progress, LrcCtcInferenceResult *result) {
 #if LRC_CTC_INFERENCE_ENABLE_ORT
     LrcCtcOnnxInference *onnx = backend;
     LrcCtcModelInputResult input_result;
@@ -1633,10 +1532,8 @@ lrc_ctc_onnx_inference_run(
 }
 
 static void
-lrc_ctc_onnx_inference_backend(
-    LrcCtcOnnxInference *onnx,
-    LrcCtcInferenceBackend *backend
-) {
+lrc_ctc_onnx_inference_backend(LrcCtcOnnxInference *onnx,
+                               LrcCtcInferenceBackend *backend) {
     if (backend == NULL) {
         return;
     }
@@ -1687,11 +1584,9 @@ ctc_inference_make_input(LrcCtcModelInput *input) {
 
 
 static void
-ctc_inference_make_rank3_trim_input(
-    LrcCtcModelInput *input,
-    LrcCtcModelChunk *chunks,
-    int64 original_emission_count
-) {
+ctc_inference_make_rank3_trim_input(LrcCtcModelInput *input,
+                                    LrcCtcModelChunk *chunks,
+                                    int64 original_emission_count) {
     static float samples[] = {0.0f, 0.1f, -0.1f, 0.2f, 0.3f, -0.3f};
 
     memset64(input, 0, SIZEOF(*input));
@@ -1728,15 +1623,12 @@ ctc_inference_make_rank3_trim_input(
 
 
 static void
-ctc_inference_make_custom_rank3_trim_input(
-    LrcCtcModelInput *input,
-    LrcCtcModelChunk *chunks,
-    int64 chunk_count,
-    int64 raw_chunk_emission_count,
-    int64 trim_left,
-    int64 trim_right,
-    int64 original_emission_count
-) {
+ctc_inference_make_custom_rank3_trim_input(LrcCtcModelInput *input,
+                                           LrcCtcModelChunk *chunks,
+                                           int64 chunk_count,
+                                           int64 raw_chunk_emission_count,
+                                           int64 trim_left, int64 trim_right,
+                                           int64 original_emission_count) {
     static float samples[] = {0.0f};
     int64 kept_count;
 
@@ -1781,9 +1673,7 @@ typedef struct CtcInferenceStderrCapture {
 } CtcInferenceStderrCapture;
 
 static bool
-ctc_inference_stderr_capture_begin(
-    CtcInferenceStderrCapture *capture
-) {
+ctc_inference_stderr_capture_begin(CtcInferenceStderrCapture *capture) {
     if (capture == NULL) {
         return false;
     }
@@ -1813,11 +1703,8 @@ ctc_inference_stderr_capture_begin(
 }
 
 static int64
-ctc_inference_stderr_capture_end(
-    CtcInferenceStderrCapture *capture,
-    char *buffer,
-    int32 buffer_len
-) {
+ctc_inference_stderr_capture_end(CtcInferenceStderrCapture *capture,
+                                 char *buffer, int32 buffer_len) {
     int64 len;
 
     if ((capture == NULL) || (capture->file == NULL)) {

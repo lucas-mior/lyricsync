@@ -35,12 +35,9 @@ lrc_ctc_model_input_result_init(LrcCtcModelInputResult *result) {
 }
 
 static void
-lrc_ctc_model_input_result_set(
-    LrcCtcModelInputResult *result,
-    enum LsError error,
-    char *message,
-    int64 sample_index
-) {
+lrc_ctc_model_input_result_set(LrcCtcModelInputResult *result,
+                               enum LsError error, char *message,
+                               int64 sample_index) {
     if (result == NULL) {
         return;
     }
@@ -68,11 +65,8 @@ lrc_ctc_model_input_destroy(LrcCtcModelInput *input) {
 }
 
 static bool
-lrc_ctc_model_seconds_to_samples(
-    int32 seconds,
-    int32 sample_rate,
-    int64 *samples
-) {
+lrc_ctc_model_seconds_to_samples(int32 seconds, int32 sample_rate,
+                                 int64 *samples) {
     if (samples == NULL) {
         return false;
     }
@@ -93,12 +87,9 @@ lrc_ctc_model_seconds_to_samples(
 }
 
 static bool
-lrc_ctc_model_config_prepare(
-    LrcCtcModelConfig *config,
-    int64 *window_samples,
-    int64 *context_samples,
-    LrcCtcModelInputResult *result
-) {
+lrc_ctc_model_config_prepare(LrcCtcModelConfig *config, int64 *window_samples,
+                             int64 *context_samples,
+                             LrcCtcModelInputResult *result) {
     if (config == NULL) {
         lrc_ctc_model_input_result_set(
             result,
@@ -172,11 +163,8 @@ lrc_ctc_model_config_prepare(
 }
 
 static bool
-lrc_ctc_model_audio_valid(
-    LrcCtcAudio *audio,
-    LrcCtcModelConfig *config,
-    LrcCtcModelInputResult *result
-) {
+lrc_ctc_model_audio_valid(LrcCtcAudio *audio, LrcCtcModelConfig *config,
+                          LrcCtcModelInputResult *result) {
     if (audio == NULL) {
         lrc_ctc_model_input_result_set(
             result,
@@ -221,11 +209,7 @@ lrc_ctc_model_audio_valid(
 }
 
 static bool
-lrc_ctc_model_ceil_to_multiple(
-    int64 value,
-    int64 multiple,
-    int64 *result
-) {
+lrc_ctc_model_ceil_to_multiple(int64 value, int64 multiple, int64 *result) {
     int64 remainder;
 
     if (result == NULL) {
@@ -251,11 +235,9 @@ lrc_ctc_model_ceil_to_multiple(
 }
 
 static bool
-lrc_ctc_model_samples_to_emission_frames_floor(
-    int64 sample_count,
-    int32 inputs_to_logits_ratio,
-    int64 *frame_count
-) {
+lrc_ctc_model_samples_to_emission_frames_floor(int64 sample_count,
+                                               int32 inputs_to_logits_ratio,
+                                               int64 *frame_count) {
     if (frame_count == NULL) {
         return false;
     }
@@ -270,11 +252,9 @@ lrc_ctc_model_samples_to_emission_frames_floor(
 }
 
 static bool
-lrc_ctc_model_samples_to_emission_frames(
-    int64 sample_count,
-    int32 inputs_to_logits_ratio,
-    int64 *frame_count
-) {
+lrc_ctc_model_samples_to_emission_frames(int64 sample_count,
+                                         int32 inputs_to_logits_ratio,
+                                         int64 *frame_count) {
     int64 ratio;
 
     if (frame_count == NULL) {
@@ -299,10 +279,7 @@ lrc_ctc_model_samples_to_emission_frames(
 }
 
 static bool
-lrc_ctc_model_input_shape_short(
-    LrcCtcAudio *audio,
-    LrcCtcModelInput *input
-) {
+lrc_ctc_model_input_shape_short(LrcCtcAudio *audio, LrcCtcModelInput *input) {
     input->row_count = 1;
     input->chunk_count = 1;
     input->row_sample_count = audio->sample_count;
@@ -315,12 +292,9 @@ lrc_ctc_model_input_shape_short(
 }
 
 static bool
-lrc_ctc_model_input_shape_chunked(
-    LrcCtcAudio *audio,
-    int64 window_samples,
-    int64 context_samples,
-    LrcCtcModelInput *input
-) {
+lrc_ctc_model_input_shape_chunked(LrcCtcAudio *audio, int64 window_samples,
+                                  int64 context_samples,
+                                  LrcCtcModelInput *input) {
     int64 padded_audio_samples;
     int64 context_total;
 
@@ -360,10 +334,8 @@ lrc_ctc_model_input_shape_chunked(
 }
 
 static bool
-lrc_ctc_model_input_allocate(
-    LrcCtcModelInput *input,
-    LrcCtcModelInputResult *result
-) {
+lrc_ctc_model_input_allocate(LrcCtcModelInput *input,
+                             LrcCtcModelInputResult *result) {
     if ((input->sample_count <= 0) || (input->chunk_count <= 0)) {
         return false;
     }
@@ -394,10 +366,7 @@ lrc_ctc_model_input_allocate(
 }
 
 static void
-lrc_ctc_model_input_copy_short(
-    LrcCtcModelInput *input,
-    LrcCtcAudio *audio
-) {
+lrc_ctc_model_input_copy_short(LrcCtcModelInput *input, LrcCtcAudio *audio) {
     memcpy64(input->samples,
              audio->samples,
              audio->sample_count*SIZEOF(*audio->samples));
@@ -406,10 +375,7 @@ lrc_ctc_model_input_copy_short(
 }
 
 static void
-lrc_ctc_model_input_copy_chunked(
-    LrcCtcModelInput *input,
-    LrcCtcAudio *audio
-) {
+lrc_ctc_model_input_copy_chunked(LrcCtcModelInput *input, LrcCtcAudio *audio) {
     int64 window_samples = input->window_sample_count;
     int64 context_samples = input->context_sample_count;
 
@@ -433,9 +399,7 @@ lrc_ctc_model_input_copy_chunked(
 }
 
 static bool
-lrc_ctc_model_input_prepare_emission_counts(
-    LrcCtcModelInput *input
-) {
+lrc_ctc_model_input_prepare_emission_counts(LrcCtcModelInput *input) {
     int64 extension_emissions;
 
     if ((input == NULL) || (input->inputs_to_logits_ratio <= 0)) {
@@ -483,9 +447,7 @@ lrc_ctc_model_input_prepare_emission_counts(
 }
 
 static void
-lrc_ctc_model_input_prepare_short_chunk(
-    LrcCtcModelInput *input
-) {
+lrc_ctc_model_input_prepare_short_chunk(LrcCtcModelInput *input) {
     LrcCtcModelChunk *chunk = &input->chunks[0];
 
     chunk->source_start_frame = 0;
@@ -508,9 +470,7 @@ lrc_ctc_model_input_prepare_short_chunk(
 }
 
 static bool
-lrc_ctc_model_input_prepare_chunk_metadata(
-    LrcCtcModelInput *input
-) {
+lrc_ctc_model_input_prepare_chunk_metadata(LrcCtcModelInput *input) {
     int64 center_start;
     int64 center_end;
     int64 source_start;
@@ -591,12 +551,9 @@ lrc_ctc_model_input_prepare_chunk_metadata(
 }
 
 static bool
-lrc_ctc_model_input_prepare(
-    LrcCtcModelInput *input,
-    LrcCtcAudio *audio,
-    LrcCtcModelConfig *config,
-    LrcCtcModelInputResult *result
-) {
+lrc_ctc_model_input_prepare(LrcCtcModelInput *input, LrcCtcAudio *audio,
+                            LrcCtcModelConfig *config,
+                            LrcCtcModelInputResult *result) {
     LrcCtcModelConfig default_config;
     int64 window_samples;
     int64 context_samples;
@@ -696,11 +653,9 @@ lrc_ctc_model_dim_matches(int64 model_dim, int64 input_dim) {
 }
 
 static bool
-lrc_ctc_model_input_validate_model_io(
-    LrcCtcModelInput *input,
-    LrcCtcModelIoInfo *info,
-    LrcCtcModelInputResult *result
-) {
+lrc_ctc_model_input_validate_model_io(LrcCtcModelInput *input,
+                                      LrcCtcModelIoInfo *info,
+                                      LrcCtcModelInputResult *result) {
     if (result) {
         lrc_ctc_model_input_result_init(result);
     }
@@ -772,12 +727,8 @@ ctc_model_double_close(double a, double b, double max_error) {
 }
 
 static void
-ctc_model_make_audio(
-    LrcCtcAudio *audio,
-    float *samples,
-    int64 sample_count,
-    int32 sample_rate
-) {
+ctc_model_make_audio(LrcCtcAudio *audio, float *samples, int64 sample_count,
+                     int32 sample_rate) {
     memset64(audio, 0, SIZEOF(*audio));
     audio->samples = samples;
     audio->sample_count = sample_count;

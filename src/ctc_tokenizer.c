@@ -22,14 +22,9 @@ lrc_ctc_tokenize_result_init(LrcCtcTokenizeResult *result) {
 }
 
 static void
-lrc_ctc_tokenize_result_set(
-    LrcCtcTokenizeResult *result,
-    enum LsError error,
-    char *message,
-    int32 byte_offset,
-    int32 line_index,
-    int32 token_id
-) {
+lrc_ctc_tokenize_result_set(LrcCtcTokenizeResult *result, enum LsError error,
+                            char *message, int32 byte_offset, int32 line_index,
+                            int32 token_id) {
     if (result == NULL) {
         return;
     }
@@ -58,10 +53,7 @@ lrc_ctc_tokenized_text_destroy(LrcCtcTokenizedText *text) {
 }
 
 static bool
-lrc_ctc_tokenized_text_reserve(
-    LrcCtcTokenizedText *text,
-    int32 extra
-) {
+lrc_ctc_tokenized_text_reserve(LrcCtcTokenizedText *text, int32 extra) {
     int64 needed;
 
     if (extra <= 0) {
@@ -77,15 +69,9 @@ lrc_ctc_tokenized_text_reserve(
 }
 
 static bool
-lrc_ctc_tokenized_text_append(
-    LrcCtcTokenizedText *text,
-    int32 token_id,
-    int32 start,
-    int32 end,
-    int32 line_index,
-    int32 segment_index,
-    bool starts_segment
-) {
+lrc_ctc_tokenized_text_append(LrcCtcTokenizedText *text, int32 token_id,
+                              int32 start, int32 end, int32 line_index,
+                              int32 segment_index, bool starts_segment) {
     LrcCtcTextToken *token;
 
     if (!lrc_ctc_tokenized_text_reserve(text, 1)) {
@@ -124,14 +110,9 @@ lrc_ctc_tokenizer_utf8_step(char *text, int32 text_len, int32 offset) {
 }
 
 static bool
-lrc_ctc_tokenizer_best_match(
-    LrcCtcTokenizer *tokenizer,
-    char *text,
-    int32 text_len,
-    int32 offset,
-    int32 *token_id,
-    int32 *token_len
-) {
+lrc_ctc_tokenizer_best_match(LrcCtcTokenizer *tokenizer, char *text,
+                             int32 text_len, int32 offset, int32 *token_id,
+                             int32 *token_len) {
     int32 best_id = -1;
     int32 best_len = -1;
 
@@ -167,12 +148,8 @@ lrc_ctc_tokenizer_best_match(
 
 
 static bool
-lrc_ctc_tokenizer_is_unmatched_separator(
-    char *text,
-    int32 text_len,
-    int32 offset,
-    int32 *skip_len
-) {
+lrc_ctc_tokenizer_is_unmatched_separator(char *text, int32 text_len,
+                                         int32 offset, int32 *skip_len) {
     if ((text == NULL) || (offset < 0) || (offset >= text_len)) {
         return false;
     }
@@ -201,11 +178,8 @@ lrc_ctc_tokenizer_uses_target_text(LrcLyricsNormalized *normalized) {
 }
 
 static int32
-lrc_ctc_tokenizer_map_line_at(
-    LrcLyricsNormalized *normalized,
-    int32 offset,
-    bool use_target_text
-) {
+lrc_ctc_tokenizer_map_line_at(LrcLyricsNormalized *normalized, int32 offset,
+                              bool use_target_text) {
     if (normalized == NULL) {
         return -1;
     }
@@ -223,15 +197,12 @@ lrc_ctc_tokenizer_map_line_at(
 }
 
 static bool
-lrc_ctc_tokenizer_map_normalized_range(
-    LrcLyricsNormalized *normalized,
-    int32 offset,
-    int32 token_len,
-    bool use_target_text,
-    int32 *normalized_start,
-    int32 *normalized_end,
-    int32 *line_index
-) {
+lrc_ctc_tokenizer_map_normalized_range(LrcLyricsNormalized *normalized,
+                                       int32 offset, int32 token_len,
+                                       bool use_target_text,
+                                       int32 *normalized_start,
+                                       int32 *normalized_end,
+                                       int32 *line_index) {
     int32 last;
 
     if ((normalized_start == NULL) || (normalized_end == NULL)
@@ -268,11 +239,9 @@ lrc_ctc_tokenizer_map_normalized_range(
 }
 
 static int32
-lrc_ctc_tokenizer_segment_index_for_range(
-    LrcLyricsNormalized *normalized,
-    int32 normalized_start,
-    int32 normalized_end
-) {
+lrc_ctc_tokenizer_segment_index_for_range(LrcLyricsNormalized *normalized,
+                                          int32 normalized_start,
+                                          int32 normalized_end) {
     if (normalized == NULL) {
         return -1;
     }
@@ -296,11 +265,9 @@ lrc_ctc_tokenizer_segment_index_for_range(
 }
 
 static bool
-lrc_ctc_tokenizer_range_starts_segment(
-    LrcLyricsNormalized *normalized,
-    int32 segment_index,
-    int32 normalized_start
-) {
+lrc_ctc_tokenizer_range_starts_segment(LrcLyricsNormalized *normalized,
+                                       int32 segment_index,
+                                       int32 normalized_start) {
     CtcTextSegment *segment;
 
     if (normalized == NULL) {
@@ -315,12 +282,10 @@ lrc_ctc_tokenizer_range_starts_segment(
 }
 
 static bool
-lrc_ctc_tokenizer_tokenize_normalized(
-    LrcCtcTokenizer *tokenizer,
-    LrcLyricsNormalized *normalized,
-    LrcCtcTokenizedText *tokens,
-    LrcCtcTokenizeResult *result
-) {
+lrc_ctc_tokenizer_tokenize_normalized(LrcCtcTokenizer *tokenizer,
+                                      LrcLyricsNormalized *normalized,
+                                      LrcCtcTokenizedText *tokens,
+                                      LrcCtcTokenizeResult *result) {
     char *text;
     int32 text_len;
     bool use_target_text;
@@ -569,14 +534,9 @@ lrc_ctc_tokenizer_result_init(LrcCtcTokenizerResult *result) {
 }
 
 static void
-lrc_ctc_tokenizer_result_set(
-    LrcCtcTokenizerResult *result,
-    enum LsError error,
-    char *message,
-    char *path,
-    int32 line_index,
-    int32 token_id
-) {
+lrc_ctc_tokenizer_result_set(LrcCtcTokenizerResult *result, enum LsError error,
+                             char *message, char *path, int32 line_index,
+                             int32 token_id) {
     if (result == NULL) {
         return;
     }
@@ -590,10 +550,7 @@ lrc_ctc_tokenizer_result_set(
 }
 
 static bool
-lrc_ctc_tokenizer_reserve_tokens(
-    LrcCtcTokenizer *tokenizer,
-    int32 extra
-) {
+lrc_ctc_tokenizer_reserve_tokens(LrcCtcTokenizer *tokenizer, int32 extra) {
     int64 needed;
 
     if (extra <= 0) {
@@ -609,10 +566,7 @@ lrc_ctc_tokenizer_reserve_tokens(
 }
 
 static bool
-lrc_ctc_tokenizer_reserve_text(
-    LrcCtcTokenizer *tokenizer,
-    int32 extra
-) {
+lrc_ctc_tokenizer_reserve_text(LrcCtcTokenizer *tokenizer, int32 extra) {
     int64 needed;
 
     if (extra <= 0) {
@@ -641,14 +595,9 @@ lrc_ctc_tokenizer_refresh_text_pointers(LrcCtcTokenizer *tokenizer) {
 }
 
 static bool
-lrc_ctc_tokenizer_decode_marker(
-    char *line,
-    int32 line_len,
-    char **token_text,
-    int32 *token_len,
-    bool *is_blank,
-    bool *is_unknown
-) {
+lrc_ctc_tokenizer_decode_marker(char *line, int32 line_len, char **token_text,
+                                int32 *token_len, bool *is_blank,
+                                bool *is_unknown) {
     *token_text = line;
     *token_len = line_len;
     *is_blank = false;
@@ -681,12 +630,8 @@ lrc_ctc_tokenizer_decode_marker(
 }
 
 static bool
-lrc_ctc_tokenizer_token_id(
-    LrcCtcTokenizer *tokenizer,
-    char *token,
-    int32 token_len,
-    int32 *id
-) {
+lrc_ctc_tokenizer_token_id(LrcCtcTokenizer *tokenizer, char *token,
+                           int32 token_len, int32 *id) {
     if ((tokenizer == NULL) || (token == NULL) || (id == NULL)) {
         return false;
     }
@@ -708,16 +653,10 @@ lrc_ctc_tokenizer_token_id(
 }
 
 static bool
-lrc_ctc_tokenizer_add_token(
-    LrcCtcTokenizer *tokenizer,
-    char *token_text,
-    int32 token_len,
-    bool is_blank,
-    bool is_unknown,
-    char *path,
-    int32 line_index,
-    LrcCtcTokenizerResult *result
-) {
+lrc_ctc_tokenizer_add_token(LrcCtcTokenizer *tokenizer, char *token_text,
+                            int32 token_len, bool is_blank, bool is_unknown,
+                            char *path, int32 line_index,
+                            LrcCtcTokenizerResult *result) {
     LrcCtcToken *token;
     char *stored_text;
     char zero;
@@ -814,13 +753,9 @@ lrc_ctc_tokenizer_add_token(
 }
 
 static bool
-lrc_ctc_tokenizer_parse_text(
-    LrcCtcTokenizer *tokenizer,
-    char *text,
-    int32 text_len,
-    char *path,
-    LrcCtcTokenizerResult *result
-) {
+lrc_ctc_tokenizer_parse_text(LrcCtcTokenizer *tokenizer, char *text,
+                             int32 text_len, char *path,
+                             LrcCtcTokenizerResult *result) {
     int32 line_start = 0;
     int32 line_index = 0;
 
@@ -883,11 +818,8 @@ lrc_ctc_tokenizer_parse_text(
 }
 
 static bool
-lrc_ctc_tokenizer_load_file(
-    LrcCtcTokenizer *tokenizer,
-    char *path,
-    LrcCtcTokenizerResult *result
-) {
+lrc_ctc_tokenizer_load_file(LrcCtcTokenizer *tokenizer, char *path,
+                            LrcCtcTokenizerResult *result) {
     char *file_text;
     int32 file_len;
     int32 bad_offset;
@@ -991,11 +923,8 @@ ctc_tokenizer_write_file(char *path, char *text) {
 
 
 static bool
-ctc_tokenizer_load_from_text(
-    LrcCtcTokenizer *tokenizer,
-    char *text,
-    char *name
-) {
+ctc_tokenizer_load_from_text(LrcCtcTokenizer *tokenizer, char *text,
+                             char *name) {
     LrcCtcTokenizerResult result;
     char temp_dir[PATH_MAX];
     char path[PATH_MAX];
@@ -1016,12 +945,9 @@ ctc_tokenizer_load_from_text(
 }
 
 static bool
-ctc_tokenizer_normalize_lyrics_text(
-    LrcLyrics *lyrics,
-    LrcLyricsNormalized *normalized,
-    char *text,
-    char *name
-) {
+ctc_tokenizer_normalize_lyrics_text(LrcLyrics *lyrics,
+                                    LrcLyricsNormalized *normalized, char *text,
+                                    char *name) {
     LrcLyricsLoadResult result;
     LrcLyricsPreprocessOptions options;
     char temp_dir[PATH_MAX];

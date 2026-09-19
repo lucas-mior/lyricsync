@@ -41,10 +41,7 @@ static OrtExecutionProviderInfo ort_execution_provider_infos[] = {
 };
 
 static bool
-ort_execution_provider_parse(
-    char *value,
-    enum OrtExecutionProvider *provider
-) {
+ort_execution_provider_parse(char *value, enum OrtExecutionProvider *provider) {
     if ((value == NULL) || (provider == NULL)) {
         return false;
     }
@@ -90,11 +87,7 @@ ort_check(OrtContext *context, OrtStatus *status, char *operation) {
 
 
 static bool
-ort_cuda_preload_cudnn_library(
-    OrtContext *context,
-    char *name,
-    bool required
-) {
+ort_cuda_preload_cudnn_library(OrtContext *context, char *name, bool required) {
 #if ORT_CUDA_PRELOAD_CUDNN
     static void *handle;
     char *message;
@@ -136,12 +129,8 @@ ort_cuda_preload_cudnn_library(
 }
 
 static bool
-ort_provider_check(
-    OrtContext *context,
-    OrtStatus *status,
-    char *operation,
-    bool required
-) {
+ort_provider_check(OrtContext *context, OrtStatus *status, char *operation,
+                   bool required) {
     OrtApi *api;
 
     if (status == NULL) {
@@ -163,11 +152,8 @@ ort_provider_check(
 }
 
 static bool
-ort_session_options_append_cuda(
-    OrtContext *context,
-    OrtSessionOptions *options,
-    bool required
-) {
+ort_session_options_append_cuda(OrtContext *context, OrtSessionOptions *options,
+                                bool required) {
     OrtApi *api;
     OrtCUDAProviderOptionsV2 *cuda_options;
     OrtStatus *status;
@@ -252,10 +238,8 @@ ort_session_options_append_cuda(
 }
 
 static bool
-ort_session_options_configure_provider(
-    OrtContext *context,
-    OrtSessionOptions *options
-) {
+ort_session_options_configure_provider(OrtContext *context,
+                                       OrtSessionOptions *options) {
     bool required;
 
     if ((context == NULL) || (options == NULL)) {
@@ -287,13 +271,8 @@ ort_session_options_configure_provider(
 }
 
 static bool
-ort_model_read_tensor_info(
-    OrtContext *context,
-    OrtSession *session,
-    bool input,
-    int64 *shape,
-    int32 *shape_len
-) {
+ort_model_read_tensor_info(OrtContext *context, OrtSession *session, bool input,
+                           int64 *shape, int32 *shape_len) {
     OrtApi *api = (OrtApi *)context->api;
     OrtTypeInfo *type_info = NULL;
     OrtStatus *status;
@@ -379,11 +358,8 @@ ort_model_io_info_init_empty(OrtModelIoInfo *info) {
 }
 
 static bool
-ort_model_copy_io_info(
-    OrtModel *model,
-    OrtModelIoInfo *info,
-    enum OrtModelIoKind kind
-) {
+ort_model_copy_io_info(OrtModel *model, OrtModelIoInfo *info,
+                       enum OrtModelIoKind kind) {
     int64 *source_shape;
     int32 source_shape_len;
 
@@ -445,10 +421,7 @@ ort_context_init_empty(OrtContext *context) {
 }
 
 static void
-ort_context_session_config_set(
-    OrtContext *context,
-    OrtSessionConfig *config
-) {
+ort_context_session_config_set(OrtContext *context, OrtSessionConfig *config) {
     if (context == NULL) {
         return;
     }
@@ -717,11 +690,8 @@ ort_tensor_init_empty(OrtTensor *tensor) {
 }
 
 static bool
-ort_tensor_shape_element_count(
-    int64 *shape,
-    int32 shape_len,
-    int64 *element_count
-) {
+ort_tensor_shape_element_count(int64 *shape, int32 shape_len,
+                               int64 *element_count) {
     int64 count;
 
     if (element_count == NULL) {
@@ -749,14 +719,8 @@ ort_tensor_shape_element_count(
 }
 
 static bool
-ort_tensor_create_f32(
-    OrtContext *context,
-    OrtTensor *tensor,
-    float *data,
-    int64 data_len,
-    int64 *shape,
-    int32 shape_len
-) {
+ort_tensor_create_f32(OrtContext *context, OrtTensor *tensor, float *data,
+                      int64 data_len, int64 *shape, int32 shape_len) {
     OrtApi *api;
     OrtStatus *status;
     int64 shape_count;
@@ -808,12 +772,8 @@ ort_tensor_create_f32(
 }
 
 static bool
-ort_model_run_f32(
-    OrtContext *context,
-    OrtModel *model,
-    OrtTensor *input,
-    OrtTensor *output
-) {
+ort_model_run_f32(OrtContext *context, OrtModel *model, OrtTensor *input,
+                  OrtTensor *output) {
     OrtApi *api;
     OrtStatus *status;
     OrtValue *input_value;

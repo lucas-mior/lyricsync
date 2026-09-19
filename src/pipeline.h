@@ -76,36 +76,22 @@ typedef struct LrcPipeline {
 
 static void lrc_pipeline_config_init(LrcPipelineConfig *config);
 static bool lrc_pipeline_debug_dump_enabled(LrcPipeline *pipeline);
-static void lrc_pipeline_init(
-    LrcPipeline *pipeline,
-    LrcPipelineConfig *config
-);
+static void lrc_pipeline_init(LrcPipeline *pipeline, LrcPipelineConfig *config);
 static bool lrc_pipeline_prepare(LrcPipeline *pipeline);
 static void lrc_pipeline_cleanup(LrcPipeline *pipeline);
-static bool lrc_pipeline_vocals_request(
-    LrcPipeline *pipeline,
-    LrcVocalsExtractRequest *request
-);
-static bool lrc_pipeline_extract_vocals(
-    LrcPipeline *pipeline,
-    LrcVocalsExtractResult *result
-);
-static void lrc_pipeline_ctc_assets_config(
-    LrcPipeline *pipeline,
-    LrcCtcAssetsConfig *config
-);
-static bool lrc_pipeline_validate_ctc_assets(
-    LrcPipeline *pipeline,
-    LrcCtcAssetsResult *result
-);
+static bool lrc_pipeline_vocals_request(LrcPipeline *pipeline,
+                                        LrcVocalsExtractRequest *request);
+static bool lrc_pipeline_extract_vocals(LrcPipeline *pipeline,
+                                        LrcVocalsExtractResult *result);
+static void lrc_pipeline_ctc_assets_config(LrcPipeline *pipeline,
+                                           LrcCtcAssetsConfig *config);
+static bool lrc_pipeline_validate_ctc_assets(LrcPipeline *pipeline,
+                                             LrcCtcAssetsResult *result);
 #if LRC_PIPELINE_ENABLE_GENERATE
 static void lrc_pipeline_generate_result_init(
-    LrcPipelineGenerateResult *result
-);
-static bool lrc_pipeline_generate_lrc(
-    LrcPipeline *pipeline,
-    LrcPipelineGenerateResult *result
-);
+    LrcPipelineGenerateResult *result);
+static bool lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
+                                      LrcPipelineGenerateResult *result);
 #endif
 
 #endif /* PIPELINE_H */

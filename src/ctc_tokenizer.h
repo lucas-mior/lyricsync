@@ -59,24 +59,14 @@ typedef struct LrcCtcTokenizer {
 static void lrc_ctc_tokenize_result_init(LrcCtcTokenizeResult *result);
 static void lrc_ctc_tokenized_text_destroy(LrcCtcTokenizedText *text);
 static bool lrc_ctc_tokenizer_tokenize_normalized(
-    LrcCtcTokenizer *tokenizer,
-    LrcLyricsNormalized *normalized,
-    LrcCtcTokenizedText *tokens,
-    LrcCtcTokenizeResult *result
-);
+    LrcCtcTokenizer *tokenizer, LrcLyricsNormalized *normalized,
+    LrcCtcTokenizedText *tokens, LrcCtcTokenizeResult *result);
 static void lrc_ctc_tokenizer_init(LrcCtcTokenizer *tokenizer);
 static void lrc_ctc_tokenizer_destroy(LrcCtcTokenizer *tokenizer);
 static void lrc_ctc_tokenizer_result_init(LrcCtcTokenizerResult *result);
-static bool lrc_ctc_tokenizer_load_file(
-    LrcCtcTokenizer *tokenizer,
-    char *path,
-    LrcCtcTokenizerResult *result
-);
-static bool lrc_ctc_tokenizer_token_id(
-    LrcCtcTokenizer *tokenizer,
-    char *token,
-    int32 token_len,
-    int32 *id
-);
+static bool lrc_ctc_tokenizer_load_file(LrcCtcTokenizer *tokenizer, char *path,
+                                        LrcCtcTokenizerResult *result);
+static bool lrc_ctc_tokenizer_token_id(LrcCtcTokenizer *tokenizer, char *token,
+                                       int32 token_len, int32 *id);
 
 #endif /* CTC_TOKENIZER_H */

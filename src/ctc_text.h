@@ -102,9 +102,7 @@ typedef struct LrcLyricsNormalized {
 } LrcLyricsNormalized;
 
 static void
-lrc_lyrics_preprocess_options_init(
-    LrcLyricsPreprocessOptions *options
-) {
+lrc_lyrics_preprocess_options_init(LrcLyricsPreprocessOptions *options) {
     if (options == NULL) {
         return;
     }
@@ -123,28 +121,17 @@ lrc_lyrics_preprocess_options_init(
 }
 static void lrc_lyrics_normalized_destroy(LrcLyricsNormalized *normalized);
 static bool lrc_lyrics_normalize_with_options(
-    LrcLyrics *lyrics,
-    LrcLyricsNormalized *normalized,
-    LrcLyricsPreprocessOptions *options
-);
+    LrcLyrics *lyrics, LrcLyricsNormalized *normalized,
+    LrcLyricsPreprocessOptions *options);
 #if TESTING
-static bool lrc_lyrics_normalize(
-    LrcLyrics *lyrics,
-    LrcLyricsNormalized *normalized
-);
-static int32 lrc_lyrics_normalized_line_at(
-    LrcLyricsNormalized *normalized,
-    int32 byte_offset
-);
+static bool lrc_lyrics_normalize(LrcLyrics *lyrics,
+                                 LrcLyricsNormalized *normalized);
+static int32 lrc_lyrics_normalized_line_at(LrcLyricsNormalized *normalized,
+                                           int32 byte_offset);
 #endif
 static enum LrcLyricsNormalizedLineKind lrc_lyrics_normalized_line_kind(
-    LrcLyricsNormalized *normalized,
-    int32 line_index
-);
-static bool lrc_lyrics_normalized_line_range(
-    LrcLyricsNormalized *normalized,
-    int32 line_index,
-    int32 *start,
-    int32 *end
-);
+    LrcLyricsNormalized *normalized, int32 line_index);
+static bool lrc_lyrics_normalized_line_range(LrcLyricsNormalized *normalized,
+                                             int32 line_index, int32 *start,
+                                             int32 *end);
 #endif /* CTC_TEXT_H */

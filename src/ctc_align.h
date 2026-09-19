@@ -177,14 +177,10 @@ static void lrc_ctc_trellis_destroy(LrcCtcTrellis *trellis);
 static void lrc_ctc_path_destroy(LrcCtcPath *path);
 static void lrc_ctc_path_segments_destroy(LrcCtcPathSegments *segments);
 static void lrc_ctc_aligned_token_intervals_destroy(
-    LrcCtcAlignedTokenIntervals *intervals
-);
+    LrcCtcAlignedTokenIntervals *intervals);
 static bool lrc_ctc_pad_token_intervals_with_blanks(
-    LrcCtcPathSegments *segments,
-    float frame_duration_seconds,
-    LrcCtcAlignedTokenIntervals *intervals,
-    LrcCtcAlignResult *result
-);
+    LrcCtcPathSegments *segments, float frame_duration_seconds,
+    LrcCtcAlignedTokenIntervals *intervals, LrcCtcAlignResult *result);
 static void lrc_ctc_token_spans_destroy(LrcCtcTokenSpans *spans);
 static void lrc_ctc_word_spans_destroy(LrcCtcWordSpans *spans);
 static void lrc_ctc_line_timestamps_destroy(LrcCtcLineTimestamps *timestamps);
@@ -193,62 +189,43 @@ static float *lrc_ctc_trellis_cell(
     int32 frame_index,
     int32 state_index
 );
-static void lrc_ctc_align_plan_init(
-    LrcCtcAlignPlan *plan,
-    int32 *target_token_ids,
-    bool *target_segment_starts,
-    int32 target_token_count,
-    int32 blank_token_id,
-    enum LrcCtcAlignStarMode star_mode,
-    int32 star_token_id
-);
-static bool lrc_ctc_trellis_score_forward_with_plan(
-    LrcCtcTrellis *trellis,
-    LrcCtcEmissions *emissions,
-    LrcCtcAlignPlan *plan,
-    LrcCtcAlignResult *result
-);
-static bool lrc_ctc_trellis_backtrack_with_plan(
-    LrcCtcTrellis *trellis,
-    LrcCtcEmissions *emissions,
-    LrcCtcAlignPlan *plan,
-    LrcCtcPath *path,
-    LrcCtcAlignResult *result
-);
-static bool lrc_ctc_path_to_segments(
-    LrcCtcPath *path,
-    LrcCtcEmissions *emissions,
-    float frame_duration_seconds,
-    LrcCtcPathSegments *segments,
-    LrcCtcAlignResult *result
-);
-static bool lrc_ctc_path_to_token_spans(
-    LrcCtcPath *path,
-    LrcCtcEmissions *emissions,
-    float frame_duration_seconds,
-    LrcCtcTokenSpans *spans,
-    LrcCtcAlignResult *result
-);
+static void lrc_ctc_align_plan_init(LrcCtcAlignPlan *plan,
+                                    int32 *target_token_ids,
+                                    bool *target_segment_starts,
+                                    int32 target_token_count,
+                                    int32 blank_token_id,
+                                    enum LrcCtcAlignStarMode star_mode,
+                                    int32 star_token_id);
+static bool lrc_ctc_trellis_score_forward_with_plan(LrcCtcTrellis *trellis,
+                                                    LrcCtcEmissions *emissions,
+                                                    LrcCtcAlignPlan *plan,
+                                                    LrcCtcAlignResult *result);
+static bool lrc_ctc_trellis_backtrack_with_plan(LrcCtcTrellis *trellis,
+                                                LrcCtcEmissions *emissions,
+                                                LrcCtcAlignPlan *plan,
+                                                LrcCtcPath *path,
+                                                LrcCtcAlignResult *result);
+static bool lrc_ctc_path_to_segments(LrcCtcPath *path,
+                                     LrcCtcEmissions *emissions,
+                                     float frame_duration_seconds,
+                                     LrcCtcPathSegments *segments,
+                                     LrcCtcAlignResult *result);
+static bool lrc_ctc_path_to_token_spans(LrcCtcPath *path,
+                                        LrcCtcEmissions *emissions,
+                                        float frame_duration_seconds,
+                                        LrcCtcTokenSpans *spans,
+                                        LrcCtcAlignResult *result);
 static bool lrc_ctc_path_to_padded_token_spans_with_plan(
-    LrcCtcPath *path,
-    LrcCtcEmissions *emissions,
-    LrcCtcAlignPlan *plan,
-    float frame_duration_seconds,
-    LrcCtcTokenSpans *spans,
-    LrcCtcAlignResult *result
-);
-static bool lrc_ctc_token_spans_to_word_spans(
-    LrcCtcTokenSpans *token_spans,
-    LrcCtcTokenizedText *tokens,
-    LrcLyricsNormalized *normalized,
-    LrcCtcWordSpans *word_spans,
-    LrcCtcAlignResult *result
-);
+    LrcCtcPath *path, LrcCtcEmissions *emissions, LrcCtcAlignPlan *plan,
+    float frame_duration_seconds, LrcCtcTokenSpans *spans,
+    LrcCtcAlignResult *result);
+static bool lrc_ctc_token_spans_to_word_spans(LrcCtcTokenSpans *token_spans,
+                                              LrcCtcTokenizedText *tokens,
+                                              LrcLyricsNormalized *normalized,
+                                              LrcCtcWordSpans *word_spans,
+                                              LrcCtcAlignResult *result);
 static bool lrc_ctc_word_spans_to_line_timestamps(
-    LrcCtcWordSpans *word_spans,
-    LrcLyricsNormalized *normalized,
-    LrcCtcLineTimestamps *line_timestamps,
-    LrcCtcAlignResult *result
-);
+    LrcCtcWordSpans *word_spans, LrcLyricsNormalized *normalized,
+    LrcCtcLineTimestamps *line_timestamps, LrcCtcAlignResult *result);
 
 #endif /* CTC_ALIGN_H */

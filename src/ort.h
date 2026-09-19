@@ -77,16 +77,12 @@ typedef struct OrtTensor {
     int32 shape_len;
 } OrtTensor;
 
-static bool ort_execution_provider_parse(
-    char *value,
-    enum OrtExecutionProvider *provider
-);
+static bool ort_execution_provider_parse(char *value,
+                                         enum OrtExecutionProvider *provider);
 static void ort_session_config_init(OrtSessionConfig *config);
 static void ort_context_init_empty(OrtContext *context);
-static void ort_context_session_config_set(
-    OrtContext *context,
-    OrtSessionConfig *config
-);
+static void ort_context_session_config_set(OrtContext *context,
+                                           OrtSessionConfig *config);
 static bool ort_context_init(OrtContext *context);
 static void ort_context_destroy(OrtContext *context);
 
@@ -95,34 +91,19 @@ static bool ort_model_input_info(OrtModel *model, OrtModelIoInfo *info);
 static bool ort_model_output_info(OrtModel *model, OrtModelIoInfo *info);
 
 static void ort_model_init_empty(OrtModel *model);
-static bool ort_model_load(
-    OrtContext *context,
-    OrtModel *model,
-    char *model_path
-);
+static bool ort_model_load(OrtContext *context, OrtModel *model,
+                           char *model_path);
 static bool ort_model_get_io_info(OrtContext *context, OrtModel *model);
 static void ort_model_destroy(OrtContext *context, OrtModel *model);
 
 static void ort_tensor_init_empty(OrtTensor *tensor);
-static bool ort_tensor_shape_element_count(
-    int64 *shape,
-    int32 shape_len,
-    int64 *element_count
-);
-static bool ort_tensor_create_f32(
-    OrtContext *context,
-    OrtTensor *tensor,
-    float *data,
-    int64 data_len,
-    int64 *shape,
-    int32 shape_len
-);
-static bool ort_model_run_f32(
-    OrtContext *context,
-    OrtModel *model,
-    OrtTensor *input,
-    OrtTensor *output
-);
+static bool ort_tensor_shape_element_count(int64 *shape, int32 shape_len,
+                                           int64 *element_count);
+static bool ort_tensor_create_f32(OrtContext *context, OrtTensor *tensor,
+                                  float *data, int64 data_len, int64 *shape,
+                                  int32 shape_len);
+static bool ort_model_run_f32(OrtContext *context, OrtModel *model,
+                              OrtTensor *input, OrtTensor *output);
 static void ort_tensor_destroy(OrtContext *context, OrtTensor *tensor);
 
 #endif /* ORT_H */

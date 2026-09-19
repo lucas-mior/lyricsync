@@ -38,10 +38,7 @@ ctc_unicode_norm_result_destroy(CtcUnicodeNormResult *result) {
 }
 
 static bool
-ctc_unicode_norm_reserve(
-    CtcUnicodeNormResult *result,
-    int32 needed
-) {
+ctc_unicode_norm_reserve(CtcUnicodeNormResult *result, int32 needed) {
     int32 extra;
 
     if (result == NULL) {
@@ -64,11 +61,8 @@ ctc_unicode_norm_reserve(
 }
 
 static bool
-ctc_unicode_norm_copy_fallback(
-    char *text,
-    int32 text_len,
-    CtcUnicodeNormResult *result
-) {
+ctc_unicode_norm_copy_fallback(char *text, int32 text_len,
+                               CtcUnicodeNormResult *result) {
     if (text_len < 0) {
         return false;
     }
@@ -95,11 +89,8 @@ ctc_unicode_norm_check_icu_status(UErrorCode status) {
 }
 
 static bool
-ctc_unicode_norm_preflight_utf16_from_utf8(
-    char *text,
-    int32 text_len,
-    int32 *utf16_len
-) {
+ctc_unicode_norm_preflight_utf16_from_utf8(char *text, int32 text_len,
+                                           int32 *utf16_len) {
     UErrorCode status = U_ZERO_ERROR;
 
     u_strFromUTF8(NULL,
@@ -113,13 +104,8 @@ ctc_unicode_norm_preflight_utf16_from_utf8(
 }
 
 static bool
-ctc_unicode_norm_utf16_from_utf8(
-    char *text,
-    int32 text_len,
-    UChar *utf16,
-    int32 utf16_cap,
-    int32 *utf16_len
-) {
+ctc_unicode_norm_utf16_from_utf8(char *text, int32 text_len, UChar *utf16,
+                                 int32 utf16_cap, int32 *utf16_len) {
     UErrorCode status = U_ZERO_ERROR;
 
     u_strFromUTF8(utf16,
@@ -133,12 +119,8 @@ ctc_unicode_norm_utf16_from_utf8(
 }
 
 static bool
-ctc_unicode_norm_preflight_nfkc(
-    UChar *utf16,
-    int32 utf16_len,
-    UNormalizer2 *normalizer,
-    int32 *nfkc_len
-) {
+ctc_unicode_norm_preflight_nfkc(UChar *utf16, int32 utf16_len,
+                                UNormalizer2 *normalizer, int32 *nfkc_len) {
     UErrorCode status = U_ZERO_ERROR;
 
     *nfkc_len = (int32)unorm2_normalize(normalizer,
@@ -152,14 +134,8 @@ ctc_unicode_norm_preflight_nfkc(
 }
 
 static bool
-ctc_unicode_norm_nfkc(
-    UChar *utf16,
-    int32 utf16_len,
-    UNormalizer2 *normalizer,
-    UChar *nfkc,
-    int32 nfkc_cap,
-    int32 *nfkc_len
-) {
+ctc_unicode_norm_nfkc(UChar *utf16, int32 utf16_len, UNormalizer2 *normalizer,
+                      UChar *nfkc, int32 nfkc_cap, int32 *nfkc_len) {
     UErrorCode status = U_ZERO_ERROR;
 
     *nfkc_len = (int32)unorm2_normalize(normalizer,
@@ -173,11 +149,8 @@ ctc_unicode_norm_nfkc(
 }
 
 static bool
-ctc_unicode_norm_preflight_lower(
-    UChar *nfkc,
-    int32 nfkc_len,
-    int32 *lower_len
-) {
+ctc_unicode_norm_preflight_lower(UChar *nfkc, int32 nfkc_len,
+                                 int32 *lower_len) {
     UErrorCode status = U_ZERO_ERROR;
 
     *lower_len = (int32)u_strToLower(NULL,
@@ -191,13 +164,8 @@ ctc_unicode_norm_preflight_lower(
 }
 
 static bool
-ctc_unicode_norm_lower(
-    UChar *nfkc,
-    int32 nfkc_len,
-    UChar *lower,
-    int32 lower_cap,
-    int32 *lower_len
-) {
+ctc_unicode_norm_lower(UChar *nfkc, int32 nfkc_len, UChar *lower,
+                       int32 lower_cap, int32 *lower_len) {
     UErrorCode status = U_ZERO_ERROR;
 
     *lower_len = (int32)u_strToLower(lower,
@@ -211,11 +179,8 @@ ctc_unicode_norm_lower(
 }
 
 static bool
-ctc_unicode_norm_preflight_utf8_from_utf16(
-    UChar *utf16,
-    int32 utf16_len,
-    int32 *utf8_len
-) {
+ctc_unicode_norm_preflight_utf8_from_utf16(UChar *utf16, int32 utf16_len,
+                                           int32 *utf8_len) {
     UErrorCode status = U_ZERO_ERROR;
 
     u_strToUTF8(NULL,
@@ -229,11 +194,8 @@ ctc_unicode_norm_preflight_utf8_from_utf16(
 }
 
 static bool
-ctc_unicode_norm_utf8_from_utf16(
-    UChar *utf16,
-    int32 utf16_len,
-    CtcUnicodeNormResult *result
-) {
+ctc_unicode_norm_utf8_from_utf16(UChar *utf16, int32 utf16_len,
+                                 CtcUnicodeNormResult *result) {
     UErrorCode status;
     int32 utf8_len;
 
@@ -265,11 +227,8 @@ ctc_unicode_norm_utf8_from_utf16(
 }
 
 static bool
-ctc_unicode_norm_nfkc_lower_icu(
-    char *text,
-    int32 text_len,
-    CtcUnicodeNormResult *result
-) {
+ctc_unicode_norm_nfkc_lower_icu(char *text, int32 text_len,
+                                CtcUnicodeNormResult *result) {
     UNormalizer2 *normalizer;
     UChar *utf16;
     UChar *nfkc;
@@ -358,9 +317,7 @@ done:
 }
 
 static bool
-ctc_unicode_norm_open_latin_transliterator(
-    UTransliterator **transliterator
-) {
+ctc_unicode_norm_open_latin_transliterator(UTransliterator **transliterator) {
     UParseError parse_error = {0};
     UErrorCode status;
     UChar id[64];
@@ -392,12 +349,8 @@ ctc_unicode_norm_open_latin_transliterator(
 }
 
 static bool
-ctc_unicode_norm_copy_utf16(
-    UChar *destination,
-    int32 destination_cap,
-    UChar *source,
-    int32 source_len
-) {
+ctc_unicode_norm_copy_utf16(UChar *destination, int32 destination_cap,
+                            UChar *source, int32 source_len) {
     if (source_len < 0) {
         return false;
     }
@@ -414,14 +367,11 @@ ctc_unicode_norm_copy_utf16(
 }
 
 static bool
-ctc_unicode_norm_transliterate_latin_try_cap(
-    UTransliterator *transliterator,
-    UChar *source,
-    int32 source_len,
-    int32 work_cap,
-    CtcUnicodeNormResult *result,
-    bool *needs_more
-) {
+ctc_unicode_norm_transliterate_latin_try_cap(UTransliterator *transliterator,
+                                             UChar *source, int32 source_len,
+                                             int32 work_cap,
+                                             CtcUnicodeNormResult *result,
+                                             bool *needs_more) {
     UErrorCode status;
     UChar *work;
     int32 work_len;
@@ -466,11 +416,8 @@ done:
 }
 
 static bool
-ctc_unicode_norm_transliterate_latin_icu(
-    char *text,
-    int32 text_len,
-    CtcUnicodeNormResult *result
-) {
+ctc_unicode_norm_transliterate_latin_icu(char *text, int32 text_len,
+                                         CtcUnicodeNormResult *result) {
     UTransliterator *transliterator;
     UChar *source;
     int32 source_len;
@@ -529,11 +476,8 @@ done:
 #endif
 
 static bool
-ctc_unicode_norm_nfkc_lower(
-    char *text,
-    int32 text_len,
-    CtcUnicodeNormResult *result
-) {
+ctc_unicode_norm_nfkc_lower(char *text, int32 text_len,
+                            CtcUnicodeNormResult *result) {
     if ((text == NULL) || (result == NULL)) {
         return false;
     }
@@ -549,11 +493,8 @@ ctc_unicode_norm_nfkc_lower(
 }
 
 static bool
-ctc_unicode_norm_transliterate_latin(
-    char *text,
-    int32 text_len,
-    CtcUnicodeNormResult *result
-) {
+ctc_unicode_norm_transliterate_latin(char *text, int32 text_len,
+                                     CtcUnicodeNormResult *result) {
     if ((text == NULL) || (result == NULL)) {
         return false;
     }

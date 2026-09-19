@@ -15,18 +15,10 @@ typedef struct FftwRealPlan {
 
 static void fftw_real_plan_init_empty(FftwRealPlan *plan);
 static bool fftw_real_plan_init(FftwRealPlan *plan, int32 n_fft);
-static bool fftw_real_forward(
-    FftwRealPlan *plan,
-    float *input,
-    float *output_real,
-    float *output_imag
-);
-static bool fftw_real_inverse(
-    FftwRealPlan *plan,
-    float *input_real,
-    float *input_imag,
-    float *output
-);
+static bool fftw_real_forward(FftwRealPlan *plan, float *input,
+                              float *output_real, float *output_imag);
+static bool fftw_real_inverse(FftwRealPlan *plan, float *input_real,
+                              float *input_imag, float *output);
 static void fftw_real_plan_destroy(FftwRealPlan *plan);
 
 #endif /* FFTW_H */

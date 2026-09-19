@@ -39,10 +39,7 @@ audio_opus_sample_rate_valid(int32 sample_rate) {
 }
 
 static void
-audio_prepare_output_format(
-    AudioIoFormat *format,
-    char *container_format
-) {
+audio_prepare_output_format(AudioIoFormat *format, char *container_format) {
     if ((format == NULL) || (container_format == NULL)) {
         return;
     }
@@ -125,12 +122,8 @@ audio_can_decode_file(char *path, char *ffmpeg_path) {
 }
 
 static bool
-audio_read_file_format(
-    AudioBuffer *audio,
-    char *path,
-    AudioIoFormat *format,
-    char *ffmpeg_path
-) {
+audio_read_file_format(AudioBuffer *audio, char *path, AudioIoFormat *format,
+                       char *ffmpeg_path) {
     char channel_count_arg[32];
     char sample_rate_arg[32];
     char *argv[] = {
@@ -252,11 +245,8 @@ audio_buffer_valid(AudioBuffer *audio) {
 }
 
 static bool
-audio_interleaved_buffer_create(
-    AudioBuffer *audio,
-    char **out,
-    int64 *out_len
-) {
+audio_interleaved_buffer_create(AudioBuffer *audio, char **out,
+                                int64 *out_len) {
     float *samples;
     int64 sample_count;
     int64 sample_size;
@@ -294,13 +284,8 @@ audio_interleaved_buffer_create(
 }
 
 static bool
-audio_write_file_format(
-    AudioBuffer *audio,
-    char *path,
-    char *container_format,
-    AudioIoFormat *output_format,
-    char *ffmpeg_path
-) {
+audio_write_file_format(AudioBuffer *audio, char *path, char *container_format,
+                        AudioIoFormat *output_format, char *ffmpeg_path) {
     enum {
         AUDIO_WRITE_CONTAINER_FORMAT_ARG = 18,
     };
@@ -514,11 +499,7 @@ audio_file_info_parse(AudioFileInfo *info, char *output) {
 }
 
 static bool
-audio_file_info_read(
-    AudioFileInfo *info,
-    char *path,
-    char *ffprobe_path
-) {
+audio_file_info_read(AudioFileInfo *info, char *path, char *ffprobe_path) {
     char *argv[] = {
         ffprobe_path,
         "-v",
@@ -607,11 +588,8 @@ audio_test_sine_options_valid(AudioTestSineOptions *options) {
 }
 
 static bool
-audio_test_generate_sine_wav(
-    char *path,
-    AudioTestSineOptions *options,
-    char *ffmpeg_path
-) {
+audio_test_generate_sine_wav(char *path, AudioTestSineOptions *options,
+                             char *ffmpeg_path) {
     AudioBuffer audio;
     int64 allocation_size;
     int64 frame_count;
@@ -674,12 +652,8 @@ audio_test_generate_sine_wav(
 #include "cbase.h"
 
 static bool
-audio_write_file(
-    AudioBuffer *audio,
-    char *path,
-    char *format,
-    char *ffmpeg_path
-) {
+audio_write_file(AudioBuffer *audio, char *path, char *format,
+                 char *ffmpeg_path) {
     return audio_write_file_format(audio, path, format, NULL, ffmpeg_path);
 }
 
@@ -745,11 +719,7 @@ audio_float_abs(float value) {
 
 
 static float
-audio_buffer_channel_sample(
-    AudioBuffer *audio,
-    int64 frame,
-    int32 channel
-) {
+audio_buffer_channel_sample(AudioBuffer *audio, int64 frame, int32 channel) {
     if (channel == 0) {
         return audio->left[frame];
     }
@@ -758,12 +728,8 @@ audio_buffer_channel_sample(
 }
 
 static bool
-audio_compare_measure_offset(
-    AudioCompareResult *result,
-    AudioBuffer *expected,
-    AudioBuffer *actual,
-    int64 offset_frames
-) {
+audio_compare_measure_offset(AudioCompareResult *result, AudioBuffer *expected,
+                             AudioBuffer *actual, int64 offset_frames) {
     double error_sum;
     double signal_sum;
     int64 expected_start;
@@ -870,11 +836,8 @@ audio_compare_measure_offset(
 }
 
 static bool
-audio_compare_better_result(
-    AudioCompareResult *candidate,
-    AudioCompareResult *best,
-    bool have_best
-) {
+audio_compare_better_result(AudioCompareResult *candidate,
+                            AudioCompareResult *best, bool have_best) {
     if (!have_best) {
         return true;
     }
@@ -890,10 +853,8 @@ audio_compare_better_result(
 }
 
 static bool
-audio_compare_result_passes(
-    AudioCompareResult *result,
-    AudioCompareOptions *options
-) {
+audio_compare_result_passes(AudioCompareResult *result,
+                            AudioCompareOptions *options) {
     if (!result->valid || !result->decoded || !result->finite) {
         return false;
     }
@@ -913,12 +874,8 @@ audio_compare_result_passes(
 }
 
 static bool
-audio_compare_buffers(
-    AudioCompareResult *result,
-    AudioBuffer *expected,
-    AudioBuffer *actual,
-    AudioCompareOptions *options
-) {
+audio_compare_buffers(AudioCompareResult *result, AudioBuffer *expected,
+                      AudioBuffer *actual, AudioCompareOptions *options) {
     AudioCompareOptions default_options;
     AudioCompareResult best_result = {0};
     int64 max_offset;
@@ -998,13 +955,9 @@ audio_compare_buffers(
 }
 
 static bool
-audio_compare_files(
-    AudioCompareResult *result,
-    char *expected_path,
-    char *actual_path,
-    AudioCompareOptions *options,
-    char *ffmpeg_path
-) {
+audio_compare_files(AudioCompareResult *result, char *expected_path,
+                    char *actual_path, AudioCompareOptions *options,
+                    char *ffmpeg_path) {
     AudioBuffer expected;
     AudioBuffer actual;
     bool ok;
@@ -1040,13 +993,11 @@ cleanup:
 }
 
 static bool
-audio_compare_reconstruction_buffers(
-    AudioCompareResult *result,
-    AudioBuffer *mixture,
-    AudioBuffer *first_stem,
-    AudioBuffer *second_stem,
-    AudioCompareOptions *options
-) {
+audio_compare_reconstruction_buffers(AudioCompareResult *result,
+                                     AudioBuffer *mixture,
+                                     AudioBuffer *first_stem,
+                                     AudioBuffer *second_stem,
+                                     AudioCompareOptions *options) {
     AudioBuffer reconstructed;
     bool ok;
 
@@ -1099,10 +1050,7 @@ audio_compare_reconstruction_buffers(
 }
 
 static void
-audio_compare_result_print(
-    AudioCompareResult *result,
-    char *name
-) {
+audio_compare_result_print(AudioCompareResult *result, char *name) {
     char *label = name;
     char *mode;
 
@@ -1148,12 +1096,8 @@ audio_test_fail(char *name) {
 }
 
 static void
-audio_test_buffer(
-    AudioBuffer *audio,
-    float *left,
-    float *right,
-    int64 frame_count
-) {
+audio_test_buffer(AudioBuffer *audio, float *left, float *right,
+                  int64 frame_count) {
     audio->left = left;
     audio->right = right;
 

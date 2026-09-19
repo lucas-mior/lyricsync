@@ -177,15 +177,9 @@ mdx_input_tensor_len(MdxConfig *config) {
 }
 
 static bool
-mdx_pack_input(
-    MdxConfig *config,
-    StftPlan *stft_plan,
-    float *left,
-    float *right,
-    int64 frame_count,
-    float *tensor,
-    int64 tensor_len
-) {
+mdx_pack_input(MdxConfig *config, StftPlan *stft_plan, float *left,
+               float *right, int64 frame_count, float *tensor,
+               int64 tensor_len) {
     float *left_real;
     float *left_imag;
     float *right_real;
@@ -306,15 +300,9 @@ mdx_model_info_init_empty(MdxModelInfo *info) {
 }
 
 static bool
-mdx_unpack_output(
-    MdxConfig *config,
-    StftPlan *stft_plan,
-    float *tensor,
-    int64 tensor_len,
-    float *left,
-    float *right,
-    int64 frame_count
-) {
+mdx_unpack_output(MdxConfig *config, StftPlan *stft_plan, float *tensor,
+                  int64 tensor_len, float *left, float *right,
+                  int64 frame_count) {
     float *left_real;
     float *left_imag;
     float *right_real;
@@ -418,15 +406,10 @@ mdx_unpack_output(
 
 
 static bool
-mdx_process_song_with_progress(
-    MdxConfig *config,
-    StftPlan *stft_plan,
-    OrtContext *ort_context,
-    OrtModel *ort_model,
-    AudioBuffer *input,
-    AudioBuffer *output,
-    bool print_progress
-) {
+mdx_process_song_with_progress(MdxConfig *config, StftPlan *stft_plan,
+                               OrtContext *ort_context, OrtModel *ort_model,
+                               AudioBuffer *input, AudioBuffer *output,
+                               bool print_progress) {
     OrtTensor input_tensor;
     OrtTensor output_tensor;
     float *input_data;
@@ -826,14 +809,9 @@ mdx_model_inspect(MdxModelInfo *info, MdxConfig *config, OrtModel *model) {
 #include "audio.c"
 
 static bool
-mdx_process_song(
-    MdxConfig *config,
-    StftPlan *stft_plan,
-    OrtContext *ort_context,
-    OrtModel *ort_model,
-    AudioBuffer *input,
-    AudioBuffer *output
-) {
+mdx_process_song(MdxConfig *config, StftPlan *stft_plan,
+                 OrtContext *ort_context, OrtModel *ort_model,
+                 AudioBuffer *input, AudioBuffer *output) {
     return mdx_process_song_with_progress(config,
                                           stft_plan,
                                           ort_context,
