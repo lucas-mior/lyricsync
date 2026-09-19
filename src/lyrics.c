@@ -350,12 +350,12 @@ lyrics_test_crlf_and_trailing_newline(void) {
     ASSERT_EQUAL(lyrics.text, "First\nSecond\nThird\n");
     ASSERT_EQUAL(lyrics.line_count, 3);
     ASSERT_EQUAL(lyrics.nonempty_line_count, 3);
-    ASSERT(STREQUAL(lyrics.lines[0].text, lyrics.lines[0].text_len,
-                     "First"));
-    ASSERT(STREQUAL(lyrics.lines[1].text, lyrics.lines[1].text_len,
-                     "Second"));
-    ASSERT(STREQUAL(lyrics.lines[2].text, lyrics.lines[2].text_len,
-                     "Third"));
+    ASSERT_EQUAL(lyrics.lines[0].text, lyrics.lines[0].text_len,
+                 "First");
+    ASSERT_EQUAL(lyrics.lines[1].text, lyrics.lines[1].text_len,
+                 "Second");
+    ASSERT_EQUAL(lyrics.lines[2].text, lyrics.lines[2].text_len,
+                 "Third");
 
     lrc_lyrics_destroy(&lyrics);
 
@@ -374,11 +374,11 @@ lyrics_test_bom_unicode_and_blank_lines(void) {
     ASSERT_EQUAL(lyrics.text, "Olá\n\n世界");
     ASSERT_EQUAL(lyrics.line_count, 3);
     ASSERT_EQUAL(lyrics.nonempty_line_count, 2);
-    ASSERT(STREQUAL(lyrics.lines[0].text, lyrics.lines[0].text_len,
-                     "Olá"));
+    ASSERT_EQUAL(lyrics.lines[0].text, lyrics.lines[0].text_len,
+                 "Olá");
     ASSERT_ZERO(lyrics.lines[1].text_len);
-    ASSERT(STREQUAL(lyrics.lines[2].text, lyrics.lines[2].text_len,
-                     "世界"));
+    ASSERT_EQUAL(lyrics.lines[2].text, lyrics.lines[2].text_len,
+                 "世界");
 
     lrc_lyrics_destroy(&lyrics);
 
@@ -650,13 +650,13 @@ lyrics_test_optional_maxwell_txt(void) {
 
     ASSERT_EQUAL(lyrics.line_count, 6);
     ASSERT_EQUAL(lyrics.nonempty_line_count, 5);
-    ASSERT(STREQUAL(lyrics.lines[0].text, lyrics.lines[0].text_len,
-                     "Can I take you out to the pictures, Joan?"));
+    ASSERT_EQUAL(lyrics.lines[0].text, lyrics.lines[0].text_len,
+                 "Can I take you out to the pictures, Joan?");
     ASSERT_ZERO(lyrics.lines[3].text_len);
-    ASSERT(STREQUAL(lyrics.lines[4].text, lyrics.lines[4].text_len,
-                     "Bang, bang, Maxwell's silver hammer"));
-    ASSERT(STREQUAL(lyrics.lines[5].text, lyrics.lines[5].text_len,
-                     "Came down upon her head"));
+    ASSERT_EQUAL(lyrics.lines[4].text, lyrics.lines[4].text_len,
+                 "Bang, bang, Maxwell's silver hammer");
+    ASSERT_EQUAL(lyrics.lines[5].text, lyrics.lines[5].text_len,
+                 "Came down upon her head");
 
     {
         LrcLyricsNormalized normalized = {0};

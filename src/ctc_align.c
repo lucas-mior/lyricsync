@@ -5197,10 +5197,10 @@ ctc_align_assert_word_text(
     ASSERT_NON_NEGATIVE(word->normalized_start);
     ASSERT_MORE(word->normalized_end, word->normalized_start);
     ASSERT_LESS_EQUAL(word->normalized_end, normalized->text_len);
-    ASSERT(STREQUAL(normalized->text + word->normalized_start,
-                     word->normalized_end - word->normalized_start,
-                     text,
-                     text_len));
+    ASSERT_EQUAL(normalized->text + word->normalized_start,
+                 word->normalized_end - word->normalized_start,
+                 text,
+                 text_len);
 
     return;
 }
