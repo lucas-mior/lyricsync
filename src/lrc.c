@@ -1359,10 +1359,10 @@ lrc_test_write_generated_file(void) {
     LrcWriteResult result;
     char temp_dir[PATH_MAX];
     char path[PATH_MAX];
-    char first[] = "Olá café";
-    char blank[] = "";
-    char second[] = "World";
-    char expected[] = "[00:00.00]Olá café\n\n[00:01.23]World\n";
+    char *first = "Olá café";
+    char *blank = "";
+    char *second = "World";
+    char *expected = "[00:00.00]Olá café\n\n[00:01.23]World\n";
     char *text;
     int32 text_len;
 
@@ -1372,18 +1372,15 @@ lrc_test_write_generated_file(void) {
     lrc_test_set_output_line(lines + 0,
                              LRC_OUTPUT_LINE_KIND_TIMESTAMPED,
                              0,
-                             first,
-                             strlen32(first));
+                             first, strlen32(first));
     lrc_test_set_output_line(lines + 1,
                              LRC_OUTPUT_LINE_KIND_BLANK,
                              -1,
-                             blank,
-                             strlen32(blank));
+                             blank, strlen32(blank));
     lrc_test_set_output_line(lines + 2,
                              LRC_OUTPUT_LINE_KIND_TIMESTAMPED,
                              123,
-                             second,
-                             strlen32(second));
+                             second, strlen32(second));
 
     if (!lrc_write_output_file(path, lines, 3, &result)) {
         test_remove_tree(temp_dir);
