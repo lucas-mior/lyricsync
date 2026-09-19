@@ -5497,8 +5497,7 @@ ctc_align_test_allocate_initializes_to_negative_infinity(void) {
         ASSERT(ctc_align_is_negative_infinity(trellis.scores[i]));
     }
     ASSERT(lrc_ctc_trellis_cell(&trellis, 0, 0) == trellis.scores);
-    ASSERT(lrc_ctc_trellis_cell(&trellis, 2, 4)
-           == trellis.scores + 14);
+    ASSERT(lrc_ctc_trellis_cell(&trellis, 2, 4) == &trellis.scores[14]);
     ASSERT(lrc_ctc_trellis_cell(&trellis, -1, 0) == NULL);
     ASSERT(lrc_ctc_trellis_cell(&trellis, 0, -1) == NULL);
     ASSERT(lrc_ctc_trellis_cell(&trellis, 3, 0) == NULL);
