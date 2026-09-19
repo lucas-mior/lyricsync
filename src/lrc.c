@@ -21,13 +21,9 @@ lrc_format_result_init(LrcFormatResult *result) {
 }
 
 static void
-lrc_format_result_set(
-    LrcFormatResult *result,
-    enum LsError error,
-    char *message,
-    float seconds,
-    int32 timestamp_hundredths
-) {
+lrc_format_result_set(LrcFormatResult *result, enum LsError error,
+                      char *message, float seconds,
+                      int32 timestamp_hundredths) {
     if (result == NULL) {
         return;
     }
