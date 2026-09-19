@@ -8413,7 +8413,7 @@ ctc_align_test_full_synthetic_alignment_pipeline(void) {
 
     ASSERT_EQUAL(tokens.token_count, normalized.text_len);
     for (int32 i = 0; i < tokens.token_count; i += 1) {
-        ASSERT(tokens.tokens[i].normalized_start == i);
+        ASSERT_EQUAL(tokens.tokens[i].normalized_start, i);
         ASSERT_EQUAL(tokens.tokens[i].normalized_end, i + 1);
         ASSERT_ZERO(tokens.tokens[i].line_index);
     }
@@ -8467,7 +8467,7 @@ ctc_align_test_full_synthetic_alignment_pipeline(void) {
         float expected_start = (float)(i + 1)*frame_duration_seconds;
         float expected_end = (float)(i + 2)*frame_duration_seconds;
 
-        ASSERT(spans.spans[i].token_index == i);
+        ASSERT_EQUAL(spans.spans[i].token_index, i);
         ASSERT_EQUAL(spans.spans[i].token_id, target_token_ids[i]);
         ASSERT_EQUAL(spans.spans[i].start_frame, i + 1);
         ASSERT_EQUAL(spans.spans[i].end_frame, i + 2);
