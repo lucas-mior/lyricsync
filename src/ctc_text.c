@@ -2788,7 +2788,7 @@ ctc_text_reference_load_word_fixture(
                                                       "text_split")) {
                 int32 index = fixture->text_split_count;
 
-                ASSERT(index < CTC_TEXT_REFERENCE_WORD_MAX);
+                ASSERT_LESS(index, CTC_TEXT_REFERENCE_WORD_MAX);
                 fixture->text_split_lens[index] = ctc_text_decode_hex(
                     fixture->text_split[index],
                     CTC_TEXT_REFERENCE_WORD_TEXT_MAX,
@@ -2802,7 +2802,7 @@ ctc_text_reference_load_word_fixture(
                                                       "normalized")) {
                 int32 index = fixture->normalized_count;
 
-                ASSERT(index < CTC_TEXT_REFERENCE_WORD_MAX);
+                ASSERT_LESS(index, CTC_TEXT_REFERENCE_WORD_MAX);
                 fixture->normalized_lens[index] = ctc_text_decode_hex(
                     fixture->normalized[index],
                     CTC_TEXT_REFERENCE_WORD_TEXT_MAX,
@@ -2814,7 +2814,7 @@ ctc_text_reference_load_word_fixture(
             } else if (ctc_text_reference_field_equal(line, tab, "tokens")) {
                 int32 index = fixture->tokens_count;
 
-                ASSERT(index < CTC_TEXT_REFERENCE_WORD_MAX);
+                ASSERT_LESS(index, CTC_TEXT_REFERENCE_WORD_MAX);
                 fixture->tokens_lens[index] = ctc_text_decode_hex(
                     fixture->tokens[index],
                     CTC_TEXT_REFERENCE_WORD_TEXT_MAX,
@@ -2828,7 +2828,7 @@ ctc_text_reference_load_word_fixture(
                                                       "edges_tokens")) {
                 int32 index = fixture->edges_tokens_count;
 
-                ASSERT(index < CTC_TEXT_REFERENCE_WORD_MAX*2);
+                ASSERT_LESS(index, CTC_TEXT_REFERENCE_WORD_MAX*2);
                 fixture->edges_tokens_lens[index] = ctc_text_decode_hex(
                     fixture->edges_tokens[index],
                     CTC_TEXT_REFERENCE_WORD_TEXT_MAX,
@@ -2842,7 +2842,7 @@ ctc_text_reference_load_word_fixture(
                                                       "segment_tokens")) {
                 int32 index = fixture->segment_tokens_count;
 
-                ASSERT(index < CTC_TEXT_REFERENCE_WORD_MAX*2);
+                ASSERT_LESS(index, CTC_TEXT_REFERENCE_WORD_MAX*2);
                 fixture->segment_tokens_lens[index] = ctc_text_decode_hex(
                     fixture->segment_tokens[index],
                     CTC_TEXT_REFERENCE_WORD_TEXT_MAX,

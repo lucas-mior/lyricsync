@@ -1004,7 +1004,7 @@ lrc_test_assert_line(
     LrcParsedLine *line;
 
     ASSERT(line_index >= 0);
-    ASSERT(line_index < parsed->line_count);
+    ASSERT_LESS(line_index, parsed->line_count);
 
     line = &parsed->lines[line_index];
     ASSERT(line->kind == expected_kind);

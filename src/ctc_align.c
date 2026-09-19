@@ -484,7 +484,7 @@ lrc_ctc_align_graph_build_for_mode(
         }
 
         ASSERT(token_index >= 0);
-        ASSERT(token_index < target_token_count);
+        ASSERT_LESS(token_index, target_token_count);
         lrc_ctc_align_graph_set_token_state(state,
                                             target_token_ids,
                                             token_index);
@@ -1261,12 +1261,12 @@ lrc_ctc_emission_value(
     ASSERT(emissions);
     ASSERT(emissions->values);
     ASSERT(frame_index >= 0);
-    ASSERT(frame_index < emissions->frame_count);
+    ASSERT_LESS(frame_index, emissions->frame_count);
     ASSERT(token_id >= 0);
     if ((int32)token_id == emissions->vocabulary_size) {
         return 0.0f;
     }
-    ASSERT((int32)token_id < emissions->vocabulary_size);
+    ASSERT_LESS((int32)token_id, emissions->vocabulary_size);
 
     index = frame_index*emissions->vocabulary_size + token_id;
 
@@ -1712,7 +1712,7 @@ lrc_ctc_path_set_blank_step(
     ASSERT(path);
     ASSERT(path->steps);
     ASSERT(frame_index >= 0);
-    ASSERT(frame_index < path->step_count);
+    ASSERT_LESS(frame_index, path->step_count);
     ASSERT(state_index >= 0);
 
     path->steps[frame_index].frame_index = frame_index;
@@ -1735,7 +1735,7 @@ lrc_ctc_path_set_star_step(
     ASSERT(path);
     ASSERT(path->steps);
     ASSERT(frame_index >= 0);
-    ASSERT(frame_index < path->step_count);
+    ASSERT_LESS(frame_index, path->step_count);
     ASSERT(state_index >= 0);
     ASSERT(star_token_id >= 0);
 
@@ -1760,7 +1760,7 @@ lrc_ctc_path_set_token_step(
     ASSERT(path);
     ASSERT(path->steps);
     ASSERT(frame_index >= 0);
-    ASSERT(frame_index < path->step_count);
+    ASSERT_LESS(frame_index, path->step_count);
     ASSERT(state_index >= 0);
     ASSERT(token_index >= 0);
 
@@ -1788,7 +1788,7 @@ lrc_ctc_path_set_graph_state_step(
     ASSERT(path->steps);
     ASSERT(lrc_ctc_align_graph_state_valid(graph, state_index));
     ASSERT(frame_index >= 0);
-    ASSERT(frame_index < path->step_count);
+    ASSERT_LESS(frame_index, path->step_count);
 
     state = graph->states + state_index;
     if (state->kind == LRC_CTC_ALIGN_STATE_BLANK) {
@@ -2263,7 +2263,7 @@ lrc_ctc_path_to_segments(
             }
 
             segment_index += 1;
-            ASSERT(segment_index < segments->segment_count);
+            ASSERT_LESS(segment_index, segments->segment_count);
             segment = segments->segments + segment_index;
             segment->token_index = step->token_index;
             segment->start_frame = step->frame_index;
@@ -2784,7 +2784,7 @@ lrc_ctc_path_step_starts_span(
     ASSERT(path);
     ASSERT(path->steps);
     ASSERT(step_index >= 0);
-    ASSERT(step_index < path->step_count);
+    ASSERT_LESS(step_index, path->step_count);
 
     step = path->steps + step_index;
     if (step->is_blank || step->is_star) {
@@ -2916,7 +2916,7 @@ lrc_ctc_path_to_token_spans(
 
             span_index += 1;
             previous_token_index = step->token_index;
-            ASSERT(span_index < spans->span_count);
+            ASSERT_LESS(span_index, spans->span_count);
             span = spans->spans + span_index;
             span->token_index = step->token_index;
             span->start_frame = step->frame_index;
@@ -3814,7 +3814,7 @@ lrc_ctc_token_spans_to_segment_word_spans(
         if ((word == NULL)
             || (token->segment_index != previous_segment_index)) {
             word_index += 1;
-            ASSERT(word_index < word_spans->span_count);
+            ASSERT_LESS(word_index, word_spans->span_count);
             word = word_spans->spans + word_index;
             score_count = 1;
             score_sum = token_span->score;
@@ -4083,7 +4083,7 @@ lrc_ctc_token_spans_to_word_spans(
 
         if (word == NULL) {
             word_index += 1;
-            ASSERT(word_index < word_spans->span_count);
+            ASSERT_LESS(word_index, word_spans->span_count);
             word = word_spans->spans + word_index;
             score_count = 1;
             score_sum = token_span->score;
@@ -4423,7 +4423,7 @@ lrc_ctc_line_timestamp_set_blank(
 
     ASSERT(timestamps);
     ASSERT(index >= 0);
-    ASSERT(index < timestamps->line_count);
+    ASSERT_LESS(index, timestamps->line_count);
 
     line = timestamps->lines + index;
     line->word_start_index = -1;
@@ -4454,7 +4454,7 @@ lrc_ctc_line_timestamp_set_timed(
 
     ASSERT(timestamps);
     ASSERT(index >= 0);
-    ASSERT(index < timestamps->line_count);
+    ASSERT_LESS(index, timestamps->line_count);
     ASSERT(first_word_index >= 0);
     ASSERT(end_word_index > first_word_index);
     ASSERT(end_word_index <= word_spans->span_count);
@@ -5017,7 +5017,7 @@ ctc_align_set_path_segment(
     ASSERT(segments);
     ASSERT(segments->segments);
     ASSERT(segment_index >= 0);
-    ASSERT(segment_index < segments->segment_count);
+    ASSERT_LESS(segment_index, segments->segment_count);
 
     segment = segments->segments + segment_index;
     segment->token_index = token_index;
@@ -5399,7 +5399,7 @@ ctc_align_fill_token_frame_values(
         int32 frame = token_frames[i];
 
         ASSERT(frame >= 0);
-        ASSERT(frame < frame_count);
+        ASSERT_LESS(frame, frame_count);
         values[frame*vocabulary_size + blank_token_id] = -6.0f;
         values[frame*vocabulary_size + token_ids[i]] = -0.05f;
     }
