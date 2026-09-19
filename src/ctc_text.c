@@ -2959,12 +2959,9 @@ ctc_text_test_word_normalized_fixture_case(char *fixture_name) {
         segment = lrc_lyrics_normalized_segment(&normalized, i);
         ASSERT(segment);
         normalized_len = segment->normalized_end - segment->normalized_start;
-        ASSERT_EQUAL(
-            normalized.text + segment->normalized_start,
-            normalized_len,
-            fixture.normalized[i],
-            fixture.normalized_lens[i]
-        );
+        ASSERT_EQUAL(normalized.text + segment->normalized_start,
+                     normalized_len,
+                     fixture.normalized[i], fixture.normalized_lens[i]);
     }
 
     lrc_lyrics_normalized_destroy(&normalized);
