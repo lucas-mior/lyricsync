@@ -147,6 +147,7 @@ build_library() {
 
 case "$mode" in
 build|all|debug-fast)
+    common_build_tags
     build_program
     ;;
 fast_feedback)

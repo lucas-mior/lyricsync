@@ -13,3 +13,5 @@ temp_delete_me*
 *.obj
 */.cache/
 static-analyzers-warnings.txt
+.tags.vim
+tags
