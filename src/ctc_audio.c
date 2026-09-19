@@ -250,9 +250,9 @@ ctc_audio_test_defaults_and_invalid_inputs(void) {
     ASSERT(result.path_header.path == NULL);
     ASSERT_EQUAL(result.sample_index, -1);
     ASSERT(audio.samples == NULL);
-    ASSERT(audio.sample_count == 0);
-    ASSERT(audio.sample_rate == 0);
-    ASSERT(audio.channel_count == 0);
+    ASSERT_ZERO(audio.sample_count);
+    ASSERT_ZERO(audio.sample_rate);
+    ASSERT_ZERO(audio.channel_count);
 
     if (lrc_ctc_audio_decode_file(NULL, "song.wav", &config, &result)) {
         fatal(ctc_audio_test_fail("invalid null audio accepted"));

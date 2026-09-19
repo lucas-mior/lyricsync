@@ -810,7 +810,7 @@ ctc_model_test_defaults_and_invalid_inputs(void) {
     ASSERT(strequal(result.header.message, "ok"));
     ASSERT_EQUAL(result.sample_index, -1);
     ASSERT(input.samples == NULL);
-    ASSERT(input.sample_count == 0);
+    ASSERT_ZERO(input.sample_count);
 
     if (lrc_ctc_model_input_prepare(NULL, &audio, &config, &result)) {
         fatal(ctc_model_test_fail("null input destination accepted"));
@@ -877,30 +877,30 @@ ctc_model_test_prepares_short_input(void) {
     ASSERT_EQUAL(input.shape_len, 2);
     ASSERT_EQUAL(input.shape[0], 1);
     ASSERT(input.shape[1] == LENGTH(samples));
-    ASSERT(input.extension_sample_count == 0);
-    ASSERT(input.context_sample_count == 0);
+    ASSERT_ZERO(input.extension_sample_count);
+    ASSERT_ZERO(input.context_sample_count);
     ASSERT_EQUAL(input.window_sample_count, 480000);
     ASSERT_EQUAL(input.window_frame_count, 1500);
     ASSERT_EQUAL(input.context_frame_count, 100);
     ASSERT_EQUAL(input.chunk_count, 1);
     ASSERT_EQUAL(input.original_emission_count, 1);
-    ASSERT(input.extension_emission_count == 0);
+    ASSERT_ZERO(input.extension_emission_count);
     ASSERT_EQUAL(input.raw_chunk_emission_count, 1);
     ASSERT_EQUAL(input.kept_emission_count, 1);
     ASSERT(input.chunks);
-    ASSERT(input.chunks[0].source_start_frame == 0);
+    ASSERT_ZERO(input.chunks[0].source_start_frame);
     ASSERT(input.chunks[0].source_frame_count == LENGTH(samples));
-    ASSERT(input.chunks[0].padded_start_frame == 0);
+    ASSERT_ZERO(input.chunks[0].padded_start_frame);
     ASSERT(input.chunks[0].padded_frame_count == LENGTH(samples));
-    ASSERT(input.chunks[0].left_context_frames == 0);
-    ASSERT(input.chunks[0].right_context_frames == 0);
-    ASSERT(input.chunks[0].valid_output_start_frame == 0);
+    ASSERT_ZERO(input.chunks[0].left_context_frames);
+    ASSERT_ZERO(input.chunks[0].right_context_frames);
+    ASSERT_ZERO(input.chunks[0].valid_output_start_frame);
     ASSERT(input.chunks[0].valid_output_frame_count == LENGTH(samples));
-    ASSERT(input.chunks[0].raw_emission_start == 0);
+    ASSERT_ZERO(input.chunks[0].raw_emission_start);
     ASSERT_EQUAL(input.chunks[0].raw_emission_count, 1);
-    ASSERT(input.chunks[0].trim_left_emissions == 0);
-    ASSERT(input.chunks[0].trim_right_emissions == 0);
-    ASSERT(input.chunks[0].kept_emission_start == 0);
+    ASSERT_ZERO(input.chunks[0].trim_left_emissions);
+    ASSERT_ZERO(input.chunks[0].trim_right_emissions);
+    ASSERT_ZERO(input.chunks[0].kept_emission_start);
     ASSERT_EQUAL(input.chunks[0].kept_emission_count, 1);
     ASSERT(ctc_model_double_close(input.stride_ms, 20.0, 0.00001));
 
@@ -955,15 +955,15 @@ ctc_model_test_prepares_chunked_input(void) {
     ASSERT_EQUAL(input.kept_emission_count, 16);
     ASSERT(input.chunks);
 
-    ASSERT(input.chunks[0].source_start_frame == 0);
+    ASSERT_ZERO(input.chunks[0].source_start_frame);
     ASSERT_EQUAL(input.chunks[0].source_frame_count, 20);
-    ASSERT(input.chunks[0].padded_start_frame == 0);
+    ASSERT_ZERO(input.chunks[0].padded_start_frame);
     ASSERT_EQUAL(input.chunks[0].padded_frame_count, 32);
-    ASSERT(input.chunks[0].left_context_frames == 0);
+    ASSERT_ZERO(input.chunks[0].left_context_frames);
     ASSERT_EQUAL(input.chunks[0].right_context_frames, 4);
-    ASSERT(input.chunks[0].valid_output_start_frame == 0);
+    ASSERT_ZERO(input.chunks[0].valid_output_start_frame);
     ASSERT_EQUAL(input.chunks[0].valid_output_frame_count, 16);
-    ASSERT(input.chunks[0].raw_emission_start == 0);
+    ASSERT_ZERO(input.chunks[0].raw_emission_start);
     ASSERT_EQUAL(input.chunks[0].raw_emission_count, 16);
     ASSERT_EQUAL(input.chunks[0].trim_left_emissions, 4);
     ASSERT_EQUAL(input.chunks[0].trim_right_emissions, 4);
@@ -975,7 +975,7 @@ ctc_model_test_prepares_chunked_input(void) {
     ASSERT_EQUAL(input.chunks[1].padded_start_frame, 32);
     ASSERT_EQUAL(input.chunks[1].padded_frame_count, 32);
     ASSERT_EQUAL(input.chunks[1].left_context_frames, 8);
-    ASSERT(input.chunks[1].right_context_frames == 0);
+    ASSERT_ZERO(input.chunks[1].right_context_frames);
     ASSERT_EQUAL(input.chunks[1].valid_output_start_frame, 16);
     ASSERT_EQUAL(input.chunks[1].valid_output_frame_count, 4);
     ASSERT_EQUAL(input.chunks[1].raw_emission_start, 16);
@@ -1016,7 +1016,7 @@ ctc_model_test_emission_frame_conversion(void) {
     if (!lrc_ctc_model_samples_to_emission_frames(0, 2, &frames)) {
         fatal(ctc_model_test_fail("ceil zero emissions"));
     }
-    ASSERT(frames == 0);
+    ASSERT_ZERO(frames);
 
     if (!lrc_ctc_model_samples_to_emission_frames(20, 2, &frames)) {
         fatal(ctc_model_test_fail("exact emission frames"));
@@ -1076,13 +1076,13 @@ ctc_model_test_chunk_metadata_three_chunks(void) {
     ASSERT_EQUAL(input.raw_chunk_emission_count, 16);
     ASSERT_EQUAL(input.kept_emission_count, 24);
 
-    ASSERT(input.chunks[0].source_start_frame == 0);
+    ASSERT_ZERO(input.chunks[0].source_start_frame);
     ASSERT_EQUAL(input.chunks[0].source_frame_count, 24);
-    ASSERT(input.chunks[0].left_context_frames == 0);
+    ASSERT_ZERO(input.chunks[0].left_context_frames);
     ASSERT_EQUAL(input.chunks[0].right_context_frames, 8);
-    ASSERT(input.chunks[0].valid_output_start_frame == 0);
+    ASSERT_ZERO(input.chunks[0].valid_output_start_frame);
     ASSERT_EQUAL(input.chunks[0].valid_output_frame_count, 16);
-    ASSERT(input.chunks[0].raw_emission_start == 0);
+    ASSERT_ZERO(input.chunks[0].raw_emission_start);
     ASSERT_EQUAL(input.chunks[0].kept_emission_start, 4);
     ASSERT_EQUAL(input.chunks[0].kept_emission_count, 8);
 
@@ -1099,7 +1099,7 @@ ctc_model_test_chunk_metadata_three_chunks(void) {
     ASSERT_EQUAL(input.chunks[2].source_start_frame, 24);
     ASSERT_EQUAL(input.chunks[2].source_frame_count, 16);
     ASSERT_EQUAL(input.chunks[2].left_context_frames, 8);
-    ASSERT(input.chunks[2].right_context_frames == 0);
+    ASSERT_ZERO(input.chunks[2].right_context_frames);
     ASSERT_EQUAL(input.chunks[2].valid_output_start_frame, 32);
     ASSERT_EQUAL(input.chunks[2].valid_output_frame_count, 8);
     ASSERT_EQUAL(input.chunks[2].raw_emission_start, 32);
@@ -1153,7 +1153,7 @@ ctc_model_test_chunk_metadata_partial_stride(void) {
     ASSERT_EQUAL(input.kept_emission_count, 16);
     ASSERT_EQUAL(input.chunks[1].valid_output_start_frame, 16);
     ASSERT_EQUAL(input.chunks[1].valid_output_frame_count, 5);
-    ASSERT(input.chunks[1].right_context_frames == 0);
+    ASSERT_ZERO(input.chunks[1].right_context_frames);
     ASSERT_EQUAL(input.chunks[1].kept_emission_count, 8);
 
     lrc_ctc_model_input_destroy(&input);

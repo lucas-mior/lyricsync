@@ -518,7 +518,7 @@ vocals_test_request_defaults(void) {
     ASSERT(request.print_info);
     ASSERT(request.ort_session_config.execution_provider
            == ORT_EXECUTION_PROVIDER_AUTO);
-    ASSERT(request.ort_session_config.device_id == 0);
+    ASSERT_ZERO(request.ort_session_config.device_id);
     ASSERT(!request.ort_session_config.print_info);
     ASSERT_EQUAL(request.output_format.sample_rate, 44100);
     ASSERT_EQUAL(request.output_format.channel_count, 2);

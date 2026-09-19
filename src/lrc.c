@@ -1101,7 +1101,7 @@ lrc_test_reject_malformed_timestamps(void) {
         fatal(lrc_test_fail("accepted bad seconds"));
     }
     ASSERT(result.header.error == LS_ERROR_PARSE_MALFORMED_TIMESTAMP);
-    ASSERT(result.line_index == 0);
+    ASSERT_ZERO(result.line_index);
 
     memset64(&parsed, 0, SIZEOF(parsed));
     if (lrc_parse_text(&parsed,
@@ -1112,7 +1112,7 @@ lrc_test_reject_malformed_timestamps(void) {
         fatal(lrc_test_fail("accepted bad fraction"));
     }
     ASSERT(result.header.error == LS_ERROR_PARSE_MALFORMED_TIMESTAMP);
-    ASSERT(result.line_index == 0);
+    ASSERT_ZERO(result.line_index);
 
     return;
 }
@@ -1548,7 +1548,7 @@ lrc_test_write_rejects_bad_inputs(void) {
         fatal(lrc_test_fail("accepted negative output timestamp"));
     }
     ASSERT(result.path_header.header.error == LS_ERROR_WRITE_INVALID_LINE);
-    ASSERT(result.line_index == 0);
+    ASSERT_ZERO(result.line_index);
 
     lines[0].timestamp_hundredths = 0;
     lines[0].text = NULL;

@@ -3179,9 +3179,9 @@ ctc_text_test_word_target_text_is_character_spaced(void) {
 
     segment = lrc_lyrics_normalized_segment(&normalized, 0);
     ASSERT(segment);
-    ASSERT(segment->normalized_start == 0);
+    ASSERT_ZERO(segment->normalized_start);
     ASSERT_EQUAL(segment->normalized_end, 5);
-    ASSERT(segment->target_start == 0);
+    ASSERT_ZERO(segment->target_start);
     ASSERT_EQUAL(segment->target_end, 9);
 
     segment = lrc_lyrics_normalized_segment(&normalized, 1);
@@ -3331,9 +3331,9 @@ ctc_text_test_icu_word_romanization(void) {
 
     segment = lrc_lyrics_normalized_segment(&normalized, 0);
     ASSERT(segment);
-    ASSERT(segment->normalized_start == 0);
+    ASSERT_ZERO(segment->normalized_start);
     ASSERT_EQUAL(segment->normalized_end, 3);
-    ASSERT(segment->target_start == 0);
+    ASSERT_ZERO(segment->target_start);
     ASSERT_EQUAL(segment->target_end, 5);
 
     segment = lrc_lyrics_normalized_segment(&normalized, 1);
@@ -3377,9 +3377,9 @@ ctc_text_test_icu_char_romanization(void) {
 
     segment = lrc_lyrics_normalized_segment(&normalized, 0);
     ASSERT(segment);
-    ASSERT(segment->normalized_start == 0);
+    ASSERT_ZERO(segment->normalized_start);
     ASSERT_EQUAL(segment->normalized_end, 2);
-    ASSERT(segment->target_start == 0);
+    ASSERT_ZERO(segment->target_start);
     ASSERT_EQUAL(segment->target_end, 3);
 
     segment = lrc_lyrics_normalized_segment(&normalized, 1);
@@ -3511,7 +3511,7 @@ ctc_text_test_current_normalization_mapping(void) {
         &normalized,
         1
     ) == LRC_LYRICS_NORMALIZED_LINE_KIND_SECTION_MARKER);
-    ASSERT(lrc_lyrics_normalized_line_at(&normalized, 0) == 0);
+    ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 0));
     ASSERT(lrc_lyrics_normalized_line_at(&normalized,
                                          normalized.text_len - 1) == 2);
 

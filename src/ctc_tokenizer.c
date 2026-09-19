@@ -1075,7 +1075,7 @@ ctc_tokenizer_test_load_minimal_vocabulary(void) {
 
     ASSERT(result.path_header.header.error == LS_ERROR_NONE);
     ASSERT_EQUAL(tokenizer.token_count, 6);
-    ASSERT(tokenizer.blank_id == 0);
+    ASSERT_ZERO(tokenizer.blank_id);
     ASSERT_EQUAL(tokenizer.unknown_id, 5);
 
     ASSERT(lrc_ctc_tokenizer_token_id(&tokenizer, " ", 1, &id));
@@ -1087,7 +1087,7 @@ ctc_tokenizer_test_load_minimal_vocabulary(void) {
     token = lrc_ctc_tokenizer_id_to_token(&tokenizer, 0);
     ASSERT(token);
     ASSERT(token->is_blank);
-    ASSERT(token->text_len == 0);
+    ASSERT_ZERO(token->text_len);
 
     token = lrc_ctc_tokenizer_id_to_token(&tokenizer, 1);
     ASSERT(token);
@@ -1134,7 +1134,7 @@ ctc_tokenizer_test_rejects_duplicate_tokens(void) {
            == LS_ERROR_CTC_TOKENIZER_DUPLICATE_TOKEN);
     ASSERT_EQUAL(result.line_index, 3);
     ASSERT_EQUAL(result.token_id, 1);
-    ASSERT(tokenizer.token_count == 0);
+    ASSERT_ZERO(tokenizer.token_count);
 
     lrc_ctc_tokenizer_destroy(&tokenizer);
     test_remove_tree(temp_dir);
@@ -1165,7 +1165,7 @@ ctc_tokenizer_test_requires_blank_token(void) {
 
     ASSERT(result.path_header.header.error
            == LS_ERROR_CTC_TOKENIZER_MISSING_BLANK);
-    ASSERT(tokenizer.token_count == 0);
+    ASSERT_ZERO(tokenizer.token_count);
 
     lrc_ctc_tokenizer_destroy(&tokenizer);
     test_remove_tree(temp_dir);
@@ -1196,7 +1196,7 @@ ctc_tokenizer_test_rejects_empty_token_line(void) {
 
     ASSERT(result.path_header.header.error == LS_ERROR_CTC_TOKENIZER_EMPTY_TOKEN);
     ASSERT_EQUAL(result.line_index, 2);
-    ASSERT(tokenizer.token_count == 0);
+    ASSERT_ZERO(tokenizer.token_count);
 
     lrc_ctc_tokenizer_destroy(&tokenizer);
     test_remove_tree(temp_dir);
@@ -1233,7 +1233,7 @@ ctc_tokenizer_test_rejects_invalid_utf8(void) {
 
     ASSERT(result.path_header.header.error == LS_ERROR_CTC_TOKENIZER_INVALID_UTF8);
     ASSERT_EQUAL(result.line_index, 8);
-    ASSERT(tokenizer.token_count == 0);
+    ASSERT_ZERO(tokenizer.token_count);
 
     lrc_ctc_tokenizer_destroy(&tokenizer);
     test_remove_tree(temp_dir);
@@ -1278,13 +1278,13 @@ ctc_tokenizer_test_tokenizes_normalized_text(void) {
     ASSERT(result.header.error == LS_ERROR_NONE);
     ASSERT_EQUAL(tokens.token_count, 4);
     ASSERT_EQUAL(tokens.tokens[0].token_id, 2);
-    ASSERT(tokens.tokens[0].normalized_start == 0);
+    ASSERT_ZERO(tokens.tokens[0].normalized_start);
     ASSERT_EQUAL(tokens.tokens[0].normalized_end, 2);
-    ASSERT(tokens.tokens[0].line_index == 0);
+    ASSERT_ZERO(tokens.tokens[0].line_index);
     ASSERT_EQUAL(tokens.tokens[1].token_id, 5);
     ASSERT_EQUAL(tokens.tokens[1].normalized_start, 2);
     ASSERT_EQUAL(tokens.tokens[1].normalized_end, 3);
-    ASSERT(tokens.tokens[1].line_index == 0);
+    ASSERT_ZERO(tokens.tokens[1].line_index);
     ASSERT_EQUAL(tokens.tokens[2].token_id, 1);
     ASSERT_EQUAL(tokens.tokens[2].normalized_start, 3);
     ASSERT_EQUAL(tokens.tokens[2].normalized_end, 4);
@@ -1338,9 +1338,9 @@ ctc_tokenizer_test_rejects_unsupported_normalized_token(void) {
 
     ASSERT(result.header.error == LS_ERROR_CTC_TOKENIZE_UNSUPPORTED_TOKEN);
     ASSERT_EQUAL(result.byte_offset, 2);
-    ASSERT(result.line_index == 0);
+    ASSERT_ZERO(result.line_index);
     ASSERT_EQUAL(result.token_id, -1);
-    ASSERT(tokens.token_count == 0);
+    ASSERT_ZERO(tokens.token_count);
 
     lrc_ctc_tokenized_text_destroy(&tokens);
     lrc_lyrics_normalized_destroy(&normalized);
@@ -1386,7 +1386,7 @@ ctc_tokenizer_test_unknown_token_covers_one_utf8_rune(void) {
 
     ASSERT_EQUAL(tokens.token_count, 3);
     ASSERT_EQUAL(tokens.tokens[0].token_id, 2);
-    ASSERT(tokens.tokens[0].normalized_start == 0);
+    ASSERT_ZERO(tokens.tokens[0].normalized_start);
     ASSERT_EQUAL(tokens.tokens[0].normalized_end, 1);
     ASSERT_EQUAL(tokens.tokens[1].token_id, 1);
     ASSERT_EQUAL(tokens.tokens[1].normalized_start, 1);
@@ -1394,7 +1394,7 @@ ctc_tokenizer_test_unknown_token_covers_one_utf8_rune(void) {
     ASSERT_EQUAL(tokens.tokens[2].token_id, 3);
     ASSERT_EQUAL(tokens.tokens[2].normalized_start, 2);
     ASSERT_EQUAL(tokens.tokens[2].normalized_end, 4);
-    ASSERT(tokens.tokens[2].line_index == 0);
+    ASSERT_ZERO(tokens.tokens[2].line_index);
 
     lrc_ctc_tokenized_text_destroy(&tokens);
     lrc_lyrics_normalized_destroy(&normalized);
@@ -1457,7 +1457,7 @@ ctc_tokenizer_test_word_target_prevents_multi_character_match(void) {
     ASSERT(result.header.error == LS_ERROR_NONE);
     ASSERT_EQUAL(tokens.token_count, 3);
     ASSERT_EQUAL(tokens.tokens[0].token_id, 2);
-    ASSERT(tokens.tokens[0].normalized_start == 0);
+    ASSERT_ZERO(tokens.tokens[0].normalized_start);
     ASSERT_EQUAL(tokens.tokens[0].normalized_end, 1);
     ASSERT_EQUAL(tokens.tokens[1].token_id, 3);
     ASSERT_EQUAL(tokens.tokens[1].normalized_start, 1);
@@ -1521,9 +1521,9 @@ ctc_tokenizer_test_marks_segment_starts(void) {
     }
 
     ASSERT_EQUAL(tokens.token_count, 4);
-    ASSERT(tokens.tokens[0].segment_index == 0);
+    ASSERT_ZERO(tokens.tokens[0].segment_index);
     ASSERT(tokens.tokens[0].starts_segment);
-    ASSERT(tokens.tokens[1].segment_index == 0);
+    ASSERT_ZERO(tokens.tokens[1].segment_index);
     ASSERT(!tokens.tokens[1].starts_segment);
     ASSERT_EQUAL(tokens.tokens[2].segment_index, 1);
     ASSERT(tokens.tokens[2].starts_segment);
@@ -1575,7 +1575,7 @@ ctc_tokenizer_test_skips_unmatched_spaces(void) {
     ASSERT(result.header.error == LS_ERROR_NONE);
     ASSERT_EQUAL(tokens.token_count, 3);
     ASSERT_EQUAL(tokens.tokens[0].token_id, 2);
-    ASSERT(tokens.tokens[0].normalized_start == 0);
+    ASSERT_ZERO(tokens.tokens[0].normalized_start);
     ASSERT_EQUAL(tokens.tokens[0].normalized_end, 1);
     ASSERT_EQUAL(tokens.tokens[1].token_id, 3);
     ASSERT_EQUAL(tokens.tokens[1].normalized_start, 1);
@@ -1605,7 +1605,7 @@ ctc_tokenizer_test_missing_path(void) {
     ASSERT(result.path_header.header.error
            == LS_ERROR_CTC_TOKENIZER_MISSING_PATH);
     ASSERT(result.path_header.path == NULL);
-    ASSERT(tokenizer.token_count == 0);
+    ASSERT_ZERO(tokenizer.token_count);
 
     lrc_ctc_tokenizer_destroy(&tokenizer);
 

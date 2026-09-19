@@ -1869,13 +1869,13 @@ ctc_inference_test_empty_initializers(void) {
     ASSERT_EQUAL(result.output_index, -1);
 
     ASSERT(emissions.values == NULL);
-    ASSERT(emissions.value_count == 0);
-    ASSERT(emissions.frame_count == 0);
-    ASSERT(emissions.vocabulary_size == 0);
+    ASSERT_ZERO(emissions.value_count);
+    ASSERT_ZERO(emissions.frame_count);
+    ASSERT_ZERO(emissions.vocabulary_size);
 
     ASSERT(fake.values == NULL);
-    ASSERT(fake.value_count == 0);
-    ASSERT(fake.shape_len == 0);
+    ASSERT_ZERO(fake.value_count);
+    ASSERT_ZERO(fake.shape_len);
 
     ASSERT(backend.backend == &fake);
     ASSERT(backend.run == lrc_ctc_fake_inference_run);
@@ -2428,7 +2428,7 @@ ctc_inference_test_progress_disabled_is_silent(void) {
         fatal(ctc_inference_test_fail("run silent progress backend"));
     }
 
-    ASSERT(stderr_len == 0);
+    ASSERT_ZERO(stderr_len);
     lrc_ctc_emissions_destroy(&emissions);
 
     return;

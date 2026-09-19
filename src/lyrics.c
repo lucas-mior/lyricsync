@@ -376,7 +376,7 @@ lyrics_test_bom_unicode_and_blank_lines(void) {
     ASSERT_EQUAL(lyrics.nonempty_line_count, 2);
     ASSERT(STREQUAL(lyrics.lines[0].text, lyrics.lines[0].text_len,
                      "Olá"));
-    ASSERT(lyrics.lines[1].text_len == 0);
+    ASSERT_ZERO(lyrics.lines[1].text_len);
     ASSERT(STREQUAL(lyrics.lines[2].text, lyrics.lines[2].text_len,
                      "世界"));
 
@@ -412,7 +412,7 @@ lyrics_test_reject_empty(void) {
     }
     ASSERT(result.path_header.header.error == LS_ERROR_LYRICS_LOAD_EMPTY);
     ASSERT(lyrics.text == NULL);
-    ASSERT(lyrics.line_count == 0);
+    ASSERT_ZERO(lyrics.line_count);
 
     test_remove_tree(temp_dir);
 
@@ -481,8 +481,8 @@ lyrics_test_normalize_punctuation_sections_and_mapping(void) {
         LRC_LYRICS_NORMALIZED_LINE_KIND_SECTION_MARKER
     );
     lyrics_test_assert_line_range(&normalized, 2, 12, 31);
-    ASSERT(lrc_lyrics_normalized_line_at(&normalized, 0) == 0);
-    ASSERT(lrc_lyrics_normalized_line_at(&normalized, 10) == 0);
+    ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 0));
+    ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 10));
 
     bang = memmem64(normalized.text,
                     normalized.text_len,
@@ -531,8 +531,8 @@ lyrics_test_normalize_unicode_and_blank_lines(void) {
         LRC_LYRICS_NORMALIZED_LINE_KIND_SECTION_MARKER
     );
     lyrics_test_assert_line_range(&normalized, 3, 12, 17);
-    ASSERT(lrc_lyrics_normalized_line_at(&normalized, 0) == 0);
-    ASSERT(lrc_lyrics_normalized_line_at(&normalized, 3) == 0);
+    ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 0));
+    ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 3));
 
     again = memmem64(normalized.text,
                      normalized.text_len,
@@ -652,7 +652,7 @@ lyrics_test_optional_maxwell_txt(void) {
     ASSERT_EQUAL(lyrics.nonempty_line_count, 5);
     ASSERT(STREQUAL(lyrics.lines[0].text, lyrics.lines[0].text_len,
                      "Can I take you out to the pictures, Joan?"));
-    ASSERT(lyrics.lines[3].text_len == 0);
+    ASSERT_ZERO(lyrics.lines[3].text_len);
     ASSERT(STREQUAL(lyrics.lines[4].text, lyrics.lines[4].text_len,
                      "Bang, bang, Maxwell's silver hammer"));
     ASSERT(STREQUAL(lyrics.lines[5].text, lyrics.lines[5].text_len,
@@ -687,7 +687,7 @@ lyrics_test_optional_maxwell_txt(void) {
         );
         lyrics_test_assert_line_range(&normalized, 4, 98, 130);
         lyrics_test_assert_line_range(&normalized, 5, 131, 154);
-        ASSERT(lrc_lyrics_normalized_line_at(&normalized, 0) == 0);
+        ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 0));
 
         bang = memmem64(normalized.text,
                         normalized.text_len,

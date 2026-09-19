@@ -922,9 +922,9 @@ main(void) {
     ASSERT_EQUAL(config.dim_c, 4);
     ASSERT_EQUAL(config.n_fft, 6144);
     ASSERT_EQUAL(config.hop, 1024);
-    ASSERT(config.chunk_size == 0);
-    ASSERT(config.trim == 0);
-    ASSERT(config.gen_size == 0);
+    ASSERT_ZERO(config.chunk_size);
+    ASSERT_ZERO(config.trim);
+    ASSERT_ZERO(config.gen_size);
     ASSERT(config.model_output == MDX_MODEL_OUTPUT_VOCALS);
     ASSERT(config.clip_mode == MDX_CLIP_MODE_CLAMP);
     ASSERT(mdx_float_close(mdx_output_sample(&config, 0.75f, 0.5f), 0.5175f));
@@ -1132,7 +1132,7 @@ main(void) {
                             &empty_output));
     ASSERT_EQUAL(empty_output.sample_rate, config.sample_rate);
     ASSERT_EQUAL(empty_output.channel_count, config.channel_count);
-    ASSERT(empty_output.frame_count == 0);
+    ASSERT_ZERO(empty_output.frame_count);
 
     audio_buffer_destroy(&empty_output);
     audio_buffer_destroy(&empty_input);

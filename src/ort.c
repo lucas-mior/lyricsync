@@ -990,25 +990,25 @@ ort_test_empty_initializers(void) {
     ASSERT(context.allocator == NULL);
     ASSERT(context.session_config.execution_provider
            == ORT_EXECUTION_PROVIDER_AUTO);
-    ASSERT(context.session_config.device_id == 0);
+    ASSERT_ZERO(context.session_config.device_id);
     ASSERT(!context.session_config.print_info);
 
     ASSERT(model.session == NULL);
     ASSERT(model.input_name == NULL);
     ASSERT(model.output_name == NULL);
-    ASSERT(model.input_shape_len == 0);
-    ASSERT(model.output_shape_len == 0);
-    ASSERT(model.input_count == 0);
-    ASSERT(model.output_count == 0);
+    ASSERT_ZERO(model.input_shape_len);
+    ASSERT_ZERO(model.output_shape_len);
+    ASSERT_ZERO(model.input_count);
+    ASSERT_ZERO(model.output_count);
 
     ASSERT(info.name == NULL);
-    ASSERT(info.shape_len == 0);
-    ASSERT(info.count == 0);
+    ASSERT_ZERO(info.shape_len);
+    ASSERT_ZERO(info.count);
 
     ASSERT(tensor.value == NULL);
     ASSERT(tensor.data == NULL);
-    ASSERT(tensor.data_len == 0);
-    ASSERT(tensor.shape_len == 0);
+    ASSERT_ZERO(tensor.data_len);
+    ASSERT_ZERO(tensor.shape_len);
 
     return;
 }
@@ -1098,14 +1098,14 @@ ort_test_tensor_shape_element_count(void) {
     if (ort_tensor_shape_element_count(shape, 3, &count)) {
         fatal(ort_test_fail("zero tensor dimension accepted"));
     }
-    ASSERT(count == 0);
+    ASSERT_ZERO(count);
 
     shape[0] = INT64_MAX;
     shape[1] = 2;
     if (ort_tensor_shape_element_count(shape, 2, &count)) {
         fatal(ort_test_fail("overflowing tensor shape accepted"));
     }
-    ASSERT(count == 0);
+    ASSERT_ZERO(count);
 
     return;
 }
