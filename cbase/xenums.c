@@ -417,27 +417,27 @@ CAT(ENUM_PREFIX_, parse)(char *string, int32 string_len) {
 #endif
 
 #if ENUM_BITFLAGS
-        #define XENUM_PARSE_ONE(e)                                             \
-            if (!matched                                                       \
-                && XENUM_TOKEN_EQUALS_ENUM_NAME(token, token_len, #e)) {       \
-                result |= (ENUM_UNDERLYING_TYPE)e;                             \
-                matched = 1;                                                   \
+        #define XENUM_PARSE_ONE(e)                                        \
+            if (!matched                                                  \
+                && XENUM_TOKEN_EQUALS_ENUM_NAME(token, token_len, #e)) {  \
+                result |= (ENUM_UNDERLYING_TYPE)e;                        \
+                matched = 1;                                              \
             }
         #define XX_1(e)    XENUM_PARSE_ONE(e)
         #define XX_2(e, v) XENUM_PARSE_ONE(e)
 #else
-        #define XENUM_PARSE_ONE(e)                                             \
-            if (!matched                                                       \
-                && XENUM_TOKEN_EQUALS_ENUM_NAME(token, token_len, #e)) {       \
-                result = (ENUM_UNDERLYING_TYPE)e;                              \
-                matched = 1;                                                   \
+        #define XENUM_PARSE_ONE(e)                                        \
+            if (!matched                                                  \
+                && XENUM_TOKEN_EQUALS_ENUM_NAME(token, token_len, #e)) {  \
+                result = (ENUM_UNDERLYING_TYPE)e;                         \
+                matched = 1;                                              \
             }
-        #define XENUM_PARSE_ALIAS(e, alias)                                    \
-            XENUM_PARSE_ONE(e)                                                 \
-            if (!matched                                                       \
-                && XENUM_TOKEN_EQUALS(token, token_len, #alias)) {             \
-                result = (ENUM_UNDERLYING_TYPE)e;                              \
-                matched = 1;                                                   \
+        #define XENUM_PARSE_ALIAS(e, alias)                               \
+            XENUM_PARSE_ONE(e)                                            \
+            if (!matched                                                  \
+                && XENUM_TOKEN_EQUALS(token, token_len, #alias)) {        \
+                result = (ENUM_UNDERLYING_TYPE)e;                         \
+                matched = 1;                                              \
             }
         #define XX_1(e)        XENUM_PARSE_ONE(e)
         #define XX_2(e, alias) XENUM_PARSE_ALIAS(e, alias)
