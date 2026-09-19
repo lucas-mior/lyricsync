@@ -650,8 +650,7 @@ free_debug(char *file, int32 line, char *func,
         if (info.reallocated == -1) {
             ASSERT(MEMORY_CHECK_DOUBLE_FREE);
             error_impl(file, line, func, "Double free.\n");
-            error_impl(info.file, info.line, info.func,
-                       "Freed here.\n");
+            error_impl(info.file, info.line, info.func, "Freed here.\n");
             fatal(EXIT_FAILURE);
         }
         if (info.size != size) {
