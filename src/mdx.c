@@ -567,7 +567,7 @@ mdx_process_song_with_progress(
             }
             source_start = output_start - config->trim;
             for (int32 i = 0; i < config->chunk_size; i += 1) {
-                int64 source_index = source_start + (int64)i;
+                int64 source_index = source_start + i;
 
                 if ((source_index < 0) || (source_index >= input->frame_count)
                     || (source_index < region_source_start)
