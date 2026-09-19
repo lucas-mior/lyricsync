@@ -2142,7 +2142,7 @@ lrc_ctc_path_count_segments(LrcCtcPath *path) {
 
     ASSERT(path);
     ASSERT(path->steps);
-    ASSERT_MORE(path->step_count, 0);
+    ASSERT_POSITIVE(path->step_count);
 
     count = 1;
     for (int32 i = 1; i < path->step_count; i += 1) {
@@ -2206,7 +2206,7 @@ lrc_ctc_path_segment_finish(
     ASSERT(segment);
     ASSERT_MORE_EQUAL(segment->start_frame, 0);
     ASSERT_MORE(segment->end_frame, segment->start_frame);
-    ASSERT_MORE(score_count, 0);
+    ASSERT_POSITIVE(score_count);
 
     segment->start_seconds = (float)segment->start_frame*frame_duration_seconds;
     segment->end_seconds = (float)segment->end_frame*frame_duration_seconds;
@@ -2829,7 +2829,7 @@ lrc_ctc_token_span_finish(
     ASSERT(span);
     ASSERT_MORE_EQUAL(span->start_frame, 0);
     ASSERT_MORE(span->end_frame, span->start_frame);
-    ASSERT_MORE(score_count, 0);
+    ASSERT_POSITIVE(score_count);
 
     span->start_seconds = (float)span->start_frame*frame_duration_seconds;
     span->end_seconds = (float)span->end_frame*frame_duration_seconds;
@@ -8894,7 +8894,7 @@ ctc_align_test_maxwell_fake_token_timing(void) {
                                                &tokenize_result)) {
         fatal(ctc_align_test_fail("tokenize maxwell lyrics"));
     }
-    ASSERT_MORE(tokens.token_count, 0);
+    ASSERT_POSITIVE(tokens.token_count);
 
     token_count = tokens.token_count;
     frame_count = token_count + 2;

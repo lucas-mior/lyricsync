@@ -2450,7 +2450,7 @@ ctc_text_reference_validate_current(
     ASSERT(current->saw_effective_split_size);
     ASSERT(current->saw_romanize);
     ASSERT(current->saw_input);
-    ASSERT_MORE(current->text_split_count, 0);
+    ASSERT_POSITIVE(current->text_split_count);
     ASSERT(current->normalized_count == current->text_split_count);
     ASSERT(current->tokens_count == current->normalized_count);
     ASSERT(current->edges_tokens_count == current->tokens_count + 2);
@@ -2505,7 +2505,7 @@ ctc_text_reference_parse_field(
         current->saw_romanize = true;
     } else if (ctc_text_reference_field_equal(field, field_len, "input")) {
         ASSERT(current->in_fixture);
-        ASSERT_MORE(value_len, 0);
+        ASSERT_POSITIVE(value_len);
         current->saw_input = true;
     } else if (ctc_text_reference_field_equal(field, field_len, "text_split")) {
         ASSERT(current->in_fixture);
@@ -2601,7 +2601,7 @@ ctc_text_test_reference_fixtures_load(void) {
             }
 
             tab = ctc_text_reference_line_tab(line, line_len);
-            ASSERT_MORE(tab, 0);
+            ASSERT_POSITIVE(tab);
             ctc_text_reference_parse_field(&totals,
                                            &current,
                                            line,
@@ -2758,7 +2758,7 @@ ctc_text_reference_load_word_fixture(
             }
 
             tab = ctc_text_reference_line_tab(line, line_len);
-            ASSERT_MORE(tab, 0);
+            ASSERT_POSITIVE(tab);
             if (ctc_text_reference_field_equal(line, tab, "fixture")) {
                 char *value = line + tab + 1;
                 int32 value_len = line_len - tab - 1;
@@ -2860,8 +2860,8 @@ ctc_text_reference_load_word_fixture(
     if (!found_fixture) {
         return false;
     }
-    ASSERT_MORE(fixture->input_len, 0);
-    ASSERT_MORE(fixture->text_split_count, 0);
+    ASSERT_POSITIVE(fixture->input_len);
+    ASSERT_POSITIVE(fixture->text_split_count);
     ASSERT(fixture->normalized_count == fixture->text_split_count);
     ASSERT(fixture->tokens_count == fixture->text_split_count);
     ASSERT(fixture->edges_tokens_count == fixture->tokens_count + 2);
@@ -3014,7 +3014,7 @@ ctc_text_test_word_target_fixture_case(char *fixture_name) {
     }
 
     ASSERT(normalized.target_text);
-    ASSERT_MORE(normalized.target_text_len, 0);
+    ASSERT_POSITIVE(normalized.target_text_len);
     ASSERT(normalized.target_byte_count == normalized.target_text_len);
     ASSERT(normalized.segment_count == fixture.tokens_count);
 
