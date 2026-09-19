@@ -3480,7 +3480,7 @@ lrc_ctc_normalized_range_is_space(
     ASSERT(normalized->text);
     ASSERT_NON_NEGATIVE(start);
     ASSERT_MORE(end, start);
-    ASSERT(end <= normalized->text_len);
+    ASSERT_LESS_EQUAL(end, normalized->text_len);
 
     for (int32 i = start; i < end; i += 1) {
         if (normalized->text[i] != ' ') {
@@ -3501,7 +3501,7 @@ lrc_ctc_normalized_range_has_space(
     ASSERT(normalized->text);
     ASSERT_NON_NEGATIVE(start);
     ASSERT_MORE(end, start);
-    ASSERT(end <= normalized->text_len);
+    ASSERT_LESS_EQUAL(end, normalized->text_len);
 
     for (int32 i = start; i < end; i += 1) {
         if (normalized->text[i] == ' ') {
@@ -4457,7 +4457,7 @@ lrc_ctc_line_timestamp_set_timed(
     ASSERT_LESS(index, timestamps->line_count);
     ASSERT_NON_NEGATIVE(first_word_index);
     ASSERT_MORE(end_word_index, first_word_index);
-    ASSERT(end_word_index <= word_spans->span_count);
+    ASSERT_LESS_EQUAL(end_word_index, word_spans->span_count);
 
     first = word_spans->spans + first_word_index;
     last = word_spans->spans + end_word_index - 1;
@@ -5196,7 +5196,7 @@ ctc_align_assert_word_text(
 ) {
     ASSERT_NON_NEGATIVE(word->normalized_start);
     ASSERT_MORE(word->normalized_end, word->normalized_start);
-    ASSERT(word->normalized_end <= normalized->text_len);
+    ASSERT_LESS_EQUAL(word->normalized_end, normalized->text_len);
     ASSERT(STREQUAL(normalized->text + word->normalized_start,
                      word->normalized_end - word->normalized_start,
                      text,
@@ -8422,7 +8422,7 @@ ctc_align_test_maxwell_word_line_mapping(void) {
                                                 &line_start,
                                                 &line_end));
         ASSERT_MORE_EQUAL(word->normalized_start, line_start);
-        ASSERT(word->normalized_end <= line_end);
+        ASSERT_LESS_EQUAL(word->normalized_end, line_end);
     }
     ctc_align_assert_word_text(&normalized,
                                word_spans.spans + 0,

@@ -2290,7 +2290,7 @@ ctc_text_test_assert_segment(
     ASSERT_EQUAL(segment->target_start, expected_target_start);
     ASSERT_EQUAL(segment->target_end, expected_target_end);
     ASSERT_NON_NEGATIVE(segment->target_start);
-    ASSERT(segment->target_end <= normalized->target_byte_count);
+    ASSERT_LESS_EQUAL(segment->target_end, normalized->target_byte_count);
     ASSERT(STREQUAL(lyrics->text + segment->source_start,
                      source_len,
                      expected_source,
@@ -2300,7 +2300,7 @@ ctc_text_test_assert_segment(
 
         ASSERT_EQUAL(target_byte->line_index, expected_line_index);
         ASSERT_MORE_EQUAL(target_byte->normalized_start, segment->normalized_start);
-        ASSERT(target_byte->normalized_end <= segment->normalized_end);
+        ASSERT_LESS_EQUAL(target_byte->normalized_end, segment->normalized_end);
     }
 
     return;
