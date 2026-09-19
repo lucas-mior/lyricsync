@@ -1390,8 +1390,7 @@ lrc_test_write_generated_file(void) {
         test_remove_tree(temp_dir);
         fatal(lrc_test_fail("read generated lrc file"));
     }
-    ASSERT(text_len == strlen32(expected));
-    ASSERT_EQUAL(text, expected);
+    ASSERT_EQUAL(text, text_len, expected, strlen32(expected));
 
     free2(text, ((int64)text_len + 1)*SIZEOF(*text));
     test_remove_tree(temp_dir);
