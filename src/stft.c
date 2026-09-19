@@ -118,8 +118,7 @@ stft_forward_channel(
 
         if (!fftw_real_forward(&plan->fftw_plan,
                                plan->frame,
-                               plan->real,
-                               plan->imag)) {
+                               plan->real, plan->imag)) {
             return false;
         }
 
