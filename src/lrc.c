@@ -1009,10 +1009,7 @@ lrc_test_assert_line(
     line = &parsed->lines[line_index];
     ASSERT(line->kind == expected_kind);
     ASSERT_EQUAL(line->timestamp_hundredths, expected_hundredths);
-    ASSERT(STREQUAL(line->text,
-                     line->text_len,
-                     expected_text,
-                     expected_text_len));
+    ASSERT_EQUAL(line->text, line->text_len, expected_text, expected_text_len);
 
     return;
 }
