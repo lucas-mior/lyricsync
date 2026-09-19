@@ -1908,14 +1908,14 @@ ctc_inference_test_fake_rank2(void) {
     }
 
     ASSERT(result.header.error == LS_ERROR_NONE);
-    ASSERT(emissions.value_count == 6);
-    ASSERT(emissions.row_count == 1);
-    ASSERT(emissions.row_frame_count == 2);
-    ASSERT(emissions.frame_count == 2);
-    ASSERT(emissions.vocabulary_size == 3);
-    ASSERT(emissions.shape_len == 2);
-    ASSERT(emissions.shape[0] == 2);
-    ASSERT(emissions.shape[1] == 3);
+    ASSERT_EQUAL(emissions.value_count, 6);
+    ASSERT_EQUAL(emissions.row_count, 1);
+    ASSERT_EQUAL(emissions.row_frame_count, 2);
+    ASSERT_EQUAL(emissions.frame_count, 2);
+    ASSERT_EQUAL(emissions.vocabulary_size, 3);
+    ASSERT_EQUAL(emissions.shape_len, 2);
+    ASSERT_EQUAL(emissions.shape[0], 2);
+    ASSERT_EQUAL(emissions.shape[1], 3);
     ASSERT_EQUAL(emissions.values[0], values[0]);
     ASSERT_EQUAL(emissions.values[5], values[5]);
 
@@ -1960,14 +1960,14 @@ ctc_inference_test_fake_rank3(void) {
         fatal(ctc_inference_test_fail("run fake rank-3 backend"));
     }
 
-    ASSERT(emissions.value_count == 4);
-    ASSERT(emissions.row_count == 1);
-    ASSERT(emissions.row_frame_count == 2);
-    ASSERT(emissions.frame_count == 2);
-    ASSERT(emissions.vocabulary_size == 2);
-    ASSERT(emissions.shape_len == 2);
-    ASSERT(emissions.shape[0] == 2);
-    ASSERT(emissions.shape[1] == 2);
+    ASSERT_EQUAL(emissions.value_count, 4);
+    ASSERT_EQUAL(emissions.row_count, 1);
+    ASSERT_EQUAL(emissions.row_frame_count, 2);
+    ASSERT_EQUAL(emissions.frame_count, 2);
+    ASSERT_EQUAL(emissions.vocabulary_size, 2);
+    ASSERT_EQUAL(emissions.shape_len, 2);
+    ASSERT_EQUAL(emissions.shape[0], 2);
+    ASSERT_EQUAL(emissions.shape[1], 2);
     ASSERT_EQUAL(emissions.values[0], 2.0f);
     ASSERT_EQUAL(emissions.values[1], 3.0f);
     ASSERT_EQUAL(emissions.values[2], 8.0f);
@@ -2010,12 +2010,12 @@ ctc_inference_test_rank3_extension_truncated(void) {
         fatal(ctc_inference_test_fail("run padded rank-3 backend"));
     }
 
-    ASSERT(emissions.value_count == 2);
-    ASSERT(emissions.frame_count == 1);
-    ASSERT(emissions.vocabulary_size == 2);
-    ASSERT(emissions.shape_len == 2);
-    ASSERT(emissions.shape[0] == 1);
-    ASSERT(emissions.shape[1] == 2);
+    ASSERT_EQUAL(emissions.value_count, 2);
+    ASSERT_EQUAL(emissions.frame_count, 1);
+    ASSERT_EQUAL(emissions.vocabulary_size, 2);
+    ASSERT_EQUAL(emissions.shape_len, 2);
+    ASSERT_EQUAL(emissions.shape[0], 1);
+    ASSERT_EQUAL(emissions.shape[1], 2);
     ASSERT_EQUAL(emissions.values[0], 2.0f);
     ASSERT_EQUAL(emissions.values[1], 3.0f);
 
@@ -2066,8 +2066,8 @@ ctc_inference_test_rank3_logits_converted_after_trim(void) {
     }
 
     ASSERT(result.header.error == LS_ERROR_NONE);
-    ASSERT(emissions.frame_count == 2);
-    ASSERT(emissions.vocabulary_size == 2);
+    ASSERT_EQUAL(emissions.frame_count, 2);
+    ASSERT_EQUAL(emissions.vocabulary_size, 2);
     ASSERT(ctc_inference_float_close(emissions.values[0],
                                      (float)-row0_norm,
                                      0.00001f));
@@ -2124,8 +2124,8 @@ ctc_inference_test_rank3_probability_trim_before_convert(void) {
     }
 
     ASSERT(result.header.error == LS_ERROR_NONE);
-    ASSERT(emissions.frame_count == 2);
-    ASSERT(emissions.vocabulary_size == 2);
+    ASSERT_EQUAL(emissions.frame_count, 2);
+    ASSERT_EQUAL(emissions.vocabulary_size, 2);
     ASSERT(ctc_inference_float_close(emissions.values[0],
                                      logf(0.25f),
                                      0.00001f));
@@ -2191,8 +2191,8 @@ ctc_inference_test_rank3_accepts_short_actual_model_length(void) {
     }
 
     ASSERT(result.header.error == LS_ERROR_NONE);
-    ASSERT(emissions.frame_count == 3);
-    ASSERT(emissions.value_count == 3);
+    ASSERT_EQUAL(emissions.frame_count, 3);
+    ASSERT_EQUAL(emissions.value_count, 3);
     ASSERT_EQUAL(emissions.values[0], 10.0f);
     ASSERT_EQUAL(emissions.values[1], 11.0f);
     ASSERT_EQUAL(emissions.values[2], 12.0f);
@@ -2313,7 +2313,7 @@ ctc_inference_test_rank3_python_slicing_vectors(void) {
     }
 
     ASSERT(emissions.frame_count == LENGTH(expected));
-    ASSERT(emissions.vocabulary_size == 1);
+    ASSERT_EQUAL(emissions.vocabulary_size, 1);
     for (int32 i = 0; i < LENGTH(expected); i += 1) {
         ASSERT_EQUAL(emissions.values[i], expected[i]);
     }
@@ -2506,8 +2506,8 @@ ctc_inference_test_onnx_chunk_output_shape(void) {
                                          &result)) {
         fatal(ctc_inference_test_fail("accept rank-3 chunk output"));
     }
-    ASSERT(chunk_emission_count == 3);
-    ASSERT(vocabulary_size == 4);
+    ASSERT_EQUAL(chunk_emission_count, 3);
+    ASSERT_EQUAL(vocabulary_size, 4);
     ASSERT(chunk_value_count == LENGTH(values));
 
     output.shape_len = 2;
@@ -2521,8 +2521,8 @@ ctc_inference_test_onnx_chunk_output_shape(void) {
                                          &result)) {
         fatal(ctc_inference_test_fail("accept rank-2 chunk output"));
     }
-    ASSERT(chunk_emission_count == 6);
-    ASSERT(vocabulary_size == 2);
+    ASSERT_EQUAL(chunk_emission_count, 6);
+    ASSERT_EQUAL(vocabulary_size, 2);
     ASSERT(chunk_value_count == LENGTH(values));
 
     output.shape_len = 3;
@@ -2613,7 +2613,7 @@ ctc_inference_test_rejects_invalid_inputs(void) {
             fatal(ctc_inference_test_fail("non-finite emissions accepted"));
         }
         ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_NON_FINITE_OUTPUT);
-        ASSERT(result.output_index == 1);
+        ASSERT_EQUAL(result.output_index, 1);
     } else {
         fatal(ctc_inference_test_fail("set non-finite fake emissions"));
     }
@@ -2819,7 +2819,7 @@ ctc_inference_test_rejects_invalid_probability_conversion(void) {
         fatal(ctc_inference_test_fail("zero probability accepted"));
     }
     ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_INVALID_PROBABILITY);
-    ASSERT(result.output_index == 1);
+    ASSERT_EQUAL(result.output_index, 1);
 
     values[1] = 1.0f;
     if (!lrc_ctc_emissions_copy_shape(&emissions,

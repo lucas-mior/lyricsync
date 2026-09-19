@@ -2485,7 +2485,7 @@ ctc_text_reference_parse_field(
                                             value_len);
     } else if (ctc_text_reference_field_equal(field, field_len, "language")) {
         ASSERT(current->in_fixture);
-        ASSERT(value_len == 3);
+        ASSERT_EQUAL(value_len, 3);
         current->saw_language = true;
     } else if (ctc_text_reference_field_equal(field, field_len, "split_size")) {
         ASSERT(current->in_fixture);
@@ -3175,18 +3175,18 @@ ctc_text_test_word_target_text_is_character_spaced(void) {
 
     ASSERT_EQUAL(normalized.text, "hello world");
     ASSERT_EQUAL(normalized.target_text, "h e l l o w o r l d");
-    ASSERT(normalized.segment_count == 2);
+    ASSERT_EQUAL(normalized.segment_count, 2);
 
     segment = lrc_lyrics_normalized_segment(&normalized, 0);
     ASSERT(segment);
     ASSERT(segment->normalized_start == 0);
-    ASSERT(segment->normalized_end == 5);
+    ASSERT_EQUAL(segment->normalized_end, 5);
     ASSERT(segment->target_start == 0);
-    ASSERT(segment->target_end == 9);
+    ASSERT_EQUAL(segment->target_end, 9);
 
     segment = lrc_lyrics_normalized_segment(&normalized, 1);
     ASSERT(segment);
-    ASSERT(segment->normalized_start == 6);
+    ASSERT_EQUAL(segment->normalized_start, 6);
     ASSERT_EQUAL(segment->normalized_end, 11);
     ASSERT_EQUAL(segment->target_start, 10);
     ASSERT_EQUAL(segment->target_end, 19);
@@ -3205,7 +3205,7 @@ ctc_text_test_options_language(
     int32 language_len;
 
     language_len = strlen32(language);
-    ASSERT(language_len == 3);
+    ASSERT_EQUAL(language_len, 3);
 
     memcpy64(options->language, language, language_len);
     options->language[language_len] = '\0';
@@ -3327,20 +3327,20 @@ ctc_text_test_icu_word_romanization(void) {
 
     ASSERT_EQUAL(normalized.text, "mao privet");
     ASSERT_EQUAL(normalized.target_text, "m a o p r i v e t");
-    ASSERT(normalized.segment_count == 2);
+    ASSERT_EQUAL(normalized.segment_count, 2);
 
     segment = lrc_lyrics_normalized_segment(&normalized, 0);
     ASSERT(segment);
     ASSERT(segment->normalized_start == 0);
-    ASSERT(segment->normalized_end == 3);
+    ASSERT_EQUAL(segment->normalized_end, 3);
     ASSERT(segment->target_start == 0);
-    ASSERT(segment->target_end == 5);
+    ASSERT_EQUAL(segment->target_end, 5);
 
     segment = lrc_lyrics_normalized_segment(&normalized, 1);
     ASSERT(segment);
-    ASSERT(segment->normalized_start == 4);
+    ASSERT_EQUAL(segment->normalized_start, 4);
     ASSERT_EQUAL(segment->normalized_end, 10);
-    ASSERT(segment->target_start == 6);
+    ASSERT_EQUAL(segment->target_start, 6);
     ASSERT_EQUAL(segment->target_end, 17);
 
     lrc_lyrics_normalized_destroy(&normalized);
@@ -3373,21 +3373,21 @@ ctc_text_test_icu_char_romanization(void) {
 
     ASSERT_EQUAL(normalized.text, "nihao");
     ASSERT_EQUAL(normalized.target_text, "n i h a o");
-    ASSERT(normalized.segment_count == 2);
+    ASSERT_EQUAL(normalized.segment_count, 2);
 
     segment = lrc_lyrics_normalized_segment(&normalized, 0);
     ASSERT(segment);
     ASSERT(segment->normalized_start == 0);
-    ASSERT(segment->normalized_end == 2);
+    ASSERT_EQUAL(segment->normalized_end, 2);
     ASSERT(segment->target_start == 0);
-    ASSERT(segment->target_end == 3);
+    ASSERT_EQUAL(segment->target_end, 3);
 
     segment = lrc_lyrics_normalized_segment(&normalized, 1);
     ASSERT(segment);
-    ASSERT(segment->normalized_start == 2);
-    ASSERT(segment->normalized_end == 5);
-    ASSERT(segment->target_start == 4);
-    ASSERT(segment->target_end == 9);
+    ASSERT_EQUAL(segment->normalized_start, 2);
+    ASSERT_EQUAL(segment->normalized_end, 5);
+    ASSERT_EQUAL(segment->target_start, 4);
+    ASSERT_EQUAL(segment->target_end, 9);
 
     lrc_lyrics_normalized_destroy(&normalized);
     lrc_lyrics_destroy(&lyrics);
@@ -3424,7 +3424,7 @@ ctc_text_test_word_split_option_preserves_current_text(void) {
 
     ASSERT_EQUAL(current.text, word.text);
     ASSERT_EQUAL(current.segment_count, word.segment_count);
-    ASSERT(word.alignable_line_count == 2);
+    ASSERT_EQUAL(word.alignable_line_count, 2);
 
     lrc_lyrics_normalized_destroy(&word);
     lrc_lyrics_normalized_destroy(&current);
@@ -3466,7 +3466,7 @@ ctc_text_test_word_segments_preserve_line_mapping(void) {
     }
 
     ASSERT_EQUAL(normalized.text, "hello world again voce");
-    ASSERT(lrc_lyrics_normalized_segment_count(&normalized) == 4);
+    ASSERT_EQUAL(lrc_lyrics_normalized_segment_count(&normalized), 4);
     ASSERT(lrc_lyrics_normalized_segment(&normalized, -1) == NULL);
     ASSERT(lrc_lyrics_normalized_segment(&normalized, 4) == NULL);
 
@@ -3506,7 +3506,7 @@ ctc_text_test_current_normalization_mapping(void) {
     }
 
     ASSERT_EQUAL(normalized.text, "hello world again");
-    ASSERT(normalized.alignable_line_count == 2);
+    ASSERT_EQUAL(normalized.alignable_line_count, 2);
     ASSERT(lrc_lyrics_normalized_line_kind(
         &normalized,
         1

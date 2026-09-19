@@ -918,8 +918,8 @@ main(void) {
 
     mdx_config_init(&config);
     ASSERT_EQUAL(config.sample_rate, 44100);
-    ASSERT(config.channel_count == 2);
-    ASSERT(config.dim_c == 4);
+    ASSERT_EQUAL(config.channel_count, 2);
+    ASSERT_EQUAL(config.dim_c, 4);
     ASSERT_EQUAL(config.n_fft, 6144);
     ASSERT_EQUAL(config.hop, 1024);
     ASSERT(config.chunk_size == 0);

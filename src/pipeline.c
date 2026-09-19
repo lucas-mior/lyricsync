@@ -5247,13 +5247,13 @@ pipeline_test_config_defaults(void) {
     ASSERT(config.print_info);
     ASSERT(!config.keep_temp_files);
     ASSERT_EQUAL(config.vocals_output_format.sample_rate, 44100);
-    ASSERT(config.vocals_output_format.channel_count == 2);
+    ASSERT_EQUAL(config.vocals_output_format.channel_count, 2);
     ASSERT_EQUAL(config.mdx_config.sample_rate, 44100);
-    ASSERT(config.mdx_config.channel_count == 2);
+    ASSERT_EQUAL(config.mdx_config.channel_count, 2);
     ASSERT_EQUAL(config.ctc_model_config.sample_rate, 16000);
     ASSERT_EQUAL(config.ctc_model_config.inputs_to_logits_ratio, 320);
     ASSERT_EQUAL(config.ctc_model_config.window_seconds, 30);
-    ASSERT(config.ctc_model_config.context_seconds == 2);
+    ASSERT_EQUAL(config.ctc_model_config.context_seconds, 2);
     ASSERT(config.lyrics_preprocess_options.split_size
            == LRC_LYRICS_PREPROCESS_SPLIT_SIZE_WORD);
     ASSERT(config.lyrics_preprocess_options.star_frequency
@@ -5438,9 +5438,9 @@ pipeline_test_vocals_request(void) {
     ASSERT(!request.print_info);
     ASSERT(request.ort_session_config.execution_provider
            == ORT_EXECUTION_PROVIDER_CPU);
-    ASSERT(request.ort_session_config.device_id == 2);
-    ASSERT(request.mdx_config.chunk_seconds == 3);
-    ASSERT(request.mdx_config.margin_seconds == 1);
+    ASSERT_EQUAL(request.ort_session_config.device_id, 2);
+    ASSERT_EQUAL(request.mdx_config.chunk_seconds, 3);
+    ASSERT_EQUAL(request.mdx_config.margin_seconds, 1);
 
     lrc_pipeline_cleanup(&pipeline);
 

@@ -1034,19 +1034,19 @@ ort_test_model_io_info_copy(void) {
         fatal(ort_test_fail("copy input info"));
     }
     ASSERT(strequal(info.name, "input"));
-    ASSERT(info.count == 1);
-    ASSERT(info.shape_len == 2);
-    ASSERT(info.shape[0] == 1);
-    ASSERT(info.shape[1] == 3);
+    ASSERT_EQUAL(info.count, 1);
+    ASSERT_EQUAL(info.shape_len, 2);
+    ASSERT_EQUAL(info.shape[0], 1);
+    ASSERT_EQUAL(info.shape[1], 3);
 
     if (!ort_model_output_info(&model, &info)) {
         fatal(ort_test_fail("copy output info"));
     }
     ASSERT(strequal(info.name, "output"));
-    ASSERT(info.count == 1);
-    ASSERT(info.shape_len == 2);
-    ASSERT(info.shape[0] == 1);
-    ASSERT(info.shape[1] == 3);
+    ASSERT_EQUAL(info.count, 1);
+    ASSERT_EQUAL(info.shape_len, 2);
+    ASSERT_EQUAL(info.shape[0], 1);
+    ASSERT_EQUAL(info.shape[1], 3);
 
     return;
 }
@@ -1216,9 +1216,9 @@ ort_test_optional_identity_model(void) {
         fatal(ort_test_fail("identity input info"));
     }
     ASSERT(strequal(info.name, "input"));
-    ASSERT(info.shape_len == 2);
-    ASSERT(info.shape[0] == 1);
-    ASSERT(info.shape[1] == 3);
+    ASSERT_EQUAL(info.shape_len, 2);
+    ASSERT_EQUAL(info.shape[0], 1);
+    ASSERT_EQUAL(info.shape[1], 3);
 
     if (!ort_model_output_info(&model, &info)) {
         ort_model_destroy(&context, &model);
@@ -1227,9 +1227,9 @@ ort_test_optional_identity_model(void) {
         fatal(ort_test_fail("identity output info"));
     }
     ASSERT(strequal(info.name, "output"));
-    ASSERT(info.shape_len == 2);
-    ASSERT(info.shape[0] == 1);
-    ASSERT(info.shape[1] == 3);
+    ASSERT_EQUAL(info.shape_len, 2);
+    ASSERT_EQUAL(info.shape[0], 1);
+    ASSERT_EQUAL(info.shape[1], 3);
 
     data[0] = 1.0f;
     data[1] = -2.0f;
@@ -1250,10 +1250,10 @@ ort_test_optional_identity_model(void) {
         fatal(ort_test_fail("identity run"));
     }
 
-    ASSERT(output.data_len == 3);
-    ASSERT(output.shape_len == 2);
-    ASSERT(output.shape[0] == 1);
-    ASSERT(output.shape[1] == 3);
+    ASSERT_EQUAL(output.data_len, 3);
+    ASSERT_EQUAL(output.shape_len, 2);
+    ASSERT_EQUAL(output.shape[0], 1);
+    ASSERT_EQUAL(output.shape[1], 3);
     ASSERT_EQUAL(output.data[0], data[0]);
     ASSERT_EQUAL(output.data[1], data[1]);
     ASSERT_EQUAL(output.data[2], data[2]);

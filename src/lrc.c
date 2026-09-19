@@ -1027,9 +1027,9 @@ lrc_test_parse_timestamped_and_blank_lines(void) {
         fatal(lrc_test_fail("parse timestamped and blank lines"));
     }
 
-    ASSERT(parsed.line_count == 3);
-    ASSERT(parsed.timestamped_line_count == 2);
-    ASSERT(parsed.blank_line_count == 1);
+    ASSERT_EQUAL(parsed.line_count, 3);
+    ASSERT_EQUAL(parsed.timestamped_line_count, 2);
+    ASSERT_EQUAL(parsed.blank_line_count, 1);
     lrc_test_assert_line(&parsed,
                          0,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
@@ -1062,9 +1062,9 @@ lrc_test_parse_crlf_and_space_blank_line(void) {
         fatal(lrc_test_fail("parse crlf and blank line"));
     }
 
-    ASSERT(parsed.line_count == 3);
-    ASSERT(parsed.timestamped_line_count == 2);
-    ASSERT(parsed.blank_line_count == 1);
+    ASSERT_EQUAL(parsed.line_count, 3);
+    ASSERT_EQUAL(parsed.timestamped_line_count, 2);
+    ASSERT_EQUAL(parsed.blank_line_count, 1);
     lrc_test_assert_line(&parsed,
                          0,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
@@ -1128,7 +1128,7 @@ lrc_test_reject_untimed_text(void) {
         fatal(lrc_test_fail("accepted untimed text"));
     }
     ASSERT(result.header.error == LS_ERROR_PARSE_UNTIMED_TEXT);
-    ASSERT(result.line_index == 1);
+    ASSERT_EQUAL(result.line_index, 1);
 
     return;
 }
@@ -1143,8 +1143,8 @@ lrc_test_duplicate_timestamps_are_preserved(void) {
         fatal(lrc_test_fail("parse duplicate timestamps"));
     }
 
-    ASSERT(parsed.line_count == 2);
-    ASSERT(parsed.timestamped_line_count == 2);
+    ASSERT_EQUAL(parsed.line_count, 2);
+    ASSERT_EQUAL(parsed.timestamped_line_count, 2);
     lrc_test_assert_line(&parsed,
                          0,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
@@ -1779,9 +1779,9 @@ lrc_test_optional_maxwell_lrc(void) {
         fatal(lrc_test_fail("parse maxwell lrc"));
     }
 
-    ASSERT(parsed.line_count == 6);
-    ASSERT(parsed.timestamped_line_count == 5);
-    ASSERT(parsed.blank_line_count == 1);
+    ASSERT_EQUAL(parsed.line_count, 6);
+    ASSERT_EQUAL(parsed.timestamped_line_count, 5);
+    ASSERT_EQUAL(parsed.blank_line_count, 1);
     lrc_test_assert_line(&parsed,
                          0,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
