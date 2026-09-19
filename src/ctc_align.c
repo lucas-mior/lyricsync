@@ -491,7 +491,7 @@ lrc_ctc_align_graph_build_for_mode(
         token_index += 1;
         segment_star_pending = false;
     }
-    ASSERT(token_index == target_token_count);
+    ASSERT_EQUAL(token_index, target_token_count);
 
     return true;
 }
@@ -2293,7 +2293,7 @@ lrc_ctc_path_to_segments(
                                     score_sum,
                                     frame_duration_seconds);
     }
-    ASSERT(segment_index + 1 == segments->segment_count);
+    ASSERT_EQUAL(segment_index + 1, segments->segment_count);
 
     return true;
 }
@@ -2944,7 +2944,7 @@ lrc_ctc_path_to_token_spans(
                                   score_sum,
                                   frame_duration_seconds);
     }
-    ASSERT(span_index + 1 == spans->span_count);
+    ASSERT_EQUAL(span_index + 1, spans->span_count);
 
     return true;
 }
@@ -3841,7 +3841,7 @@ lrc_ctc_token_spans_to_segment_word_spans(
         }
         previous_token_index = token_span->token_index;
     }
-    ASSERT(word_index + 1 == word_spans->span_count);
+    ASSERT_EQUAL(word_index + 1, word_spans->span_count);
 
     return true;
 }
@@ -4111,7 +4111,7 @@ lrc_ctc_token_spans_to_word_spans(
         previous_token_index = token_span->token_index;
         previous_end = token->normalized_end;
     }
-    ASSERT(word_index + 1 == word_spans->span_count);
+    ASSERT_EQUAL(word_index + 1, word_spans->span_count);
 
     return true;
 }
@@ -4541,7 +4541,7 @@ lrc_ctc_word_spans_to_line_timestamps(
                                          end_word_index);
         out_index += 1;
     }
-    ASSERT(out_index == line_timestamps->line_count);
+    ASSERT_EQUAL(out_index, line_timestamps->line_count);
 
     return true;
 }
@@ -5526,8 +5526,8 @@ ctc_align_test_empty_initializers(void) {
 
     ASSERT(result.header.error == LS_ERROR_NONE);
     ASSERT(strequal(result.header.message, "ok"));
-    ASSERT(result.frame_index == -1);
-    ASSERT(result.token_index == -1);
+    ASSERT_EQUAL(result.frame_index, -1);
+    ASSERT_EQUAL(result.token_index, -1);
 
     ASSERT(graph.states == NULL);
     ASSERT(graph.state_count == 0);
@@ -5574,7 +5574,7 @@ ctc_align_test_graph_build_layout(void) {
     ASSERT(graph.target_token_count == 1);
     ASSERT(graph.state_count == 3);
     ASSERT(graph.states[0].kind == LRC_CTC_ALIGN_STATE_BLANK);
-    ASSERT(graph.states[0].token_index == -1);
+    ASSERT_EQUAL(graph.states[0].token_index, -1);
     ASSERT(graph.states[1].kind == LRC_CTC_ALIGN_STATE_TOKEN);
     ASSERT(graph.states[1].token_index == 0);
     ASSERT(graph.states[1].token_id == 7);
@@ -5632,7 +5632,7 @@ ctc_align_test_graph_build_edge_stars(void) {
     ASSERT(graph.state_count == 9);
     ASSERT(graph.states[0].kind == LRC_CTC_ALIGN_STATE_BLANK);
     ASSERT(graph.states[1].kind == LRC_CTC_ALIGN_STATE_STAR);
-    ASSERT(graph.states[1].token_index == -1);
+    ASSERT_EQUAL(graph.states[1].token_index, -1);
     ASSERT(graph.states[1].token_id == 9);
     ASSERT(graph.states[3].kind == LRC_CTC_ALIGN_STATE_TOKEN);
     ASSERT(graph.states[3].token_index == 0);
@@ -5641,7 +5641,7 @@ ctc_align_test_graph_build_edge_stars(void) {
     ASSERT(graph.states[5].token_index == 1);
     ASSERT(graph.states[5].token_id == 8);
     ASSERT(graph.states[7].kind == LRC_CTC_ALIGN_STATE_STAR);
-    ASSERT(graph.states[7].token_index == -1);
+    ASSERT_EQUAL(graph.states[7].token_index, -1);
     ASSERT(graph.states[7].token_id == 9);
     ASSERT(graph.states[8].kind == LRC_CTC_ALIGN_STATE_BLANK);
     ASSERT(lrc_ctc_align_state_can_skip(&graph, 1, 3));
@@ -5688,9 +5688,9 @@ ctc_align_test_graph_build_segment_stars(void) {
 
     ASSERT(result.header.error == LS_ERROR_NONE);
     ASSERT(graph.target_token_count == 3);
-    ASSERT(graph.state_count == 11);
+    ASSERT_EQUAL(graph.state_count, 11);
     ASSERT(graph.states[1].kind == LRC_CTC_ALIGN_STATE_STAR);
-    ASSERT(graph.states[1].token_index == -1);
+    ASSERT_EQUAL(graph.states[1].token_index, -1);
     ASSERT(graph.states[1].token_id == 9);
     ASSERT(graph.states[3].kind == LRC_CTC_ALIGN_STATE_TOKEN);
     ASSERT(graph.states[3].token_index == 0);
@@ -5699,7 +5699,7 @@ ctc_align_test_graph_build_segment_stars(void) {
     ASSERT(graph.states[5].token_index == 1);
     ASSERT(graph.states[5].token_id == 8);
     ASSERT(graph.states[7].kind == LRC_CTC_ALIGN_STATE_STAR);
-    ASSERT(graph.states[7].token_index == -1);
+    ASSERT_EQUAL(graph.states[7].token_index, -1);
     ASSERT(graph.states[7].token_id == 9);
     ASSERT(graph.states[9].kind == LRC_CTC_ALIGN_STATE_TOKEN);
     ASSERT(graph.states[9].token_index == 2);
@@ -5801,8 +5801,8 @@ ctc_align_test_required_frame_count_for_tokens(void) {
     ASSERT(lrc_ctc_required_frame_count_for_tokens(mixed_tokens, 4) == 6);
     ASSERT(lrc_ctc_required_frame_count_for_tokens(separated_repeat_tokens, 3)
            == 3);
-    ASSERT(lrc_ctc_required_frame_count_for_tokens(NULL, 1) == -1);
-    ASSERT(lrc_ctc_required_frame_count_for_tokens(one_token, 0) == -1);
+    ASSERT_EQUAL(lrc_ctc_required_frame_count_for_tokens(NULL, 1), -1);
+    ASSERT_EQUAL(lrc_ctc_required_frame_count_for_tokens(one_token, 0), -1);
 
     return;
 }
@@ -5848,11 +5848,11 @@ ctc_align_test_allocate_initializes_to_negative_infinity(void) {
     ASSERT(trellis.frame_count == 3);
     ASSERT(trellis.target_token_count == 2);
     ASSERT(trellis.state_count == 5);
-    ASSERT(trellis.cell_count == 15);
+    ASSERT_EQUAL(trellis.cell_count, 15);
     for (int64 i = 0; i < trellis.cell_count; i += 1) {
         ASSERT(ctc_align_is_negative_infinity(trellis.scores[i]));
     }
-    ASSERT(lrc_ctc_trellis_cell(&trellis, 0, 0) == trellis.scores);
+    ASSERT_EQUAL(lrc_ctc_trellis_cell(&trellis, 0, 0), trellis.scores);
     ASSERT(lrc_ctc_trellis_cell(&trellis, 2, 4)
            == trellis.scores + 14);
     ASSERT(lrc_ctc_trellis_cell(&trellis, -1, 0) == NULL);
@@ -5886,7 +5886,7 @@ ctc_align_test_rejects_invalid_dimensions(void) {
         fatal(ctc_align_test_fail("zero target tokens accepted"));
     }
     ASSERT(result.header.error == LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS);
-    ASSERT(result.frame_index == -1);
+    ASSERT_EQUAL(result.frame_index, -1);
     ASSERT(result.token_index == 0);
 
     if (lrc_ctc_trellis_allocate(&trellis, 1, INT32_MAX/2 + 1, &result)) {
@@ -6045,14 +6045,14 @@ ctc_align_test_trellis_uses_graph_states(void) {
         fatal(ctc_align_test_fail("allocate two-token state trellis"));
     }
     ASSERT(trellis.state_count == 5);
-    ASSERT(trellis.cell_count == 10);
+    ASSERT_EQUAL(trellis.cell_count, 10);
     lrc_ctc_trellis_destroy(&trellis);
 
     if (!lrc_ctc_trellis_allocate(&trellis, 2, 3, &result)) {
         fatal(ctc_align_test_fail("allocate three-token state trellis"));
     }
     ASSERT(trellis.state_count == 7);
-    ASSERT(trellis.cell_count == 14);
+    ASSERT_EQUAL(trellis.cell_count, 14);
     lrc_ctc_trellis_destroy(&trellis);
 
     return;
@@ -6334,7 +6334,7 @@ ctc_align_test_backtracks_edge_stars(void) {
     ASSERT(path.steps[0].state_index == 1);
     ASSERT(path.steps[0].is_star);
     ASSERT(!path.steps[0].is_blank);
-    ASSERT(path.steps[0].token_index == -1);
+    ASSERT_EQUAL(path.steps[0].token_index, -1);
     ASSERT(path.steps[0].token_id == 3);
     ASSERT(path.steps[1].state_index == 3);
     ASSERT(!path.steps[1].is_blank);
@@ -6348,7 +6348,7 @@ ctc_align_test_backtracks_edge_stars(void) {
     ASSERT(path.steps[2].token_id == 2);
     ASSERT(path.steps[3].state_index == 7);
     ASSERT(path.steps[3].is_star);
-    ASSERT(path.steps[3].token_index == -1);
+    ASSERT_EQUAL(path.steps[3].token_index, -1);
     ASSERT(path.steps[3].token_id == 3);
 
     if (!lrc_ctc_path_to_token_spans(&path,
@@ -6430,7 +6430,7 @@ ctc_align_test_backtracks_segment_stars(void) {
     for (int32 i = 0; i < path.step_count; i += 1) {
         if (path.steps[i].is_star) {
             saw_star = true;
-            ASSERT(path.steps[i].token_id == star_token_id);
+            ASSERT_EQUAL(path.steps[i].token_id, star_token_id);
         }
     }
     ASSERT(saw_star);
@@ -6605,7 +6605,7 @@ ctc_align_test_path_segments_merge_blanks_and_tokens(void) {
     ASSERT(segments.segments[0].is_blank);
     ASSERT(!segments.segments[0].is_star);
     ASSERT(segments.segments[0].token_id == 0);
-    ASSERT(segments.segments[0].token_index == -1);
+    ASSERT_EQUAL(segments.segments[0].token_index, -1);
     ASSERT(segments.segments[0].start_frame == 0);
     ASSERT(segments.segments[0].end_frame == 2);
     ASSERT(ctc_align_float_close(segments.segments[0].start_seconds,
@@ -6737,8 +6737,8 @@ ctc_align_test_path_segments_keep_stars(void) {
     ASSERT(segments.segment_count == 4);
     ASSERT(!segments.segments[0].is_blank);
     ASSERT(segments.segments[0].is_star);
-    ASSERT(segments.segments[0].token_id == star_token_id);
-    ASSERT(segments.segments[0].token_index == -1);
+    ASSERT_EQUAL(segments.segments[0].token_id, star_token_id);
+    ASSERT_EQUAL(segments.segments[0].token_index, -1);
     ASSERT(segments.segments[0].start_frame == 0);
     ASSERT(segments.segments[0].end_frame == 2);
     ASSERT(ctc_align_float_close(segments.segments[0].score,
@@ -6796,7 +6796,7 @@ ctc_align_test_aligned_intervals_keep_edge_star_order(void) {
 
     ASSERT(intervals.interval_count == 4);
     ASSERT(intervals.intervals[0].is_star);
-    ASSERT(intervals.intervals[0].target_token_index == -1);
+    ASSERT_EQUAL(intervals.intervals[0].target_token_index, -1);
     ASSERT(intervals.intervals[0].segment_start_index == 0);
     ASSERT(intervals.intervals[0].segment_end_index == 1);
     ASSERT(intervals.intervals[0].token_start_frame == 0);
@@ -6812,7 +6812,7 @@ ctc_align_test_aligned_intervals_keep_edge_star_order(void) {
     ASSERT(intervals.intervals[2].segment_start_index == 3);
     ASSERT(intervals.intervals[2].segment_end_index == 4);
     ASSERT(intervals.intervals[3].is_star);
-    ASSERT(intervals.intervals[3].target_token_index == -1);
+    ASSERT_EQUAL(intervals.intervals[3].target_token_index, -1);
     ASSERT(intervals.intervals[3].segment_start_index == 4);
     ASSERT(intervals.intervals[3].segment_end_index == 5);
 
@@ -6858,13 +6858,13 @@ ctc_align_test_aligned_intervals_keep_segment_star_order(void) {
 
     ASSERT(intervals.interval_count == 5);
     ASSERT(intervals.intervals[0].is_star);
-    ASSERT(intervals.intervals[0].target_token_index == -1);
+    ASSERT_EQUAL(intervals.intervals[0].target_token_index, -1);
     ASSERT(intervals.intervals[1].target_token_index == 0);
     ASSERT(intervals.intervals[1].segment_start_index == 1);
     ASSERT(intervals.intervals[2].target_token_index == 1);
     ASSERT(intervals.intervals[2].segment_start_index == 3);
     ASSERT(intervals.intervals[3].is_star);
-    ASSERT(intervals.intervals[3].target_token_index == -1);
+    ASSERT_EQUAL(intervals.intervals[3].target_token_index, -1);
     ASSERT(intervals.intervals[3].segment_start_index == 4);
     ASSERT(intervals.intervals[4].target_token_index == 2);
     ASSERT(intervals.intervals[4].segment_start_index == 5);
@@ -6914,20 +6914,20 @@ ctc_align_test_pad_intervals_distributes_blank_frames(void) {
     }
 
     ASSERT(intervals.interval_count == 2);
-    ASSERT(intervals.intervals[0].token_start_frame == 10);
-    ASSERT(intervals.intervals[0].token_end_frame == 12);
+    ASSERT_EQUAL(intervals.intervals[0].token_start_frame, 10);
+    ASSERT_EQUAL(intervals.intervals[0].token_end_frame, 12);
     ASSERT(intervals.intervals[0].padded_start_frame == 0);
-    ASSERT(intervals.intervals[0].padded_end_frame == 16);
+    ASSERT_EQUAL(intervals.intervals[0].padded_end_frame, 16);
     ASSERT(ctc_align_float_close(intervals.intervals[0].padded_start_seconds,
                                  0.0f,
                                  0.00001f));
     ASSERT(ctc_align_float_close(intervals.intervals[0].padded_end_seconds,
                                  1.6f,
                                  0.00001f));
-    ASSERT(intervals.intervals[1].token_start_frame == 20);
-    ASSERT(intervals.intervals[1].token_end_frame == 22);
-    ASSERT(intervals.intervals[1].padded_start_frame == 16);
-    ASSERT(intervals.intervals[1].padded_end_frame == 30);
+    ASSERT_EQUAL(intervals.intervals[1].token_start_frame, 20);
+    ASSERT_EQUAL(intervals.intervals[1].token_end_frame, 22);
+    ASSERT_EQUAL(intervals.intervals[1].padded_start_frame, 16);
+    ASSERT_EQUAL(intervals.intervals[1].padded_end_frame, 30);
     ASSERT(ctc_align_float_close(intervals.intervals[1].padded_start_seconds,
                                  1.6f,
                                  0.00001f));
@@ -6983,13 +6983,13 @@ ctc_align_test_pad_intervals_counts_initial_star(void) {
     ASSERT(intervals.interval_count == 3);
     ASSERT(intervals.intervals[0].is_star);
     ASSERT(intervals.intervals[0].padded_start_frame == 0);
-    ASSERT(intervals.intervals[0].padded_end_frame == 16);
+    ASSERT_EQUAL(intervals.intervals[0].padded_end_frame, 16);
     ASSERT(!intervals.intervals[1].is_star);
     ASSERT(intervals.intervals[1].target_token_index == 0);
-    ASSERT(intervals.intervals[1].token_start_frame == 20);
-    ASSERT(intervals.intervals[1].token_end_frame == 22);
-    ASSERT(intervals.intervals[1].padded_start_frame == 16);
-    ASSERT(intervals.intervals[1].padded_end_frame == 26);
+    ASSERT_EQUAL(intervals.intervals[1].token_start_frame, 20);
+    ASSERT_EQUAL(intervals.intervals[1].token_end_frame, 22);
+    ASSERT_EQUAL(intervals.intervals[1].padded_start_frame, 16);
+    ASSERT_EQUAL(intervals.intervals[1].padded_end_frame, 26);
     ASSERT(ctc_align_float_close(intervals.intervals[1].padded_start_seconds,
                                  1.6f,
                                  0.00001f));
@@ -6997,8 +6997,8 @@ ctc_align_test_pad_intervals_counts_initial_star(void) {
                                  2.6f,
                                  0.00001f));
     ASSERT(intervals.intervals[2].is_star);
-    ASSERT(intervals.intervals[2].padded_start_frame == 26);
-    ASSERT(intervals.intervals[2].padded_end_frame == 32);
+    ASSERT_EQUAL(intervals.intervals[2].padded_start_frame, 26);
+    ASSERT_EQUAL(intervals.intervals[2].padded_end_frame, 32);
 
     lrc_ctc_aligned_token_intervals_destroy(&intervals);
     lrc_ctc_path_segments_destroy(&segments);
@@ -7334,20 +7334,20 @@ ctc_align_test_padded_token_spans_use_blank_boundaries(void) {
     }
 
     ASSERT(spans.span_count == 2);
-    ASSERT(spans.spans[0].start_frame == 10);
-    ASSERT(spans.spans[0].end_frame == 12);
+    ASSERT_EQUAL(spans.spans[0].start_frame, 10);
+    ASSERT_EQUAL(spans.spans[0].end_frame, 12);
     ASSERT(spans.spans[0].padded_start_frame == 0);
-    ASSERT(spans.spans[0].padded_end_frame == 16);
+    ASSERT_EQUAL(spans.spans[0].padded_end_frame, 16);
     ASSERT(ctc_align_float_close(spans.spans[0].padded_start_seconds,
                                  0.0f,
                                  0.00001f));
     ASSERT(ctc_align_float_close(spans.spans[0].padded_end_seconds,
                                  0.16f,
                                  0.00001f));
-    ASSERT(spans.spans[1].start_frame == 20);
-    ASSERT(spans.spans[1].end_frame == 22);
-    ASSERT(spans.spans[1].padded_start_frame == 16);
-    ASSERT(spans.spans[1].padded_end_frame == 30);
+    ASSERT_EQUAL(spans.spans[1].start_frame, 20);
+    ASSERT_EQUAL(spans.spans[1].end_frame, 22);
+    ASSERT_EQUAL(spans.spans[1].padded_start_frame, 16);
+    ASSERT_EQUAL(spans.spans[1].padded_end_frame, 30);
     ASSERT(ctc_align_float_close(spans.spans[1].padded_start_seconds,
                                  0.16f,
                                  0.00001f));
@@ -7512,12 +7512,12 @@ ctc_align_test_synthetic_lrc_uses_active_token_boundaries(void) {
     }
     if (ok) {
         ASSERT(token_spans.span_count == 3);
-        ASSERT(token_spans.spans[0].start_frame == first_start);
-        ASSERT(token_spans.spans[1].start_frame == second_start);
-        ASSERT(token_spans.spans[2].start_frame == third_start);
+        ASSERT_EQUAL(token_spans.spans[0].start_frame, first_start);
+        ASSERT_EQUAL(token_spans.spans[1].start_frame, second_start);
+        ASSERT_EQUAL(token_spans.spans[2].start_frame, third_start);
         ASSERT(token_spans.spans[0].padded_start_frame == 0);
-        ASSERT(token_spans.spans[1].padded_start_frame == 50);
-        ASSERT(token_spans.spans[2].padded_start_frame == 95);
+        ASSERT_EQUAL(token_spans.spans[1].padded_start_frame, 50);
+        ASSERT_EQUAL(token_spans.spans[2].padded_start_frame, 95);
 
         ASSERT(word_spans.span_count == 3);
         ASSERT(ctc_align_float_close(word_spans.spans[0].start_seconds,
@@ -7701,7 +7701,7 @@ ctc_align_test_segment_word_spans_use_active_token_boundaries(void) {
         fatal(ctc_align_test_fail("make active segment token spans"));
     }
 
-    ASSERT(tokens.token_count == 11);
+    ASSERT_EQUAL(tokens.token_count, 11);
     token_spans.spans[0].padded_start_seconds = 0.02f;
     token_spans.spans[6].padded_end_seconds = 0.88f;
     token_spans.spans[7].padded_start_seconds = 0.91f;
@@ -8016,7 +8016,7 @@ ctc_align_test_word_spans_follow_reference_segments(void) {
     }
 
     ASSERT_EQUAL(normalized.text, "hi world stop");
-    ASSERT(tokens.token_count == 11);
+    ASSERT_EQUAL(tokens.token_count, 11);
     ASSERT(normalized.segment_count == 2);
     ASSERT(word_spans.span_count == 2);
     ctc_align_assert_word_text(&normalized,
@@ -8028,7 +8028,7 @@ ctc_align_test_word_spans_follow_reference_segments(void) {
     ASSERT(word_spans.spans[0].token_start_index == 0);
     ASSERT(word_spans.spans[0].token_end_index == 7);
     ASSERT(word_spans.spans[1].token_start_index == 7);
-    ASSERT(word_spans.spans[1].token_end_index == 11);
+    ASSERT_EQUAL(word_spans.spans[1].token_end_index, 11);
     ASSERT(ctc_align_float_close(word_spans.spans[0].start_seconds,
                                  0.0f,
                                  0.00001f));
@@ -8069,7 +8069,7 @@ ctc_align_test_word_spans_keep_repeated_token_positions(void) {
         fatal(ctc_align_test_fail("load repeated word lyrics"));
     }
     ASSERT(tokens.token_count == 2);
-    ASSERT(tokens.tokens[0].token_id == tokens.tokens[1].token_id);
+    ASSERT_EQUAL(tokens.tokens[0].token_id, tokens.tokens[1].token_id);
     if (!lrc_ctc_token_spans_allocate(&token_spans,
                                       tokens.token_count,
                                       &result)) {
@@ -8168,7 +8168,7 @@ ctc_align_test_line_timestamps_repeated_boundary_alignment(void) {
         fatal(ctc_align_test_fail("tokenize repeated boundary lyrics"));
     }
     ASSERT(tokens.token_count == 2);
-    ASSERT(tokens.tokens[0].token_id == tokens.tokens[1].token_id);
+    ASSERT_EQUAL(tokens.tokens[0].token_id, tokens.tokens[1].token_id);
     ASSERT(tokens.tokens[0].line_index == 0);
     ASSERT(tokens.tokens[1].line_index == 1);
 
@@ -8416,7 +8416,7 @@ ctc_align_test_maxwell_word_line_mapping(void) {
         int32 line_start;
         int32 line_end;
 
-        ASSERT(word->line_index == expected_lines[i]);
+        ASSERT_EQUAL(word->line_index, expected_lines[i]);
         ASSERT(lrc_lyrics_normalized_line_range(&normalized,
                                                 word->line_index,
                                                 &line_start,
@@ -8506,8 +8506,8 @@ ctc_align_test_line_timestamps_from_generated_words(void) {
     ASSERT(line_timestamps.lines[1].kind
            == LRC_CTC_LINE_TIMESTAMP_KIND_BLANK);
     ASSERT(line_timestamps.lines[1].line_index == 1);
-    ASSERT(line_timestamps.lines[1].word_start_index == -1);
-    ASSERT(line_timestamps.lines[1].word_end_index == -1);
+    ASSERT_EQUAL(line_timestamps.lines[1].word_start_index, -1);
+    ASSERT_EQUAL(line_timestamps.lines[1].word_end_index, -1);
 
     ASSERT(line_timestamps.lines[2].kind
            == LRC_CTC_LINE_TIMESTAMP_KIND_TIMESTAMPED);
@@ -8688,7 +8688,7 @@ ctc_align_test_maxwell_line_timestamp_comparison(void) {
         word->score = -0.10f;
         word_index += 1;
     }
-    ASSERT(word_index == word_spans.span_count);
+    ASSERT_EQUAL(word_index, word_spans.span_count);
 
     if (!lrc_ctc_word_spans_to_line_timestamps(&word_spans,
                                                &normalized,
@@ -8698,15 +8698,15 @@ ctc_align_test_maxwell_line_timestamp_comparison(void) {
         fatal(ctc_align_test_fail("convert maxwell line timestamps"));
     }
 
-    ASSERT(line_timestamps.line_count == parsed.line_count);
+    ASSERT_EQUAL(line_timestamps.line_count, parsed.line_count);
     ASSERT(line_timestamps.timestamped_line_count
            == parsed.timestamped_line_count);
-    ASSERT(line_timestamps.blank_line_count == parsed.blank_line_count);
+    ASSERT_EQUAL(line_timestamps.blank_line_count, parsed.blank_line_count);
     for (int32 i = 0; i < parsed.line_count; i += 1) {
         LrcParsedLine *expected = parsed.lines + i;
         LrcCtcLineTimestamp *actual = line_timestamps.lines + i;
 
-        ASSERT(actual->line_index == expected->source_line_index);
+        ASSERT_EQUAL(actual->line_index, expected->source_line_index);
         if (expected->kind == LRC_PARSED_LINE_KIND_BLANK) {
             ASSERT(actual->kind == LRC_CTC_LINE_TIMESTAMP_KIND_BLANK);
             continue;
@@ -8768,10 +8768,10 @@ ctc_align_test_full_synthetic_alignment_pipeline(void) {
         fatal(ctc_align_test_fail("tokenize synthetic lyrics"));
     }
 
-    ASSERT(tokens.token_count == normalized.text_len);
+    ASSERT_EQUAL(tokens.token_count, normalized.text_len);
     for (int32 i = 0; i < tokens.token_count; i += 1) {
         ASSERT(tokens.tokens[i].normalized_start == i);
-        ASSERT(tokens.tokens[i].normalized_end == i + 1);
+        ASSERT_EQUAL(tokens.tokens[i].normalized_end, i + 1);
         ASSERT(tokens.tokens[i].line_index == 0);
     }
 
@@ -8819,15 +8819,15 @@ ctc_align_test_full_synthetic_alignment_pipeline(void) {
     }
 
     ASSERT(align_result.header.error == LS_ERROR_NONE);
-    ASSERT(spans.span_count == token_count);
+    ASSERT_EQUAL(spans.span_count, token_count);
     for (int32 i = 0; i < spans.span_count; i += 1) {
         float expected_start = (float)(i + 1)*frame_duration_seconds;
         float expected_end = (float)(i + 2)*frame_duration_seconds;
 
         ASSERT(spans.spans[i].token_index == i);
-        ASSERT(spans.spans[i].token_id == target_token_ids[i]);
-        ASSERT(spans.spans[i].start_frame == i + 1);
-        ASSERT(spans.spans[i].end_frame == i + 2);
+        ASSERT_EQUAL(spans.spans[i].token_id, target_token_ids[i]);
+        ASSERT_EQUAL(spans.spans[i].start_frame, i + 1);
+        ASSERT_EQUAL(spans.spans[i].end_frame, i + 2);
         ASSERT(ctc_align_float_close(spans.spans[i].start_seconds,
                                      expected_start,
                                      0.00001f));
@@ -8937,14 +8937,14 @@ ctc_align_test_maxwell_fake_token_timing(void) {
         fatal(ctc_align_test_fail("maxwell fake path to spans"));
     }
 
-    ASSERT(spans.span_count == token_count);
+    ASSERT_EQUAL(spans.span_count, token_count);
     ASSERT(spans.spans[0].token_index == 0);
     ASSERT(spans.spans[0].start_frame == 1);
     ASSERT(ctc_align_float_close(spans.spans[0].start_seconds,
                                  0.02f,
                                  0.00001f));
-    ASSERT(spans.spans[token_count - 1].token_index == token_count - 1);
-    ASSERT(spans.spans[token_count - 1].start_frame == token_count);
+    ASSERT_EQUAL(spans.spans[token_count - 1].token_index, token_count - 1);
+    ASSERT_EQUAL(spans.spans[token_count - 1].start_frame, token_count);
     ASSERT(ctc_align_float_close(spans.spans[token_count - 1].start_seconds,
                                  (float)token_count*0.02f,
                                  0.0001f));

@@ -244,11 +244,11 @@ ctc_audio_test_defaults_and_invalid_inputs(void) {
     lrc_ctc_audio_result_init(&result);
 
     ASSERT(strequal(config.ffmpeg_path, "ffmpeg"));
-    ASSERT(config.sample_rate == LRC_CTC_AUDIO_DEFAULT_SAMPLE_RATE);
+    ASSERT_EQUAL(config.sample_rate, LRC_CTC_AUDIO_DEFAULT_SAMPLE_RATE);
     ASSERT(result.path_header.header.error == LS_ERROR_NONE);
     ASSERT(strequal(result.path_header.header.message, "ok"));
     ASSERT(result.path_header.path == NULL);
-    ASSERT(result.sample_index == -1);
+    ASSERT_EQUAL(result.sample_index, -1);
     ASSERT(audio.samples == NULL);
     ASSERT(audio.sample_count == 0);
     ASSERT(audio.sample_rate == 0);

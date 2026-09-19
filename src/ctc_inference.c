@@ -1866,7 +1866,7 @@ ctc_inference_test_empty_initializers(void) {
 
     ASSERT(result.header.error == LS_ERROR_NONE);
     ASSERT(strequal(result.header.message, "ok"));
-    ASSERT(result.output_index == -1);
+    ASSERT_EQUAL(result.output_index, -1);
 
     ASSERT(emissions.values == NULL);
     ASSERT(emissions.value_count == 0);
@@ -1877,8 +1877,8 @@ ctc_inference_test_empty_initializers(void) {
     ASSERT(fake.value_count == 0);
     ASSERT(fake.shape_len == 0);
 
-    ASSERT(backend.backend == &fake);
-    ASSERT(backend.run == lrc_ctc_fake_inference_run);
+    ASSERT_EQUAL(backend.backend, &fake);
+    ASSERT_EQUAL(backend.run, lrc_ctc_fake_inference_run);
 
     ASSERT(!onnx.loaded);
 
@@ -1916,11 +1916,11 @@ ctc_inference_test_fake_rank2(void) {
     ASSERT(emissions.shape_len == 2);
     ASSERT(emissions.shape[0] == 2);
     ASSERT(emissions.shape[1] == 3);
-    ASSERT(emissions.values[0] == values[0]);
-    ASSERT(emissions.values[5] == values[5]);
+    ASSERT_EQUAL(emissions.values[0], values[0]);
+    ASSERT_EQUAL(emissions.values[5], values[5]);
 
     values[0] = 99.0f;
-    ASSERT(emissions.values[0] == -2.0f);
+    ASSERT_EQUAL(emissions.values[0], -2.0f);
 
     emissions.values[1] = NAN;
     lrc_ctc_emissions_destroy(&emissions);
@@ -1968,10 +1968,10 @@ ctc_inference_test_fake_rank3(void) {
     ASSERT(emissions.shape_len == 2);
     ASSERT(emissions.shape[0] == 2);
     ASSERT(emissions.shape[1] == 2);
-    ASSERT(emissions.values[0] == 2.0f);
-    ASSERT(emissions.values[1] == 3.0f);
-    ASSERT(emissions.values[2] == 8.0f);
-    ASSERT(emissions.values[3] == 9.0f);
+    ASSERT_EQUAL(emissions.values[0], 2.0f);
+    ASSERT_EQUAL(emissions.values[1], 3.0f);
+    ASSERT_EQUAL(emissions.values[2], 8.0f);
+    ASSERT_EQUAL(emissions.values[3], 9.0f);
 
     lrc_ctc_emissions_destroy(&emissions);
 
@@ -2016,8 +2016,8 @@ ctc_inference_test_rank3_extension_truncated(void) {
     ASSERT(emissions.shape_len == 2);
     ASSERT(emissions.shape[0] == 1);
     ASSERT(emissions.shape[1] == 2);
-    ASSERT(emissions.values[0] == 2.0f);
-    ASSERT(emissions.values[1] == 3.0f);
+    ASSERT_EQUAL(emissions.values[0], 2.0f);
+    ASSERT_EQUAL(emissions.values[1], 3.0f);
 
     lrc_ctc_emissions_destroy(&emissions);
 
@@ -2193,9 +2193,9 @@ ctc_inference_test_rank3_accepts_short_actual_model_length(void) {
     ASSERT(result.header.error == LS_ERROR_NONE);
     ASSERT(emissions.frame_count == 3);
     ASSERT(emissions.value_count == 3);
-    ASSERT(emissions.values[0] == 10.0f);
-    ASSERT(emissions.values[1] == 11.0f);
-    ASSERT(emissions.values[2] == 12.0f);
+    ASSERT_EQUAL(emissions.values[0], 10.0f);
+    ASSERT_EQUAL(emissions.values[1], 11.0f);
+    ASSERT_EQUAL(emissions.values[2], 12.0f);
 
     lrc_ctc_emissions_destroy(&emissions);
 
@@ -2253,7 +2253,7 @@ ctc_inference_test_rank3_accepts_wav2vec_actual_chunk_length(void) {
     ASSERT(result.header.error == LS_ERROR_NONE);
     ASSERT(emissions.frame_count == LENGTH(expected));
     for (int32 i = 0; i < LENGTH(expected); i += 1) {
-        ASSERT(emissions.values[i] == expected[i]);
+        ASSERT_EQUAL(emissions.values[i], expected[i]);
     }
 
     lrc_ctc_emissions_destroy(&emissions);
@@ -2315,7 +2315,7 @@ ctc_inference_test_rank3_python_slicing_vectors(void) {
     ASSERT(emissions.frame_count == LENGTH(expected));
     ASSERT(emissions.vocabulary_size == 1);
     for (int32 i = 0; i < LENGTH(expected); i += 1) {
-        ASSERT(emissions.values[i] == expected[i]);
+        ASSERT_EQUAL(emissions.values[i], expected[i]);
     }
 
     lrc_ctc_emissions_destroy(&emissions);
@@ -2379,7 +2379,7 @@ ctc_inference_test_rank3_repeated_boundary_frames(void) {
 
     ASSERT(emissions.frame_count == LENGTH(expected));
     for (int32 i = 0; i < LENGTH(expected); i += 1) {
-        ASSERT(emissions.values[i] == expected[i]);
+        ASSERT_EQUAL(emissions.values[i], expected[i]);
     }
 
     lrc_ctc_emissions_destroy(&emissions);
@@ -2680,7 +2680,7 @@ ctc_inference_test_log_probability_bypass(void) {
 
     ASSERT(result.header.error == LS_ERROR_NONE);
     for (int32 i = 0; i < LENGTH(values); i += 1) {
-        ASSERT(emissions.values[i] == values[i]);
+        ASSERT_EQUAL(emissions.values[i], values[i]);
     }
 
     lrc_ctc_emissions_destroy(&emissions);

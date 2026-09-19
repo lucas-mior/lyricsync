@@ -520,9 +520,9 @@ vocals_test_request_defaults(void) {
            == ORT_EXECUTION_PROVIDER_AUTO);
     ASSERT(request.ort_session_config.device_id == 0);
     ASSERT(!request.ort_session_config.print_info);
-    ASSERT(request.output_format.sample_rate == 44100);
+    ASSERT_EQUAL(request.output_format.sample_rate, 44100);
     ASSERT(request.output_format.channel_count == 2);
-    ASSERT(request.mdx_config.sample_rate == 44100);
+    ASSERT_EQUAL(request.mdx_config.sample_rate, 44100);
     ASSERT(request.mdx_config.channel_count == 2);
     ASSERT(result.path_header.header.error == LS_ERROR_NONE);
     ASSERT(strequal(result.path_header.header.message, "ok"));

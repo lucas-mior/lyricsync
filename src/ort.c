@@ -1092,7 +1092,7 @@ ort_test_tensor_shape_element_count(void) {
     if (!ort_tensor_shape_element_count(shape, 3, &count)) {
         fatal(ort_test_fail("valid tensor shape count"));
     }
-    ASSERT(count == 24);
+    ASSERT_EQUAL(count, 24);
 
     shape[1] = 0;
     if (ort_tensor_shape_element_count(shape, 3, &count)) {
@@ -1254,9 +1254,9 @@ ort_test_optional_identity_model(void) {
     ASSERT(output.shape_len == 2);
     ASSERT(output.shape[0] == 1);
     ASSERT(output.shape[1] == 3);
-    ASSERT(output.data[0] == data[0]);
-    ASSERT(output.data[1] == data[1]);
-    ASSERT(output.data[2] == data[2]);
+    ASSERT_EQUAL(output.data[0], data[0]);
+    ASSERT_EQUAL(output.data[1], data[1]);
+    ASSERT_EQUAL(output.data[2], data[2]);
 
     ort_tensor_destroy(&context, &output);
     ort_tensor_destroy(&context, &input);

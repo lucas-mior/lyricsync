@@ -1008,7 +1008,7 @@ lrc_test_assert_line(
 
     line = &parsed->lines[line_index];
     ASSERT(line->kind == expected_kind);
-    ASSERT(line->timestamp_hundredths == expected_hundredths);
+    ASSERT_EQUAL(line->timestamp_hundredths, expected_hundredths);
     ASSERT(STREQUAL(line->text,
                      line->text_len,
                      expected_text,
@@ -1045,7 +1045,7 @@ lrc_test_parse_timestamped_and_blank_lines(void) {
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
                          6234,
                          STRLIT("World"));
-    ASSERT(parsed.lines[2].timestamp_seconds == 62.34f);
+    ASSERT_EQUAL(parsed.lines[2].timestamp_seconds, 62.34f);
 
     lrc_parsed_file_destroy(&parsed);
 
@@ -1179,7 +1179,7 @@ lrc_test_assert_timestamp(
         ASSERT(false);
     }
 
-    ASSERT(len == expected_len);
+    ASSERT_EQUAL(len, expected_len);
     ASSERT_EQUAL(&buffer[0], expected);
 
     return;
@@ -1208,7 +1208,7 @@ lrc_test_format_timestamp_seconds_rounding(void) {
                                                &result)) {
         fatal(lrc_test_fail("round seconds down"));
     }
-    ASSERT(hundredths == 123);
+    ASSERT_EQUAL(hundredths, 123);
 
     if (!lrc_format_timestamp_seconds(1.236f,
                                       buffer,
@@ -1610,7 +1610,7 @@ lrc_test_optional_maxwell_formatting(void) {
         sb_append_byte(&builder, '\n');
     }
 
-    ASSERT(builder.len == text_len);
+    ASSERT_EQUAL(builder.len, text_len);
     ASSERT_EQUAL(builder.data, text);
 
     lrc_parsed_file_destroy(&parsed);
@@ -1625,9 +1625,9 @@ lrc_test_assert_same_parsed_structure(
     LrcParsedFile *a,
     LrcParsedFile *b
 ) {
-    ASSERT(a->line_count == b->line_count);
-    ASSERT(a->timestamped_line_count == b->timestamped_line_count);
-    ASSERT(a->blank_line_count == b->blank_line_count);
+    ASSERT_EQUAL(a->line_count, b->line_count);
+    ASSERT_EQUAL(a->timestamped_line_count, b->timestamped_line_count);
+    ASSERT_EQUAL(a->blank_line_count, b->blank_line_count);
 
     for (int32 i = 0; i < a->line_count; i += 1) {
         ASSERT(a->lines[i].kind == b->lines[i].kind);

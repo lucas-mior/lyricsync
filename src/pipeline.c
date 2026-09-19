@@ -4214,10 +4214,10 @@ pipeline_test_line_timing_audio_available(void) {
         fatal(pipeline_test_fail("line timing audio context"));
     }
     ASSERT(result.path_header.header.error == LS_ERROR_NONE);
-    ASSERT(line_audio.samples == samples);
+    ASSERT_EQUAL(line_audio.samples, samples);
     ASSERT(line_audio.sample_count == LENGTH(samples));
-    ASSERT(line_audio.sample_rate == 16000);
-    ASSERT(line_audio.samples[1] == -0.50f);
+    ASSERT_EQUAL(line_audio.sample_rate, 16000);
+    ASSERT_EQUAL(line_audio.samples[1], -0.50f);
 
     return;
 }
@@ -5246,13 +5246,13 @@ pipeline_test_config_defaults(void) {
     ASSERT(strequal(config.vocals_container_format, "wav"));
     ASSERT(config.print_info);
     ASSERT(!config.keep_temp_files);
-    ASSERT(config.vocals_output_format.sample_rate == 44100);
+    ASSERT_EQUAL(config.vocals_output_format.sample_rate, 44100);
     ASSERT(config.vocals_output_format.channel_count == 2);
-    ASSERT(config.mdx_config.sample_rate == 44100);
+    ASSERT_EQUAL(config.mdx_config.sample_rate, 44100);
     ASSERT(config.mdx_config.channel_count == 2);
-    ASSERT(config.ctc_model_config.sample_rate == 16000);
-    ASSERT(config.ctc_model_config.inputs_to_logits_ratio == 320);
-    ASSERT(config.ctc_model_config.window_seconds == 30);
+    ASSERT_EQUAL(config.ctc_model_config.sample_rate, 16000);
+    ASSERT_EQUAL(config.ctc_model_config.inputs_to_logits_ratio, 320);
+    ASSERT_EQUAL(config.ctc_model_config.window_seconds, 30);
     ASSERT(config.ctc_model_config.context_seconds == 2);
     ASSERT(config.lyrics_preprocess_options.split_size
            == LRC_LYRICS_PREPROCESS_SPLIT_SIZE_WORD);

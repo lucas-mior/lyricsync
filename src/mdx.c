@@ -917,11 +917,11 @@ main(void) {
     ort_context_init_empty(&context);
 
     mdx_config_init(&config);
-    ASSERT(config.sample_rate == 44100);
+    ASSERT_EQUAL(config.sample_rate, 44100);
     ASSERT(config.channel_count == 2);
     ASSERT(config.dim_c == 4);
-    ASSERT(config.n_fft == 6144);
-    ASSERT(config.hop == 1024);
+    ASSERT_EQUAL(config.n_fft, 6144);
+    ASSERT_EQUAL(config.hop, 1024);
     ASSERT(config.chunk_size == 0);
     ASSERT(config.trim == 0);
     ASSERT(config.gen_size == 0);
@@ -953,16 +953,16 @@ main(void) {
     model.output_shape[3] = 256;
 
     ASSERT(mdx_model_inspect(&info, &config, &model));
-    ASSERT(config.dim_f == 3072);
-    ASSERT(config.dim_t == 256);
-    ASSERT(info.input_name == model.input_name);
-    ASSERT(info.output_name == model.output_name);
+    ASSERT_EQUAL(config.dim_f, 3072);
+    ASSERT_EQUAL(config.dim_t, 256);
+    ASSERT_EQUAL(info.input_name, model.input_name);
+    ASSERT_EQUAL(info.output_name, model.output_name);
     ASSERT(!info.input_shape_dynamic);
     ASSERT(!info.output_shape_dynamic);
     ASSERT(mdx_config_prepare(&config));
-    ASSERT(config.chunk_size == 261120);
-    ASSERT(config.trim == 3072);
-    ASSERT(config.gen_size == 254976);
+    ASSERT_EQUAL(config.chunk_size, 261120);
+    ASSERT_EQUAL(config.trim, 3072);
+    ASSERT_EQUAL(config.gen_size, 254976);
 
     config.dim_f = 2048;
     ASSERT_SILENT_FAILURE(mdx_model_inspect(&info, &config, &model));
@@ -970,7 +970,7 @@ main(void) {
     mdx_config_init(&config);
     model.input_shape[2] = -1;
     ASSERT(mdx_model_inspect(&info, &config, &model));
-    ASSERT(config.dim_f == 3072);
+    ASSERT_EQUAL(config.dim_f, 3072);
     ASSERT(info.input_shape_dynamic);
 
     mdx_config_init(&config);
@@ -997,7 +997,7 @@ main(void) {
     config.dim_f = 3;
     config.dim_t = 4;
     ASSERT(mdx_config_prepare(&config));
-    ASSERT(mdx_input_tensor_len(&config) == 48);
+    ASSERT_EQUAL(mdx_input_tensor_len(&config), 48);
 
     stft_plan_init_empty(&stft_plan);
     ASSERT(stft_plan_init(&stft_plan, config.n_fft, config.hop));
@@ -1130,8 +1130,8 @@ main(void) {
                             &model,
                             &empty_input,
                             &empty_output));
-    ASSERT(empty_output.sample_rate == config.sample_rate);
-    ASSERT(empty_output.channel_count == config.channel_count);
+    ASSERT_EQUAL(empty_output.sample_rate, config.sample_rate);
+    ASSERT_EQUAL(empty_output.channel_count, config.channel_count);
     ASSERT(empty_output.frame_count == 0);
 
     audio_buffer_destroy(&empty_output);

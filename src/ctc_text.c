@@ -2284,11 +2284,11 @@ ctc_text_test_assert_segment(
 
     source_len = segment->source_end - segment->source_start;
 
-    ASSERT(segment->line_index == expected_line_index);
-    ASSERT(segment->normalized_start == expected_normalized_start);
-    ASSERT(segment->normalized_end == expected_normalized_end);
-    ASSERT(segment->target_start == expected_target_start);
-    ASSERT(segment->target_end == expected_target_end);
+    ASSERT_EQUAL(segment->line_index, expected_line_index);
+    ASSERT_EQUAL(segment->normalized_start, expected_normalized_start);
+    ASSERT_EQUAL(segment->normalized_end, expected_normalized_end);
+    ASSERT_EQUAL(segment->target_start, expected_target_start);
+    ASSERT_EQUAL(segment->target_end, expected_target_end);
     ASSERT_NON_NEGATIVE(segment->target_start);
     ASSERT(segment->target_end <= normalized->target_byte_count);
     ASSERT(STREQUAL(lyrics->text + segment->source_start,
@@ -2298,7 +2298,7 @@ ctc_text_test_assert_segment(
     for (int32 i = segment->target_start; i < segment->target_end; i += 1) {
         LrcLyricsTargetByte *target_byte = &normalized->target_bytes[i];
 
-        ASSERT(target_byte->line_index == expected_line_index);
+        ASSERT_EQUAL(target_byte->line_index, expected_line_index);
         ASSERT_MORE_EQUAL(target_byte->normalized_start, segment->normalized_start);
         ASSERT(target_byte->normalized_end <= segment->normalized_end);
     }
@@ -2451,12 +2451,12 @@ ctc_text_reference_validate_current(
     ASSERT(current->saw_romanize);
     ASSERT(current->saw_input);
     ASSERT_POSITIVE(current->text_split_count);
-    ASSERT(current->normalized_count == current->text_split_count);
-    ASSERT(current->tokens_count == current->normalized_count);
-    ASSERT(current->edges_tokens_count == current->tokens_count + 2);
-    ASSERT(current->edges_text_count == current->text_split_count + 2);
-    ASSERT(current->segment_tokens_count == current->tokens_count*2);
-    ASSERT(current->segment_text_count == current->text_split_count*2);
+    ASSERT_EQUAL(current->normalized_count, current->text_split_count);
+    ASSERT_EQUAL(current->tokens_count, current->normalized_count);
+    ASSERT_EQUAL(current->edges_tokens_count, current->tokens_count + 2);
+    ASSERT_EQUAL(current->edges_text_count, current->text_split_count + 2);
+    ASSERT_EQUAL(current->segment_tokens_count, current->tokens_count*2);
+    ASSERT_EQUAL(current->segment_text_count, current->text_split_count*2);
 
     return;
 }
@@ -2613,7 +2613,7 @@ ctc_text_test_reference_fixtures_load(void) {
 
     ASSERT(!current.in_fixture);
     ASSERT(totals.saw_format);
-    ASSERT(totals.fixture_count == 10);
+    ASSERT_EQUAL(totals.fixture_count, 10);
     ASSERT(totals.saw_plain_english);
     ASSERT(totals.saw_apostrophes);
     ASSERT(totals.saw_punctuation_digits);
@@ -2862,10 +2862,10 @@ ctc_text_reference_load_word_fixture(
     }
     ASSERT_POSITIVE(fixture->input_len);
     ASSERT_POSITIVE(fixture->text_split_count);
-    ASSERT(fixture->normalized_count == fixture->text_split_count);
-    ASSERT(fixture->tokens_count == fixture->text_split_count);
-    ASSERT(fixture->edges_tokens_count == fixture->tokens_count + 2);
-    ASSERT(fixture->segment_tokens_count == fixture->tokens_count*2);
+    ASSERT_EQUAL(fixture->normalized_count, fixture->text_split_count);
+    ASSERT_EQUAL(fixture->tokens_count, fixture->text_split_count);
+    ASSERT_EQUAL(fixture->edges_tokens_count, fixture->tokens_count + 2);
+    ASSERT_EQUAL(fixture->segment_tokens_count, fixture->tokens_count*2);
 
     return true;
 }
@@ -2893,7 +2893,7 @@ ctc_text_test_word_split_fixture_case(char *fixture_name) {
         return ctc_text_test_fail("normalize word split fixture lyrics");
     }
 
-    ASSERT(normalized.segment_count == fixture.text_split_count);
+    ASSERT_EQUAL(normalized.segment_count, fixture.text_split_count);
     for (int32 i = 0; i < fixture.text_split_count; i += 1) {
         CtcTextSegment *segment;
         int32 source_len;
@@ -2951,7 +2951,7 @@ ctc_text_test_word_normalized_fixture_case(char *fixture_name) {
         return ctc_text_test_fail("normalize word fixture lyrics");
     }
 
-    ASSERT(normalized.segment_count == fixture.normalized_count);
+    ASSERT_EQUAL(normalized.segment_count, fixture.normalized_count);
     for (int32 i = 0; i < fixture.normalized_count; i += 1) {
         CtcTextSegment *segment;
         int32 normalized_len;
@@ -3015,8 +3015,8 @@ ctc_text_test_word_target_fixture_case(char *fixture_name) {
 
     ASSERT(normalized.target_text);
     ASSERT_POSITIVE(normalized.target_text_len);
-    ASSERT(normalized.target_byte_count == normalized.target_text_len);
-    ASSERT(normalized.segment_count == fixture.tokens_count);
+    ASSERT_EQUAL(normalized.target_byte_count, normalized.target_text_len);
+    ASSERT_EQUAL(normalized.segment_count, fixture.tokens_count);
 
     for (int32 i = 0; i < fixture.tokens_count; i += 1) {
         CtcTextSegment *segment;
@@ -3094,7 +3094,7 @@ ctc_text_test_star_target_sequence_fixture_case(char *fixture_name) {
         return ctc_text_test_fail("normalize star sequence lyrics");
     }
 
-    ASSERT(normalized.segment_count == fixture.tokens_count);
+    ASSERT_EQUAL(normalized.segment_count, fixture.tokens_count);
 
     ASSERT_EQUAL(fixture.edges_tokens[0], "<star>");
     expected_index = 1;
@@ -3112,7 +3112,7 @@ ctc_text_test_star_target_sequence_fixture_case(char *fixture_name) {
         expected_index += 1;
     }
     ASSERT_EQUAL(fixture.edges_tokens[expected_index], "<star>");
-    ASSERT(expected_index + 1 == fixture.edges_tokens_count);
+    ASSERT_EQUAL(expected_index + 1, fixture.edges_tokens_count);
 
     expected_index = 0;
     for (int32 i = 0; i < normalized.segment_count; i += 1) {
@@ -3130,7 +3130,7 @@ ctc_text_test_star_target_sequence_fixture_case(char *fixture_name) {
         );
         expected_index += 1;
     }
-    ASSERT(expected_index == fixture.segment_tokens_count);
+    ASSERT_EQUAL(expected_index, fixture.segment_tokens_count);
 
     lrc_lyrics_normalized_destroy(&normalized);
     lrc_lyrics_destroy(&lyrics);
@@ -3187,9 +3187,9 @@ ctc_text_test_word_target_text_is_character_spaced(void) {
     segment = lrc_lyrics_normalized_segment(&normalized, 1);
     ASSERT(segment);
     ASSERT(segment->normalized_start == 6);
-    ASSERT(segment->normalized_end == 11);
-    ASSERT(segment->target_start == 10);
-    ASSERT(segment->target_end == 19);
+    ASSERT_EQUAL(segment->normalized_end, 11);
+    ASSERT_EQUAL(segment->target_start, 10);
+    ASSERT_EQUAL(segment->target_end, 19);
 
     lrc_lyrics_normalized_destroy(&normalized);
     lrc_lyrics_destroy(&lyrics);
@@ -3242,9 +3242,9 @@ ctc_text_test_char_fixture_case(
         return ctc_text_test_fail("normalize char fixture lyrics");
     }
 
-    ASSERT(normalized.segment_count == fixture.text_split_count);
-    ASSERT(normalized.segment_count == fixture.normalized_count);
-    ASSERT(normalized.segment_count == fixture.tokens_count);
+    ASSERT_EQUAL(normalized.segment_count, fixture.text_split_count);
+    ASSERT_EQUAL(normalized.segment_count, fixture.normalized_count);
+    ASSERT_EQUAL(normalized.segment_count, fixture.tokens_count);
     for (int32 i = 0; i < fixture.text_split_count; i += 1) {
         CtcTextSegment *segment;
         int32 source_len;
@@ -3339,9 +3339,9 @@ ctc_text_test_icu_word_romanization(void) {
     segment = lrc_lyrics_normalized_segment(&normalized, 1);
     ASSERT(segment);
     ASSERT(segment->normalized_start == 4);
-    ASSERT(segment->normalized_end == 10);
+    ASSERT_EQUAL(segment->normalized_end, 10);
     ASSERT(segment->target_start == 6);
-    ASSERT(segment->target_end == 17);
+    ASSERT_EQUAL(segment->target_end, 17);
 
     lrc_lyrics_normalized_destroy(&normalized);
     lrc_lyrics_destroy(&lyrics);
@@ -3423,7 +3423,7 @@ ctc_text_test_word_split_option_preserves_current_text(void) {
     }
 
     ASSERT_EQUAL(current.text, word.text);
-    ASSERT(current.segment_count == word.segment_count);
+    ASSERT_EQUAL(current.segment_count, word.segment_count);
     ASSERT(word.alignable_line_count == 2);
 
     lrc_lyrics_normalized_destroy(&word);

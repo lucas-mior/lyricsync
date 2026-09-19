@@ -1093,7 +1093,7 @@ ctc_tokenizer_test_load_minimal_vocabulary(void) {
     ASSERT(token);
     ASSERT(!token->is_blank);
     ASSERT(token->text_len == 1);
-    ASSERT(token->text[0] == ' ');
+    ASSERT_EQUAL(token->text[0], ' ');
 
     token = lrc_ctc_tokenizer_id_to_token(&tokenizer, 5);
     ASSERT(token);
@@ -1339,7 +1339,7 @@ ctc_tokenizer_test_rejects_unsupported_normalized_token(void) {
     ASSERT(result.header.error == LS_ERROR_CTC_TOKENIZE_UNSUPPORTED_TOKEN);
     ASSERT(result.byte_offset == 2);
     ASSERT(result.line_index == 0);
-    ASSERT(result.token_id == -1);
+    ASSERT_EQUAL(result.token_id, -1);
     ASSERT(tokens.token_count == 0);
 
     lrc_ctc_tokenized_text_destroy(&tokens);
