@@ -340,19 +340,19 @@ CAT(ENUM_PREFIX_, parse_name_equals)(char *string, int32 string_len,
 }
 #endif
 
-#define XENUM_TOKEN_EQUALS_N(token, token_len, name, name_len)                 \
+#define XENUM_TOKEN_EQUALS_N(token, token_len, name, name_len)             \
     CAT(ENUM_PREFIX_, parse_name_equals)(token, token_len, name, name_len)
 
-#define XENUM_TOKEN_EQUALS(token, token_len, name)                             \
+#define XENUM_TOKEN_EQUALS(token, token_len, name)                         \
     XENUM_TOKEN_EQUALS_N(token, token_len, name, STRLIT_LEN(name))
 
-#define XENUM_TOKEN_EQUALS_ENUM_NAME(token, token_len, name)                   \
-    (XENUM_TOKEN_EQUALS(token, token_len, name)                                \
-     || (BEGINS_WITH_4(name, STRLIT_LEN(name), QUOTE(ENUM_PREFIX_),            \
-                       STRLIT_LEN(QUOTE(ENUM_PREFIX_)))                        \
-         && XENUM_TOKEN_EQUALS_N(token, token_len,                             \
-                                 &(name)[STRLIT_LEN(QUOTE(ENUM_PREFIX_))],     \
-                                 STRLIT_LEN(name)                              \
+#define XENUM_TOKEN_EQUALS_ENUM_NAME(token, token_len, name)               \
+    (XENUM_TOKEN_EQUALS(token, token_len, name)                            \
+     || (BEGINS_WITH_4(name, STRLIT_LEN(name), QUOTE(ENUM_PREFIX_),        \
+                       STRLIT_LEN(QUOTE(ENUM_PREFIX_)))                    \
+         && XENUM_TOKEN_EQUALS_N(token, token_len,                         \
+                                 &(name)[STRLIT_LEN(QUOTE(ENUM_PREFIX_))], \
+                                 STRLIT_LEN(name)                          \
                                  - STRLIT_LEN(QUOTE(ENUM_PREFIX_)))))
 
 #if ENUM_BITFLAGS
