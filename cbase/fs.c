@@ -1666,7 +1666,7 @@ main(void) {
                      -ENOENT);
         ASSERT_EQUAL(missing_contents, NULL);
 
-        ASSERT(write_entire_file(path, STRLIT("abcdef")) == 6);
+        ASSERT_EQUAL(write_entire_file(path, STRLIT("abcdef")), 6);
         ASSERT(util_file_exists(path));
         ASSERT_NON_NEGATIVE((contents_len = read_entire_file(path, &contents)));
         ASSERT_EQUAL(contents_len, 6);
