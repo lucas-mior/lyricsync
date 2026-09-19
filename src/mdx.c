@@ -853,7 +853,7 @@ mdx_test_stderr_silence_begin(MdxTestStderrSilence *silence) {
     fflush(stderr);
 
     silence->saved_stderr = dup(STDERR_FILENO);
-    ASSERT_MORE_EQUAL(silence->saved_stderr, 0);
+    ASSERT_NON_NEGATIVE(silence->saved_stderr);
 
     silence->null_fd = open("/dev/null", O_WRONLY);
     if (silence->null_fd < 0) {

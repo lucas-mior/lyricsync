@@ -2289,7 +2289,7 @@ ctc_text_test_assert_segment(
     ASSERT(segment->normalized_end == expected_normalized_end);
     ASSERT(segment->target_start == expected_target_start);
     ASSERT(segment->target_end == expected_target_end);
-    ASSERT_MORE_EQUAL(segment->target_start, 0);
+    ASSERT_NON_NEGATIVE(segment->target_start);
     ASSERT(segment->target_end <= normalized->target_byte_count);
     ASSERT(STREQUAL(lyrics->text + segment->source_start,
                      source_len,
@@ -2782,7 +2782,7 @@ ctc_text_reference_load_word_fixture(
                     line + tab + 1,
                     line_len - tab - 1
                 );
-                ASSERT_MORE_EQUAL(fixture->input_len, 0);
+                ASSERT_NON_NEGATIVE(fixture->input_len);
             } else if (ctc_text_reference_field_equal(line,
                                                       tab,
                                                       "text_split")) {
@@ -2795,7 +2795,7 @@ ctc_text_reference_load_word_fixture(
                     line + tab + 1,
                     line_len - tab - 1
                 );
-                ASSERT_MORE_EQUAL(fixture->text_split_lens[index], 0);
+                ASSERT_NON_NEGATIVE(fixture->text_split_lens[index]);
                 fixture->text_split_count += 1;
             } else if (ctc_text_reference_field_equal(line,
                                                       tab,
@@ -2809,7 +2809,7 @@ ctc_text_reference_load_word_fixture(
                     line + tab + 1,
                     line_len - tab - 1
                 );
-                ASSERT_MORE_EQUAL(fixture->normalized_lens[index], 0);
+                ASSERT_NON_NEGATIVE(fixture->normalized_lens[index]);
                 fixture->normalized_count += 1;
             } else if (ctc_text_reference_field_equal(line, tab, "tokens")) {
                 int32 index = fixture->tokens_count;
@@ -2821,7 +2821,7 @@ ctc_text_reference_load_word_fixture(
                     line + tab + 1,
                     line_len - tab - 1
                 );
-                ASSERT_MORE_EQUAL(fixture->tokens_lens[index], 0);
+                ASSERT_NON_NEGATIVE(fixture->tokens_lens[index]);
                 fixture->tokens_count += 1;
             } else if (ctc_text_reference_field_equal(line,
                                                       tab,
@@ -2835,7 +2835,7 @@ ctc_text_reference_load_word_fixture(
                     line + tab + 1,
                     line_len - tab - 1
                 );
-                ASSERT_MORE_EQUAL(fixture->edges_tokens_lens[index], 0);
+                ASSERT_NON_NEGATIVE(fixture->edges_tokens_lens[index]);
                 fixture->edges_tokens_count += 1;
             } else if (ctc_text_reference_field_equal(line,
                                                       tab,
@@ -2849,7 +2849,7 @@ ctc_text_reference_load_word_fixture(
                     line + tab + 1,
                     line_len - tab - 1
                 );
-                ASSERT_MORE_EQUAL(fixture->segment_tokens_lens[index], 0);
+                ASSERT_NON_NEGATIVE(fixture->segment_tokens_lens[index]);
                 fixture->segment_tokens_count += 1;
             }
         }
@@ -3061,7 +3061,7 @@ ctc_text_test_assert_target_item(
 ) {
     int32 target_len = segment->target_end - segment->target_start;
 
-    ASSERT_MORE_EQUAL(target_len, 0);
+    ASSERT_NON_NEGATIVE(target_len);
     ASSERT(STREQUAL(normalized->target_text + segment->target_start,
                      target_len,
                      expected,
