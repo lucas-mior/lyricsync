@@ -107,7 +107,7 @@ stft_forward_channel(
         int64 start = (int64)frame_index*(int64)hop - (int64)center;
 
         for (int32 i = 0; i < n_fft; i += 1) {
-            int64 input_index = start + (int64)i;
+            int64 input_index = start + i;
 
             if ((input_index < 0) || (input_index >= input_len)) {
                 plan->frame[i] = 0.0f;
