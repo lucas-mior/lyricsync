@@ -1094,8 +1094,7 @@ lrc_test_reject_malformed_timestamps(void) {
     char bad_fraction[] = "[00:00.1]Bad\n";
 
     if (lrc_parse_text(&parsed,
-                       bad_seconds,
-                       strlen32(bad_seconds),
+                       bad_seconds, strlen32(bad_seconds),
                        &result)) {
         lrc_parsed_file_destroy(&parsed);
         fatal(lrc_test_fail("accepted bad seconds"));
@@ -1105,8 +1104,7 @@ lrc_test_reject_malformed_timestamps(void) {
 
     memset64(&parsed, 0, SIZEOF(parsed));
     if (lrc_parse_text(&parsed,
-                       bad_fraction,
-                       strlen32(bad_fraction),
+                       bad_fraction, strlen32(bad_fraction),
                        &result)) {
         lrc_parsed_file_destroy(&parsed);
         fatal(lrc_test_fail("accepted bad fraction"));
@@ -1249,8 +1247,7 @@ lrc_test_format_timestamped_line_preserves_text(void) {
     builder = (StrBuilder){0};
     if (!lrc_format_timestamped_line(&builder,
                                       14.14f,
-                                      text,
-                                      strlen32(text),
+                                      text, strlen32(text),
                                       &result)) {
         fatal(lrc_test_fail("format timestamped line"));
     }
@@ -1408,12 +1405,12 @@ lrc_test_write_timestamped_empty_line(void) {
     LrcWriteResult result;
     char temp_dir[PATH_MAX];
     char path[PATH_MAX];
-    char first[] = "First";
-    char empty[] = "";
-    char second[] = "Second";
-    char expected[] = "[00:01.00]First\n"
-                      "[00:03.40]\n"
-                      "[00:07.58]Second\n";
+    char *first = "First";
+    char *empty = "";
+    char *second = "Second";
+    char *expected = "[00:01.00]First\n"
+                     "[00:03.40]\n"
+                     "[00:07.58]Second\n";
     char *text;
     int32 text_len;
 
@@ -1423,18 +1420,15 @@ lrc_test_write_timestamped_empty_line(void) {
     lrc_test_set_output_line(lines + 0,
                              LRC_OUTPUT_LINE_KIND_TIMESTAMPED,
                              100,
-                             first,
-                             strlen32(first));
+                             first, strlen32(first));
     lrc_test_set_output_line(lines + 1,
                              LRC_OUTPUT_LINE_KIND_TIMESTAMPED,
                              340,
-                             empty,
-                             strlen32(empty));
+                             empty, strlen32(empty));
     lrc_test_set_output_line(lines + 2,
                              LRC_OUTPUT_LINE_KIND_TIMESTAMPED,
                              758,
-                             second,
-                             strlen32(second));
+                             second, strlen32(second));
 
     if (!lrc_write_output_file(path, lines, 3, &result)) {
         test_remove_tree(temp_dir);
@@ -1461,9 +1455,9 @@ lrc_test_write_overwrites_existing_file(void) {
     LrcWriteResult result;
     char temp_dir[PATH_MAX];
     char path[PATH_MAX];
-    char first[] = "First";
-    char second[] = "Second";
-    char expected[] = "[00:02.00]Second\n";
+    char *first = "First";
+    char *second = "Second";
+    char *expected = "[00:02.00]Second\n";
     char *text;
     int32 text_len;
 
@@ -1473,13 +1467,11 @@ lrc_test_write_overwrites_existing_file(void) {
     lrc_test_set_output_line(first_lines + 0,
                              LRC_OUTPUT_LINE_KIND_TIMESTAMPED,
                              100,
-                             first,
-                             strlen32(first));
+                             first, strlen32(first));
     lrc_test_set_output_line(second_lines + 0,
                              LRC_OUTPUT_LINE_KIND_TIMESTAMPED,
                              200,
-                             second,
-                             strlen32(second));
+                             second, strlen32(second));
 
     if (!lrc_write_output_file(path,
                                first_lines,
@@ -1518,8 +1510,7 @@ lrc_test_write_rejects_bad_inputs(void) {
     lrc_test_set_output_line(lines + 0,
                              LRC_OUTPUT_LINE_KIND_TIMESTAMPED,
                              -1,
-                             text,
-                             strlen32(text));
+                             text, strlen32(text));
 
     if (lrc_write_output_file(NULL, lines, 1, &result)) {
         fatal(lrc_test_fail("accepted missing output path"));
