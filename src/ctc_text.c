@@ -3024,8 +3024,7 @@ ctc_text_test_word_target_fixture_case(char *fixture_name) {
         target_len = segment->target_end - segment->target_start;
         ASSERT_EQUAL(normalized.target_text + segment->target_start,
                      target_len,
-                     fixture.tokens[i],
-                     fixture.tokens_lens[i]);
+                     fixture.tokens[i], fixture.tokens_lens[i]);
     }
 
     lrc_lyrics_normalized_destroy(&normalized);
