@@ -3857,7 +3857,7 @@ pipeline_test_cafe_vocals_audio_corrected_clear_lines(void) {
     timestamps.line_count = LENGTH(timestamp_lines);
     timestamps.timestamped_line_count = LENGTH(timestamp_lines);
     for (int32 i = 0; i < LENGTH(timestamp_lines); i += 1) {
-        timestamp_lines[i].line_index = (int32)i;
+        timestamp_lines[i].line_index = i;
         timestamp_lines[i].start_seconds = starts[i];
         timestamp_lines[i].end_seconds = raw_ends[i];
         timestamp_lines[i].kind = LRC_CTC_LINE_TIMESTAMP_KIND_TIMESTAMPED;
