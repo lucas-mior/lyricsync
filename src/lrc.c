@@ -1600,7 +1600,7 @@ lrc_test_optional_maxwell_formatting(void) {
 
     lrc_parsed_file_destroy(&parsed);
     sb_free(&builder);
-    free2(text, ((int64)text_len + 1)*SIZEOF(*text));
+    free2(text, text_len + 1);
 
     return;
 }
