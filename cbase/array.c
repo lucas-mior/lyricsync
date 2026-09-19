@@ -186,7 +186,7 @@ array_test_reserve_and_counts(void) {
     ASSERT(ARRAY_RESERVE(items, 3));
     ASSERT(items);
     ASSERT_ZERO(ARRAY_LEN(items));
-    ASSERT(ARRAY_CAPACITY(items) == 3);
+    ASSERT_EQUAL(ARRAY_CAPACITY(items), 3);
 
     ARRAY_PUSH(items, 10);
     ARRAY_PUSH(items, 11);
