@@ -77,7 +77,7 @@ static int32
 lrc_decimal_digit_count(int32 value) {
     int32 digits;
 
-    ASSERT(value >= 0);
+    ASSERT_MORE_EQUAL(value, 0);
 
     digits = 1;
     while (value >= 10) {
@@ -93,7 +93,7 @@ lrc_timestamp_formatted_len(int32 timestamp_hundredths) {
     int32 minutes;
     int32 minute_digits;
 
-    ASSERT(timestamp_hundredths >= 0);
+    ASSERT_MORE_EQUAL(timestamp_hundredths, 0);
 
     minutes = timestamp_hundredths/6000;
     minute_digits = lrc_decimal_digit_count(minutes);
@@ -1003,7 +1003,7 @@ lrc_test_assert_line(
 ) {
     LrcParsedLine *line;
 
-    ASSERT(line_index >= 0);
+    ASSERT_MORE_EQUAL(line_index, 0);
     ASSERT_LESS(line_index, parsed->line_count);
 
     line = &parsed->lines[line_index];
