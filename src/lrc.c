@@ -1438,8 +1438,7 @@ lrc_test_write_timestamped_empty_line(void) {
         test_remove_tree(temp_dir);
         fatal(lrc_test_fail("read timestamped empty lrc line"));
     }
-    ASSERT(text_len == strlen32(expected));
-    ASSERT_EQUAL(text, &expected[0]);
+    ASSERT_EQUAL(text, text_len, expected, strlen32(expected));
 
     free2(text, ((int64)text_len + 1)*SIZEOF(*text));
     test_remove_tree(temp_dir);
@@ -1491,8 +1490,7 @@ lrc_test_write_overwrites_existing_file(void) {
         test_remove_tree(temp_dir);
         fatal(lrc_test_fail("read overwritten lrc file"));
     }
-    ASSERT(text_len == strlen32(expected));
-    ASSERT_EQUAL(text, &expected[0]);
+    ASSERT_EQUAL(text, text_len, expected, strlen32(expected));
 
     free2(text, ((int64)text_len + 1)*SIZEOF(*text));
     test_remove_tree(temp_dir);
