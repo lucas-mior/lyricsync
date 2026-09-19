@@ -505,10 +505,10 @@ CAT(ENUM_PREFIX_, functions_sink)(void) {
 #define ENUM_NAME TestNormal
 #define ENUM_PREFIX_ TEST_NORMAL_
 #define ENUM_BITFLAGS 0
-#define ENUM_FIELDS                                                            \
-    XX(TEST_NORMAL_APPLE)                                                      \
-    XX(TEST_NORMAL_BANANA, banana)                                             \
-    XX(TEST_NORMAL_CHERRY, cherry)                                             \
+#define ENUM_FIELDS                               \
+    XX(TEST_NORMAL_APPLE)                         \
+    XX(TEST_NORMAL_BANANA, banana)                \
+    XX(TEST_NORMAL_CHERRY, cherry)                \
     XX(TEST_NORMAL_PEANUT_BUTTER, peanut butter)
 #include "xenums.c"
 
