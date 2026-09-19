@@ -1312,7 +1312,7 @@ ctc_model_test_prepares_maxwell_shaped_input(void) {
     ASSERT(input.shape[0] == 1);
     ASSERT_EQUAL(input.shape[1], audio.sample_count);
     ASSERT_EQUAL(input.sample_count, audio.sample_count);
-    ASSERT((input.sample_count >= 340000) && (input.sample_count <= 343000));
+    ASSERT_BETWEEN(input.sample_count, 340000, 343000);
     ASSERT(ctc_model_double_close(input.stride_ms, 20.0, 0.00001));
 
     lrc_ctc_model_input_destroy(&input);
