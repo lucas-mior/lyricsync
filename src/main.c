@@ -251,7 +251,7 @@ main_print_value_option_usage(char *name, char *metavar, char *description,
     char option[64];
     int32 len;
 
-    len = snprintf2(option, SIZEOF(option), "%s %s", name, metavar);
+    len = fmt_sprintf(option, SIZEOF(option), "%s %s", name, metavar);
     if ((len <= 0) || (len >= SIZEOF(option))) {
         option[0] = '\0';
     }
@@ -918,7 +918,7 @@ main_input_prefix_path(MainOptions *options, char *output_path,
     if (dot_index > slash_index + 1) {
         prefix_len = dot_index;
     }
-    len = snprintf2(output_path,
+    len = fmt_sprintf(output_path,
                     output_size,
                     "%.*s.%s",
                     prefix_len,

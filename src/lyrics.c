@@ -268,7 +268,7 @@ lyrics_test_load_text(LrcLyrics *lyrics, char *text, int32 text_len) {
     bool ok;
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "lyrics_text");
-    len = snprintf2(path, SIZEOF(path), "%s/lyrics.txt", temp_dir);
+    len = fmt_sprintf(path, SIZEOF(path), "%s/lyrics.txt", temp_dir);
     if ((len <= 0) || (len >= SIZEOF(path))) {
         test_remove_tree(temp_dir);
         return false;
@@ -376,7 +376,7 @@ lyrics_test_reject_empty(void) {
     int32 len;
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "lyrics_empty");
-    len = snprintf2(path, SIZEOF(path), "%s/lyrics.txt", temp_dir);
+    len = fmt_sprintf(path, SIZEOF(path), "%s/lyrics.txt", temp_dir);
     if ((len <= 0) || (len >= SIZEOF(path))) {
         test_remove_tree(temp_dir);
         fatal(lyrics_test_fail("empty path"));
@@ -410,7 +410,7 @@ lyrics_test_reject_invalid_utf8(void) {
     int32 len;
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "lyrics_invalid_utf8");
-    len = snprintf2(path, SIZEOF(path), "%s/lyrics.txt", temp_dir);
+    len = fmt_sprintf(path, SIZEOF(path), "%s/lyrics.txt", temp_dir);
     if ((len <= 0) || (len >= SIZEOF(path))) {
         test_remove_tree(temp_dir);
         fatal(lyrics_test_fail("invalid utf8 path"));

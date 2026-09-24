@@ -188,7 +188,7 @@ ort_session_options_append_cuda(OrtContext *context, OrtSessionOptions *options,
         return false;
     }
 
-    len = snprintf2(device_id,
+    len = fmt_sprintf(device_id,
                     SIZEOF(device_id),
                     "%d",
                     context->session_config.device_id);
@@ -1083,7 +1083,7 @@ ort_test_write_identity_model(char *path, char *temp_dir) {
         return false;
     }
 
-    len = snprintf2(script_path,
+    len = fmt_sprintf(script_path,
                     SIZEOF(script_path),
                     "%s/write_identity_model.py",
                     temp_dir);
@@ -1141,7 +1141,7 @@ ort_test_optional_identity_model(void) {
     int32 len;
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "ort_identity");
-    len = snprintf2(model_path,
+    len = fmt_sprintf(model_path,
                     SIZEOF(model_path),
                     "%s/identity.onnx",
                     temp_dir);

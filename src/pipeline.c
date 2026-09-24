@@ -74,7 +74,7 @@ lrc_pipeline_store_owned_temp_dir(LrcPipeline *pipeline) {
         return false;
     }
 
-    len = snprintf2(pipeline->owned_temp_dir,
+    len = fmt_sprintf(pipeline->owned_temp_dir,
                     SIZEOF(pipeline->owned_temp_dir),
                     "%s/lrc_gen_XXXXXX",
                     pipeline->config.temp_dir);
@@ -113,7 +113,7 @@ lrc_pipeline_store_owned_vocals_path(LrcPipeline *pipeline) {
         }
     }
 
-    len = snprintf2(pipeline->owned_vocals_path,
+    len = fmt_sprintf(pipeline->owned_vocals_path,
                     SIZEOF(pipeline->owned_vocals_path),
                     "%s/vocals.wav",
                     pipeline->owned_temp_dir);
@@ -5088,7 +5088,7 @@ pipeline_test_owned_temp_cleanup(void) {
         fatal(pipeline_test_fail("write owned vocals file"));
     }
 
-    len = snprintf2(owned_dir, SIZEOF(owned_dir),
+    len = fmt_sprintf(owned_dir, SIZEOF(owned_dir),
                     "%s", pipeline.owned_temp_dir);
     if ((len <= 0) || (len >= SIZEOF(owned_dir))) {
         test_remove_tree(temp_root);
@@ -5125,7 +5125,7 @@ pipeline_test_keep_temp_files(void) {
         test_remove_tree(temp_root);
         fatal(pipeline_test_fail("prepare keep temp"));
     }
-    len = snprintf2(owned_dir, SIZEOF(owned_dir),
+    len = fmt_sprintf(owned_dir, SIZEOF(owned_dir),
                     "%s", pipeline.owned_temp_dir);
     if ((len <= 0) || (len >= SIZEOF(owned_dir))) {
         test_remove_tree(temp_root);

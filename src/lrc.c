@@ -178,7 +178,7 @@ lrc_format_timestamp_hundredths(int32 timestamp_hundredths, char *buffer,
     minutes = timestamp_hundredths/6000;
     seconds = (timestamp_hundredths/100)%60;
     hundredths = timestamp_hundredths%100;
-    len = snprintf2(buffer,
+    len = fmt_sprintf(buffer,
                     buffer_len,
                     "[%02d:%02d.%02d]",
                     minutes,
@@ -703,7 +703,7 @@ static bool
 lrc_make_temp_output_path(char *path, char *buffer, int32 buffer_len) {
     int32 len;
 
-    len = snprintf2(buffer,
+    len = fmt_sprintf(buffer,
                     buffer_len,
                     "%s.tmp.%lld.XXXXXX",
                     path,
