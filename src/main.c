@@ -251,7 +251,7 @@ main_print_value_option_usage(char *name, char *metavar, char *description,
     char option[64];
     int32 len;
 
-    len = fmt_sprintf(option, SIZEOF(option), "%s %s", name, metavar);
+    len = SNPRINTF(option, "%s %s", name, metavar);
     if ((len <= 0) || (len >= SIZEOF(option))) {
         option[0] = '\0';
     }

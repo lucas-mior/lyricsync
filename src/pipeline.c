@@ -5088,8 +5088,7 @@ pipeline_test_owned_temp_cleanup(void) {
         fatal(pipeline_test_fail("write owned vocals file"));
     }
 
-    len = fmt_sprintf(owned_dir, SIZEOF(owned_dir),
-                    "%s", pipeline.owned_temp_dir);
+    len = SNPRINTF(owned_dir, "%s", pipeline.owned_temp_dir);
     if ((len <= 0) || (len >= SIZEOF(owned_dir))) {
         test_remove_tree(temp_root);
         fatal(pipeline_test_fail("store owned dir"));
@@ -5125,8 +5124,7 @@ pipeline_test_keep_temp_files(void) {
         test_remove_tree(temp_root);
         fatal(pipeline_test_fail("prepare keep temp"));
     }
-    len = fmt_sprintf(owned_dir, SIZEOF(owned_dir),
-                    "%s", pipeline.owned_temp_dir);
+    len = SNPRINTF(owned_dir, "%s", pipeline.owned_temp_dir);
     if ((len <= 0) || (len >= SIZEOF(owned_dir))) {
         test_remove_tree(temp_root);
         fatal(pipeline_test_fail("store keep temp dir"));

@@ -188,9 +188,7 @@ ort_session_options_append_cuda(OrtContext *context, OrtSessionOptions *options,
         return false;
     }
 
-    len = fmt_sprintf(device_id,
-                    SIZEOF(device_id),
-                    "%d",
+    len = SNPRINTF(device_id, "%d",
                     context->session_config.device_id);
     if ((len <= 0) || (len >= SIZEOF(device_id))) {
         api->ReleaseCUDAProviderOptions(cuda_options);
@@ -1083,9 +1081,7 @@ ort_test_write_identity_model(char *path, char *temp_dir) {
         return false;
     }
 
-    len = fmt_sprintf(script_path,
-                    SIZEOF(script_path),
-                    "%s/write_identity_model.py",
+    len = SNPRINTF(script_path, "%s/write_identity_model.py",
                     temp_dir);
     if ((len <= 0) || (len >= SIZEOF(script_path))) {
         return false;
@@ -1141,9 +1137,7 @@ ort_test_optional_identity_model(void) {
     int32 len;
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "ort_identity");
-    len = fmt_sprintf(model_path,
-                    SIZEOF(model_path),
-                    "%s/identity.onnx",
+    len = SNPRINTF(model_path, "%s/identity.onnx",
                     temp_dir);
     if ((len <= 0) || (len >= SIZEOF(model_path))) {
         test_remove_tree(temp_dir);
