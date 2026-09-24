@@ -193,7 +193,7 @@ lrc_format_timestamp_hundredths(int32 timestamp_hundredths, char *buffer,
 }
 
 static bool
-lrc_format_timestamped_line_hundredths(StrBuilder *builder,
+lrc_format_timestamped_line_hundredths(String *builder,
                                        int32 timestamp_hundredths, char *text,
                                        int32 text_len,
                                        LrcFormatResult *result) {
@@ -633,7 +633,7 @@ lrc_output_line_validate(LrcOutputLine *line, int32 line_index,
 }
 
 static bool
-lrc_format_output_lines(StrBuilder *builder, LrcOutputLine *lines,
+lrc_format_output_lines(String *builder, LrcOutputLine *lines,
                         int32 line_count, LrcWriteResult *result) {
     if (result) {
         lrc_write_result_init(result);
@@ -829,7 +829,7 @@ lrc_write_text_file_atomic(char *path, char *text, int32 text_len,
 static bool
 lrc_write_output_file(char *path, LrcOutputLine *lines, int32 line_count,
                       LrcWriteResult *result) {
-    StrBuilder builder;
+    String builder;
 
     if (result) {
         lrc_write_result_init(result);
@@ -851,7 +851,7 @@ lrc_write_output_file(char *path, LrcOutputLine *lines, int32 line_count,
         return false;
     }
 
-    builder = (StrBuilder){0};
+    builder = (String){0};
     if (!lrc_format_output_lines(&builder, lines, line_count, result)) {
         sb_free(&builder);
         return false;
@@ -895,7 +895,7 @@ lrc_format_timestamp_seconds(float seconds, char *buffer, int32 buffer_len,
 }
 
 static bool
-lrc_format_timestamped_line(StrBuilder *builder, float seconds, char *text,
+lrc_format_timestamped_line(String *builder, float seconds, char *text,
                             int32 text_len, LrcFormatResult *result) {
     int32 timestamp_hundredths;
 
@@ -1161,10 +1161,10 @@ lrc_test_format_timestamp_seconds_rounding(void) {
 static void
 lrc_test_format_timestamped_line_preserves_text(void) {
     LrcFormatResult result;
-    StrBuilder builder;
+    String builder;
     char text[] = "Bang, bang, Café's hammer!";
 
-    builder = (StrBuilder){0};
+    builder = (String){0};
     if (!lrc_format_timestamped_line(&builder,
                                       14.14f,
                                       text, strlen32(text),
@@ -1181,9 +1181,9 @@ lrc_test_format_timestamped_line_preserves_text(void) {
 static void
 lrc_test_format_timestamped_empty_line(void) {
     LrcFormatResult result;
-    StrBuilder builder;
+    String builder;
 
-    builder = (StrBuilder){0};
+    builder = (String){0};
     if (!lrc_format_timestamped_line(&builder,
                                       3.40f,
                                       NULL,
@@ -1201,11 +1201,11 @@ lrc_test_format_timestamped_empty_line(void) {
 static void
 lrc_test_format_reject_bad_inputs(void) {
     LrcFormatResult result;
-    StrBuilder builder;
+    String builder;
     char buffer[4];
     int32 hundredths;
 
-    builder = (StrBuilder){0};
+    builder = (String){0};
 
     if (lrc_timestamp_hundredths_from_seconds(-0.01f,
                                               &hundredths,
@@ -1467,7 +1467,7 @@ lrc_test_optional_maxwell_formatting(void) {
     LrcParsedFile parsed = {0};
     LrcParseResult parse_result;
     LrcFormatResult format_result;
-    StrBuilder builder;
+    String builder;
     char *path;
     char *text;
     int32 text_len;
@@ -1488,7 +1488,7 @@ lrc_test_optional_maxwell_formatting(void) {
         fatal(lrc_test_fail("parse maxwell lrc before formatting"));
     }
 
-    builder = (StrBuilder){0};
+    builder = (String){0};
     for (int32 i = 0; i < parsed.line_count; i += 1) {
         LrcParsedLine *line = parsed.lines + i;
 

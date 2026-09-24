@@ -52,7 +52,7 @@ lrc_lyrics_normalize_text(LrcLyrics *lyrics, char *file_text, int32 file_len,
                           LrcLyricsLoadResult *result, char *path) {
     int32 bad_offset;
     int32 start;
-    StrBuilder normalized;
+    String normalized;
 
     if (!utf8_valid(file_text, file_len, &bad_offset)) {
         lrc_lyrics_load_result_set(
@@ -71,7 +71,7 @@ lrc_lyrics_normalize_text(LrcLyrics *lyrics, char *file_text, int32 file_len,
         start = 3;
     }
 
-    normalized = (StrBuilder){0};
+    normalized = (String){0};
     sb_reserve(&normalized, file_len - start);
     for (int32 i = start; i < file_len; i += 1) {
         if (file_text[i] == '\r') {

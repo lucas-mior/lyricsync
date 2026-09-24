@@ -19,7 +19,7 @@ ctc_unicode_norm_result_init(CtcUnicodeNormResult *result) {
         return;
     }
 
-    result->text = (StrBuilder){0};
+    result->text = (String){0};
     result->used_icu = false;
 
     return;

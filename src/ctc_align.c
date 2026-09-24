@@ -4722,12 +4722,12 @@ static bool
 ctc_align_load_alphabet_tokenizer_with_options(LrcCtcTokenizer *tokenizer,
                                                bool include_space) {
     LrcCtcTokenizerResult result;
-    StrBuilder builder;
+    String builder;
     char temp_dir[PATH_MAX];
     char path[PATH_MAX];
     bool ok;
 
-    builder = (StrBuilder){0};
+    builder = (String){0};
     SB_APPEND(&builder, "<blank>\n");
     if (include_space) {
         SB_APPEND(&builder, "<space>\n");

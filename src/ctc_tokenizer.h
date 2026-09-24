@@ -49,7 +49,7 @@ typedef struct LrcCtcToken {
 
 typedef struct LrcCtcTokenizer {
     LrcCtcToken *tokens;
-    StrBuilder text_storage;
+    String text_storage;
 
     int32 token_count;
     int32 blank_id;
