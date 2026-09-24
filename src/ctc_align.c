@@ -4728,13 +4728,13 @@ ctc_align_load_alphabet_tokenizer_with_options(LrcCtcTokenizer *tokenizer,
     bool ok;
 
     builder = (String){0};
-    SB_APPEND(&builder, "<blank>\n");
+    STR_APPEND(&builder, "<blank>\n");
     if (include_space) {
-        SB_APPEND(&builder, "<space>\n");
+        STR_APPEND(&builder, "<space>\n");
     }
     for (char ch = 'a'; ch <= 'z'; ch += 1) {
         sb_append(&builder, &ch, 1);
-        SB_APPEND(&builder, "\n");
+        STR_APPEND(&builder, "\n");
     }
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "ctc_align_tokens");
