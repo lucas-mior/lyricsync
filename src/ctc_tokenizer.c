@@ -512,7 +512,7 @@ lrc_ctc_tokenizer_destroy(LrcCtcTokenizer *tokenizer) {
     }
 
     ARRAY_FREE(tokenizer->tokens);
-    sb_free(&tokenizer->text_storage);
+    str_free(&tokenizer->text_storage);
 
     lrc_ctc_tokenizer_init(tokenizer);
 
@@ -578,7 +578,7 @@ lrc_ctc_tokenizer_reserve_text(LrcCtcTokenizer *tokenizer, int32 extra) {
         return false;
     }
 
-    sb_reserve(&tokenizer->text_storage, extra);
+    str_reserve(&tokenizer->text_storage, extra);
 
     return true;
 }
@@ -724,10 +724,10 @@ lrc_ctc_tokenizer_add_token(LrcCtcTokenizer *tokenizer, char *token_text,
     id = tokenizer->token_count;
     text_offset = tokenizer->text_storage.len;
     if (token_len > 0) {
-        sb_append(&tokenizer->text_storage, token_text, token_len);
+        str_append(&tokenizer->text_storage, token_text, token_len);
     }
     zero = '\0';
-    sb_append(&tokenizer->text_storage, &zero, 1);
+    str_append(&tokenizer->text_storage, &zero, 1);
     lrc_ctc_tokenizer_refresh_text_pointers(tokenizer);
 
     stored_text = tokenizer->text_storage.data + text_offset;

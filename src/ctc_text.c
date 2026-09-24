@@ -741,7 +741,7 @@ ctc_text_reference_output_reserve(CtcUnicodeNormResult *result,
         return false;
     }
 
-    sb_reserve(&result->text, extra_bytes);
+    str_reserve(&result->text, extra_bytes);
 
     return true;
 }
@@ -762,7 +762,7 @@ ctc_text_reference_output_append_bytes(CtcUnicodeNormResult *result, char *text,
         return false;
     }
 
-    sb_append(&result->text, text, text_len);
+    str_append(&result->text, text, text_len);
 
     return true;
 }

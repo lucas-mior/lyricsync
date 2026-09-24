@@ -72,20 +72,20 @@ lrc_lyrics_normalize_text(LrcLyrics *lyrics, char *file_text, int32 file_len,
     }
 
     normalized = (String){0};
-    sb_reserve(&normalized, file_len - start);
+    str_reserve(&normalized, file_len - start);
     for (int32 i = start; i < file_len; i += 1) {
         if (file_text[i] == '\r') {
-            sb_append_byte(&normalized, '\n');
+            str_append_byte(&normalized, '\n');
             if (((i + 1) < file_len) && (file_text[i + 1] == '\n')) {
                 i += 1;
             }
         } else {
-            sb_append(&normalized, file_text + i, 1);
+            str_append(&normalized, file_text + i, 1);
         }
     }
-    sb_append(&normalized, "", 0);
+    str_append(&normalized, "", 0);
 
-    lyrics->text = sb_steal_exact(&normalized, &lyrics->text_len);
+    lyrics->text = str_steal_exact(&normalized, &lyrics->text_len);
 
     return true;
 }

@@ -31,7 +31,7 @@ ctc_unicode_norm_result_destroy(CtcUnicodeNormResult *result) {
         return;
     }
 
-    sb_free(&result->text);
+    str_free(&result->text);
     result->used_icu = false;
 
     return;
@@ -55,7 +55,7 @@ ctc_unicode_norm_reserve(CtcUnicodeNormResult *result, int32 needed) {
     }
 
     extra = needed - result->text.len;
-    sb_reserve(&result->text, extra);
+    str_reserve(&result->text, extra);
 
     return true;
 }
@@ -66,7 +66,7 @@ ctc_unicode_norm_copy_fallback(char *text, int32 text_len,
     if (text_len < 0) {
         return false;
     }
-    if (sb_set(&result->text, text, text_len) < 0) {
+    if (str_set(&result->text, text, text_len) < 0) {
         return false;
     }
 
@@ -204,7 +204,7 @@ ctc_unicode_norm_utf8_from_utf16(UChar *utf16, int32 utf16_len,
                                                     &utf8_len)) {
         return false;
     }
-    sb_clear(&result->text);
+    str_clear(&result->text);
     if (!ctc_unicode_norm_reserve(result, utf8_len)) {
         return false;
     }

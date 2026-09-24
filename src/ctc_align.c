@@ -4733,7 +4733,7 @@ ctc_align_load_alphabet_tokenizer_with_options(LrcCtcTokenizer *tokenizer,
         STR_APPEND(&builder, "<space>\n");
     }
     for (char ch = 'a'; ch <= 'z'; ch += 1) {
-        sb_append(&builder, &ch, 1);
+        str_append(&builder, &ch, 1);
         STR_APPEND(&builder, "\n");
     }
 
@@ -4741,14 +4741,14 @@ ctc_align_load_alphabet_tokenizer_with_options(LrcCtcTokenizer *tokenizer,
     test_join_path(path, SIZEOF(path), temp_dir, "tokens.txt");
     if (write_entire_file(path, builder.data, builder.len) < 0) {
         test_remove_tree(temp_dir);
-        sb_free(&builder);
+        str_free(&builder);
         return false;
     }
 
     lrc_ctc_tokenizer_init(tokenizer);
     ok = lrc_ctc_tokenizer_load_file(tokenizer, path, &result);
     test_remove_tree(temp_dir);
-    sb_free(&builder);
+    str_free(&builder);
 
     return ok;
 }

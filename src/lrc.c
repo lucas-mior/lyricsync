@@ -235,8 +235,8 @@ lrc_format_timestamped_line_hundredths(String *builder,
         return false;
     }
 
-    sb_append(builder, timestamp, timestamp_len);
-    sb_append(builder, text, text_len);
+    str_append(builder, timestamp, timestamp_len);
+    str_append(builder, text, text_len);
 
     return true;
 }
@@ -691,9 +691,9 @@ lrc_format_output_lines(String *builder, LrcOutputLine *lines,
                 return false;
             }
         } else {
-            sb_append(builder, line->text, line->text_len);
+            str_append(builder, line->text, line->text_len);
         }
-        sb_append_byte(builder, '\n');
+        str_append_byte(builder, '\n');
     }
 
     return true;
@@ -853,18 +853,18 @@ lrc_write_output_file(char *path, LrcOutputLine *lines, int32 line_count,
 
     builder = (String){0};
     if (!lrc_format_output_lines(&builder, lines, line_count, result)) {
-        sb_free(&builder);
+        str_free(&builder);
         return false;
     }
     if (!lrc_write_text_file_atomic(path,
                                     builder.data,
                                     builder.len,
                                     result)) {
-        sb_free(&builder);
+        str_free(&builder);
         return false;
     }
 
-    sb_free(&builder);
+    str_free(&builder);
 
     return true;
 }
@@ -1173,7 +1173,7 @@ lrc_test_format_timestamped_line_preserves_text(void) {
     }
     ASSERT(strequal(builder.data, "[00:14.14]Bang, bang, Café's hammer!"));
 
-    sb_free(&builder);
+    str_free(&builder);
 
     return;
 }
@@ -1193,7 +1193,7 @@ lrc_test_format_timestamped_empty_line(void) {
     }
     ASSERT(strequal(builder.data, "[00:03.40]"));
 
-    sb_free(&builder);
+    str_free(&builder);
 
     return;
 }
@@ -1248,7 +1248,7 @@ lrc_test_format_reject_bad_inputs(void) {
     }
     ASSERT(result.header.error == LS_ERROR_FORMAT_INVALID_ARGUMENT);
 
-    sb_free(&builder);
+    str_free(&builder);
 
     return;
 }
@@ -1501,21 +1501,21 @@ lrc_test_optional_maxwell_formatting(void) {
                 &format_result
             )) {
                 lrc_parsed_file_destroy(&parsed);
-                sb_free(&builder);
+                str_free(&builder);
                 free2(text, ((int64)text_len + 1)*SIZEOF(*text));
                 fatal(lrc_test_fail("format maxwell lrc line"));
             }
         } else {
-            sb_append(&builder, line->text, line->text_len);
+            str_append(&builder, line->text, line->text_len);
         }
-        sb_append_byte(&builder, '\n');
+        str_append_byte(&builder, '\n');
     }
 
     ASSERT_EQUAL(builder.len, text_len);
     ASSERT_EQUAL(builder.data, text);
 
     lrc_parsed_file_destroy(&parsed);
-    sb_free(&builder);
+    str_free(&builder);
     free2(text, text_len + 1);
 
     return;
