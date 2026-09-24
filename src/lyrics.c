@@ -85,7 +85,7 @@ lrc_lyrics_normalize_text(LrcLyrics *lyrics, char *file_text, int32 file_len,
     }
     str_append(&normalized, "", 0);
 
-    lyrics->text = str_steal_exact(&normalized, &lyrics->text_len);
+    lyrics->text = str_steal(&normalized, &lyrics->text_len);
 
     return true;
 }
