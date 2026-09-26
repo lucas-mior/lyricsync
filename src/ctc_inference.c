@@ -2140,7 +2140,7 @@ ctc_inference_test_rank3_accepts_wav2vec_actual_chunk_length(void) {
     ASSERT(result.header.error == LS_ERROR_NONE);
     ASSERT(emissions.frame_count == LENGTH(expected));
     for (int32 i = 0; i < LENGTH(expected); i += 1) {
-        ASSERT_EQUAL(emissions.values[i], expected[i]);
+        ASSERT_EQUAL_VAR(emissions.values[i], expected[i]);
     }
 
     lrc_ctc_emissions_destroy(&emissions);
@@ -2202,7 +2202,7 @@ ctc_inference_test_rank3_python_slicing_vectors(void) {
     ASSERT(emissions.frame_count == LENGTH(expected));
     ASSERT_EQUAL(emissions.vocabulary_size, 1);
     for (int32 i = 0; i < LENGTH(expected); i += 1) {
-        ASSERT_EQUAL(emissions.values[i], expected[i]);
+        ASSERT_EQUAL_VAR(emissions.values[i], expected[i]);
     }
 
     lrc_ctc_emissions_destroy(&emissions);
@@ -2266,7 +2266,7 @@ ctc_inference_test_rank3_repeated_boundary_frames(void) {
 
     ASSERT(emissions.frame_count == LENGTH(expected));
     for (int32 i = 0; i < LENGTH(expected); i += 1) {
-        ASSERT_EQUAL(emissions.values[i], expected[i]);
+        ASSERT_EQUAL_VAR(emissions.values[i], expected[i]);
     }
 
     lrc_ctc_emissions_destroy(&emissions);
@@ -2567,7 +2567,7 @@ ctc_inference_test_log_probability_bypass(void) {
 
     ASSERT(result.header.error == LS_ERROR_NONE);
     for (int32 i = 0; i < LENGTH(values); i += 1) {
-        ASSERT_EQUAL(emissions.values[i], values[i]);
+        ASSERT_EQUAL_VAR(emissions.values[i], values[i]);
     }
 
     lrc_ctc_emissions_destroy(&emissions);
