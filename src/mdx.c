@@ -933,8 +933,8 @@ main(void) {
     ASSERT(mdx_model_inspect(&info, &config, &model));
     ASSERT_EQUAL(config.dim_f, 3072);
     ASSERT_EQUAL(config.dim_t, 256);
-    ASSERT_EQUAL(info.input_name, model.input_name);
-    ASSERT_EQUAL(info.output_name, model.output_name);
+    ASSERT_EQUAL_VAR(info.input_name, model.input_name);
+    ASSERT_EQUAL_VAR(info.output_name, model.output_name);
     ASSERT(!info.input_shape_dynamic);
     ASSERT(!info.output_shape_dynamic);
     ASSERT(mdx_config_prepare(&config));
@@ -1108,8 +1108,8 @@ main(void) {
                             &model,
                             &empty_input,
                             &empty_output));
-    ASSERT_EQUAL(empty_output.sample_rate, config.sample_rate);
-    ASSERT_EQUAL(empty_output.channel_count, config.channel_count);
+    ASSERT_EQUAL_VAR(empty_output.sample_rate, config.sample_rate);
+    ASSERT_EQUAL_VAR(empty_output.channel_count, config.channel_count);
     ASSERT_ZERO(empty_output.frame_count);
 
     audio_buffer_destroy(&empty_output);

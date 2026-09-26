@@ -295,8 +295,8 @@ lyrics_test_assert_line_range(LrcLyricsNormalized *normalized, int32 line_index,
                                             line_index,
                                             &start,
                                             &end));
-    ASSERT_EQUAL(start, expected_start);
-    ASSERT_EQUAL(end, expected_end);
+    ASSERT_EQUAL_VAR(start, expected_start);
+    ASSERT_EQUAL_VAR(end, expected_end);
 
     return;
 }
@@ -452,9 +452,9 @@ lyrics_test_normalize_punctuation_sections_and_mapping(void) {
     }
 
     ASSERT_EQUAL(normalized.text, "hello world bang bang maxwell's");
-    ASSERT_EQUAL(normalized.byte_count, normalized.text_len);
+    ASSERT_EQUAL_VAR(normalized.byte_count, normalized.text_len);
     ASSERT_EQUAL(normalized.alignable_line_count, 2);
-    ASSERT_EQUAL(normalized.line_count, lyrics.line_count);
+    ASSERT_EQUAL_VAR(normalized.line_count, lyrics.line_count);
     lyrics_test_assert_line_range(&normalized, 0, 0, 11);
     lyrics_test_assert_no_line_range(
         &normalized,
@@ -499,7 +499,7 @@ lyrics_test_normalize_unicode_and_blank_lines(void) {
 
     ASSERT_EQUAL(normalized.text, "ola shi jie again");
     ASSERT_EQUAL(normalized.alignable_line_count, 2);
-    ASSERT_EQUAL(normalized.line_count, lyrics.line_count);
+    ASSERT_EQUAL_VAR(normalized.line_count, lyrics.line_count);
     lyrics_test_assert_line_range(&normalized, 0, 0, 11);
     lyrics_test_assert_no_line_range(
         &normalized,
@@ -598,9 +598,11 @@ lyrics_test_preprocess_option_defaults_preserve_normalization(void) {
         fatal(lyrics_test_fail("normalize through explicit options"));
     }
 
-    ASSERT_EQUAL(default_normalized.text, option_normalized.text);
-    ASSERT_EQUAL(default_normalized.byte_count, option_normalized.byte_count);
-    ASSERT_EQUAL(default_normalized.line_count, option_normalized.line_count);
+    ASSERT_EQUAL_VAR(default_normalized.text, option_normalized.text);
+    ASSERT_EQUAL_VAR(default_normalized.byte_count,
+                     option_normalized.byte_count);
+    ASSERT_EQUAL_VAR(default_normalized.line_count,
+                     option_normalized.line_count);
     ASSERT(default_normalized.alignable_line_count
            == option_normalized.alignable_line_count);
 
@@ -657,7 +659,7 @@ lyrics_test_optional_maxwell_txt(void) {
             "bang bang maxwells silver hammer "
             "came down upon her head");
         ASSERT_EQUAL(normalized.alignable_line_count, 5);
-        ASSERT_EQUAL(normalized.line_count, lyrics.line_count);
+        ASSERT_EQUAL_VAR(normalized.line_count, lyrics.line_count);
         lyrics_test_assert_line_range(&normalized, 0, 0, 39);
         lyrics_test_assert_line_range(&normalized, 1, 40, 71);
         lyrics_test_assert_line_range(&normalized, 2, 72, 97);
