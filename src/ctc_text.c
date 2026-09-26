@@ -2098,7 +2098,7 @@ ctc_text_test_assert_segment(LrcLyrics *lyrics, LrcLyricsNormalized *normalized,
     ASSERT_EQ_VAR(segment->target_start, expected_target_start);
     ASSERT_EQ_VAR(segment->target_end, expected_target_end);
     ASSERT_NON_NEGATIVE(segment->target_start);
-    ASSERT_LESS_EQUAL_VAR(segment->target_end, normalized->target_byte_count);
+    ASSERT_LE_VAR(segment->target_end, normalized->target_byte_count);
     ASSERT_EQ(lyrics->text + segment->source_start, source_len,
                  expected_source, strlen32(expected_source));
     for (int32 i = segment->target_start; i < segment->target_end; i += 1) {
@@ -2107,7 +2107,7 @@ ctc_text_test_assert_segment(LrcLyrics *lyrics, LrcLyricsNormalized *normalized,
         ASSERT_EQ_VAR(target_byte->line_index, expected_line_index);
         ASSERT_MORE_EQUAL_VAR(target_byte->normalized_start,
                               segment->normalized_start);
-        ASSERT_LESS_EQUAL_VAR(target_byte->normalized_end,
+        ASSERT_LE_VAR(target_byte->normalized_end,
                               segment->normalized_end);
     }
 

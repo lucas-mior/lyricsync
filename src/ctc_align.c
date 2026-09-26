@@ -3275,7 +3275,7 @@ lrc_ctc_normalized_range_is_space(LrcLyricsNormalized *normalized, int32 start,
     ASSERT(normalized->text);
     ASSERT_NON_NEGATIVE(start);
     ASSERT_MORE_VAR(end, start);
-    ASSERT_LESS_EQUAL_VAR(end, normalized->text_len);
+    ASSERT_LE_VAR(end, normalized->text_len);
 
     for (int32 i = start; i < end; i += 1) {
         if (normalized->text[i] != ' ') {
@@ -3293,7 +3293,7 @@ lrc_ctc_normalized_range_has_space(LrcLyricsNormalized *normalized, int32 start,
     ASSERT(normalized->text);
     ASSERT_NON_NEGATIVE(start);
     ASSERT_MORE_VAR(end, start);
-    ASSERT_LESS_EQUAL_VAR(end, normalized->text_len);
+    ASSERT_LE_VAR(end, normalized->text_len);
 
     for (int32 i = start; i < end; i += 1) {
         if (normalized->text[i] == ' ') {
@@ -4191,7 +4191,7 @@ lrc_ctc_line_timestamp_set_timed(LrcCtcLineTimestamps *timestamps, int32 index,
     ASSERT_BETWEEN(index, 0, timestamps->line_count - 1);
     ASSERT_NON_NEGATIVE(first_word_index);
     ASSERT_MORE_VAR(end_word_index, first_word_index);
-    ASSERT_LESS_EQUAL_VAR(end_word_index, word_spans->span_count);
+    ASSERT_LE_VAR(end_word_index, word_spans->span_count);
 
     first = word_spans->spans + first_word_index;
     last = word_spans->spans + end_word_index - 1;
@@ -4853,7 +4853,7 @@ ctc_align_assert_word_text(LrcLyricsNormalized *normalized,
                            LrcCtcWordSpan *word, char *text, int32 text_len) {
     ASSERT_NON_NEGATIVE(word->normalized_start);
     ASSERT_MORE_VAR(word->normalized_end, word->normalized_start);
-    ASSERT_LESS_EQUAL_VAR(word->normalized_end, normalized->text_len);
+    ASSERT_LE_VAR(word->normalized_end, normalized->text_len);
     ASSERT_EQ(normalized->text + word->normalized_start,
                  word->normalized_end - word->normalized_start,
                  text,
@@ -8054,7 +8054,7 @@ ctc_align_test_maxwell_word_line_mapping(void) {
                                                 &line_start,
                                                 &line_end));
         ASSERT_MORE_EQUAL_VAR(word->normalized_start, line_start);
-        ASSERT_LESS_EQUAL_VAR(word->normalized_end, line_end);
+        ASSERT_LE_VAR(word->normalized_end, line_end);
     }
     ctc_align_assert_word_text(&normalized,
                                word_spans.spans + 0,
