@@ -2105,7 +2105,7 @@ ctc_text_test_assert_segment(LrcLyrics *lyrics, LrcLyricsNormalized *normalized,
         LrcLyricsTargetByte *target_byte = &normalized->target_bytes[i];
 
         ASSERT_EQ_VAR(target_byte->line_index, expected_line_index);
-        ASSERT_MORE_EQUAL_VAR(target_byte->normalized_start,
+        ASSERT_GE_VAR(target_byte->normalized_start,
                               segment->normalized_start);
         ASSERT_LE_VAR(target_byte->normalized_end,
                               segment->normalized_end);

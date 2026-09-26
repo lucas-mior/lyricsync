@@ -4940,7 +4940,7 @@ ctc_align_seconds_to_frame(float seconds, float frame_duration_seconds) {
     double frame;
 
     ASSERT(isfinite(seconds));
-    ASSERT_MORE_EQUAL(seconds, 0.0f);
+    ASSERT_GE(seconds, 0.0f);
     ASSERT(isfinite(frame_duration_seconds));
     ASSERT_MORE(frame_duration_seconds, 0.0f);
 
@@ -8053,7 +8053,7 @@ ctc_align_test_maxwell_word_line_mapping(void) {
                                                 word->line_index,
                                                 &line_start,
                                                 &line_end));
-        ASSERT_MORE_EQUAL_VAR(word->normalized_start, line_start);
+        ASSERT_GE_VAR(word->normalized_start, line_start);
         ASSERT_LE_VAR(word->normalized_end, line_end);
     }
     ctc_align_assert_word_text(&normalized,
