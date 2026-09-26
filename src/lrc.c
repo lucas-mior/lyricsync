@@ -929,8 +929,7 @@ lrc_test_assert_line(LrcParsedFile *parsed, int32 line_index,
                      int32 expected_text_len) {
     LrcParsedLine *line;
 
-    ASSERT_NON_NEGATIVE(line_index);
-    ASSERT_LESS_VAR(line_index, parsed->line_count);
+    ASSERT_BETWEEN(line_index, 0, parsed->line_count - 1);
 
     line = &parsed->lines[line_index];
     ASSERT(line->kind == expected_kind);
