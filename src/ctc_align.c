@@ -2060,7 +2060,7 @@ lrc_ctc_path_segment_finish(LrcCtcPathSegment *segment, int32 score_count,
                             float score_sum, float frame_duration_seconds) {
     ASSERT(segment);
     ASSERT_NON_NEGATIVE(segment->start_frame);
-    ASSERT_MORE_VAR(segment->end_frame, segment->start_frame);
+    ASSERT_GT_VAR(segment->end_frame, segment->start_frame);
     ASSERT_POSITIVE(score_count);
 
     segment->start_seconds = (float)segment->start_frame*frame_duration_seconds;
@@ -2514,7 +2514,7 @@ lrc_ctc_blank_midpoint_frame(LrcCtcPathSegment *segment) {
     ASSERT(segment);
     ASSERT(segment->is_blank);
     ASSERT_NON_NEGATIVE(segment->start_frame);
-    ASSERT_MORE_VAR(segment->end_frame, segment->start_frame);
+    ASSERT_GT_VAR(segment->end_frame, segment->start_frame);
 
     return (segment->start_frame + segment->end_frame)/2;
 }
@@ -2652,7 +2652,7 @@ lrc_ctc_token_span_finish(LrcCtcTokenSpan *span, int32 score_count,
                           float score_sum, float frame_duration_seconds) {
     ASSERT(span);
     ASSERT_NON_NEGATIVE(span->start_frame);
-    ASSERT_MORE_VAR(span->end_frame, span->start_frame);
+    ASSERT_GT_VAR(span->end_frame, span->start_frame);
     ASSERT_POSITIVE(score_count);
 
     span->start_seconds = (float)span->start_frame*frame_duration_seconds;
@@ -3274,7 +3274,7 @@ lrc_ctc_normalized_range_is_space(LrcLyricsNormalized *normalized, int32 start,
     ASSERT(normalized);
     ASSERT(normalized->text);
     ASSERT_NON_NEGATIVE(start);
-    ASSERT_MORE_VAR(end, start);
+    ASSERT_GT_VAR(end, start);
     ASSERT_LE_VAR(end, normalized->text_len);
 
     for (int32 i = start; i < end; i += 1) {
@@ -3292,7 +3292,7 @@ lrc_ctc_normalized_range_has_space(LrcLyricsNormalized *normalized, int32 start,
     ASSERT(normalized);
     ASSERT(normalized->text);
     ASSERT_NON_NEGATIVE(start);
-    ASSERT_MORE_VAR(end, start);
+    ASSERT_GT_VAR(end, start);
     ASSERT_LE_VAR(end, normalized->text_len);
 
     for (int32 i = start; i < end; i += 1) {
@@ -4190,7 +4190,7 @@ lrc_ctc_line_timestamp_set_timed(LrcCtcLineTimestamps *timestamps, int32 index,
     ASSERT(timestamps);
     ASSERT_BETWEEN(index, 0, timestamps->line_count - 1);
     ASSERT_NON_NEGATIVE(first_word_index);
-    ASSERT_MORE_VAR(end_word_index, first_word_index);
+    ASSERT_GT_VAR(end_word_index, first_word_index);
     ASSERT_LE_VAR(end_word_index, word_spans->span_count);
 
     first = word_spans->spans + first_word_index;
@@ -4852,7 +4852,7 @@ static void
 ctc_align_assert_word_text(LrcLyricsNormalized *normalized,
                            LrcCtcWordSpan *word, char *text, int32 text_len) {
     ASSERT_NON_NEGATIVE(word->normalized_start);
-    ASSERT_MORE_VAR(word->normalized_end, word->normalized_start);
+    ASSERT_GT_VAR(word->normalized_end, word->normalized_start);
     ASSERT_LE_VAR(word->normalized_end, normalized->text_len);
     ASSERT_EQ(normalized->text + word->normalized_start,
                  word->normalized_end - word->normalized_start,
@@ -4942,7 +4942,7 @@ ctc_align_seconds_to_frame(float seconds, float frame_duration_seconds) {
     ASSERT(isfinite(seconds));
     ASSERT_GE(seconds, 0.0f);
     ASSERT(isfinite(frame_duration_seconds));
-    ASSERT_MORE(frame_duration_seconds, 0.0f);
+    ASSERT_GT(frame_duration_seconds, 0.0f);
 
     frame = (double)seconds/(double)frame_duration_seconds + 0.5;
     if (frame > (double)INT64_MAX) {
