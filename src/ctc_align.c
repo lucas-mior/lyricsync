@@ -1191,7 +1191,7 @@ lrc_ctc_emission_value(LrcCtcEmissions *emissions, int32 frame_index,
     if ((int32)token_id == emissions->vocabulary_size) {
         return 0.0f;
     }
-    ASSERT_LESS_VAR((int32)token_id, emissions->vocabulary_size);
+    ASSERT_LT_VAR((int32)token_id, emissions->vocabulary_size);
 
     index = frame_index*emissions->vocabulary_size + token_id;
 
@@ -2115,7 +2115,7 @@ lrc_ctc_path_to_segments(LrcCtcPath *path, LrcCtcEmissions *emissions,
             }
 
             segment_index += 1;
-            ASSERT_LESS_VAR(segment_index, segments->segment_count);
+            ASSERT_LT_VAR(segment_index, segments->segment_count);
             segment = segments->segments + segment_index;
             segment->token_index = step->token_index;
             segment->start_frame = step->frame_index;
@@ -2737,7 +2737,7 @@ lrc_ctc_path_to_token_spans(LrcCtcPath *path, LrcCtcEmissions *emissions,
 
             span_index += 1;
             previous_token_index = step->token_index;
-            ASSERT_LESS_VAR(span_index, spans->span_count);
+            ASSERT_LT_VAR(span_index, spans->span_count);
             span = spans->spans + span_index;
             span->token_index = step->token_index;
             span->start_frame = step->frame_index;
@@ -3587,7 +3587,7 @@ lrc_ctc_token_spans_to_segment_word_spans(LrcCtcTokenSpans *token_spans,
         if ((word == NULL)
             || (token->segment_index != previous_segment_index)) {
             word_index += 1;
-            ASSERT_LESS_VAR(word_index, word_spans->span_count);
+            ASSERT_LT_VAR(word_index, word_spans->span_count);
             word = word_spans->spans + word_index;
             score_count = 1;
             score_sum = token_span->score;
@@ -3841,7 +3841,7 @@ lrc_ctc_token_spans_to_word_spans(LrcCtcTokenSpans *token_spans,
 
         if (word == NULL) {
             word_index += 1;
-            ASSERT_LESS_VAR(word_index, word_spans->span_count);
+            ASSERT_LT_VAR(word_index, word_spans->span_count);
             word = word_spans->spans + word_index;
             score_count = 1;
             score_sum = token_span->score;

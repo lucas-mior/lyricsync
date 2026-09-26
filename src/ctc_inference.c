@@ -2627,8 +2627,8 @@ ctc_inference_test_logits_to_log_probabilities(void) {
                + exp((double)emissions.values[1]);
     row2_sum = exp((double)emissions.values[2])
                + exp((double)emissions.values[3]);
-    ASSERT_LESS(fabs(row1_sum - 1.0), 0.000001);
-    ASSERT_LESS(fabs(row2_sum - 1.0), 0.000001);
+    ASSERT_LT(fabs(row1_sum - 1.0), 0.000001);
+    ASSERT_LT(fabs(row2_sum - 1.0), 0.000001);
 
     lrc_ctc_emissions_destroy(&emissions);
 
