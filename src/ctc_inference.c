@@ -1753,7 +1753,7 @@ ctc_inference_test_empty_initializers(void) {
 
     ASSERT(result.header.error == LS_ERROR_NONE);
     ASSERT(strequal(result.header.message, "ok"));
-    ASSERT_EQUAL(result.output_index, -1);
+    ASSERT_EQ(result.output_index, -1);
 
     ASSERT(emissions.values == NULL);
     ASSERT_ZERO(emissions.value_count);
@@ -1795,19 +1795,19 @@ ctc_inference_test_fake_rank2(void) {
     }
 
     ASSERT(result.header.error == LS_ERROR_NONE);
-    ASSERT_EQUAL(emissions.value_count, 6);
-    ASSERT_EQUAL(emissions.row_count, 1);
-    ASSERT_EQUAL(emissions.row_frame_count, 2);
-    ASSERT_EQUAL(emissions.frame_count, 2);
-    ASSERT_EQUAL(emissions.vocabulary_size, 3);
-    ASSERT_EQUAL(emissions.shape_len, 2);
-    ASSERT_EQUAL(emissions.shape[0], 2);
-    ASSERT_EQUAL(emissions.shape[1], 3);
-    ASSERT_EQUAL_VAR(emissions.values[0], values[0]);
-    ASSERT_EQUAL_VAR(emissions.values[5], values[5]);
+    ASSERT_EQ(emissions.value_count, 6);
+    ASSERT_EQ(emissions.row_count, 1);
+    ASSERT_EQ(emissions.row_frame_count, 2);
+    ASSERT_EQ(emissions.frame_count, 2);
+    ASSERT_EQ(emissions.vocabulary_size, 3);
+    ASSERT_EQ(emissions.shape_len, 2);
+    ASSERT_EQ(emissions.shape[0], 2);
+    ASSERT_EQ(emissions.shape[1], 3);
+    ASSERT_EQ_VAR(emissions.values[0], values[0]);
+    ASSERT_EQ_VAR(emissions.values[5], values[5]);
 
     values[0] = 99.0f;
-    ASSERT_EQUAL(emissions.values[0], -2.0f);
+    ASSERT_EQ(emissions.values[0], -2.0f);
 
     emissions.values[1] = NAN;
     lrc_ctc_emissions_destroy(&emissions);
@@ -1847,18 +1847,18 @@ ctc_inference_test_fake_rank3(void) {
         fatal(ctc_inference_test_fail("run fake rank-3 backend"));
     }
 
-    ASSERT_EQUAL(emissions.value_count, 4);
-    ASSERT_EQUAL(emissions.row_count, 1);
-    ASSERT_EQUAL(emissions.row_frame_count, 2);
-    ASSERT_EQUAL(emissions.frame_count, 2);
-    ASSERT_EQUAL(emissions.vocabulary_size, 2);
-    ASSERT_EQUAL(emissions.shape_len, 2);
-    ASSERT_EQUAL(emissions.shape[0], 2);
-    ASSERT_EQUAL(emissions.shape[1], 2);
-    ASSERT_EQUAL(emissions.values[0], 2.0f);
-    ASSERT_EQUAL(emissions.values[1], 3.0f);
-    ASSERT_EQUAL(emissions.values[2], 8.0f);
-    ASSERT_EQUAL(emissions.values[3], 9.0f);
+    ASSERT_EQ(emissions.value_count, 4);
+    ASSERT_EQ(emissions.row_count, 1);
+    ASSERT_EQ(emissions.row_frame_count, 2);
+    ASSERT_EQ(emissions.frame_count, 2);
+    ASSERT_EQ(emissions.vocabulary_size, 2);
+    ASSERT_EQ(emissions.shape_len, 2);
+    ASSERT_EQ(emissions.shape[0], 2);
+    ASSERT_EQ(emissions.shape[1], 2);
+    ASSERT_EQ(emissions.values[0], 2.0f);
+    ASSERT_EQ(emissions.values[1], 3.0f);
+    ASSERT_EQ(emissions.values[2], 8.0f);
+    ASSERT_EQ(emissions.values[3], 9.0f);
 
     lrc_ctc_emissions_destroy(&emissions);
 
@@ -1897,14 +1897,14 @@ ctc_inference_test_rank3_extension_truncated(void) {
         fatal(ctc_inference_test_fail("run padded rank-3 backend"));
     }
 
-    ASSERT_EQUAL(emissions.value_count, 2);
-    ASSERT_EQUAL(emissions.frame_count, 1);
-    ASSERT_EQUAL(emissions.vocabulary_size, 2);
-    ASSERT_EQUAL(emissions.shape_len, 2);
-    ASSERT_EQUAL(emissions.shape[0], 1);
-    ASSERT_EQUAL(emissions.shape[1], 2);
-    ASSERT_EQUAL(emissions.values[0], 2.0f);
-    ASSERT_EQUAL(emissions.values[1], 3.0f);
+    ASSERT_EQ(emissions.value_count, 2);
+    ASSERT_EQ(emissions.frame_count, 1);
+    ASSERT_EQ(emissions.vocabulary_size, 2);
+    ASSERT_EQ(emissions.shape_len, 2);
+    ASSERT_EQ(emissions.shape[0], 1);
+    ASSERT_EQ(emissions.shape[1], 2);
+    ASSERT_EQ(emissions.values[0], 2.0f);
+    ASSERT_EQ(emissions.values[1], 3.0f);
 
     lrc_ctc_emissions_destroy(&emissions);
 
@@ -1953,8 +1953,8 @@ ctc_inference_test_rank3_logits_converted_after_trim(void) {
     }
 
     ASSERT(result.header.error == LS_ERROR_NONE);
-    ASSERT_EQUAL(emissions.frame_count, 2);
-    ASSERT_EQUAL(emissions.vocabulary_size, 2);
+    ASSERT_EQ(emissions.frame_count, 2);
+    ASSERT_EQ(emissions.vocabulary_size, 2);
     ASSERT(ctc_inference_float_close(emissions.values[0],
                                      (float)-row0_norm,
                                      0.00001f));
@@ -2011,8 +2011,8 @@ ctc_inference_test_rank3_probability_trim_before_convert(void) {
     }
 
     ASSERT(result.header.error == LS_ERROR_NONE);
-    ASSERT_EQUAL(emissions.frame_count, 2);
-    ASSERT_EQUAL(emissions.vocabulary_size, 2);
+    ASSERT_EQ(emissions.frame_count, 2);
+    ASSERT_EQ(emissions.vocabulary_size, 2);
     ASSERT(ctc_inference_float_close(emissions.values[0],
                                      logf(0.25f),
                                      0.00001f));
@@ -2078,11 +2078,11 @@ ctc_inference_test_rank3_accepts_short_actual_model_length(void) {
     }
 
     ASSERT(result.header.error == LS_ERROR_NONE);
-    ASSERT_EQUAL(emissions.frame_count, 3);
-    ASSERT_EQUAL(emissions.value_count, 3);
-    ASSERT_EQUAL(emissions.values[0], 10.0f);
-    ASSERT_EQUAL(emissions.values[1], 11.0f);
-    ASSERT_EQUAL(emissions.values[2], 12.0f);
+    ASSERT_EQ(emissions.frame_count, 3);
+    ASSERT_EQ(emissions.value_count, 3);
+    ASSERT_EQ(emissions.values[0], 10.0f);
+    ASSERT_EQ(emissions.values[1], 11.0f);
+    ASSERT_EQ(emissions.values[2], 12.0f);
 
     lrc_ctc_emissions_destroy(&emissions);
 
@@ -2140,7 +2140,7 @@ ctc_inference_test_rank3_accepts_wav2vec_actual_chunk_length(void) {
     ASSERT(result.header.error == LS_ERROR_NONE);
     ASSERT(emissions.frame_count == LENGTH(expected));
     for (int32 i = 0; i < LENGTH(expected); i += 1) {
-        ASSERT_EQUAL_VAR(emissions.values[i], expected[i]);
+        ASSERT_EQ_VAR(emissions.values[i], expected[i]);
     }
 
     lrc_ctc_emissions_destroy(&emissions);
@@ -2200,9 +2200,9 @@ ctc_inference_test_rank3_python_slicing_vectors(void) {
     }
 
     ASSERT(emissions.frame_count == LENGTH(expected));
-    ASSERT_EQUAL(emissions.vocabulary_size, 1);
+    ASSERT_EQ(emissions.vocabulary_size, 1);
     for (int32 i = 0; i < LENGTH(expected); i += 1) {
-        ASSERT_EQUAL_VAR(emissions.values[i], expected[i]);
+        ASSERT_EQ_VAR(emissions.values[i], expected[i]);
     }
 
     lrc_ctc_emissions_destroy(&emissions);
@@ -2266,7 +2266,7 @@ ctc_inference_test_rank3_repeated_boundary_frames(void) {
 
     ASSERT(emissions.frame_count == LENGTH(expected));
     for (int32 i = 0; i < LENGTH(expected); i += 1) {
-        ASSERT_EQUAL_VAR(emissions.values[i], expected[i]);
+        ASSERT_EQ_VAR(emissions.values[i], expected[i]);
     }
 
     lrc_ctc_emissions_destroy(&emissions);
@@ -2393,8 +2393,8 @@ ctc_inference_test_onnx_chunk_output_shape(void) {
                                          &result)) {
         fatal(ctc_inference_test_fail("accept rank-3 chunk output"));
     }
-    ASSERT_EQUAL(chunk_emission_count, 3);
-    ASSERT_EQUAL(vocabulary_size, 4);
+    ASSERT_EQ(chunk_emission_count, 3);
+    ASSERT_EQ(vocabulary_size, 4);
     ASSERT(chunk_value_count == LENGTH(values));
 
     output.shape_len = 2;
@@ -2408,8 +2408,8 @@ ctc_inference_test_onnx_chunk_output_shape(void) {
                                          &result)) {
         fatal(ctc_inference_test_fail("accept rank-2 chunk output"));
     }
-    ASSERT_EQUAL(chunk_emission_count, 6);
-    ASSERT_EQUAL(vocabulary_size, 2);
+    ASSERT_EQ(chunk_emission_count, 6);
+    ASSERT_EQ(vocabulary_size, 2);
     ASSERT(chunk_value_count == LENGTH(values));
 
     output.shape_len = 3;
@@ -2500,7 +2500,7 @@ ctc_inference_test_rejects_invalid_inputs(void) {
             fatal(ctc_inference_test_fail("non-finite emissions accepted"));
         }
         ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_NON_FINITE_OUTPUT);
-        ASSERT_EQUAL(result.output_index, 1);
+        ASSERT_EQ(result.output_index, 1);
     } else {
         fatal(ctc_inference_test_fail("set non-finite fake emissions"));
     }
@@ -2567,7 +2567,7 @@ ctc_inference_test_log_probability_bypass(void) {
 
     ASSERT(result.header.error == LS_ERROR_NONE);
     for (int32 i = 0; i < LENGTH(values); i += 1) {
-        ASSERT_EQUAL_VAR(emissions.values[i], values[i]);
+        ASSERT_EQ_VAR(emissions.values[i], values[i]);
     }
 
     lrc_ctc_emissions_destroy(&emissions);
@@ -2706,7 +2706,7 @@ ctc_inference_test_rejects_invalid_probability_conversion(void) {
         fatal(ctc_inference_test_fail("zero probability accepted"));
     }
     ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_INVALID_PROBABILITY);
-    ASSERT_EQUAL(result.output_index, 1);
+    ASSERT_EQ(result.output_index, 1);
 
     values[1] = 1.0f;
     if (!lrc_ctc_emissions_copy_shape(&emissions,

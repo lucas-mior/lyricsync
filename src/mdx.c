@@ -895,11 +895,11 @@ main(void) {
     ort_context_init_empty(&context);
 
     mdx_config_init(&config);
-    ASSERT_EQUAL(config.sample_rate, 44100);
-    ASSERT_EQUAL(config.channel_count, 2);
-    ASSERT_EQUAL(config.dim_c, 4);
-    ASSERT_EQUAL(config.n_fft, 6144);
-    ASSERT_EQUAL(config.hop, 1024);
+    ASSERT_EQ(config.sample_rate, 44100);
+    ASSERT_EQ(config.channel_count, 2);
+    ASSERT_EQ(config.dim_c, 4);
+    ASSERT_EQ(config.n_fft, 6144);
+    ASSERT_EQ(config.hop, 1024);
     ASSERT_ZERO(config.chunk_size);
     ASSERT_ZERO(config.trim);
     ASSERT_ZERO(config.gen_size);
@@ -931,16 +931,16 @@ main(void) {
     model.output_shape[3] = 256;
 
     ASSERT(mdx_model_inspect(&info, &config, &model));
-    ASSERT_EQUAL(config.dim_f, 3072);
-    ASSERT_EQUAL(config.dim_t, 256);
-    ASSERT_EQUAL_VAR(info.input_name, model.input_name);
-    ASSERT_EQUAL_VAR(info.output_name, model.output_name);
+    ASSERT_EQ(config.dim_f, 3072);
+    ASSERT_EQ(config.dim_t, 256);
+    ASSERT_EQ_VAR(info.input_name, model.input_name);
+    ASSERT_EQ_VAR(info.output_name, model.output_name);
     ASSERT(!info.input_shape_dynamic);
     ASSERT(!info.output_shape_dynamic);
     ASSERT(mdx_config_prepare(&config));
-    ASSERT_EQUAL(config.chunk_size, 261120);
-    ASSERT_EQUAL(config.trim, 3072);
-    ASSERT_EQUAL(config.gen_size, 254976);
+    ASSERT_EQ(config.chunk_size, 261120);
+    ASSERT_EQ(config.trim, 3072);
+    ASSERT_EQ(config.gen_size, 254976);
 
     config.dim_f = 2048;
     ASSERT_SILENT_FAILURE(mdx_model_inspect(&info, &config, &model));
@@ -948,7 +948,7 @@ main(void) {
     mdx_config_init(&config);
     model.input_shape[2] = -1;
     ASSERT(mdx_model_inspect(&info, &config, &model));
-    ASSERT_EQUAL(config.dim_f, 3072);
+    ASSERT_EQ(config.dim_f, 3072);
     ASSERT(info.input_shape_dynamic);
 
     mdx_config_init(&config);
@@ -975,7 +975,7 @@ main(void) {
     config.dim_f = 3;
     config.dim_t = 4;
     ASSERT(mdx_config_prepare(&config));
-    ASSERT_EQUAL(mdx_input_tensor_len(&config), 48);
+    ASSERT_EQ(mdx_input_tensor_len(&config), 48);
 
     stft_plan_init_empty(&stft_plan);
     ASSERT(stft_plan_init(&stft_plan, config.n_fft, config.hop));
@@ -1108,8 +1108,8 @@ main(void) {
                             &model,
                             &empty_input,
                             &empty_output));
-    ASSERT_EQUAL_VAR(empty_output.sample_rate, config.sample_rate);
-    ASSERT_EQUAL_VAR(empty_output.channel_count, config.channel_count);
+    ASSERT_EQ_VAR(empty_output.sample_rate, config.sample_rate);
+    ASSERT_EQ_VAR(empty_output.channel_count, config.channel_count);
     ASSERT_ZERO(empty_output.frame_count);
 
     audio_buffer_destroy(&empty_output);

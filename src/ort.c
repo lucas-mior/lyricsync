@@ -992,19 +992,19 @@ ort_test_model_io_info_copy(void) {
         fatal(ort_test_fail("copy input info"));
     }
     ASSERT(strequal(info.name, "input"));
-    ASSERT_EQUAL(info.count, 1);
-    ASSERT_EQUAL(info.shape_len, 2);
-    ASSERT_EQUAL(info.shape[0], 1);
-    ASSERT_EQUAL(info.shape[1], 3);
+    ASSERT_EQ(info.count, 1);
+    ASSERT_EQ(info.shape_len, 2);
+    ASSERT_EQ(info.shape[0], 1);
+    ASSERT_EQ(info.shape[1], 3);
 
     if (!ort_model_output_info(&model, &info)) {
         fatal(ort_test_fail("copy output info"));
     }
     ASSERT(strequal(info.name, "output"));
-    ASSERT_EQUAL(info.count, 1);
-    ASSERT_EQUAL(info.shape_len, 2);
-    ASSERT_EQUAL(info.shape[0], 1);
-    ASSERT_EQUAL(info.shape[1], 3);
+    ASSERT_EQ(info.count, 1);
+    ASSERT_EQ(info.shape_len, 2);
+    ASSERT_EQ(info.shape[0], 1);
+    ASSERT_EQ(info.shape[1], 3);
 
     return;
 }
@@ -1050,7 +1050,7 @@ ort_test_tensor_shape_element_count(void) {
     if (!ort_tensor_shape_element_count(shape, 3, &count)) {
         fatal(ort_test_fail("valid tensor shape count"));
     }
-    ASSERT_EQUAL(count, 24);
+    ASSERT_EQ(count, 24);
 
     shape[1] = 0;
     if (ort_tensor_shape_element_count(shape, 3, &count)) {
@@ -1170,9 +1170,9 @@ ort_test_optional_identity_model(void) {
         fatal(ort_test_fail("identity input info"));
     }
     ASSERT(strequal(info.name, "input"));
-    ASSERT_EQUAL(info.shape_len, 2);
-    ASSERT_EQUAL(info.shape[0], 1);
-    ASSERT_EQUAL(info.shape[1], 3);
+    ASSERT_EQ(info.shape_len, 2);
+    ASSERT_EQ(info.shape[0], 1);
+    ASSERT_EQ(info.shape[1], 3);
 
     if (!ort_model_output_info(&model, &info)) {
         ort_model_destroy(&context, &model);
@@ -1181,9 +1181,9 @@ ort_test_optional_identity_model(void) {
         fatal(ort_test_fail("identity output info"));
     }
     ASSERT(strequal(info.name, "output"));
-    ASSERT_EQUAL(info.shape_len, 2);
-    ASSERT_EQUAL(info.shape[0], 1);
-    ASSERT_EQUAL(info.shape[1], 3);
+    ASSERT_EQ(info.shape_len, 2);
+    ASSERT_EQ(info.shape[0], 1);
+    ASSERT_EQ(info.shape[1], 3);
 
     data[0] = 1.0f;
     data[1] = -2.0f;
@@ -1204,13 +1204,13 @@ ort_test_optional_identity_model(void) {
         fatal(ort_test_fail("identity run"));
     }
 
-    ASSERT_EQUAL(output.data_len, 3);
-    ASSERT_EQUAL(output.shape_len, 2);
-    ASSERT_EQUAL(output.shape[0], 1);
-    ASSERT_EQUAL(output.shape[1], 3);
-    ASSERT_EQUAL_VAR(output.data[0], data[0]);
-    ASSERT_EQUAL_VAR(output.data[1], data[1]);
-    ASSERT_EQUAL_VAR(output.data[2], data[2]);
+    ASSERT_EQ(output.data_len, 3);
+    ASSERT_EQ(output.shape_len, 2);
+    ASSERT_EQ(output.shape[0], 1);
+    ASSERT_EQ(output.shape[1], 3);
+    ASSERT_EQ_VAR(output.data[0], data[0]);
+    ASSERT_EQ_VAR(output.data[1], data[1]);
+    ASSERT_EQ_VAR(output.data[2], data[2]);
 
     ort_tensor_destroy(&context, &output);
     ort_tensor_destroy(&context, &input);

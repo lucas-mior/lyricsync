@@ -3961,8 +3961,8 @@ pipeline_test_line_timing_audio_available(void) {
     ASSERT(result.path_header.header.error == LS_ERROR_NONE);
     ASSERT(line_audio.samples == samples);
     ASSERT(line_audio.sample_count == LENGTH(samples));
-    ASSERT_EQUAL(line_audio.sample_rate, 16000);
-    ASSERT_EQUAL(line_audio.samples[1], -0.50f);
+    ASSERT_EQ(line_audio.sample_rate, 16000);
+    ASSERT_EQ(line_audio.samples[1], -0.50f);
 
     return;
 }
@@ -4956,7 +4956,7 @@ pipeline_test_preprocess_option_parsers(void) {
            == LRC_LYRICS_PREPROCESS_ROMANIZATION_ICU);
 
     ASSERT(lrc_pipeline_parse_preprocess_language(&config, "rus"));
-    ASSERT_EQUAL(config.lyrics_preprocess_options.language, "rus");
+    ASSERT_EQ(config.lyrics_preprocess_options.language, "rus");
 
     return;
 }
@@ -4983,21 +4983,21 @@ pipeline_test_config_defaults(void) {
     ASSERT(strequal(config.vocals_container_format, "wav"));
     ASSERT(config.print_info);
     ASSERT(!config.keep_temp_files);
-    ASSERT_EQUAL(config.vocals_output_format.sample_rate, 44100);
-    ASSERT_EQUAL(config.vocals_output_format.channel_count, 2);
-    ASSERT_EQUAL(config.mdx_config.sample_rate, 44100);
-    ASSERT_EQUAL(config.mdx_config.channel_count, 2);
-    ASSERT_EQUAL(config.ctc_model_config.sample_rate, 16000);
-    ASSERT_EQUAL(config.ctc_model_config.inputs_to_logits_ratio, 320);
-    ASSERT_EQUAL(config.ctc_model_config.window_seconds, 30);
-    ASSERT_EQUAL(config.ctc_model_config.context_seconds, 2);
+    ASSERT_EQ(config.vocals_output_format.sample_rate, 44100);
+    ASSERT_EQ(config.vocals_output_format.channel_count, 2);
+    ASSERT_EQ(config.mdx_config.sample_rate, 44100);
+    ASSERT_EQ(config.mdx_config.channel_count, 2);
+    ASSERT_EQ(config.ctc_model_config.sample_rate, 16000);
+    ASSERT_EQ(config.ctc_model_config.inputs_to_logits_ratio, 320);
+    ASSERT_EQ(config.ctc_model_config.window_seconds, 30);
+    ASSERT_EQ(config.ctc_model_config.context_seconds, 2);
     ASSERT(config.lyrics_preprocess_options.split_size
            == LRC_LYRICS_PREPROCESS_SPLIT_SIZE_WORD);
     ASSERT(config.lyrics_preprocess_options.star_frequency
            == LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_EDGES);
     ASSERT(config.lyrics_preprocess_options.romanization
            == LRC_LYRICS_PREPROCESS_ROMANIZATION_ICU);
-    ASSERT_EQUAL(config.lyrics_preprocess_options.language, "eng");
+    ASSERT_EQ(config.lyrics_preprocess_options.language, "eng");
     ASSERT(config.ctc_emission_values_kind
            == LRC_CTC_EMISSION_VALUES_LOGITS);
     ASSERT(pipeline.error == LS_ERROR_NONE);
@@ -5173,9 +5173,9 @@ pipeline_test_vocals_request(void) {
     ASSERT(!request.print_info);
     ASSERT(request.ort_session_config.execution_provider
            == ORT_EXECUTION_PROVIDER_CPU);
-    ASSERT_EQUAL(request.ort_session_config.device_id, 2);
-    ASSERT_EQUAL(request.mdx_config.chunk_seconds, 3);
-    ASSERT_EQUAL(request.mdx_config.margin_seconds, 1);
+    ASSERT_EQ(request.ort_session_config.device_id, 2);
+    ASSERT_EQ(request.mdx_config.chunk_seconds, 3);
+    ASSERT_EQ(request.mdx_config.margin_seconds, 1);
 
     lrc_pipeline_cleanup(&pipeline);
 

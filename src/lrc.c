@@ -933,8 +933,8 @@ lrc_test_assert_line(LrcParsedFile *parsed, int32 line_index,
 
     line = &parsed->lines[line_index];
     ASSERT(line->kind == expected_kind);
-    ASSERT_EQUAL_VAR(line->timestamp_hundredths, expected_hundredths);
-    ASSERT_EQUAL(line->text, line->text_len, expected_text, expected_text_len);
+    ASSERT_EQ_VAR(line->timestamp_hundredths, expected_hundredths);
+    ASSERT_EQ(line->text, line->text_len, expected_text, expected_text_len);
 
     return;
 }
@@ -949,9 +949,9 @@ lrc_test_parse_timestamped_and_blank_lines(void) {
         fatal(lrc_test_fail("parse timestamped and blank lines"));
     }
 
-    ASSERT_EQUAL(parsed.line_count, 3);
-    ASSERT_EQUAL(parsed.timestamped_line_count, 2);
-    ASSERT_EQUAL(parsed.blank_line_count, 1);
+    ASSERT_EQ(parsed.line_count, 3);
+    ASSERT_EQ(parsed.timestamped_line_count, 2);
+    ASSERT_EQ(parsed.blank_line_count, 1);
     lrc_test_assert_line(&parsed,
                          0,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
@@ -967,7 +967,7 @@ lrc_test_parse_timestamped_and_blank_lines(void) {
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
                          6234,
                          STRLIT("World"));
-    ASSERT_EQUAL(parsed.lines[2].timestamp_seconds, 62.34f);
+    ASSERT_EQ(parsed.lines[2].timestamp_seconds, 62.34f);
 
     lrc_parsed_file_destroy(&parsed);
 
@@ -984,9 +984,9 @@ lrc_test_parse_crlf_and_space_blank_line(void) {
         fatal(lrc_test_fail("parse crlf and blank line"));
     }
 
-    ASSERT_EQUAL(parsed.line_count, 3);
-    ASSERT_EQUAL(parsed.timestamped_line_count, 2);
-    ASSERT_EQUAL(parsed.blank_line_count, 1);
+    ASSERT_EQ(parsed.line_count, 3);
+    ASSERT_EQ(parsed.timestamped_line_count, 2);
+    ASSERT_EQ(parsed.blank_line_count, 1);
     lrc_test_assert_line(&parsed,
                          0,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
@@ -1048,7 +1048,7 @@ lrc_test_reject_untimed_text(void) {
         fatal(lrc_test_fail("accepted untimed text"));
     }
     ASSERT(result.header.error == LS_ERROR_PARSE_UNTIMED_TEXT);
-    ASSERT_EQUAL(result.line_index, 1);
+    ASSERT_EQ(result.line_index, 1);
 
     return;
 }
@@ -1063,8 +1063,8 @@ lrc_test_duplicate_timestamps_are_preserved(void) {
         fatal(lrc_test_fail("parse duplicate timestamps"));
     }
 
-    ASSERT_EQUAL(parsed.line_count, 2);
-    ASSERT_EQUAL(parsed.timestamped_line_count, 2);
+    ASSERT_EQ(parsed.line_count, 2);
+    ASSERT_EQ(parsed.timestamped_line_count, 2);
     lrc_test_assert_line(&parsed,
                          0,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
@@ -1096,8 +1096,8 @@ lrc_test_assert_timestamp(int32 timestamp_hundredths, char *expected,
         ASSERT(false);
     }
 
-    ASSERT_EQUAL_VAR(len, expected_len);
-    ASSERT_EQUAL_VAR(&buffer[0], expected);
+    ASSERT_EQ_VAR(len, expected_len);
+    ASSERT_EQ_VAR(&buffer[0], expected);
 
     return;
 }
@@ -1125,7 +1125,7 @@ lrc_test_format_timestamp_seconds_rounding(void) {
                                                &result)) {
         fatal(lrc_test_fail("round seconds down"));
     }
-    ASSERT_EQUAL(hundredths, 123);
+    ASSERT_EQ(hundredths, 123);
 
     if (!lrc_format_timestamp_seconds(1.236f,
                                       buffer,
@@ -1305,7 +1305,7 @@ lrc_test_write_generated_file(void) {
         test_remove_tree(temp_dir);
         fatal(lrc_test_fail("read generated lrc file"));
     }
-    ASSERT_EQUAL(text, text_len, expected, strlen32(expected));
+    ASSERT_EQ(text, text_len, expected, strlen32(expected));
 
     free2(text, ((int64)text_len + 1)*SIZEOF(*text));
     test_remove_tree(temp_dir);
@@ -1353,7 +1353,7 @@ lrc_test_write_timestamped_empty_line(void) {
         test_remove_tree(temp_dir);
         fatal(lrc_test_fail("read timestamped empty lrc line"));
     }
-    ASSERT_EQUAL(text, text_len, expected, strlen32(expected));
+    ASSERT_EQ(text, text_len, expected, strlen32(expected));
 
     free2(text, ((int64)text_len + 1)*SIZEOF(*text));
     test_remove_tree(temp_dir);
@@ -1405,7 +1405,7 @@ lrc_test_write_overwrites_existing_file(void) {
         test_remove_tree(temp_dir);
         fatal(lrc_test_fail("read overwritten lrc file"));
     }
-    ASSERT_EQUAL(text, text_len, expected, strlen32(expected));
+    ASSERT_EQ(text, text_len, expected, strlen32(expected));
 
     free2(text, ((int64)text_len + 1)*SIZEOF(*text));
     test_remove_tree(temp_dir);
@@ -1510,8 +1510,8 @@ lrc_test_optional_maxwell_formatting(void) {
         str_append_byte(&builder, '\n');
     }
 
-    ASSERT_EQUAL_VAR(builder.len, text_len);
-    ASSERT_EQUAL_VAR(builder.data, text);
+    ASSERT_EQ_VAR(builder.len, text_len);
+    ASSERT_EQ_VAR(builder.data, text);
 
     lrc_parsed_file_destroy(&parsed);
     str_free(&builder);
@@ -1522,15 +1522,15 @@ lrc_test_optional_maxwell_formatting(void) {
 
 static void
 lrc_test_assert_same_parsed_structure(LrcParsedFile *a, LrcParsedFile *b) {
-    ASSERT_EQUAL_VAR(a->line_count, b->line_count);
-    ASSERT_EQUAL_VAR(a->timestamped_line_count, b->timestamped_line_count);
-    ASSERT_EQUAL_VAR(a->blank_line_count, b->blank_line_count);
+    ASSERT_EQ_VAR(a->line_count, b->line_count);
+    ASSERT_EQ_VAR(a->timestamped_line_count, b->timestamped_line_count);
+    ASSERT_EQ_VAR(a->blank_line_count, b->blank_line_count);
 
     for (int32 i = 0; i < a->line_count; i += 1) {
         ASSERT(a->lines[i].kind == b->lines[i].kind);
         ASSERT(a->lines[i].timestamp_hundredths
                == b->lines[i].timestamp_hundredths);
-        ASSERT_EQUAL(a->lines[i].text,
+        ASSERT_EQ(a->lines[i].text,
                      a->lines[i].text_len,
                      b->lines[i].text,
                      b->lines[i].text_len);
@@ -1673,9 +1673,9 @@ lrc_test_optional_maxwell_lrc(void) {
         fatal(lrc_test_fail("parse maxwell lrc"));
     }
 
-    ASSERT_EQUAL(parsed.line_count, 6);
-    ASSERT_EQUAL(parsed.timestamped_line_count, 5);
-    ASSERT_EQUAL(parsed.blank_line_count, 1);
+    ASSERT_EQ(parsed.line_count, 6);
+    ASSERT_EQ(parsed.timestamped_line_count, 5);
+    ASSERT_EQ(parsed.blank_line_count, 1);
     lrc_test_assert_line(&parsed,
                          0,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
