@@ -1208,9 +1208,9 @@ ort_test_optional_identity_model(void) {
     ASSERT_EQ(output.shape_len, 2);
     ASSERT_EQ(output.shape[0], 1);
     ASSERT_EQ(output.shape[1], 3);
-    ASSERT_EQ_VAR(output.data[0], data[0]);
-    ASSERT_EQ_VAR(output.data[1], data[1]);
-    ASSERT_EQ_VAR(output.data[2], data[2]);
+    ASSERT_EQ(output.data[0], data[0]);
+    ASSERT_EQ(output.data[1], data[1]);
+    ASSERT_EQ(output.data[2], data[2]);
 
     ort_tensor_destroy(&context, &output);
     ort_tensor_destroy(&context, &input);

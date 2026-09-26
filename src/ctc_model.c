@@ -856,7 +856,7 @@ ctc_model_test_prepares_short_input(void) {
     ASSERT(ctc_model_double_close(input.stride_ms, 20.0, 0.00001));
 
     for (int64 i = 0; i < LENGTH(samples); i += 1) {
-        ASSERT_EQ_VAR(input.samples[i], samples[i]);
+        ASSERT_EQ(input.samples[i], samples[i]);
     }
 
     lrc_ctc_model_input_destroy(&input);
@@ -941,16 +941,16 @@ ctc_model_test_prepares_chunked_input(void) {
         ASSERT_EQ(input.samples[i], 0.0f);
     }
     for (int32 i = 0; i < 20; i += 1) {
-        ASSERT_EQ_VAR(input.samples[8 + i], samples[i]);
+        ASSERT_EQ(input.samples[8 + i], samples[i]);
     }
     for (int32 i = 28; i < 32; i += 1) {
         ASSERT_EQ(input.samples[i], 0.0f);
     }
 
-    ASSERT_EQ_VAR(input.samples[32], samples[8]);
-    ASSERT_EQ_VAR(input.samples[39], samples[15]);
-    ASSERT_EQ_VAR(input.samples[40], samples[16]);
-    ASSERT_EQ_VAR(input.samples[43], samples[19]);
+    ASSERT_EQ(input.samples[32], samples[8]);
+    ASSERT_EQ(input.samples[39], samples[15]);
+    ASSERT_EQ(input.samples[40], samples[16]);
+    ASSERT_EQ(input.samples[43], samples[19]);
     for (int32 i = 44; i < 64; i += 1) {
         ASSERT_EQ(input.samples[i], 0.0f);
     }
@@ -1059,14 +1059,14 @@ ctc_model_test_chunk_metadata_three_chunks(void) {
 
     valid_total = 0;
     for (int64 i = 0; i < input.chunk_count; i += 1) {
-        ASSERT_EQ_VAR(input.chunks[i].padded_start_frame, i*32);
+        ASSERT_EQ(input.chunks[i].padded_start_frame, i*32);
         ASSERT_EQ(input.chunks[i].padded_frame_count, 32);
         ASSERT_EQ(input.chunks[i].raw_emission_count, 16);
         ASSERT_EQ(input.chunks[i].trim_left_emissions, 4);
         ASSERT_EQ(input.chunks[i].trim_right_emissions, 4);
         valid_total += input.chunks[i].valid_output_frame_count;
     }
-    ASSERT_EQ_VAR(valid_total, input.original_sample_count);
+    ASSERT_EQ(valid_total, input.original_sample_count);
 
     lrc_ctc_model_input_destroy(&input);
 
@@ -1261,8 +1261,8 @@ ctc_model_test_prepares_maxwell_shaped_input(void) {
     ASSERT(!input.chunked);
     ASSERT_EQ(input.shape_len, 2);
     ASSERT_EQ(input.shape[0], 1);
-    ASSERT_EQ_VAR(input.shape[1], audio.sample_count);
-    ASSERT_EQ_VAR(input.sample_count, audio.sample_count);
+    ASSERT_EQ(input.shape[1], audio.sample_count);
+    ASSERT_EQ(input.sample_count, audio.sample_count);
     ASSERT_BETWEEN(input.sample_count, 340000, 343000);
     ASSERT(ctc_model_double_close(input.stride_ms, 20.0, 0.00001));
 

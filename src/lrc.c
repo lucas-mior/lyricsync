@@ -933,7 +933,7 @@ lrc_test_assert_line(LrcParsedFile *parsed, int32 line_index,
 
     line = &parsed->lines[line_index];
     ASSERT(line->kind == expected_kind);
-    ASSERT_EQ_VAR(line->timestamp_hundredths, expected_hundredths);
+    ASSERT_EQ(line->timestamp_hundredths, expected_hundredths);
     ASSERT_EQ(line->text, line->text_len, expected_text, expected_text_len);
 
     return;
@@ -1096,8 +1096,8 @@ lrc_test_assert_timestamp(int32 timestamp_hundredths, char *expected,
         ASSERT(false);
     }
 
-    ASSERT_EQ_VAR(len, expected_len);
-    ASSERT_EQ_VAR(&buffer[0], expected);
+    ASSERT_EQ(len, expected_len);
+    ASSERT_EQ(&buffer[0], expected);
 
     return;
 }
@@ -1510,8 +1510,8 @@ lrc_test_optional_maxwell_formatting(void) {
         str_append_byte(&builder, '\n');
     }
 
-    ASSERT_EQ_VAR(builder.len, text_len);
-    ASSERT_EQ_VAR(builder.data, text);
+    ASSERT_EQ(builder.len, text_len);
+    ASSERT_EQ(builder.data, text);
 
     lrc_parsed_file_destroy(&parsed);
     str_free(&builder);
@@ -1522,9 +1522,9 @@ lrc_test_optional_maxwell_formatting(void) {
 
 static void
 lrc_test_assert_same_parsed_structure(LrcParsedFile *a, LrcParsedFile *b) {
-    ASSERT_EQ_VAR(a->line_count, b->line_count);
-    ASSERT_EQ_VAR(a->timestamped_line_count, b->timestamped_line_count);
-    ASSERT_EQ_VAR(a->blank_line_count, b->blank_line_count);
+    ASSERT_EQ(a->line_count, b->line_count);
+    ASSERT_EQ(a->timestamped_line_count, b->timestamped_line_count);
+    ASSERT_EQ(a->blank_line_count, b->blank_line_count);
 
     for (int32 i = 0; i < a->line_count; i += 1) {
         ASSERT(a->lines[i].kind == b->lines[i].kind);
