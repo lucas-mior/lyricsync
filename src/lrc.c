@@ -930,11 +930,11 @@ lrc_test_assert_line(LrcParsedFile *parsed, int32 line_index,
     LrcParsedLine *line;
 
     ASSERT_NON_NEGATIVE(line_index);
-    ASSERT_LESS(line_index, parsed->line_count);
+    ASSERT_LESS_VAR(line_index, parsed->line_count);
 
     line = &parsed->lines[line_index];
     ASSERT(line->kind == expected_kind);
-    ASSERT_EQUAL(line->timestamp_hundredths, expected_hundredths);
+    ASSERT_EQUAL_VAR(line->timestamp_hundredths, expected_hundredths);
     ASSERT_EQUAL(line->text, line->text_len, expected_text, expected_text_len);
 
     return;
@@ -1097,8 +1097,8 @@ lrc_test_assert_timestamp(int32 timestamp_hundredths, char *expected,
         ASSERT(false);
     }
 
-    ASSERT_EQUAL(len, expected_len);
-    ASSERT_EQUAL(&buffer[0], expected);
+    ASSERT_EQUAL_VAR(len, expected_len);
+    ASSERT_EQUAL_VAR(&buffer[0], expected);
 
     return;
 }
@@ -1511,8 +1511,8 @@ lrc_test_optional_maxwell_formatting(void) {
         str_append_byte(&builder, '\n');
     }
 
-    ASSERT_EQUAL(builder.len, text_len);
-    ASSERT_EQUAL(builder.data, text);
+    ASSERT_EQUAL_VAR(builder.len, text_len);
+    ASSERT_EQUAL_VAR(builder.data, text);
 
     lrc_parsed_file_destroy(&parsed);
     str_free(&builder);
@@ -1523,9 +1523,9 @@ lrc_test_optional_maxwell_formatting(void) {
 
 static void
 lrc_test_assert_same_parsed_structure(LrcParsedFile *a, LrcParsedFile *b) {
-    ASSERT_EQUAL(a->line_count, b->line_count);
-    ASSERT_EQUAL(a->timestamped_line_count, b->timestamped_line_count);
-    ASSERT_EQUAL(a->blank_line_count, b->blank_line_count);
+    ASSERT_EQUAL_VAR(a->line_count, b->line_count);
+    ASSERT_EQUAL_VAR(a->timestamped_line_count, b->timestamped_line_count);
+    ASSERT_EQUAL_VAR(a->blank_line_count, b->blank_line_count);
 
     for (int32 i = 0; i < a->line_count; i += 1) {
         ASSERT(a->lines[i].kind == b->lines[i].kind);
