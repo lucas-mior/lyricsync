@@ -1803,8 +1803,8 @@ ctc_inference_test_fake_rank2(void) {
     ASSERT_EQUAL(emissions.shape_len, 2);
     ASSERT_EQUAL(emissions.shape[0], 2);
     ASSERT_EQUAL(emissions.shape[1], 3);
-    ASSERT_EQUAL(emissions.values[0], values[0]);
-    ASSERT_EQUAL(emissions.values[5], values[5]);
+    ASSERT_EQUAL_VAR(emissions.values[0], values[0]);
+    ASSERT_EQUAL_VAR(emissions.values[5], values[5]);
 
     values[0] = 99.0f;
     ASSERT_EQUAL(emissions.values[0], -2.0f);
