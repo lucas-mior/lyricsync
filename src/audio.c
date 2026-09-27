@@ -1083,7 +1083,6 @@ audio_compare_result_print(AudioCompareResult *result, char *name) {
         (double)result->actual_peak,
         result->nan_samples,
         result->infinite_samples);
-    AUDIO_COMPARE_MODE_str_free(mode);
 
     return;
 }
@@ -1142,10 +1141,8 @@ audio_test_compare_helpers(void) {
 
     mode_name = AUDIO_COMPARE_MODE_str(AUDIO_COMPARE_MODE_OFFSET_TOLERANT);
     if (!strequal(mode_name, "AUDIO_COMPARE_MODE_OFFSET_TOLERANT")) {
-        AUDIO_COMPARE_MODE_str_free(mode_name);
         fatal(audio_test_fail("compare mode string"));
     }
-    AUDIO_COMPARE_MODE_str_free(mode_name);
     if (AUDIO_COMPARE_MODE_parse(STRLIT("SNR")) != AUDIO_COMPARE_MODE_SNR) {
         fatal(audio_test_fail("compare mode parse"));
     }
