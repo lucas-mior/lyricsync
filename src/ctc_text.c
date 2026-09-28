@@ -467,11 +467,6 @@ lrc_lyrics_line_is_section_marker(LrcLyrics *lyrics, int32 start, int32 end) {
     return false;
 }
 
-static bool
-lrc_lyrics_ascii_alnum(char c) {
-    return isalnum((uint8)c);
-}
-
 static char
 lrc_lyrics_ascii_lower(char c) {
     if ((c >= 'A') && (c <= 'Z')) {
@@ -852,7 +847,7 @@ ctc_text_utf8_transform_run(char *text, int32 text_len,
     uint32 previous_rune;
 
     ctc_unicode_norm_result_destroy(result);
-    memset64(&transform, 0, SIZEOF(transform));
+    transform = (CtcTextUtf8Transform){0};
     transform.result = result;
     transform.context = context;
     transform.trim_spaces = trim_spaces;
@@ -1518,7 +1513,7 @@ lrc_lyrics_normalize_line(LrcLyrics *lyrics, LrcLyricsNormalized *normalized,
                                               i,
                                               i + step);
             }
-            if (lrc_lyrics_ascii_alnum(c)) {
+            if (is_alnum(c)) {
                 c = lrc_lyrics_ascii_lower(c);
                 if (!wrote_line && (normalized->text_len > 0)) {
                     if (!lrc_lyrics_normalized_append_space(normalized,
