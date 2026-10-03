@@ -1236,7 +1236,7 @@ ctc_model_test_prepares_maxwell_shaped_input(void) {
     LrcCtcModelInputResult result;
     char *path;
 
-    if (!test_command_exists("ffmpeg")) {
+    if (!test_cmd_exists("ffmpeg")) {
         return;
     }
 

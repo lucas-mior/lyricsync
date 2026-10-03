@@ -286,7 +286,7 @@ ctc_audio_test_generated_decode(int32 source_sample_rate,
     int64 expected_samples;
     int64 delta;
 
-    if (!test_command_exists("ffmpeg") || !test_command_exists("ffprobe")) {
+    if (!test_cmd_exists("ffmpeg") || !test_cmd_exists("ffprobe")) {
         return;
     }
 
@@ -396,7 +396,7 @@ ctc_audio_test_maxwell_vocals(void) {
     LrcCtcAudioResult result;
     char *path;
 
-    if (!test_command_exists("ffmpeg") || !test_command_exists("ffprobe")) {
+    if (!test_cmd_exists("ffmpeg") || !test_cmd_exists("ffprobe")) {
         return;
     }
 

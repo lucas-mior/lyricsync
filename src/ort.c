@@ -1077,7 +1077,7 @@ ort_test_write_identity_model(char *path, char *temp_dir) {
     int32 exit_status;
     bool ok;
 
-    if (!test_command_exists("python3")) {
+    if (!test_cmd_exists("python3")) {
         return false;
     }
 
@@ -1113,9 +1113,9 @@ ort_test_write_identity_model(char *path, char *temp_dir) {
     }
 
     command = (Command){0};
-    COMMAND_PUSH(&command, "python3", script_path, path);
-    ok = command_run_sync(&command, &exit_status) == 0;
-    command_free(&command);
+    CMD_PUSH(&command, "python3", script_path, path);
+    ok = cmd_run_sync(&command, &exit_status) == 0;
+    cmd_free(&command);
     if (!ok || (exit_status != 0)) {
         return false;
     }

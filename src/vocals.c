@@ -604,7 +604,7 @@ vocals_test_optional_real_extraction(void) {
     if (model_path == NULL) {
         return;
     }
-    if (!test_command_exists("ffmpeg")) {
+    if (!test_cmd_exists("ffmpeg")) {
         return;
     }
 

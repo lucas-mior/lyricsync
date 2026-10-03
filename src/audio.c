@@ -79,13 +79,13 @@ audio_run_process(int32 argc, char **argv) {
     Command command = {0};
     bool result;
 
-    command_push_array(&command, argc, argv);
-    result = (command_run_capture_all(&command) == 0);
+    cmd_push_array(&command, argc, argv);
+    result = (cmd_run_capture_all(&command) == 0);
     if (result) {
         result = command.result.exited
                  && (command.result.exit_status == 0);
     }
-    command_free(&command);
+    cmd_free(&command);
 
     return result;
 }
@@ -159,8 +159,8 @@ audio_read_file_format(AudioBuffer *audio, char *path, AudioIoFormat *format,
     ITOA(sample_rate_arg, format->sample_rate);
 
     audio_buffer_destroy(audio);
-    command_push_array(&command, LENGTH(argv) - 1, argv);
-    if (command_run_capture_all(&command) < 0) {
+    cmd_push_array(&command, LENGTH(argv) - 1, argv);
+    if (cmd_run_capture_all(&command) < 0) {
         goto cleanup;
     }
     if (!command.result.exited || (command.result.exit_status != 0)) {
@@ -206,7 +206,7 @@ audio_read_file_format(AudioBuffer *audio, char *path, AudioIoFormat *format,
     result = true;
 
 cleanup:
-    command_free(&command);
+    cmd_free(&command);
     if (!result) {
         audio_buffer_destroy(audio);
     }
@@ -363,18 +363,18 @@ audio_write_file_format(AudioBuffer *audio, char *path, char *container_format,
     ITOA(output_channel_count_arg, file_format.channel_count);
     ITOA(output_sample_rate_arg, file_format.sample_rate);
 
-    command_push_array(&command, LENGTH(argv) - 1, argv);
-    if (command_stdin_buffer_set(&command, interleaved, interleaved_size) < 0) {
+    cmd_push_array(&command, LENGTH(argv) - 1, argv);
+    if (cmd_stdin_buffer_set(&command, interleaved, interleaved_size) < 0) {
         goto cleanup;
     }
-    if (command_run_capture_all(&command) < 0) {
+    if (cmd_run_capture_all(&command) < 0) {
         goto cleanup;
     }
 
     result = command.result.exited && (command.result.exit_status == 0);
 
 cleanup:
-    command_free(&command);
+    cmd_free(&command);
     free2(interleaved, interleaved_size);
     return result;
 }
@@ -521,8 +521,8 @@ audio_file_info_read(AudioFileInfo *info, char *path, char *ffprobe_path) {
     }
 
     audio_file_info_init(info);
-    command_push_array(&command, LENGTH(argv) - 1, argv);
-    if (command_run_capture_all(&command) < 0) {
+    cmd_push_array(&command, LENGTH(argv) - 1, argv);
+    if (cmd_run_capture_all(&command) < 0) {
         goto cleanup;
     }
     if (!command.result.exited || (command.result.exit_status != 0)) {
@@ -535,7 +535,7 @@ audio_file_info_read(AudioFileInfo *info, char *path, char *ffprobe_path) {
     result = audio_file_info_parse(info, command.result.stdout_output);
 
 cleanup:
-    command_free(&command);
+    cmd_free(&command);
     if (!result) {
         audio_file_info_init(info);
     }
@@ -1245,7 +1245,7 @@ audio_test_generated_wave_helpers(void) {
     char stereo_path[PATH_MAX];
     char temp_dir[PATH_MAX];
 
-    if (!test_command_exists("ffmpeg") || !test_command_exists("ffprobe")) {
+    if (!test_cmd_exists("ffmpeg") || !test_cmd_exists("ffprobe")) {
         return;
     }
 

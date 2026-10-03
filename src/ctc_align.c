@@ -8638,7 +8638,7 @@ ctc_align_test_full_synthetic_lrc_pipeline(void) {
     int32 token_count;
     bool ok;
 
-    if (!test_command_exists("ffmpeg")) {
+    if (!test_cmd_exists("ffmpeg")) {
         return;
     }
 
@@ -8916,7 +8916,7 @@ ctc_align_test_maxwell_fixture_lrc_pipeline(void) {
     if (expected_lrc_path == NULL) {
         expected_lrc_path = "next-phase/maxwell.lrc";
     }
-    if (!test_command_exists("ffmpeg") || !util_file_exists(lyrics_path)
+    if (!test_cmd_exists("ffmpeg") || !util_file_exists(lyrics_path)
         || !util_file_exists(vocals_path)
         || !util_file_exists(expected_lrc_path)) {
         return;
