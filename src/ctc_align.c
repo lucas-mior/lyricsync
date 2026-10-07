@@ -1187,7 +1187,7 @@ lrc_ctc_emission_value(LrcCtcEmissions *emissions, int32 frame_index,
     ASSERT(emissions);
     ASSERT(emissions->values);
     ASSERT_BETWEEN(frame_index, 0, emissions->frame_count - 1);
-    ASSERT_NON_NEGATIVE(token_id);
+    ASSERT_GE(token_id, 0);
     if ((int32)token_id == emissions->vocabulary_size) {
         return 0.0f;
     }
@@ -1609,7 +1609,7 @@ lrc_ctc_path_set_blank_step(LrcCtcPath *path, int32 frame_index,
     ASSERT(path);
     ASSERT(path->steps);
     ASSERT_BETWEEN(frame_index, 0, path->step_count - 1);
-    ASSERT_NON_NEGATIVE(state_index);
+    ASSERT_GE(state_index, 0);
 
     path->steps[frame_index].frame_index = frame_index;
     path->steps[frame_index].state_index = state_index;
@@ -1627,8 +1627,8 @@ lrc_ctc_path_set_star_step(LrcCtcPath *path, int32 frame_index,
     ASSERT(path);
     ASSERT(path->steps);
     ASSERT_BETWEEN(frame_index, 0, path->step_count - 1);
-    ASSERT_NON_NEGATIVE(state_index);
-    ASSERT_NON_NEGATIVE(star_token_id);
+    ASSERT_GE(state_index, 0);
+    ASSERT_GE(star_token_id, 0);
 
     path->steps[frame_index].frame_index = frame_index;
     path->steps[frame_index].state_index = state_index;
@@ -1647,8 +1647,8 @@ lrc_ctc_path_set_token_step(LrcCtcPath *path, int32 frame_index,
     ASSERT(path);
     ASSERT(path->steps);
     ASSERT_BETWEEN(frame_index, 0, path->step_count - 1);
-    ASSERT_NON_NEGATIVE(state_index);
-    ASSERT_NON_NEGATIVE(token_index);
+    ASSERT_GE(state_index, 0);
+    ASSERT_GE(token_index, 0);
 
     path->steps[frame_index].frame_index = frame_index;
     path->steps[frame_index].state_index = state_index;
@@ -2005,7 +2005,7 @@ lrc_ctc_path_count_segments(LrcCtcPath *path) {
 
     ASSERT(path);
     ASSERT(path->steps);
-    ASSERT_POSITIVE(path->step_count);
+    ASSERT_GT(path->step_count, 0);
 
     count = 1;
     for (int32 i = 1; i < path->step_count; i += 1) {
@@ -2059,9 +2059,9 @@ static void
 lrc_ctc_path_segment_finish(LrcCtcPathSegment *segment, int32 score_count,
                             float score_sum, float frame_duration_seconds) {
     ASSERT(segment);
-    ASSERT_NON_NEGATIVE(segment->start_frame);
+    ASSERT_GE(segment->start_frame, 0);
     ASSERT_GT_VAR(segment->end_frame, segment->start_frame);
-    ASSERT_POSITIVE(score_count);
+    ASSERT_GT(score_count, 0);
 
     segment->start_seconds = (float)segment->start_frame*frame_duration_seconds;
     segment->end_seconds = (float)segment->end_frame*frame_duration_seconds;
@@ -2513,7 +2513,7 @@ static int32
 lrc_ctc_blank_midpoint_frame(LrcCtcPathSegment *segment) {
     ASSERT(segment);
     ASSERT(segment->is_blank);
-    ASSERT_NON_NEGATIVE(segment->start_frame);
+    ASSERT_GE(segment->start_frame, 0);
     ASSERT_GT_VAR(segment->end_frame, segment->start_frame);
 
     return (segment->start_frame + segment->end_frame)/2;
@@ -2651,9 +2651,9 @@ static void
 lrc_ctc_token_span_finish(LrcCtcTokenSpan *span, int32 score_count,
                           float score_sum, float frame_duration_seconds) {
     ASSERT(span);
-    ASSERT_NON_NEGATIVE(span->start_frame);
+    ASSERT_GE(span->start_frame, 0);
     ASSERT_GT_VAR(span->end_frame, span->start_frame);
-    ASSERT_POSITIVE(score_count);
+    ASSERT_GT(score_count, 0);
 
     span->start_seconds = (float)span->start_frame*frame_duration_seconds;
     span->end_seconds = (float)span->end_frame*frame_duration_seconds;
@@ -3273,7 +3273,7 @@ lrc_ctc_normalized_range_is_space(LrcLyricsNormalized *normalized, int32 start,
                                   int32 end) {
     ASSERT(normalized);
     ASSERT(normalized->text);
-    ASSERT_NON_NEGATIVE(start);
+    ASSERT_GE(start, 0);
     ASSERT_GT_VAR(end, start);
     ASSERT_LE_VAR(end, normalized->text_len);
 
@@ -3291,7 +3291,7 @@ lrc_ctc_normalized_range_has_space(LrcLyricsNormalized *normalized, int32 start,
                                    int32 end) {
     ASSERT(normalized);
     ASSERT(normalized->text);
-    ASSERT_NON_NEGATIVE(start);
+    ASSERT_GE(start, 0);
     ASSERT_GT_VAR(end, start);
     ASSERT_LE_VAR(end, normalized->text_len);
 
@@ -4189,7 +4189,7 @@ lrc_ctc_line_timestamp_set_timed(LrcCtcLineTimestamps *timestamps, int32 index,
 
     ASSERT(timestamps);
     ASSERT_BETWEEN(index, 0, timestamps->line_count - 1);
-    ASSERT_NON_NEGATIVE(first_word_index);
+    ASSERT_GE(first_word_index, 0);
     ASSERT_GT_VAR(end_word_index, first_word_index);
     ASSERT_LE_VAR(end_word_index, word_spans->span_count);
 
@@ -4851,7 +4851,7 @@ ctc_align_load_tokenized_lyrics(char *text, int32 text_len, LrcLyrics *lyrics,
 static void
 ctc_align_assert_word_text(LrcLyricsNormalized *normalized,
                            LrcCtcWordSpan *word, char *text, int32 text_len) {
-    ASSERT_NON_NEGATIVE(word->normalized_start);
+    ASSERT_GE(word->normalized_start, 0);
     ASSERT_GT_VAR(word->normalized_end, word->normalized_start);
     ASSERT_LE_VAR(word->normalized_end, normalized->text_len);
     ASSERT_EQ(normalized->text + word->normalized_start,
@@ -8526,7 +8526,7 @@ ctc_align_test_maxwell_fake_token_timing(void) {
                                                &tokenize_result)) {
         fatal(ctc_align_test_fail("tokenize maxwell lyrics"));
     }
-    ASSERT_POSITIVE(tokens.token_count);
+    ASSERT_GT(tokens.token_count, 0);
 
     token_count = tokens.token_count;
     frame_count = token_count + 2;

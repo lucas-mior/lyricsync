@@ -68,7 +68,7 @@ static int32
 lrc_decimal_digit_count(int32 value) {
     int32 digits;
 
-    ASSERT_NON_NEGATIVE(value);
+    ASSERT_GE(value, 0);
 
     digits = 1;
     while (value >= 10) {
@@ -84,7 +84,7 @@ lrc_timestamp_formatted_len(int32 timestamp_hundredths) {
     int32 minutes;
     int32 minute_digits;
 
-    ASSERT_NON_NEGATIVE(timestamp_hundredths);
+    ASSERT_GE(timestamp_hundredths, 0);
 
     minutes = timestamp_hundredths/6000;
     minute_digits = lrc_decimal_digit_count(minutes);

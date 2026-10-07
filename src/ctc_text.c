@@ -2092,7 +2092,7 @@ ctc_text_test_assert_segment(LrcLyrics *lyrics, LrcLyricsNormalized *normalized,
     ASSERT_EQ(segment->normalized_end, expected_normalized_end);
     ASSERT_EQ(segment->target_start, expected_target_start);
     ASSERT_EQ(segment->target_end, expected_target_end);
-    ASSERT_NON_NEGATIVE(segment->target_start);
+    ASSERT_GE(segment->target_start, 0);
     ASSERT_LE_VAR(segment->target_end, normalized->target_byte_count);
     ASSERT_EQ(lyrics->text + segment->source_start, source_len,
                  expected_source, strlen32(expected_source));
@@ -2242,7 +2242,7 @@ ctc_text_reference_validate_current(CtcTextReferenceFixtureCurrent *current) {
     ASSERT(current->saw_romanize);
     ASSERT(current->saw_input);
 
-    ASSERT_POSITIVE(current->text_split_count);
+    ASSERT_GT(current->text_split_count, 0);
 
     ASSERT_EQ(current->normalized_count, current->text_split_count);
     ASSERT_EQ(current->tokens_count, current->normalized_count);
@@ -2294,7 +2294,7 @@ ctc_text_reference_parse_field(CtcTextReferenceFixtureTotals *totals,
         current->saw_romanize = true;
     } else if (ctc_text_reference_field_equal(field, field_len, "input")) {
         ASSERT(current->in_fixture);
-        ASSERT_POSITIVE(value_len);
+        ASSERT_GT(value_len, 0);
         current->saw_input = true;
     } else if (ctc_text_reference_field_equal(field, field_len, "text_split")) {
         ASSERT(current->in_fixture);
@@ -2390,7 +2390,7 @@ ctc_text_test_reference_fixtures_load(void) {
             }
 
             tab = ctc_text_reference_line_tab(line, line_len);
-            ASSERT_POSITIVE(tab);
+            ASSERT_GT(tab, 0);
             ctc_text_reference_parse_field(&totals,
                                            &current,
                                            line,
@@ -2540,7 +2540,7 @@ ctc_text_reference_load_word_fixture(char *fixture_name,
             }
 
             tab = ctc_text_reference_line_tab(line, line_len);
-            ASSERT_POSITIVE(tab);
+            ASSERT_GT(tab, 0);
             if (ctc_text_reference_field_equal(line, tab, "fixture")) {
                 char *value = line + tab + 1;
                 int32 value_len = line_len - tab - 1;
@@ -2564,7 +2564,7 @@ ctc_text_reference_load_word_fixture(char *fixture_name,
                     line + tab + 1,
                     line_len - tab - 1
                 );
-                ASSERT_NON_NEGATIVE(fixture->input_len);
+                ASSERT_GE(fixture->input_len, 0);
             } else if (ctc_text_reference_field_equal(line,
                                                       tab,
                                                       "text_split")) {
@@ -2577,7 +2577,7 @@ ctc_text_reference_load_word_fixture(char *fixture_name,
                     line + tab + 1,
                     line_len - tab - 1
                 );
-                ASSERT_NON_NEGATIVE(fixture->text_split_lens[index]);
+                ASSERT_GE(fixture->text_split_lens[index], 0);
                 fixture->text_split_count += 1;
             } else if (ctc_text_reference_field_equal(line,
                                                       tab,
@@ -2591,7 +2591,7 @@ ctc_text_reference_load_word_fixture(char *fixture_name,
                     line + tab + 1,
                     line_len - tab - 1
                 );
-                ASSERT_NON_NEGATIVE(fixture->normalized_lens[index]);
+                ASSERT_GE(fixture->normalized_lens[index], 0);
                 fixture->normalized_count += 1;
             } else if (ctc_text_reference_field_equal(line, tab, "tokens")) {
                 int32 index = fixture->tokens_count;
@@ -2603,7 +2603,7 @@ ctc_text_reference_load_word_fixture(char *fixture_name,
                     line + tab + 1,
                     line_len - tab - 1
                 );
-                ASSERT_NON_NEGATIVE(fixture->tokens_lens[index]);
+                ASSERT_GE(fixture->tokens_lens[index], 0);
                 fixture->tokens_count += 1;
             } else if (ctc_text_reference_field_equal(line,
                                                       tab,
@@ -2617,7 +2617,7 @@ ctc_text_reference_load_word_fixture(char *fixture_name,
                     line + tab + 1,
                     line_len - tab - 1
                 );
-                ASSERT_NON_NEGATIVE(fixture->edges_tokens_lens[index]);
+                ASSERT_GE(fixture->edges_tokens_lens[index], 0);
                 fixture->edges_tokens_count += 1;
             } else if (ctc_text_reference_field_equal(line,
                                                       tab,
@@ -2631,7 +2631,7 @@ ctc_text_reference_load_word_fixture(char *fixture_name,
                     line + tab + 1,
                     line_len - tab - 1
                 );
-                ASSERT_NON_NEGATIVE(fixture->segment_tokens_lens[index]);
+                ASSERT_GE(fixture->segment_tokens_lens[index], 0);
                 fixture->segment_tokens_count += 1;
             }
         }
@@ -2642,8 +2642,8 @@ ctc_text_reference_load_word_fixture(char *fixture_name,
     if (!found_fixture) {
         return false;
     }
-    ASSERT_POSITIVE(fixture->input_len);
-    ASSERT_POSITIVE(fixture->text_split_count);
+    ASSERT_GT(fixture->input_len, 0);
+    ASSERT_GT(fixture->text_split_count, 0);
     ASSERT_EQ(fixture->normalized_count, fixture->text_split_count);
     ASSERT_EQ(fixture->tokens_count, fixture->text_split_count);
     ASSERT_EQ(fixture->edges_tokens_count, fixture->tokens_count + 2);
@@ -2793,7 +2793,7 @@ ctc_text_test_word_target_fixture_case(char *fixture_name) {
     }
 
     ASSERT(normalized.target_text);
-    ASSERT_POSITIVE(normalized.target_text_len);
+    ASSERT_GT(normalized.target_text_len, 0);
     ASSERT_EQ(normalized.target_byte_count, normalized.target_text_len);
     ASSERT_EQ(normalized.segment_count, fixture.tokens_count);
 
@@ -2836,7 +2836,7 @@ ctc_text_test_assert_target_item(LrcLyricsNormalized *normalized,
                                  int32 expected_len) {
     int32 target_len = segment->target_end - segment->target_start;
 
-    ASSERT_NON_NEGATIVE(target_len);
+    ASSERT_GE(target_len, 0);
     ASSERT_EQ(normalized->target_text + segment->target_start, target_len,
                  expected, expected_len);
 

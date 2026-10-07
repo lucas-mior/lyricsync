@@ -2758,8 +2758,8 @@ ctc_inference_test_optional_onnx_backend(void) {
         fatal(ctc_inference_test_fail("run optional ONNX CTC model"));
     }
 
-    ASSERT_POSITIVE(emissions.frame_count);
-    ASSERT_POSITIVE(emissions.vocabulary_size);
+    ASSERT_GT(emissions.frame_count, 0);
+    ASSERT_GT(emissions.vocabulary_size, 0);
 
     lrc_ctc_emissions_destroy(&emissions);
     lrc_ctc_onnx_inference_destroy(&onnx);

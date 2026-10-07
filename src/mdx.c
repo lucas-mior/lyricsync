@@ -831,7 +831,7 @@ mdx_test_stderr_silence_begin(MdxTestStderrSilence *silence) {
     fflush(stderr);
 
     silence->saved_stderr = dup(STDERR_FILENO);
-    ASSERT_NON_NEGATIVE(silence->saved_stderr);
+    ASSERT_GE(silence->saved_stderr, 0);
 
     silence->null_fd = open("/dev/null", O_WRONLY);
     if (silence->null_fd < 0) {
@@ -969,7 +969,7 @@ main(void) {
     ASSERT_SILENT_FAILURE(mdx_config_prepare(&config));
 
     mdx_config_init(&config);
-    ASSERT_NEGATIVE(mdx_input_tensor_len(&config));
+    ASSERT_LT(mdx_input_tensor_len(&config, 0));
     config.n_fft = 8;
     config.hop = 4;
     config.dim_f = 3;
