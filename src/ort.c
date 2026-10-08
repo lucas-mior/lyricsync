@@ -169,11 +169,7 @@ ort_session_options_append_cuda(OrtContext *context, OrtSessionOptions *options,
         return false;
     }
 
-    ort_cuda_preload_cudnn_library(
-        context,
-        "libcudnn_cnn.so.9",
-        required
-    );
+    ort_cuda_preload_cudnn_library(context, "libcudnn_cnn.so.9", required);
 
     api = (OrtApi *)context->api;
     cuda_options = NULL;
@@ -200,12 +196,9 @@ ort_session_options_append_cuda(OrtContext *context, OrtSessionOptions *options,
 
     keys[0] = "device_id";
     values[0] = device_id;
-    status = api->UpdateCUDAProviderOptions(
-        cuda_options,
-        (char const *const *)keys,
-        (char const *const *)values,
-        1
-    );
+    status = api->UpdateCUDAProviderOptions(cuda_options,
+                                            (char const *const *)keys,
+                                            (char const *const *)values, 1);
     if (!ort_provider_check(context,
                             status,
                             "configuring ONNX CUDA provider",
@@ -214,10 +207,8 @@ ort_session_options_append_cuda(OrtContext *context, OrtSessionOptions *options,
         return false;
     }
 
-    status = api->SessionOptionsAppendExecutionProvider_CUDA_V2(
-        options,
-        cuda_options
-    );
+    status = api->SessionOptionsAppendExecutionProvider_CUDA_V2(options,
+        cuda_options);
     api->ReleaseCUDAProviderOptions(cuda_options);
     if (!ort_provider_check(context,
                             status,
@@ -291,10 +282,8 @@ ort_model_read_tensor_info(OrtContext *context, OrtSession *session, bool input,
         }
     }
 
-    status = api->CastTypeInfoToTensorInfo(
-        type_info,
-        (OrtTensorTypeAndShapeInfo const **)&tensor_info
-    );
+    status = api->CastTypeInfoToTensorInfo(type_info,
+        (OrtTensorTypeAndShapeInfo const **)&tensor_info);
     if (!ort_check(context, status, "casting ONNX type info to tensor info")) {
         api->ReleaseTypeInfo(type_info);
         return false;
@@ -447,29 +436,21 @@ ort_context_init(OrtContext *context) {
     }
 
     api = (OrtApi *)context->api;
-    status = api->CreateEnv(
-        ORT_LOGGING_LEVEL_WARNING,
-        "uvr-c",
-        (OrtEnv **)&context->environment
-    );
+    status = api->CreateEnv(ORT_LOGGING_LEVEL_WARNING, "uvr-c",
+                            (OrtEnv **)&context->environment);
     if (!ort_check(context, status, "creating ONNX Runtime environment")) {
         ort_context_destroy(context);
         return false;
     }
 
-    status = api->CreateCpuMemoryInfo(
-        OrtArenaAllocator,
-        OrtMemTypeDefault,
-        (OrtMemoryInfo **)&context->memory_info
-    );
+    status = api->CreateCpuMemoryInfo(OrtArenaAllocator, OrtMemTypeDefault,
+                                      (OrtMemoryInfo **)&context->memory_info);
     if (!ort_check(context, status, "creating ONNX Runtime memory info")) {
         ort_context_destroy(context);
         return false;
     }
 
-    status = api->GetAllocatorWithDefaultOptions(
-        (OrtAllocator **)&context->allocator
-    );
+    status = api->GetAllocatorWithDefaultOptions((OrtAllocator **)&context->allocator);
     if (!ort_check(context, status, "getting ONNX Runtime default allocator")) {
         ort_context_destroy(context);
         return false;
@@ -541,12 +522,8 @@ ort_model_load(OrtContext *context, OrtModel *model, char *model_path) {
         return false;
     }
 
-    status = api->CreateSession(
-        (OrtEnv *)context->environment,
-        model_path,
-        options,
-        (OrtSession **)&model->session
-    );
+    status = api->CreateSession((OrtEnv *)context->environment, model_path,
+                                options, (OrtSession **)&model->session);
     api->ReleaseSessionOptions(options);
     if (!ort_check(context, status, "loading ONNX model")) {
         ort_model_destroy(context, model);
@@ -609,40 +586,27 @@ ort_model_get_io_info(OrtContext *context, OrtModel *model) {
     }
     model->output_count = (int32)count;
 
-    status = api->SessionGetInputName(
-        (OrtSession *)model->session,
-        0,
-        (OrtAllocator *)context->allocator,
-        &model->input_name
-    );
+    status = api->SessionGetInputName((OrtSession *)model->session, 0,
+                                      (OrtAllocator *)context->allocator,
+                                      &model->input_name);
     if (!ort_check(context, status, "getting ONNX input name")) {
         return false;
     }
 
-    status = api->SessionGetOutputName(
-        (OrtSession *)model->session,
-        0,
-        (OrtAllocator *)context->allocator,
-        &model->output_name
-    );
+    status = api->SessionGetOutputName((OrtSession *)model->session, 0,
+                                       (OrtAllocator *)context->allocator,
+                                       &model->output_name);
     if (!ort_check(context, status, "getting ONNX output name")) {
         return false;
     }
 
-    if (!ort_model_read_tensor_info(
-            context,
-            (OrtSession *)model->session,
-            true,
-            model->input_shape,
-            &model->input_shape_len)) {
+    if (!ort_model_read_tensor_info(context, (OrtSession *)model->session, true,
+        model->input_shape, &model->input_shape_len)) {
         return false;
     }
-    if (!ort_model_read_tensor_info(
-            context,
-            (OrtSession *)model->session,
-            false,
-            model->output_shape,
-            &model->output_shape_len)) {
+    if (!ort_model_read_tensor_info(context, (OrtSession *)model->session, false,
+                                    model->output_shape,
+                                    &model->output_shape_len)) {
         return false;
     }
 
@@ -748,15 +712,9 @@ ort_tensor_create_f32(OrtContext *context, OrtTensor *tensor, float *data,
         tensor->shape[i] = shape[i];
     }
 
-    status = api->CreateTensorWithDataAsOrtValue(
-        (OrtMemoryInfo *)context->memory_info,
-        data,
-        (size_t)(data_len*SIZEOF(*data)),
-        ort_shape,
-        (size_t)shape_len,
-        ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT,
-        (OrtValue **)&tensor->value
-    );
+    status = api->CreateTensorWithDataAsOrtValue((OrtMemoryInfo *)context->memory_info,
+        data, (size_t)(data_len*SIZEOF(*data)), ort_shape, (size_t)shape_len,
+        ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT, (OrtValue **)&tensor->value);
     if (!ort_check(context, status, "creating ONNX float32 tensor")) {
         ort_tensor_init_empty(tensor);
         return false;
@@ -797,16 +755,10 @@ ort_model_run_f32(OrtContext *context, OrtModel *model, OrtTensor *input,
     output_value = NULL;
     input_names[0] = model->input_name;
     output_names[0] = model->output_name;
-    status = api->Run(
-        (OrtSession *)model->session,
-        NULL,
-        (char const *const *)input_names,
-        (OrtValue const *const *)&input_value,
-        1,
-        (char const *const *)output_names,
-        1,
-        &output_value
-    );
+    status = api->Run((OrtSession *)model->session, NULL,
+                      (char const *const *)input_names,
+                      (OrtValue const *const *)&input_value, 1,
+                      (char const *const *)output_names, 1, &output_value);
     if (!ort_check(context, status, "running ONNX model")) {
         return false;
     }

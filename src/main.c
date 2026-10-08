@@ -274,10 +274,8 @@ main_print_flag_option_usage(char *name, char *description) {
 
 static noreturn void
 main_print_usage(FILE *stream) {
-    error2(
-        "usage: %s (--input-song SONG | --input-vocals VOCALS) [options]\n",
-        program
-    );
+    error2("usage: %s (--input-song SONG | --input-vocals VOCALS) [options]\n",
+           program);
     error2("\n");
     error2("general options:\n");
 #define MAIN_PRINT_FLAG_USAGE(id, name, description, action, offset) \

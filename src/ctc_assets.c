@@ -33,12 +33,9 @@ static bool
 lrc_ctc_assets_validate(LrcCtcAssets *assets, LrcCtcAssetsConfig *config,
                         LrcCtcAssetsResult *result) {
     if ((assets == NULL) || (config == NULL)) {
-        lrc_ctc_assets_result_set(
-            result,
-            LS_ERROR_CTC_ASSETS_INVALID_ARGUMENT,
+        lrc_ctc_assets_result_set(result, LS_ERROR_CTC_ASSETS_INVALID_ARGUMENT,
             "CTC asset validation received invalid arguments",
-            NULL
-        );
+                                  NULL);
         return false;
     }
 
@@ -46,39 +43,29 @@ lrc_ctc_assets_validate(LrcCtcAssets *assets, LrcCtcAssetsConfig *config,
     lrc_ctc_assets_result_init(result);
 
     if (path_missing(config->model_path)) {
-        lrc_ctc_assets_result_set(
-            result,
-            LS_ERROR_CTC_ASSETS_MISSING_MODEL_PATH,
-            "CTC model path is missing",
-            config->model_path
-        );
+        lrc_ctc_assets_result_set(result, LS_ERROR_CTC_ASSETS_MISSING_MODEL_PATH,
+                                  "CTC model path is missing",
+                                  config->model_path);
         return false;
     }
     if (path_missing(config->tokenizer_path)) {
-        lrc_ctc_assets_result_set(
-            result,
-            LS_ERROR_CTC_ASSETS_MISSING_TOKENIZER_PATH,
-            "CTC tokenizer path is missing",
-            config->tokenizer_path
-        );
+        lrc_ctc_assets_result_set(result,
+                                  LS_ERROR_CTC_ASSETS_MISSING_TOKENIZER_PATH,
+                                  "CTC tokenizer path is missing",
+                                  config->tokenizer_path);
         return false;
     }
     if (!util_file_exists(config->model_path)) {
-        lrc_ctc_assets_result_set(
-            result,
-            LS_ERROR_CTC_ASSETS_MODEL_NOT_FOUND,
-            "CTC model file was not found",
-            config->model_path
-        );
+        lrc_ctc_assets_result_set(result, LS_ERROR_CTC_ASSETS_MODEL_NOT_FOUND,
+                                  "CTC model file was not found",
+                                  config->model_path);
         return false;
     }
     if (!util_file_exists(config->tokenizer_path)) {
-        lrc_ctc_assets_result_set(
-            result,
-            LS_ERROR_CTC_ASSETS_TOKENIZER_NOT_FOUND,
-            "CTC tokenizer file was not found",
-            config->tokenizer_path
-        );
+        lrc_ctc_assets_result_set(result,
+                                  LS_ERROR_CTC_ASSETS_TOKENIZER_NOT_FOUND,
+                                  "CTC tokenizer file was not found",
+                                  config->tokenizer_path);
         return false;
     }
 

@@ -1063,8 +1063,7 @@ audio_compare_result_print(AudioCompareResult *result, char *name) {
     }
 
     mode = AUDIO_COMPARE_MODE_str(result->mode);
-    error2(
-        "%s: passed=%d mode=%s expected_frames=%lld "
+    error2("%s: passed=%d mode=%s expected_frames=%lld "
         "actual_frames=%lld delta=%lld compared_frames=%lld "
         "offset=%lld max_abs=%g rms=%g snr_db=%.2f "
         "expected_peak=%g actual_peak=%g nan=%lld inf=%lld\n",

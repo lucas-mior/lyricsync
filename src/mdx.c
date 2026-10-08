@@ -481,12 +481,8 @@ mdx_process_song_with_progress(MdxConfig *config, StftPlan *stft_plan,
     input_data = malloc2(tensor_len*SIZEOF(*input_data));
     window_left = malloc2(config->chunk_size*SIZEOF(*window_left));
     window_right = malloc2(config->chunk_size*SIZEOF(*window_right));
-    window_output_left = malloc2(
-        config->chunk_size*SIZEOF(*window_output_left)
-    );
-    window_output_right = malloc2(
-        config->chunk_size*SIZEOF(*window_output_right)
-    );
+    window_output_left = malloc2(config->chunk_size*SIZEOF(*window_output_left));
+    window_output_right = malloc2(config->chunk_size*SIZEOF(*window_output_right));
 
     model_shape[0] = 1;
     model_shape[1] = config->dim_c;
@@ -592,8 +588,7 @@ mdx_process_song_with_progress(MdxConfig *config, StftPlan *stft_plan,
                 || (output_tensor.shape[1] != config->dim_c)
                 || (output_tensor.shape[2] != config->dim_f)
                 || (output_tensor.shape[3] != config->dim_t)) {
-                error2(
-                    "ONNX model returned unexpected output shape\n");
+                error2("ONNX model returned unexpected output shape\n");
                 goto cleanup;
             }
             if (!mdx_unpack_output(config,
@@ -610,16 +605,11 @@ mdx_process_song_with_progress(MdxConfig *config, StftPlan *stft_plan,
                 int64 output_index = output_start + i;
                 int64 window_index = (int64)config->trim + i;
 
-                output->left[output_index] = mdx_output_sample(
-                    config,
-                    input->left[output_index],
-                    window_output_left[window_index]
-                );
-                output->right[output_index] = mdx_output_sample(
-                    config,
+                output->left[output_index] = mdx_output_sample(config,
+                    input->left[output_index], window_output_left[window_index]);
+                output->right[output_index] = mdx_output_sample(config,
                     input->right[output_index],
-                    window_output_right[window_index]
-                );
+                    window_output_right[window_index]);
             }
 
             ort_tensor_destroy(ort_context, &output_tensor);
@@ -676,10 +666,8 @@ mdx_model_inspect(MdxModelInfo *info, MdxConfig *config, OrtModel *model) {
         return false;
     }
     if ((input_info.count != 1) || (output_info.count != 1)) {
-        error2(
-            "MDX models must have 1 input and 1 output, got %d/%d\n",
-            input_info.count,
-            output_info.count);
+        error2("MDX models must have 1 input and 1 output, got %d/%d\n",
+               input_info.count, output_info.count);
         return false;
     }
     if (input_info.shape_len != 4) {
@@ -754,20 +742,16 @@ mdx_model_inspect(MdxModelInfo *info, MdxConfig *config, OrtModel *model) {
     }
     if (output_dim_f > 0) {
         if ((config->dim_f > 0) && (config->dim_f != output_dim_f)) {
-            error2(
-                "MDX output dim_f=%lld does not match dim_f=%d\n",
-                output_dim_f,
-                config->dim_f);
+            error2("MDX output dim_f=%lld does not match dim_f=%d\n",
+                   output_dim_f, config->dim_f);
             return false;
         }
         config->dim_f = (int32)output_dim_f;
     }
     if (output_dim_t > 0) {
         if ((config->dim_t > 0) && (config->dim_t != output_dim_t)) {
-            error2(
-                "MDX output dim_t=%lld does not match dim_t=%d\n",
-                output_dim_t,
-                config->dim_t);
+            error2("MDX output dim_t=%lld does not match dim_t=%d\n",
+                   output_dim_t, config->dim_t);
             return false;
         }
         config->dim_t = (int32)output_dim_t;

@@ -673,13 +673,9 @@ lrc_format_output_lines(String *builder, LrcOutputLine *lines,
         if (line->kind == LRC_OUTPUT_LINE_KIND_TIMESTAMPED) {
             LrcFormatResult format_result;
 
-            if (!lrc_format_timestamped_line_hundredths(
-                builder,
-                line->timestamp_hundredths,
-                line->text,
-                line->text_len,
-                &format_result
-            )) {
+            if (!lrc_format_timestamped_line_hundredths(builder,
+                line->timestamp_hundredths, line->text, line->text_len,
+                &format_result)) {
                 lrc_write_result_set(result,
                                      LS_ERROR_WRITE_FORMAT_FAILED,
                                      "LRC output line formatting failed",
@@ -1492,13 +1488,9 @@ lrc_test_optional_maxwell_formatting(void) {
         LrcParsedLine *line = parsed.lines + i;
 
         if (line->kind == LRC_PARSED_LINE_KIND_TIMESTAMPED) {
-            if (!lrc_format_timestamped_line_hundredths(
-                &builder,
-                line->timestamp_hundredths,
-                line->text,
-                line->text_len,
-                &format_result
-            )) {
+            if (!lrc_format_timestamped_line_hundredths(&builder,
+                line->timestamp_hundredths, line->text, line->text_len,
+                &format_result)) {
                 lrc_parsed_file_destroy(&parsed);
                 str_free(&builder);
                 free2(text, ((int64)text_len + 1)*SIZEOF(*text));

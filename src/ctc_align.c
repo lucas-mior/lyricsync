@@ -72,13 +72,8 @@ lrc_ctc_align_plan_missing(LrcCtcAlignPlan *plan, LrcCtcAlignResult *result) {
     if (result) {
         lrc_ctc_align_result_init(result);
     }
-    lrc_ctc_align_result_set(
-        result,
-        LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-        "CTC alignment plan is missing",
-        -1,
-        -1
-    );
+    lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                             "CTC alignment plan is missing", -1, -1);
 
     return true;
 }
@@ -125,13 +120,8 @@ lrc_ctc_align_segment_star_count(bool *target_segment_starts,
     *star_count = 0;
 
     if (target_segment_starts == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC segment-star markers are missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+            "CTC segment-star markers are missing", -1, -1);
         return false;
     }
 
@@ -151,13 +141,9 @@ lrc_ctc_align_star_mode_extra_labels(enum LrcCtcAlignStarMode star_mode,
                                      int32 *extra_labels,
                                      LrcCtcAlignResult *result) {
     if (extra_labels == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC graph extra-label destination is missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC graph extra-label destination is missing",
+                                 -1, -1);
         return false;
     }
 
@@ -174,13 +160,9 @@ lrc_ctc_align_star_mode_extra_labels(enum LrcCtcAlignStarMode star_mode,
                                                 extra_labels,
                                                 result);
     default:
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC graph star mode is invalid",
-            -1,
-            star_mode
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC graph star mode is invalid", -1,
+                                 star_mode);
         return false;
     }
 }
@@ -193,25 +175,17 @@ lrc_ctc_align_graph_label_count(int32 target_token_count,
     int32 extra_labels;
 
     if (label_count == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC graph label-count destination is missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC graph label-count destination is missing",
+                                 -1, -1);
         return false;
     }
     *label_count = 0;
 
     if (target_token_count <= 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
             "CTC graph target token count must be positive",
-            -1,
-            target_token_count
-        );
+                                 -1, target_token_count);
         return false;
     }
 
@@ -223,13 +197,9 @@ lrc_ctc_align_graph_label_count(int32 target_token_count,
         return false;
     }
     if (target_token_count > INT32_MAX - extra_labels) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_TOO_LARGE,
-            "CTC graph label count is too large",
-            -1,
-            target_token_count
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_TOO_LARGE,
+                                 "CTC graph label count is too large", -1,
+                                 target_token_count);
         return false;
     }
 
@@ -247,13 +217,9 @@ lrc_ctc_align_graph_state_count_for_mode(int32 target_token_count,
     int32 label_count;
 
     if (state_count == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC graph state-count destination is missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC graph state-count destination is missing",
+                                 -1, -1);
         return false;
     }
     *state_count = 0;
@@ -266,13 +232,9 @@ lrc_ctc_align_graph_state_count_for_mode(int32 target_token_count,
         return false;
     }
     if (label_count > (INT32_MAX - 1)/2) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_TOO_LARGE,
-            "CTC graph state count is too large",
-            -1,
-            target_token_count
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_TOO_LARGE,
+                                 "CTC graph state count is too large", -1,
+                                 target_token_count);
         return false;
     }
 
@@ -285,35 +247,21 @@ static bool
 lrc_ctc_align_checked_multiply(int64 left, int64 right, int64 *out,
                                char *message, LrcCtcAlignResult *result) {
     if (out == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC checked multiplication output is missing",
-            left,
-            right
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC checked multiplication output is missing",
+                                 left, right);
         return false;
     }
     *out = 0;
 
     if ((left < 0) || (right < 0)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
-            message,
-            left,
-            right
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
+                                 message, left, right);
         return false;
     }
     if ((right > 0) && (left > INT64_MAX/right)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_TOO_LARGE,
-            message,
-            left,
-            right
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_TOO_LARGE, message,
+                                 left, right);
         return false;
     }
 
@@ -371,23 +319,14 @@ lrc_ctc_align_graph_build_for_mode(LrcCtcAlignGraph *graph,
         lrc_ctc_align_result_init(result);
     }
     if (graph == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC graph destination is missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC graph destination is missing", -1, -1);
         return false;
     }
     if (target_token_ids == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC graph target token ids are missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC graph target token ids are missing", -1,
+                                 -1);
         return false;
     }
 
@@ -406,13 +345,10 @@ lrc_ctc_align_graph_build_for_mode(LrcCtcAlignGraph *graph,
                                                   result)) {
         return false;
     }
-    if (!lrc_ctc_align_checked_multiply(
-        state_count,
-        SIZEOF(*graph->states),
-        &alloc_size,
+    if (!lrc_ctc_align_checked_multiply(state_count, SIZEOF(*graph->states),
+                                        &alloc_size,
         "CTC graph state allocation is too large",
-        result
-    )) {
+                                        result)) {
         return false;
     }
 
@@ -659,32 +595,21 @@ lrc_ctc_token_spans_allocate(LrcCtcTokenSpans *spans, int32 span_count,
     int64 alloc_size;
 
     if (spans == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC token spans destination is missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC token spans destination is missing", -1,
+                                 -1);
         return false;
     }
     if (span_count <= 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC path does not contain token frames",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC path does not contain token frames", -1,
+                                 -1);
         return false;
     }
-    if (!lrc_ctc_align_checked_multiply(
-        span_count,
-        SIZEOF(*spans->spans),
-        &alloc_size,
+    if (!lrc_ctc_align_checked_multiply(span_count, SIZEOF(*spans->spans),
+                                        &alloc_size,
         "CTC token span allocation is too large",
-        result
-    )) {
+                                        result)) {
         return false;
     }
 
@@ -715,32 +640,20 @@ lrc_ctc_path_segments_allocate(LrcCtcPathSegments *segments,
     int64 alloc_size;
 
     if (segments == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC path segments destination is missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC path segments destination is missing", -1,
+                                 -1);
         return false;
     }
     if (segment_count <= 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC path does not contain segments",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC path does not contain segments", -1, -1);
         return false;
     }
-    if (!lrc_ctc_align_checked_multiply(
-        segment_count,
-        SIZEOF(*segments->segments),
-        &alloc_size,
-        "CTC path segment allocation is too large",
-        result
-    )) {
+    if (!lrc_ctc_align_checked_multiply(segment_count,
+        SIZEOF(*segments->segments), &alloc_size,
+            "CTC path segment allocation is too large",
+                                        result)) {
         return false;
     }
 
@@ -770,32 +683,22 @@ lrc_ctc_aligned_token_intervals_allocate(LrcCtcAlignedTokenIntervals *intervals,
     int64 alloc_size;
 
     if (intervals == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
             "CTC aligned token intervals destination is missing",
-            -1,
-            -1
-        );
+                                 -1, -1);
         return false;
     }
     if (interval_count <= 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
             "CTC aligned token interval count must be positive",
-            -1,
-            interval_count
-        );
+                                 -1, interval_count);
         return false;
     }
-    if (!lrc_ctc_align_checked_multiply(
-        interval_count,
-        SIZEOF(*intervals->intervals),
-        &alloc_size,
+    if (!lrc_ctc_align_checked_multiply(interval_count,
+                                        SIZEOF(*intervals->intervals),
+                                        &alloc_size,
         "CTC aligned token interval allocation is too large",
-        result
-    )) {
+                                        result)) {
         return false;
     }
 
@@ -825,32 +728,20 @@ lrc_ctc_path_allocate(LrcCtcPath *path, int32 step_count,
     int64 alloc_size;
 
     if (path == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC path destination is missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC path destination is missing", -1, -1);
         return false;
     }
     if (step_count <= 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
-            "CTC path step count must be positive",
-            step_count,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
+                                 "CTC path step count must be positive",
+                                 step_count, -1);
         return false;
     }
-    if (!lrc_ctc_align_checked_multiply(
-        step_count,
-        SIZEOF(*path->steps),
-        &alloc_size,
-        "CTC path allocation is too large",
-        result
-    )) {
+    if (!lrc_ctc_align_checked_multiply(step_count, SIZEOF(*path->steps),
+                                        &alloc_size,
+                                        "CTC path allocation is too large",
+                                        result)) {
         return false;
     }
 
@@ -877,44 +768,28 @@ lrc_ctc_trellis_dimensions_valid(int32 frame_count, int32 target_token_count,
     int64 cells;
 
     if (cell_count == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC trellis cell-count output is missing",
-            frame_count,
-            target_token_count
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC trellis cell-count output is missing",
+                                 frame_count, target_token_count);
         return false;
     }
     *cell_count = 0;
 
     if (frame_count <= 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
-            "CTC trellis frame count must be positive",
-            frame_count,
-            target_token_count
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
+                                 "CTC trellis frame count must be positive",
+                                 frame_count, target_token_count);
         return false;
     }
     if (state_count <= 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
-            "CTC trellis state count must be positive",
-            frame_count,
-            state_count
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
+                                 "CTC trellis state count must be positive",
+                                 frame_count, state_count);
         return false;
     }
-    if (!lrc_ctc_align_checked_multiply(
-        frame_count,
-        state_count,
-        &cells,
-        "CTC trellis cell count is too large",
-        result
-    )) {
+    if (!lrc_ctc_align_checked_multiply(frame_count, state_count, &cells,
+                                        "CTC trellis cell count is too large",
+                                        result)) {
         return false;
     }
 
@@ -981,13 +856,8 @@ lrc_ctc_trellis_allocate_for_state_count(LrcCtcTrellis *trellis,
         lrc_ctc_align_result_init(result);
     }
     if (trellis == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC trellis destination is missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC trellis destination is missing", -1, -1);
         return false;
     }
 
@@ -999,22 +869,17 @@ lrc_ctc_trellis_allocate_for_state_count(LrcCtcTrellis *trellis,
                                           result)) {
         return false;
     }
-    if (!lrc_ctc_align_checked_multiply(
-        cell_count,
-        SIZEOF(*trellis->scores),
-        &scores_size,
+    if (!lrc_ctc_align_checked_multiply(cell_count, SIZEOF(*trellis->scores),
+                                        &scores_size,
         "CTC trellis score allocation is too large",
-        result
-    )) {
+                                        result)) {
         return false;
     }
-    if (!lrc_ctc_align_checked_multiply(
-        cell_count,
-        SIZEOF(*trellis->previous_states),
-        &previous_states_size,
+    if (!lrc_ctc_align_checked_multiply(cell_count,
+                                        SIZEOF(*trellis->previous_states),
+                                        &previous_states_size,
         "CTC trellis backpointer allocation is too large",
-        result
-    )) {
+                                        result)) {
         return false;
     }
 
@@ -1041,56 +906,36 @@ static bool
 lrc_ctc_align_emissions_ready(LrcCtcEmissions *emissions,
                               LrcCtcAlignResult *result) {
     if (emissions == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC emissions are missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC emissions are missing", -1, -1);
         return false;
     }
     if ((emissions->values == NULL) || (emissions->frame_count <= 0)
         || (emissions->vocabulary_size <= 0)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_EMISSIONS,
-            "CTC emissions are not prepared",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_EMISSIONS,
+                                 "CTC emissions are not prepared", -1, -1);
         return false;
     }
     if ((emissions->frame_count > INT32_MAX)
         || (emissions->vocabulary_size > INT32_MAX)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_TOO_LARGE,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_TOO_LARGE,
             "CTC emissions dimensions exceed alignment index range",
-            emissions->frame_count,
-            emissions->vocabulary_size
-        );
+                                 emissions->frame_count,
+                                 emissions->vocabulary_size);
         return false;
     }
     if (emissions->frame_count > INT64_MAX/emissions->vocabulary_size) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_TOO_LARGE,
-            "CTC emissions dimensions are too large",
-            emissions->frame_count,
-            emissions->vocabulary_size
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_TOO_LARGE,
+                                 "CTC emissions dimensions are too large",
+                                 emissions->frame_count,
+                                 emissions->vocabulary_size);
         return false;
     }
     if (emissions->value_count
         != emissions->frame_count*emissions->vocabulary_size) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_EMISSIONS,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_EMISSIONS,
             "CTC emissions value count does not match dimensions",
-            -1,
-            -1
-        );
+                                 -1, -1);
         return false;
     }
 
@@ -1106,13 +951,9 @@ lrc_ctc_trellis_emissions_ready(LrcCtcEmissions *emissions,
     }
     if ((blank_token_id < 0)
         || ((int32)blank_token_id >= emissions->vocabulary_size)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_BLANK_TOKEN,
-            "CTC blank token id is outside the vocabulary",
-            -1,
-            blank_token_id
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_BLANK_TOKEN,
+                                 "CTC blank token id is outside the vocabulary",
+                                 -1, blank_token_id);
         return false;
     }
 
@@ -1137,13 +978,9 @@ lrc_ctc_trellis_prepare_for_graph(LrcCtcTrellis *trellis,
         return false;
     }
     if ((graph == NULL) || (graph->states == NULL)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC graph is missing for trellis preparation",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC graph is missing for trellis preparation",
+                                 -1, -1);
         return false;
     }
     if (!lrc_ctc_trellis_allocate_for_state_count(trellis,
@@ -1203,23 +1040,14 @@ lrc_ctc_target_tokens_valid(LrcCtcEmissions *emissions, int32 *target_token_ids,
                             int32 target_token_count, int32 blank_token_id,
                             LrcCtcAlignResult *result) {
     if (target_token_ids == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC target token ids are missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC target token ids are missing", -1, -1);
         return false;
     }
     if (target_token_count <= 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
-            "CTC target token count must be positive",
-            -1,
-            target_token_count
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
+                                 "CTC target token count must be positive", -1,
+                                 target_token_count);
         return false;
     }
 
@@ -1227,13 +1055,9 @@ lrc_ctc_target_tokens_valid(LrcCtcEmissions *emissions, int32 *target_token_ids,
         if ((target_token_ids[i] < 0)
             || ((int32)target_token_ids[i] >= emissions->vocabulary_size)
             || (target_token_ids[i] == blank_token_id)) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_TARGET_TOKEN,
-                "CTC target token id is invalid",
-                -1,
-                i
-            );
+            lrc_ctc_align_result_set(result,
+                                     LS_ERROR_CTC_ALIGN_INVALID_TARGET_TOKEN,
+                                     "CTC target token id is invalid", -1, i);
             return false;
         }
     }
@@ -1252,13 +1076,9 @@ lrc_ctc_star_token_valid(LrcCtcEmissions *emissions,
     if ((star_token_id < 0)
         || ((int32)star_token_id != emissions->vocabulary_size)
         || (star_token_id == blank_token_id)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TARGET_TOKEN,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TARGET_TOKEN,
             "CTC star token id must be the synthetic emission column",
-            -1,
-            star_token_id
-        );
+                                 -1, star_token_id);
         return false;
     }
 
@@ -1291,13 +1111,10 @@ lrc_ctc_target_tokens_valid_for_mode(LrcCtcEmissions *emissions,
     for (int32 i = 0; i < target_token_count; i += 1) {
         if ((star_mode != LRC_CTC_ALIGN_STAR_MODE_NONE)
             && (target_token_ids[i] == star_token_id)) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_TARGET_TOKEN,
+            lrc_ctc_align_result_set(result,
+                                     LS_ERROR_CTC_ALIGN_INVALID_TARGET_TOKEN,
                 "CTC target token id cannot be the star token",
-                -1,
-                i
-            );
+                                     -1, i);
             return false;
         }
     }
@@ -1401,24 +1218,16 @@ lrc_ctc_trellis_score_forward_for_mode(LrcCtcTrellis *trellis,
     required_frame_count = lrc_ctc_required_frame_count_for_graph(&graph);
     if (required_frame_count <= 0) {
         lrc_ctc_align_graph_destroy(&graph);
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_TOO_LARGE,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_TOO_LARGE,
             "CTC required alignment frame count is invalid",
-            -1,
-            target_token_count
-        );
+                                 -1, target_token_count);
         return false;
     }
     if (emissions->frame_count < required_frame_count) {
         lrc_ctc_align_graph_destroy(&graph);
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_IMPOSSIBLE_ALIGNMENT,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_IMPOSSIBLE_ALIGNMENT,
             "CTC emissions have too few frames for target tokens",
-            emissions->frame_count,
-            target_token_count
-        );
+                                 emissions->frame_count, target_token_count);
         return false;
     }
 
@@ -1436,11 +1245,8 @@ lrc_ctc_trellis_score_forward_for_mode(LrcCtcTrellis *trellis,
 
     cell = lrc_ctc_trellis_cell(trellis, 0, 1);
     ASSERT(cell);
-    *cell = lrc_ctc_emission_value(
-        emissions,
-        0,
-        lrc_ctc_align_graph_emission_token_id(&graph, 1, blank_token_id)
-    );
+    *cell = lrc_ctc_emission_value(emissions, 0,
+        lrc_ctc_align_graph_emission_token_id(&graph, 1, blank_token_id));
 
     for (int32 frame = 1; frame < trellis->frame_count; frame += 1) {
         for (int32 state = 1; state < trellis->state_count; state += 1) {
@@ -1485,11 +1291,8 @@ lrc_ctc_trellis_score_forward_for_mode(LrcCtcTrellis *trellis,
             ASSERT(cell);
             *cell = best_score;
 
-            previous_state_cell = lrc_ctc_trellis_previous_state_cell(
-                trellis,
-                frame,
-                state
-            );
+            previous_state_cell = lrc_ctc_trellis_previous_state_cell(trellis,
+                frame, state);
             ASSERT(previous_state_cell);
             *previous_state_cell = best_previous_state;
         }
@@ -1509,17 +1312,10 @@ lrc_ctc_trellis_score_forward_with_plan(LrcCtcTrellis *trellis,
         return false;
     }
 
-    return lrc_ctc_trellis_score_forward_for_mode(
-        trellis,
-        emissions,
-        plan->target_token_ids,
-        plan->target_segment_starts,
-        plan->target_token_count,
-        plan->blank_token_id,
-        plan->star_mode,
-        plan->star_token_id,
-        result
-    );
+    return lrc_ctc_trellis_score_forward_for_mode(trellis, emissions,
+        plan->target_token_ids, plan->target_segment_starts,
+        plan->target_token_count, plan->blank_token_id, plan->star_mode,
+        plan->star_token_id, result);
 }
 
 static bool
@@ -1536,23 +1332,13 @@ lrc_ctc_trellis_ready_for_backtracking(LrcCtcTrellis *trellis,
     bool has_segment_stars;
 
     if (trellis == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC trellis is missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC trellis is missing", -1, -1);
         return false;
     }
     if ((trellis->scores == NULL) || (trellis->previous_states == NULL)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TRELLIS,
-            "CTC trellis has not been scored",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TRELLIS,
+                                 "CTC trellis has not been scored", -1, -1);
         return false;
     }
     if (!lrc_ctc_align_graph_state_count_for_mode(target_token_count,
@@ -1571,32 +1357,23 @@ lrc_ctc_trellis_ready_for_backtracking(LrcCtcTrellis *trellis,
         || (trellis->has_edge_stars != has_edge_stars)
         || (trellis->has_segment_stars != has_segment_stars)
         || (trellis->star_token_id != star_token_id)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TRELLIS,
-            "CTC trellis dimensions do not match inputs",
-            trellis->frame_count,
-            trellis->target_token_count
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TRELLIS,
+                                 "CTC trellis dimensions do not match inputs",
+                                 trellis->frame_count,
+                                 trellis->target_token_count);
         return false;
     }
-    if (!lrc_ctc_align_checked_multiply(
-        trellis->frame_count,
-        trellis->state_count,
-        &expected_cell_count,
-        "CTC trellis dimensions are too large",
-        result
-    )) {
+    if (!lrc_ctc_align_checked_multiply(trellis->frame_count,
+                                        trellis->state_count,
+                                        &expected_cell_count,
+                                        "CTC trellis dimensions are too large",
+                                        result)) {
         return false;
     }
     if (trellis->cell_count != expected_cell_count) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TRELLIS,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TRELLIS,
             "CTC trellis cell count does not match dimensions",
-            trellis->frame_count,
-            trellis->state_count
-        );
+                                 trellis->frame_count, trellis->state_count);
         return false;
     }
 
@@ -1723,13 +1500,10 @@ lrc_ctc_trellis_best_final_state(LrcCtcTrellis *trellis, int32 *final_state,
     ASSERT(token_cell);
 
     if (!isfinite(*blank_cell) && !isfinite(*token_cell)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_IMPOSSIBLE_ALIGNMENT,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_IMPOSSIBLE_ALIGNMENT,
             "CTC target tokens cannot fit in the available frames",
-            trellis->frame_count - 1,
-            trellis->target_token_count - 1
-        );
+                                 trellis->frame_count - 1,
+                                 trellis->target_token_count - 1);
         return false;
     }
 
@@ -1823,13 +1597,9 @@ lrc_ctc_trellis_backtrack_for_mode(LrcCtcTrellis *trellis,
         if (!lrc_ctc_align_graph_transition_allowed(&graph,
                                                      previous_state,
                                                      state)) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_TRELLIS,
+            lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TRELLIS,
                 "CTC trellis previous-state backpointer is invalid",
-                frame,
-                state
-            );
+                                     frame, state);
             lrc_ctc_align_graph_destroy(&graph);
             lrc_ctc_path_destroy(path);
             return false;
@@ -1853,18 +1623,13 @@ lrc_ctc_trellis_backtrack_with_plan(LrcCtcTrellis *trellis,
         return false;
     }
 
-    return lrc_ctc_trellis_backtrack_for_mode(
-        trellis,
-        emissions,
-        plan->target_token_ids,
-        plan->target_segment_starts,
-        plan->target_token_count,
-        plan->blank_token_id,
-        plan->star_mode,
-        plan->star_token_id,
-        path,
-        result
-    );
+    return lrc_ctc_trellis_backtrack_for_mode(trellis, emissions,
+                                              plan->target_token_ids,
+                                              plan->target_segment_starts,
+                                              plan->target_token_count,
+                                              plan->blank_token_id,
+                                              plan->star_mode,
+        plan->star_token_id, path, result);
 }
 
 static bool
@@ -1872,23 +1637,15 @@ lrc_ctc_path_step_valid(LrcCtcPathStep *step, LrcCtcEmissions *emissions,
                         LrcCtcAlignResult *result) {
     if ((step->frame_index < 0)
         || (step->frame_index >= emissions->frame_count)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC path frame index is outside emissions",
-            step->frame_index,
-            step->token_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC path frame index is outside emissions",
+                                 step->frame_index, step->token_index);
         return false;
     }
     if (step->state_index < 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC path state index is invalid",
-            step->frame_index,
-            step->token_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC path state index is invalid",
+                                 step->frame_index, step->token_index);
         return false;
     }
     if (step->is_blank) {
@@ -1897,36 +1654,24 @@ lrc_ctc_path_step_valid(LrcCtcPathStep *step, LrcCtcEmissions *emissions,
     if (step->is_star) {
         if ((step->token_index != -1)
             || ((int32)step->token_id != emissions->vocabulary_size)) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_PATH,
-                "CTC path star token is invalid",
-                step->frame_index,
-                step->token_index
-            );
+            lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                     "CTC path star token is invalid",
+                                     step->frame_index, step->token_index);
             return false;
         }
         return true;
     }
     if (step->token_index < 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC path token index is invalid",
-            step->frame_index,
-            step->token_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC path token index is invalid",
+                                 step->frame_index, step->token_index);
         return false;
     }
     if ((step->token_id < 0)
         || ((int32)step->token_id >= emissions->vocabulary_size)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC path token id is outside emissions",
-            step->frame_index,
-            step->token_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC path token id is outside emissions",
+                                 step->frame_index, step->token_index);
         return false;
     }
 
@@ -1938,34 +1683,21 @@ lrc_ctc_path_ready_for_spans(LrcCtcPath *path, LrcCtcEmissions *emissions,
                              float frame_duration_seconds,
                              LrcCtcAlignResult *result) {
     if (path == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC path is missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC path is missing", -1, -1);
         return false;
     }
     if ((path->steps == NULL) || (path->step_count <= 0)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC path has no steps",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC path has no steps", -1, -1);
         return false;
     }
     if (!isfinite(frame_duration_seconds)
         || (frame_duration_seconds <= 0.0f)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_FRAME_DURATION,
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_FRAME_DURATION,
             "CTC frame duration must be positive and finite",
-            -1,
-            -1
-        );
+                                 -1, -1);
         return false;
     }
     if (!lrc_ctc_align_emissions_ready(emissions, result)) {
@@ -2026,25 +1758,17 @@ lrc_ctc_path_step_score(LrcCtcPathStep *step, LrcCtcEmissions *emissions,
     ASSERT(score);
 
     if (step->token_id < 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC path step token id is invalid",
-            step->frame_index,
-            step->token_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC path step token id is invalid",
+                                 step->frame_index, step->token_index);
         return false;
     }
     if (((int32)step->token_id > emissions->vocabulary_size)
         || (!step->is_star
             && ((int32)step->token_id >= emissions->vocabulary_size))) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC path step token id is outside emissions",
-            step->frame_index,
-            step->token_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC path step token id is outside emissions",
+                                 step->frame_index, step->token_index);
         return false;
     }
 
@@ -2158,49 +1882,33 @@ lrc_ctc_path_segment_valid_for_intervals(LrcCtcPathSegment *segment,
     if ((segment->start_frame < 0)
         || (segment->end_frame <= segment->start_frame)
         || (segment->start_frame < previous_end_frame)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC path segment frame range is invalid",
-            segment->start_frame,
-            segment_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC path segment frame range is invalid",
+                                 segment->start_frame, segment_index);
         return false;
     }
     if (segment->is_blank) {
         if (segment->is_star || (segment->token_index != -1)) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_PATH,
+            lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
                 "CTC blank path segment has invalid labels",
-                segment->start_frame,
-                segment_index
-            );
+                                     segment->start_frame, segment_index);
             return false;
         }
         return true;
     }
     if (segment->is_star) {
         if ((segment->token_id < 0) || (segment->token_index != -1)) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_PATH,
-                "CTC star path segment has invalid labels",
-                segment->start_frame,
-                segment_index
-            );
+            lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                     "CTC star path segment has invalid labels",
+                                     segment->start_frame, segment_index);
             return false;
         }
         return true;
     }
     if ((segment->token_index < 0) || (segment->token_id < 0)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC token path segment has invalid labels",
-            segment->start_frame,
-            segment_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC token path segment has invalid labels",
+                                 segment->start_frame, segment_index);
         return false;
     }
 
@@ -2214,23 +1922,14 @@ lrc_ctc_path_segments_ready_for_intervals(
     int32 previous_end_frame;
 
     if ((segments == NULL) || (intervals == NULL)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
             "CTC segment interval conversion received invalid arguments",
-            -1,
-            -1
-        );
+                                 -1, -1);
         return false;
     }
     if ((segments->segments == NULL) || (segments->segment_count <= 0)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC path segments are empty",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC path segments are empty", -1, -1);
         return false;
     }
 
@@ -2257,36 +1956,24 @@ lrc_ctc_interval_segment_matches_state(LrcCtcPathSegment *segment,
                                        LrcCtcAlignResult *result) {
     if (state->kind == LRC_CTC_ALIGN_STATE_STAR) {
         if (!segment->is_star || (segment->token_id != state->token_id)) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_PATH,
+            lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
                 "CTC path segment does not match target star",
-                segment->start_frame,
-                label_index
-            );
+                                     segment->start_frame, label_index);
             return false;
         }
         return true;
     }
     if (state->kind != LRC_CTC_ALIGN_STATE_TOKEN) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
             "CTC interval target stream contains an invalid label",
-            segment->start_frame,
-            label_index
-        );
+                                 segment->start_frame, label_index);
         return false;
     }
     if (segment->is_star || (segment->token_id != state->token_id)
         || (segment->token_index != state->token_index)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC path segment does not match target token",
-            segment->start_frame,
-            segment_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC path segment does not match target token",
+                                 segment->start_frame, segment_index);
         return false;
     }
 
@@ -2314,13 +2001,9 @@ lrc_ctc_path_segments_to_aligned_token_intervals(
     }
     if ((star_mode != LRC_CTC_ALIGN_STAR_MODE_NONE)
         && (star_token_id < 0)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TARGET_TOKEN,
-            "CTC interval star token id is invalid",
-            -1,
-            star_token_id
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TARGET_TOKEN,
+                                 "CTC interval star token id is invalid", -1,
+                                 star_token_id);
         return false;
     }
 
@@ -2354,13 +2037,9 @@ lrc_ctc_path_segments_to_aligned_token_intervals(
             continue;
         }
         if (label_index >= label_count) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_PATH,
+            lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
                 "CTC path segments contain too many target labels",
-                segment->start_frame,
-                i
-            );
+                                     segment->start_frame, i);
             ok = false;
             break;
         }
@@ -2390,13 +2069,9 @@ lrc_ctc_path_segments_to_aligned_token_intervals(
         label_index += 1;
     }
     if (ok && (label_index != label_count)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
             "CTC path segments do not cover all target labels",
-            -1,
-            label_index
-        );
+                                 -1, label_index);
         ok = false;
     }
 
@@ -2416,47 +2091,32 @@ lrc_ctc_aligned_token_interval_valid_for_padding(
     if ((interval->segment_start_index < 0)
         || (interval->segment_end_index <= interval->segment_start_index)
         || (interval->segment_end_index > segment_count)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
             "CTC aligned token interval segment range is invalid",
-            -1,
-            interval_index
-        );
+                                 -1, interval_index);
         return false;
     }
     if ((interval->token_start_frame < 0)
         || (interval->token_end_frame <= interval->token_start_frame)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
             "CTC aligned token interval frame range is invalid",
-            interval->token_start_frame,
-            interval_index
-        );
+                                 interval->token_start_frame, interval_index);
         return false;
     }
     if (interval->is_star) {
         if (interval->target_token_index != -1) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_PATH,
+            lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
                 "CTC aligned star interval has target token index",
-                interval->token_start_frame,
-                interval_index
-            );
+                                     interval->token_start_frame,
+                                     interval_index);
             return false;
         }
         return true;
     }
     if (interval->target_token_index < 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
             "CTC aligned token interval target index is invalid",
-            interval->token_start_frame,
-            interval_index
-        );
+                                 interval->token_start_frame, interval_index);
         return false;
     }
 
@@ -2469,13 +2129,10 @@ lrc_ctc_aligned_token_intervals_ready_for_padding(
     LrcCtcAlignedTokenIntervals *intervals, LrcCtcAlignResult *result) {
     if (!isfinite(frame_duration_seconds)
         || (frame_duration_seconds <= 0.0f)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_FRAME_DURATION,
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_FRAME_DURATION,
             "CTC frame duration must be positive and finite",
-            -1,
-            -1
-        );
+                                 -1, -1);
         return false;
     }
     if (!lrc_ctc_path_segments_ready_for_intervals(segments,
@@ -2485,23 +2142,15 @@ lrc_ctc_aligned_token_intervals_ready_for_padding(
     }
     if ((intervals->intervals == NULL)
         || (intervals->interval_count <= 0)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
-            "CTC aligned token intervals are empty",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_DIMENSIONS,
+                                 "CTC aligned token intervals are empty", -1,
+                                 -1);
         return false;
     }
 
     for (int32 i = 0; i < intervals->interval_count; i += 1) {
-        if (!lrc_ctc_aligned_token_interval_valid_for_padding(
-            intervals->intervals + i,
-            i,
-            segments->segment_count,
-            result
-        )) {
+        if (!lrc_ctc_aligned_token_interval_valid_for_padding(intervals->intervals + i,
+            i, segments->segment_count, result)) {
             return false;
         }
     }
@@ -2529,24 +2178,15 @@ lrc_ctc_pad_token_intervals_with_blanks(LrcCtcPathSegments *segments,
     if (result) {
         lrc_ctc_align_result_init(result);
     }
-    if (!lrc_ctc_aligned_token_intervals_ready_for_padding(
-        segments,
-        frame_duration_seconds,
-        intervals,
-        result
-    )) {
+    if (!lrc_ctc_aligned_token_intervals_ready_for_padding(segments,
+        frame_duration_seconds, intervals, result)) {
         return false;
     }
 
     path_segments = segments->segments;
     if (path_segments == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC path segments are empty",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC path segments are empty", -1, -1);
         return false;
     }
 
@@ -2582,13 +2222,9 @@ lrc_ctc_pad_token_intervals_with_blanks(LrcCtcPathSegments *segments,
         }
 
         if (padded_end_frame < padded_start_frame) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_PATH,
+            lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
                 "CTC padded token interval frame range is invalid",
-                padded_start_frame,
-                i
-            );
+                                     padded_start_frame, i);
             return false;
         }
 
@@ -2724,13 +2360,9 @@ lrc_ctc_path_to_token_spans(LrcCtcPath *path, LrcCtcEmissions *emissions,
             }
 
             if (step->token_index != previous_token_index + 1) {
-                lrc_ctc_align_result_set(
-                    result,
-                    LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
                     "CTC path token states are not target ordered",
-                    step->frame_index,
-                    step->token_index
-                );
+                                         step->frame_index, step->token_index);
                 lrc_ctc_token_spans_destroy(spans);
                 return false;
             }
@@ -2806,13 +2438,9 @@ lrc_ctc_token_span_padded_timing_valid(LrcCtcTokenSpan *span, int32 span_index,
         || !isfinite(span->padded_start_seconds)
         || !isfinite(span->padded_end_seconds)
         || (span->padded_end_seconds < span->padded_start_seconds)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
-            "CTC padded token span timing is invalid",
-            span->padded_start_frame,
-            span_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
+                                 "CTC padded token span timing is invalid",
+                                 span->padded_start_frame, span_index);
         return false;
     }
 
@@ -2827,13 +2455,9 @@ lrc_ctc_token_span_apply_padded_interval(LrcCtcTokenSpan *span,
     if ((span->token_index != interval->target_token_index)
         || (span->start_frame != interval->token_start_frame)
         || (span->end_frame != interval->token_end_frame)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
             "CTC padded interval does not match token span",
-            interval->token_start_frame,
-            span_index
-        );
+                                 interval->token_start_frame, span_index);
         return false;
     }
     if ((interval->padded_start_frame < 0)
@@ -2841,13 +2465,9 @@ lrc_ctc_token_span_apply_padded_interval(LrcCtcTokenSpan *span,
         || !isfinite(interval->padded_start_seconds)
         || !isfinite(interval->padded_end_seconds)
         || (interval->padded_end_seconds < interval->padded_start_seconds)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC padded interval timing is invalid",
-            interval->padded_start_frame,
-            interval_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC padded interval timing is invalid",
+                                 interval->padded_start_frame, interval_index);
         return false;
     }
 
@@ -2866,33 +2486,20 @@ lrc_ctc_token_spans_apply_padded_intervals(
     int32 span_index;
 
     if ((token_spans == NULL) || (intervals == NULL)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
             "CTC padded-token conversion received invalid arguments",
-            -1,
-            -1
-        );
+                                 -1, -1);
         return false;
     }
     if ((token_spans->spans == NULL) || (token_spans->span_count <= 0)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
-            "CTC token spans are empty",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
+                                 "CTC token spans are empty", -1, -1);
         return false;
     }
     if ((intervals->intervals == NULL) || (intervals->interval_count <= 0)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
-            "CTC aligned token intervals are empty",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
+                                 "CTC aligned token intervals are empty", -1,
+                                 -1);
         return false;
     }
 
@@ -2905,13 +2512,9 @@ lrc_ctc_token_spans_apply_padded_intervals(
             continue;
         }
         if (span_index >= token_spans->span_count) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_PATH,
+            lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
                 "CTC aligned token intervals have too many tokens",
-                -1,
-                i
-            );
+                                     -1, i);
             return false;
         }
 
@@ -2926,13 +2529,9 @@ lrc_ctc_token_spans_apply_padded_intervals(
         span_index += 1;
     }
     if (span_index != token_spans->span_count) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_PATH,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_PATH,
             "CTC aligned token intervals do not cover token spans",
-            -1,
-            span_index
-        );
+                                 -1, span_index);
         return false;
     }
 
@@ -2958,13 +2557,9 @@ lrc_ctc_path_to_padded_token_spans_for_mode(LrcCtcPath *path,
         lrc_ctc_align_result_init(result);
     }
     if ((target_token_ids == NULL) || (target_token_count <= 0)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
             "CTC padded-token conversion target stream is missing",
-            -1,
-            -1
-        );
+                                 -1, -1);
         return false;
     }
 
@@ -2982,24 +2577,13 @@ lrc_ctc_path_to_padded_token_spans_for_mode(LrcCtcPath *path,
                                       result);
     }
     if (ok) {
-        ok = lrc_ctc_path_segments_to_aligned_token_intervals(
-            &segments,
-            target_token_ids,
-            target_segment_starts,
-            target_token_count,
-            star_mode,
-            star_token_id,
-            &intervals,
-            result
-        );
+        ok = lrc_ctc_path_segments_to_aligned_token_intervals(&segments,
+            target_token_ids, target_segment_starts, target_token_count,
+            star_mode, star_token_id, &intervals, result);
     }
     if (ok) {
-        ok = lrc_ctc_pad_token_intervals_with_blanks(
-            &segments,
-            frame_duration_seconds,
-            &intervals,
-            result
-        );
+        ok = lrc_ctc_pad_token_intervals_with_blanks(&segments,
+            frame_duration_seconds, &intervals, result);
     }
     if (ok) {
         ok = lrc_ctc_token_spans_apply_padded_intervals(spans,
@@ -3027,18 +2611,10 @@ lrc_ctc_path_to_padded_token_spans_with_plan(LrcCtcPath *path,
         return false;
     }
 
-    return lrc_ctc_path_to_padded_token_spans_for_mode(
-        path,
-        emissions,
-        plan->target_token_ids,
-        plan->target_segment_starts,
-        plan->target_token_count,
-        plan->star_mode,
-        plan->star_token_id,
-        frame_duration_seconds,
-        spans,
-        result
-    );
+    return lrc_ctc_path_to_padded_token_spans_for_mode(path, emissions,
+        plan->target_token_ids, plan->target_segment_starts,
+        plan->target_token_count, plan->star_mode, plan->star_token_id,
+        frame_duration_seconds, spans, result);
 }
 
 static bool
@@ -3047,32 +2623,22 @@ lrc_ctc_word_spans_allocate(LrcCtcWordSpans *spans, int32 span_count,
     int64 alloc_size;
 
     if (spans == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC word spans destination is missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC word spans destination is missing", -1,
+                                 -1);
         return false;
     }
     if (span_count <= 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
-            "CTC token spans did not produce words",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
+                                 "CTC token spans did not produce words", -1,
+                                 -1);
         return false;
     }
-    if (!lrc_ctc_align_checked_multiply(
-        span_count,
-        SIZEOF(*spans->spans),
-        &alloc_size,
-        "CTC word span allocation is too large",
-        result
-    )) {
+    if (!lrc_ctc_align_checked_multiply(span_count, SIZEOF(*spans->spans),
+                                        &alloc_size,
+                                        "CTC word span allocation is too large",
+                                        result)) {
         return false;
     }
 
@@ -3107,54 +2673,33 @@ lrc_ctc_word_inputs_ready(LrcCtcTokenSpans *token_spans,
                           LrcCtcAlignResult *result) {
     if ((token_spans == NULL) || (tokens == NULL)
         || (normalized == NULL) || (word_spans == NULL)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
             "CTC word-span conversion received invalid arguments",
-            -1,
-            -1
-        );
+                                 -1, -1);
         return false;
     }
     if ((token_spans->spans == NULL) || (token_spans->span_count <= 0)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
-            "CTC token spans are empty",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
+                                 "CTC token spans are empty", -1, -1);
         return false;
     }
     if ((tokens->tokens == NULL) || (tokens->token_count <= 0)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
-            "CTC tokenized text is empty",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
+                                 "CTC tokenized text is empty", -1, -1);
         return false;
     }
     if ((normalized->text == NULL) || (normalized->text_len <= 0)
         || (normalized->byte_count != normalized->text_len)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_NORMALIZED_TEXT,
-            "normalized lyrics are not ready",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_NORMALIZED_TEXT,
+                                 "normalized lyrics are not ready", -1, -1);
         return false;
     }
     if (token_spans->span_count != tokens->token_count) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
-            "CTC token spans must match tokenized text",
-            token_spans->span_count,
-            tokens->token_count
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
+                                 "CTC token spans must match tokenized text",
+                                 token_spans->span_count, tokens->token_count);
         return false;
     }
 
@@ -3168,24 +2713,18 @@ lrc_ctc_token_range_valid(LrcCtcTextToken *token,
     if ((token->normalized_start < 0)
         || (token->normalized_end <= token->normalized_start)
         || (token->normalized_end > normalized->text_len)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
-            "CTC token normalized range is invalid",
-            token->normalized_start,
-            token_index
-        );
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
+                                 "CTC token normalized range is invalid",
+                                 token->normalized_start, token_index);
         return false;
     }
     if ((token->line_index < 0)
         || (token->line_index >= normalized->line_count)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
-            "CTC token line index is invalid",
-            -1,
-            token_index
-        );
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
+                                 "CTC token line index is invalid", -1,
+                                 token_index);
         return false;
     }
 
@@ -3205,46 +2744,30 @@ lrc_ctc_token_span_resolve_token(LrcCtcTokenSpan *span,
 
     if ((span->token_index < 0)
         || (span->token_index >= tokens->token_count)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
             "CTC token span target index is outside tokenized text",
-            -1,
-            span_index
-        );
+                                 -1, span_index);
         return false;
     }
     if (span->token_index != previous_token_index + 1) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
             "CTC token spans must cover target tokens in order",
-            -1,
-            span_index
-        );
+                                 -1, span_index);
         return false;
     }
 
     token = tokens->tokens + span->token_index;
     if (span->token_id != token->token_id) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
             "CTC token span id does not match target token index",
-            -1,
-            span->token_index
-        );
+                                 -1, span->token_index);
         return false;
     }
     if (!isfinite(span->start_seconds) || !isfinite(span->end_seconds)
         || (span->end_seconds < span->start_seconds)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
-            "CTC token span timing is invalid",
-            -1,
-            span->token_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
+                                 "CTC token span timing is invalid", -1,
+                                 span->token_index);
         return false;
     }
     if (!lrc_ctc_token_span_padded_timing_valid(span,
@@ -3253,13 +2776,9 @@ lrc_ctc_token_span_resolve_token(LrcCtcTokenSpan *span,
         return false;
     }
     if (!isfinite(span->score)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
-            "CTC token span score is invalid",
-            -1,
-            span->token_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
+                                 "CTC token span score is invalid", -1,
+                                 span->token_index);
         return false;
     }
 
@@ -3338,13 +2857,10 @@ lrc_ctc_token_segment_valid(LrcCtcTextToken *token,
 
     if ((token->segment_index < 0)
         || (token->segment_index >= normalized->segment_count)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
-            "CTC token segment index is invalid",
-            -1,
-            token_index
-        );
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
+                                 "CTC token segment index is invalid", -1,
+                                 token_index);
         return false;
     }
 
@@ -3352,45 +2868,33 @@ lrc_ctc_token_segment_valid(LrcCtcTextToken *token,
     if ((segment->normalized_start < 0)
         || (segment->normalized_end <= segment->normalized_start)
         || (segment->normalized_end > normalized->text_len)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_NORMALIZED_TEXT,
-            "CTC segment normalized range is invalid",
-            segment->normalized_start,
-            token_index
-        );
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_NORMALIZED_TEXT,
+                                 "CTC segment normalized range is invalid",
+                                 segment->normalized_start, token_index);
         return false;
     }
     if ((segment->line_index < 0)
         || (segment->line_index >= normalized->line_count)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_NORMALIZED_TEXT,
-            "CTC segment line index is invalid",
-            -1,
-            token_index
-        );
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_NORMALIZED_TEXT,
+                                 "CTC segment line index is invalid", -1,
+                                 token_index);
         return false;
     }
     if (token->line_index != segment->line_index) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
             "CTC token line index does not match its segment",
-            -1,
-            token_index
-        );
+                                 -1, token_index);
         return false;
     }
     if ((token->normalized_start < segment->normalized_start)
         || (token->normalized_end > segment->normalized_end)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
             "CTC token normalized range is outside its segment",
-            token->normalized_start,
-            token_index
-        );
+                                 token->normalized_start, token_index);
         return false;
     }
 
@@ -3439,13 +2943,10 @@ lrc_ctc_segment_word_count(LrcCtcTokenSpans *token_spans,
             return false;
         }
         if (token->segment_index < previous_segment_index) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
-                "CTC token segments must be ordered",
-                -1,
-                span->token_index
-            );
+            lrc_ctc_align_result_set(result,
+                                     LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
+                                     "CTC token segments must be ordered", -1,
+                                     span->token_index);
             return false;
         }
         if (token->segment_index != previous_segment_index) {
@@ -3487,24 +2988,18 @@ lrc_ctc_segment_word_span_extend(LrcCtcWordSpan *word, int32 span_index,
                                  CtcTextSegment *segment, int32 score_count,
                                  float *score_sum, LrcCtcAlignResult *result) {
     if (segment->line_index != word->line_index) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
-            "CTC segment cannot cross lyric lines",
-            segment->normalized_start,
-            token_span->token_index
-        );
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
+                                 "CTC segment cannot cross lyric lines",
+                                 segment->normalized_start,
+                                 token_span->token_index);
         return false;
     }
     if ((lrc_ctc_token_span_start_seconds(token_span) + 0.00001f)
         < word->end_seconds) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
-            "CTC token spans must be time ordered",
-            -1,
-            token_span->token_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
+                                 "CTC token spans must be time ordered", -1,
+                                 token_span->token_index);
         return false;
     }
 
@@ -3574,13 +3069,10 @@ lrc_ctc_token_spans_to_segment_word_spans(LrcCtcTokenSpans *token_spans,
             return false;
         }
         if (token->segment_index < previous_segment_index) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
-                "CTC token segments must be ordered",
-                -1,
-                token_span->token_index
-            );
+            lrc_ctc_align_result_set(result,
+                                     LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
+                                     "CTC token segments must be ordered", -1,
+                                     token_span->token_index);
             lrc_ctc_word_spans_destroy(word_spans);
             return false;
         }
@@ -3677,13 +3169,10 @@ lrc_ctc_word_count(LrcCtcTokenSpans *token_spans, LrcCtcTokenizedText *tokens,
         if (lrc_ctc_normalized_range_has_space(normalized,
                                                token->normalized_start,
                                                token->normalized_end)) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
+            lrc_ctc_align_result_set(result,
+                                     LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
                 "CTC token spans cannot split a mixed word/space token",
-                token->normalized_start,
-                i
-            );
+                                     token->normalized_start, i);
             return false;
         }
         if (!in_word) {
@@ -3724,24 +3213,18 @@ lrc_ctc_word_span_extend(LrcCtcWordSpan *word, int32 span_index,
                          int32 score_count, float *score_sum,
                          LrcCtcAlignResult *result) {
     if (token->line_index != word->line_index) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
-            "CTC word cannot cross lyric lines",
-            token->normalized_start,
-            token_span->token_index
-        );
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_TOKENIZED_TEXT,
+                                 "CTC word cannot cross lyric lines",
+                                 token->normalized_start,
+                                 token_span->token_index);
         return false;
     }
     if ((lrc_ctc_token_span_start_seconds(token_span) + 0.00001f)
         < word->end_seconds) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
-            "CTC token spans must be time ordered",
-            -1,
-            token_span->token_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_TOKEN_SPANS,
+                                 "CTC token spans must be time ordered", -1,
+                                 token_span->token_index);
         return false;
     }
 
@@ -3880,32 +3363,21 @@ lrc_ctc_line_timestamps_allocate(LrcCtcLineTimestamps *timestamps,
     int64 alloc_size;
 
     if (timestamps == NULL) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
-            "CTC line timestamps destination is missing",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+                                 "CTC line timestamps destination is missing",
+                                 -1, -1);
         return false;
     }
     if (line_count <= 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
-            "CTC word spans did not produce lyric lines",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
+                                 "CTC word spans did not produce lyric lines",
+                                 -1, -1);
         return false;
     }
-    if (!lrc_ctc_align_checked_multiply(
-        line_count,
-        SIZEOF(*timestamps->lines),
-        &alloc_size,
+    if (!lrc_ctc_align_checked_multiply(line_count, SIZEOF(*timestamps->lines),
+                                        &alloc_size,
         "CTC line timestamp allocation is too large",
-        result
-    )) {
+                                        result)) {
         return false;
     }
 
@@ -3942,59 +3414,39 @@ lrc_ctc_word_span_valid_for_lines(LrcCtcWordSpan *word,
         || (word->span_end_index <= word->span_start_index)
         || (word->line_index < 0)
         || (word->line_index >= normalized->line_count)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
-            "CTC word span has invalid indexes",
-            -1,
-            word_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
+                                 "CTC word span has invalid indexes", -1,
+                                 word_index);
         return false;
     }
     if (!lrc_lyrics_normalized_line_range(normalized,
                                           word->line_index,
                                           &line_start,
                                           &line_end)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
             "CTC word span does not belong to an alignable lyric line",
-            -1,
-            word_index
-        );
+                                 -1, word_index);
         return false;
     }
     if ((word->normalized_start < line_start)
         || (word->normalized_end > line_end)
         || (word->normalized_end <= word->normalized_start)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
-            "CTC word span normalized range is invalid",
-            word->normalized_start,
-            word_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
+                                 "CTC word span normalized range is invalid",
+                                 word->normalized_start, word_index);
         return false;
     }
     if (!isfinite(word->start_seconds) || !isfinite(word->end_seconds)
         || (word->end_seconds < word->start_seconds)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
-            "CTC word span timing is invalid",
-            -1,
-            word_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
+                                 "CTC word span timing is invalid", -1,
+                                 word_index);
         return false;
     }
     if (!isfinite(word->score)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
-            "CTC word span score is invalid",
-            -1,
-            word_index
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
+                                 "CTC word span score is invalid", -1,
+                                 word_index);
         return false;
     }
 
@@ -4011,33 +3463,20 @@ lrc_ctc_line_inputs_ready(LrcCtcWordSpans *word_spans,
 
     if ((word_spans == NULL) || (normalized == NULL)
         || (line_timestamps == NULL)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_ARGUMENT,
             "CTC line timestamp conversion received invalid arguments",
-            -1,
-            -1
-        );
+                                 -1, -1);
         return false;
     }
     if ((word_spans->spans == NULL) || (word_spans->span_count <= 0)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
-            "CTC word spans are empty",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
+                                 "CTC word spans are empty", -1, -1);
         return false;
     }
     if ((normalized->lines == NULL) || (normalized->line_count <= 0)) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_NORMALIZED_TEXT,
-            "normalized lyric lines are not ready",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result,
+                                 LS_ERROR_CTC_ALIGN_INVALID_NORMALIZED_TEXT,
+            "normalized lyric lines are not ready", -1, -1);
         return false;
     }
 
@@ -4054,37 +3493,28 @@ lrc_ctc_line_inputs_ready(LrcCtcWordSpans *word_spans,
             return false;
         }
         if (word->line_index < previous_line) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
+            lrc_ctc_align_result_set(result,
+                                     LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
                 "CTC word spans must be ordered by lyric line",
-                -1,
-                i
-            );
+                                     -1, i);
             return false;
         }
         if ((word->line_index == previous_line)
             && ((word->start_seconds + 0.00001f) < previous_start)) {
-            lrc_ctc_align_result_set(
-                result,
-                LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
+            lrc_ctc_align_result_set(result,
+                                     LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
                 "CTC word spans must be time ordered inside each line",
-                -1,
-                i
-            );
+                                     -1, i);
             return false;
         }
         if (i > 0) {
             previous = word_spans->spans + i - 1;
             if ((word->token_start_index < previous->token_end_index)
                 || (word->span_start_index < previous->span_end_index)) {
-                lrc_ctc_align_result_set(
-                    result,
-                    LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
+                lrc_ctc_align_result_set(result,
+                                         LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
                     "CTC word spans must be target-token ordered",
-                    -1,
-                    i
-                );
+                                         -1, i);
                 return false;
             }
         }
@@ -4144,13 +3574,9 @@ lrc_ctc_count_line_timestamp_entries(LrcCtcWordSpans *word_spans,
         }
     }
     if (*line_count <= 0) {
-        lrc_ctc_align_result_set(
-            result,
-            LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
-            "CTC word spans did not map to lyric lines",
-            -1,
-            -1
-        );
+        lrc_ctc_align_result_set(result, LS_ERROR_CTC_ALIGN_INVALID_WORD_SPANS,
+                                 "CTC word spans did not map to lyric lines",
+                                 -1, -1);
         return false;
     }
 
@@ -4296,13 +3722,8 @@ lrc_ctc_word_spans_to_line_timestamps(LrcCtcWordSpans *word_spans,
 static bool
 lrc_ctc_align_graph_state_count(int32 target_token_count, int32 *state_count,
                                 LrcCtcAlignResult *result) {
-    return lrc_ctc_align_graph_state_count_for_mode(
-        target_token_count,
-        LRC_CTC_ALIGN_STAR_MODE_NONE,
-        NULL,
-        state_count,
-        result
-    );
+    return lrc_ctc_align_graph_state_count_for_mode(target_token_count,
+        LRC_CTC_ALIGN_STAR_MODE_NONE, NULL, state_count, result);
 }
 
 static int32
@@ -4331,15 +3752,10 @@ lrc_ctc_required_frame_count_for_tokens(int32 *target_token_ids,
 static bool
 lrc_ctc_align_graph_build(LrcCtcAlignGraph *graph, int32 *target_token_ids,
                           int32 target_token_count, LrcCtcAlignResult *result) {
-    return lrc_ctc_align_graph_build_for_mode(
-        graph,
-        target_token_ids,
-        target_token_count,
-        LRC_CTC_ALIGN_STAR_MODE_NONE,
-        NULL,
-        -1,
-        result
-    );
+    return lrc_ctc_align_graph_build_for_mode(graph, target_token_ids,
+                                              target_token_count,
+        LRC_CTC_ALIGN_STAR_MODE_NONE, NULL,
+                                              -1, result);
 }
 
 static bool
@@ -4353,15 +3769,9 @@ lrc_ctc_trellis_allocate(LrcCtcTrellis *trellis, int32 frame_count,
         return false;
     }
 
-    return lrc_ctc_trellis_allocate_for_state_count(
-        trellis,
-        frame_count,
-        target_token_count,
-        state_count,
-        LRC_CTC_ALIGN_STAR_MODE_NONE,
-        -1,
-        result
-    );
+    return lrc_ctc_trellis_allocate_for_state_count(trellis, frame_count,
+        target_token_count, state_count, LRC_CTC_ALIGN_STAR_MODE_NONE, -1,
+        result);
 }
 
 static bool
@@ -4384,15 +3794,9 @@ lrc_ctc_trellis_prepare(LrcCtcTrellis *trellis, LrcCtcEmissions *emissions,
                                           result)) {
         return false;
     }
-    if (!lrc_ctc_trellis_allocate_for_state_count(
-        trellis,
-        (int32)emissions->frame_count,
-        target_token_count,
-        state_count,
-        LRC_CTC_ALIGN_STAR_MODE_NONE,
-        -1,
-        result
-    )) {
+    if (!lrc_ctc_trellis_allocate_for_state_count(trellis,
+        (int32)emissions->frame_count, target_token_count, state_count,
+        LRC_CTC_ALIGN_STAR_MODE_NONE, -1, result)) {
         return false;
     }
 
@@ -4988,10 +4392,8 @@ ctc_align_make_line_timed_token_frames(LrcParsedFile *expected,
                                                    &timestamp_seconds)) {
                 return false;
             }
-            line_start_frame = ctc_align_seconds_to_frame(
-                timestamp_seconds,
-                frame_duration_seconds
-            );
+            line_start_frame = ctc_align_seconds_to_frame(timestamp_seconds,
+                frame_duration_seconds);
             if (line_start_frame < 0) {
                 return false;
             }
@@ -5078,13 +4480,9 @@ ctc_align_parsed_files_close(LrcParsedFile *actual, LrcParsedFile *expected,
         diff = fabsf(actual_line->timestamp_seconds
                      - expected_line->timestamp_seconds);
         if (diff > max_error_seconds) {
-            error2(
-                "LRC line %d timestamp diff %.3f actual %.3f expected %.3f\n",
-                i,
-                (double)diff,
-                (double)actual_line->timestamp_seconds,
-                (double)expected_line->timestamp_seconds
-            );
+            error2("LRC line %d timestamp diff %.3f actual %.3f expected %.3f\n",
+                   i, (double)diff, (double)actual_line->timestamp_seconds,
+                   (double)expected_line->timestamp_seconds);
             return false;
         }
     }
@@ -5123,11 +4521,8 @@ ctc_align_output_lines_from_timestamps(LrcLyrics *lyrics,
 
         switch (timestamp->kind) {
         case LRC_CTC_LINE_TIMESTAMP_KIND_TIMESTAMPED:
-            if (!lrc_timestamp_hundredths_from_seconds(
-                timestamp->start_seconds,
-                &hundredths,
-                &result
-            )) {
+            if (!lrc_timestamp_hundredths_from_seconds(timestamp->start_seconds,
+                &hundredths, &result)) {
                 return false;
             }
             lines[i].kind = LRC_OUTPUT_LINE_KIND_TIMESTAMPED;
@@ -5307,15 +4702,9 @@ ctc_align_test_graph_build_segment_stars(void) {
     int32 tokens[] = {4, 8, 6};
     bool segment_starts[] = {true, false, true};
 
-    if (!lrc_ctc_align_graph_build_for_mode(
-        &graph,
-        tokens,
-        LENGTH(tokens),
-        LRC_CTC_ALIGN_STAR_MODE_SEGMENT,
-        segment_starts,
-        9,
-        &result
-    )) {
+    if (!lrc_ctc_align_graph_build_for_mode(&graph, tokens, LENGTH(tokens),
+                                            LRC_CTC_ALIGN_STAR_MODE_SEGMENT,
+                                            segment_starts, 9, &result)) {
         fatal(ctc_align_test_fail("build segment-star graph"));
     }
 
@@ -5564,14 +4953,10 @@ ctc_align_test_prepare_initializes_start_state(void) {
     ASSERT(ctc_align_float_close(*lrc_ctc_trellis_cell(&trellis, 2, 0),
                                  -0.60f,
                                  0.00001f));
-    ASSERT(ctc_align_is_negative_infinity(
-               *lrc_ctc_trellis_cell(&trellis, 0, 1)));
-    ASSERT(ctc_align_is_negative_infinity(
-               *lrc_ctc_trellis_cell(&trellis, 0, 2)));
-    ASSERT(ctc_align_is_negative_infinity(
-               *lrc_ctc_trellis_cell(&trellis, 2, 1)));
-    ASSERT(ctc_align_is_negative_infinity(
-               *lrc_ctc_trellis_cell(&trellis, 2, 2)));
+    ASSERT(ctc_align_is_negative_infinity(*lrc_ctc_trellis_cell(&trellis, 0, 1)));
+    ASSERT(ctc_align_is_negative_infinity(*lrc_ctc_trellis_cell(&trellis, 0, 2)));
+    ASSERT(ctc_align_is_negative_infinity(*lrc_ctc_trellis_cell(&trellis, 2, 1)));
+    ASSERT(ctc_align_is_negative_infinity(*lrc_ctc_trellis_cell(&trellis, 2, 2)));
 
     lrc_ctc_trellis_destroy(&trellis);
 
@@ -6028,32 +5413,17 @@ ctc_align_test_backtracks_segment_stars(void) {
     ctc_align_make_emissions(&emissions, values, 4, 3);
     star_token_id = (int32)emissions.vocabulary_size;
 
-    if (!lrc_ctc_trellis_score_forward_with_segment_stars(
-        &trellis,
-        &emissions,
-        target_token_ids,
-        segment_starts,
-        LENGTH(target_token_ids),
-        0,
-        star_token_id,
-        &result
-    )) {
+    if (!lrc_ctc_trellis_score_forward_with_segment_stars(&trellis, &emissions,
+        target_token_ids, segment_starts, LENGTH(target_token_ids), 0,
+        star_token_id, &result)) {
         fatal(ctc_align_test_fail("score segment-star path"));
     }
     ASSERT(trellis.has_segment_stars);
     ASSERT(!trellis.has_edge_stars);
 
-    if (!lrc_ctc_trellis_backtrack_with_segment_stars(
-        &trellis,
-        &emissions,
-        target_token_ids,
-        segment_starts,
-        LENGTH(target_token_ids),
-        0,
-        star_token_id,
-        &path,
-        &result
-    )) {
+    if (!lrc_ctc_trellis_backtrack_with_segment_stars(&trellis, &emissions,
+        target_token_ids, segment_starts, LENGTH(target_token_ids), 0,
+        star_token_id, &path, &result)) {
         fatal(ctc_align_test_fail("backtrack segment-star path"));
     }
 
@@ -6413,16 +5783,9 @@ ctc_align_test_aligned_intervals_keep_edge_star_order(void) {
     ctc_align_set_path_segment(&segments, 3, 1, 4, 5, 2, false, false);
     ctc_align_set_path_segment(&segments, 4, -1, 5, 6, star_token_id,
                                false, true);
-    if (!lrc_ctc_path_segments_to_aligned_token_intervals(
-        &segments,
-        target_token_ids,
-        NULL,
-        2,
-        LRC_CTC_ALIGN_STAR_MODE_EDGES,
-        star_token_id,
-        &intervals,
-        &result
-    )) {
+    if (!lrc_ctc_path_segments_to_aligned_token_intervals(&segments,
+        target_token_ids, NULL, 2, LRC_CTC_ALIGN_STAR_MODE_EDGES, star_token_id,
+        &intervals, &result)) {
         fatal(ctc_align_test_fail("edge-star aligned intervals"));
     }
 
@@ -6475,16 +5838,9 @@ ctc_align_test_aligned_intervals_keep_segment_star_order(void) {
     ctc_align_set_path_segment(&segments, 4, -1, 4, 5, star_token_id,
                                false, true);
     ctc_align_set_path_segment(&segments, 5, 2, 5, 6, 3, false, false);
-    if (!lrc_ctc_path_segments_to_aligned_token_intervals(
-        &segments,
-        target_token_ids,
-        target_segment_starts,
-        3,
-        LRC_CTC_ALIGN_STAR_MODE_SEGMENT,
-        star_token_id,
-        &intervals,
-        &result
-    )) {
+    if (!lrc_ctc_path_segments_to_aligned_token_intervals(&segments,
+        target_token_ids, target_segment_starts, 3,
+        LRC_CTC_ALIGN_STAR_MODE_SEGMENT, star_token_id, &intervals, &result)) {
         fatal(ctc_align_test_fail("segment-star aligned intervals"));
     }
 
@@ -6526,16 +5882,9 @@ ctc_align_test_pad_intervals_distributes_blank_frames(void) {
     ctc_align_set_path_segment(&segments, 2, -1, 12, 20, 0, true, false);
     ctc_align_set_path_segment(&segments, 3, 1, 20, 22, 2, false, false);
     ctc_align_set_path_segment(&segments, 4, -1, 22, 30, 0, true, false);
-    if (!lrc_ctc_path_segments_to_aligned_token_intervals(
-        &segments,
-        target_token_ids,
-        NULL,
-        2,
-        LRC_CTC_ALIGN_STAR_MODE_NONE,
-        -1,
-        &intervals,
-        &result
-    )) {
+    if (!lrc_ctc_path_segments_to_aligned_token_intervals(&segments,
+        target_token_ids, NULL, 2, LRC_CTC_ALIGN_STAR_MODE_NONE, -1, &intervals,
+        &result)) {
         fatal(ctc_align_test_fail("build padded intervals"));
     }
     if (!lrc_ctc_pad_token_intervals_with_blanks(&segments,
@@ -6593,16 +5942,9 @@ ctc_align_test_pad_intervals_counts_initial_star(void) {
     ctc_align_set_path_segment(&segments, 4, -1, 22, 30, 0, true, false);
     ctc_align_set_path_segment(&segments, 5, -1, 30, 32, star_token_id,
                                false, true);
-    if (!lrc_ctc_path_segments_to_aligned_token_intervals(
-        &segments,
-        target_token_ids,
-        NULL,
-        1,
-        LRC_CTC_ALIGN_STAR_MODE_EDGES,
-        star_token_id,
-        &intervals,
-        &result
-    )) {
+    if (!lrc_ctc_path_segments_to_aligned_token_intervals(&segments,
+        target_token_ids, NULL, 1, LRC_CTC_ALIGN_STAR_MODE_EDGES, star_token_id,
+        &intervals, &result)) {
         fatal(ctc_align_test_fail("build star padded intervals"));
     }
     if (!lrc_ctc_pad_token_intervals_with_blanks(&segments,
@@ -8753,11 +8095,8 @@ ctc_align_test_full_synthetic_lrc_pipeline(void) {
             ok = false;
         }
     }
-    if (ok && !lrc_ctc_emissions_convert_to_log_probabilities(
-        &emissions,
-        LRC_CTC_EMISSION_VALUES_LOG_PROBABILITIES,
-        &inference_result
-    )) {
+    if (ok && !lrc_ctc_emissions_convert_to_log_probabilities(&emissions,
+        LRC_CTC_EMISSION_VALUES_LOG_PROBABILITIES, &inference_result)) {
         ok = false;
     }
 
@@ -8807,9 +8146,7 @@ ctc_align_test_full_synthetic_lrc_pipeline(void) {
         ok = false;
     }
     if (ok) {
-        output_lines = malloc2(
-            line_timestamps.line_count*SIZEOF(*output_lines)
-        );
+        output_lines = malloc2(line_timestamps.line_count*SIZEOF(*output_lines));
         if (!ctc_align_output_lines_from_timestamps(&lyrics,
                                                     &line_timestamps,
                                                     output_lines)) {
@@ -9044,11 +8381,8 @@ ctc_align_test_maxwell_fixture_lrc_pipeline(void) {
             ok = false;
         }
     }
-    if (ok && !lrc_ctc_emissions_convert_to_log_probabilities(
-        &emissions,
-        LRC_CTC_EMISSION_VALUES_LOG_PROBABILITIES,
-        &inference_result
-    )) {
+    if (ok && !lrc_ctc_emissions_convert_to_log_probabilities(&emissions,
+        LRC_CTC_EMISSION_VALUES_LOG_PROBABILITIES, &inference_result)) {
         ok = false;
     }
 
@@ -9094,9 +8428,7 @@ ctc_align_test_maxwell_fixture_lrc_pipeline(void) {
         ok = false;
     }
     if (ok) {
-        output_lines = malloc2(
-            line_timestamps.line_count*SIZEOF(*output_lines)
-        );
+        output_lines = malloc2(line_timestamps.line_count*SIZEOF(*output_lines));
         if (!ctc_align_output_lines_from_timestamps(&lyrics,
                                                     &line_timestamps,
                                                     output_lines)) {
@@ -9310,23 +8642,15 @@ ctc_align_test_rank3_trimmed_fake_inference_pipeline(void) {
     }
 
     star_token_id = (int32)emissions.vocabulary_size;
-    if (ok && !lrc_ctc_trellis_score_forward_with_edge_stars(
-        &trellis,
-        &emissions,
-        target_token_ids,
-        LENGTH(target_token_ids),
-        tokenizer.blank_id,
-        star_token_id,
-        &align_result
-    )) {
+    if (ok && !lrc_ctc_trellis_score_forward_with_edge_stars(&trellis,
+        &emissions, target_token_ids, LENGTH(target_token_ids),
+        tokenizer.blank_id, star_token_id, &align_result)) {
         ok = false;
     }
     if (ok && !lrc_ctc_trellis_backtrack_with_edge_stars(&trellis,
                                                           &emissions,
                                                           target_token_ids,
-                                                          LENGTH(
-                                                              target_token_ids
-                                                          ),
+        LENGTH(target_token_ids),
                                                           tokenizer.blank_id,
                                                           star_token_id,
                                                           &path,

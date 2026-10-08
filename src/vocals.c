@@ -80,16 +80,10 @@ vocals_extraction_config_from_request(VocalsExtractionConfig *config,
 
 static void
 vocals_print_model_info(MdxModelInfo *info, MdxConfig *config) {
-    error2(
-        "MDX model: input=%s output=%s shape=[%d, %d, %d, %d]\n",
-        info->input_name,
-        info->output_name,
-        info->batch_size,
-        info->channel_count,
-        info->dim_f,
-        info->dim_t);
-    error2(
-        "MDX config: sample_rate=%d channels=%d dim_c=%d n_fft=%d "
+    error2("MDX model: input=%s output=%s shape=[%d, %d, %d, %d]\n",
+           info->input_name, info->output_name, info->batch_size,
+           info->channel_count, info->dim_f, info->dim_t);
+    error2("MDX config: sample_rate=%d channels=%d dim_c=%d n_fft=%d "
         "hop=%d chunk_size=%d trim=%d gen_size=%d\n",
         config->sample_rate,
         config->channel_count,
@@ -107,84 +101,60 @@ static bool
 vocals_request_valid(LrcVocalsExtractRequest *request,
                      LrcVocalsExtractResult *result) {
     if (request == NULL) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT,
-            "vocals extraction request is missing",
-            NULL
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT,
+                                  "vocals extraction request is missing", NULL);
         return false;
     }
     if (path_missing(request->input_path)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_MISSING_INPUT,
-            "input audio path is missing",
-            request->input_path
-        );
+        vocals_extract_result_set(result, LS_ERROR_VOCALS_EXTRACT_MISSING_INPUT,
+                                  "input audio path is missing",
+                                  request->input_path);
         return false;
     }
     if (path_missing(request->output_path)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_MISSING_OUTPUT,
-            "output vocals path is missing",
-            request->output_path
-        );
+        vocals_extract_result_set(result, LS_ERROR_VOCALS_EXTRACT_MISSING_OUTPUT,
+                                  "output vocals path is missing",
+                                  request->output_path);
         return false;
     }
     if (path_missing(request->model_path)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_MISSING_MODEL,
-            "vocals extraction model path is missing",
-            request->model_path
-        );
+        vocals_extract_result_set(result, LS_ERROR_VOCALS_EXTRACT_MISSING_MODEL,
+                                  "vocals extraction model path is missing",
+                                  request->model_path);
         return false;
     }
     if (path_missing(request->temp_dir)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_MISSING_TEMP_DIR,
-            "temporary directory path is missing",
-            request->temp_dir
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_MISSING_TEMP_DIR,
+                                  "temporary directory path is missing",
+                                  request->temp_dir);
         return false;
     }
     if (path_missing(request->ffmpeg_path)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_MISSING_FFMPEG,
-            "FFmpeg executable path is missing",
-            request->ffmpeg_path
-        );
+        vocals_extract_result_set(result, LS_ERROR_VOCALS_EXTRACT_MISSING_FFMPEG,
+                                  "FFmpeg executable path is missing",
+                                  request->ffmpeg_path);
         return false;
     }
     if (path_missing(request->container_format)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT,
-            "output container format is missing",
-            request->container_format
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT,
+                                  "output container format is missing",
+                                  request->container_format);
         return false;
     }
     if (!lrc_audio_format_valid(request->container_format)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT,
-            "output container format is invalid",
-            request->container_format
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT,
+                                  "output container format is invalid",
+                                  request->container_format);
         return false;
     }
     if (!audio_io_format_valid(&request->output_format)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT,
-            "output audio format is invalid",
-            NULL
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT,
+                                  "output audio format is invalid", NULL);
         return false;
     }
 
@@ -199,84 +169,64 @@ vocals_prepare_runtime(VocalsExtractionConfig *config, char *input_path,
     *mdx_config = config->mdx_config;
 
     if (!audio_check_ffmpeg(config->ffmpeg_path)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_FFMPEG_UNAVAILABLE,
-            "could not run ffmpeg",
-            config->ffmpeg_path
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_FFMPEG_UNAVAILABLE,
+                                  "could not run ffmpeg", config->ffmpeg_path);
         return false;
     }
 
     if (!audio_can_decode_file(input_path, config->ffmpeg_path)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_INPUT_DECODE_FAILED,
-            "could not decode input audio with ffmpeg",
-            input_path
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_INPUT_DECODE_FAILED,
+                                  "could not decode input audio with ffmpeg",
+                                  input_path);
         return false;
     }
 
     if (!util_file_exists(config->model_path)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_MODEL_OPEN_FAILED,
-            "could not read ONNX model",
-            config->model_path
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_MODEL_OPEN_FAILED,
+                                  "could not read ONNX model",
+                                  config->model_path);
         return false;
     }
 
     if (!stft_plan_init(stft_plan, mdx_config->n_fft, mdx_config->hop)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_STFT_INIT_FAILED,
-            "could not initialize STFT plan",
-            NULL
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_STFT_INIT_FAILED,
+                                  "could not initialize STFT plan", NULL);
         return false;
     }
 
     if (!ort_context_init(ort_context)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_ORT_INIT_FAILED,
-            "could not initialize ONNX Runtime",
-            NULL
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_ORT_INIT_FAILED,
+                                  "could not initialize ONNX Runtime", NULL);
         return false;
     }
     config->ort_session_config.print_info = config->print_info;
     ort_context_session_config_set(ort_context, &config->ort_session_config);
 
     if (!ort_model_load(ort_context, ort_model, config->model_path)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_ORT_MODEL_LOAD_FAILED,
-            "could not load ONNX model",
-            config->model_path
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_ORT_MODEL_LOAD_FAILED,
+                                  "could not load ONNX model",
+                                  config->model_path);
         return false;
     }
 
     if (!mdx_model_inspect(mdx_info, mdx_config, ort_model)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_UNSUPPORTED_MDX_MODEL,
-            "ONNX model is not a supported MDX-Net model",
-            config->model_path
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_UNSUPPORTED_MDX_MODEL,
+                                  "ONNX model is not a supported MDX-Net model",
+                                  config->model_path);
         return false;
     }
 
     if (!mdx_config_prepare(mdx_config)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_MDX_CONFIG_FAILED,
-            "could not prepare MDX configuration",
-            NULL
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_MDX_CONFIG_FAILED,
+                                  "could not prepare MDX configuration", NULL);
         return false;
     }
 
@@ -297,21 +247,16 @@ vocals_read_input_audio(AudioBuffer *input_audio, char *input_path,
                                 input_path,
                                 &input_format,
                                 ffmpeg_path)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_INPUT_READ_FAILED,
-            "could not decode input audio",
-            input_path
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_INPUT_READ_FAILED,
+                                  "could not decode input audio", input_path);
         return false;
     }
 
     lrc_progress_end_line();
-    error2(
-        "decoded audio: sample_rate=%d channels=%d frames=%lld\n",
-        input_audio->sample_rate,
-        input_audio->channel_count,
-        input_audio->frame_count);
+    error2("decoded audio: sample_rate=%d channels=%d frames=%lld\n",
+           input_audio->sample_rate, input_audio->channel_count,
+           input_audio->frame_count);
 
     return true;
 }
@@ -330,12 +275,10 @@ vocals_extract_audio(AudioBuffer *output_audio, char *input_path,
     bool ok;
 
     if ((output_audio == NULL) || (input_path == NULL) || (config == NULL)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT,
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT,
             "vocals extraction received invalid arguments",
-            NULL
-        );
+                                  NULL);
         return false;
     }
 
@@ -388,12 +331,10 @@ vocals_extract_audio(AudioBuffer *output_audio, char *input_path,
                                          &input_audio,
                                          output_audio,
                                          config->print_info)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_MDX_PROCESS_FAILED,
-            "could not process audio through MDX model",
-            NULL
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_MDX_PROCESS_FAILED,
+                                  "could not process audio through MDX model",
+                                  NULL);
         goto cleanup;
     }
 
@@ -441,12 +382,10 @@ lrc_extract_vocals(LrcVocalsExtractRequest *request,
                                  request->container_format,
                                  &request->output_format,
                                  request->ffmpeg_path)) {
-        vocals_extract_result_set(
-            result,
-            LS_ERROR_VOCALS_EXTRACT_OUTPUT_WRITE_FAILED,
-            "could not write output audio",
-            request->output_path
-        );
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_OUTPUT_WRITE_FAILED,
+                                  "could not write output audio",
+                                  request->output_path);
         lrc_progress_cancel(&progress);
         goto cleanup;
     }

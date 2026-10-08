@@ -294,14 +294,10 @@ lrc_ctc_tokenizer_tokenize_normalized(LrcCtcTokenizer *tokenizer,
         lrc_ctc_tokenize_result_init(result);
     }
     if ((tokenizer == NULL) || (normalized == NULL) || (tokens == NULL)) {
-        lrc_ctc_tokenize_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZE_INVALID_ARGUMENT,
+        lrc_ctc_tokenize_result_set(result,
+                                    LS_ERROR_CTC_TOKENIZE_INVALID_ARGUMENT,
             "CTC tokenization received invalid arguments",
-            -1,
-            -1,
-            -1
-        );
+                                    -1, -1, -1);
         return false;
     }
 
@@ -316,14 +312,8 @@ lrc_ctc_tokenizer_tokenize_normalized(LrcCtcTokenizer *tokenizer,
         text_len = normalized->text_len;
     }
     if ((text == NULL) || (text_len <= 0)) {
-        lrc_ctc_tokenize_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZE_EMPTY_INPUT,
-            "normalized lyrics are empty",
-            -1,
-            -1,
-            -1
-        );
+        lrc_ctc_tokenize_result_set(result, LS_ERROR_CTC_TOKENIZE_EMPTY_INPUT,
+                                    "normalized lyrics are empty", -1, -1, -1);
         return false;
     }
 
@@ -360,27 +350,17 @@ lrc_ctc_tokenizer_tokenize_normalized(LrcCtcTokenizer *tokenizer,
                                                          &normalized_start,
                                                          &normalized_end,
                                                          &line_index)) {
-                lrc_ctc_tokenize_result_set(
-                    result,
+                lrc_ctc_tokenize_result_set(result,
                     LS_ERROR_CTC_TOKENIZE_INVALID_ARGUMENT,
-                    "CTC token mapping failed",
-                    i,
-                    line_index,
-                    token_id
-                );
+                                            "CTC token mapping failed", i,
+                                            line_index, token_id);
                 lrc_ctc_tokenized_text_destroy(tokens);
                 return false;
             }
-            segment_index = lrc_ctc_tokenizer_segment_index_for_range(
-                normalized,
-                normalized_start,
-                normalized_end
-            );
-            starts_segment = lrc_ctc_tokenizer_range_starts_segment(
-                normalized,
-                segment_index,
-                normalized_start
-            );
+            segment_index = lrc_ctc_tokenizer_segment_index_for_range(normalized,
+                normalized_start, normalized_end);
+            starts_segment = lrc_ctc_tokenizer_range_starts_segment(normalized,
+                segment_index, normalized_start);
             if (!lrc_ctc_tokenized_text_append(tokens,
                                                token_id,
                                                normalized_start,
@@ -388,14 +368,10 @@ lrc_ctc_tokenizer_tokenize_normalized(LrcCtcTokenizer *tokenizer,
                                                line_index,
                                                segment_index,
                                                starts_segment)) {
-                lrc_ctc_tokenize_result_set(
-                    result,
+                lrc_ctc_tokenize_result_set(result,
                     LS_ERROR_CTC_TOKENIZE_TOO_MANY_TOKENS,
                     "tokenized lyrics contain too many tokens",
-                    i,
-                    line_index,
-                    token_id
-                );
+                                            i, line_index, token_id);
                 lrc_ctc_tokenized_text_destroy(tokens);
                 return false;
             }
@@ -421,27 +397,17 @@ lrc_ctc_tokenizer_tokenize_normalized(LrcCtcTokenizer *tokenizer,
                                                          &normalized_start,
                                                          &normalized_end,
                                                          &line_index)) {
-                lrc_ctc_tokenize_result_set(
-                    result,
+                lrc_ctc_tokenize_result_set(result,
                     LS_ERROR_CTC_TOKENIZE_INVALID_ARGUMENT,
-                    "CTC token mapping failed",
-                    i,
-                    line_index,
-                    token_id
-                );
+                                            "CTC token mapping failed", i,
+                                            line_index, token_id);
                 lrc_ctc_tokenized_text_destroy(tokens);
                 return false;
             }
-            segment_index = lrc_ctc_tokenizer_segment_index_for_range(
-                normalized,
-                normalized_start,
-                normalized_end
-            );
-            starts_segment = lrc_ctc_tokenizer_range_starts_segment(
-                normalized,
-                segment_index,
-                normalized_start
-            );
+            segment_index = lrc_ctc_tokenizer_segment_index_for_range(normalized,
+                normalized_start, normalized_end);
+            starts_segment = lrc_ctc_tokenizer_range_starts_segment(normalized,
+                segment_index, normalized_start);
             if (!lrc_ctc_tokenized_text_append(tokens,
                                                token_id,
                                                normalized_start,
@@ -449,14 +415,10 @@ lrc_ctc_tokenizer_tokenize_normalized(LrcCtcTokenizer *tokenizer,
                                                line_index,
                                                segment_index,
                                                starts_segment)) {
-                lrc_ctc_tokenize_result_set(
-                    result,
+                lrc_ctc_tokenize_result_set(result,
                     LS_ERROR_CTC_TOKENIZE_TOO_MANY_TOKENS,
                     "tokenized lyrics contain too many tokens",
-                    i,
-                    line_index,
-                    token_id
-                );
+                                            i, line_index, token_id);
                 lrc_ctc_tokenized_text_destroy(tokens);
                 return false;
             }
@@ -464,27 +426,18 @@ lrc_ctc_tokenizer_tokenize_normalized(LrcCtcTokenizer *tokenizer,
             continue;
         }
 
-        lrc_ctc_tokenize_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZE_UNSUPPORTED_TOKEN,
+        lrc_ctc_tokenize_result_set(result,
+                                    LS_ERROR_CTC_TOKENIZE_UNSUPPORTED_TOKEN,
             "normalized lyrics contain a token not in the CTC vocabulary",
-            i,
-            line_index,
-            -1
-        );
+                                    i, line_index, -1);
         lrc_ctc_tokenized_text_destroy(tokens);
         return false;
     }
 
     if (tokens->token_count <= 0) {
-        lrc_ctc_tokenize_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZE_EMPTY_INPUT,
-            "normalized lyrics produced no CTC tokens",
-            -1,
-            -1,
-            -1
-        );
+        lrc_ctc_tokenize_result_set(result, LS_ERROR_CTC_TOKENIZE_EMPTY_INPUT,
+                                    "normalized lyrics produced no CTC tokens",
+                                    -1, -1, -1);
         return false;
     }
 
@@ -665,59 +618,38 @@ lrc_ctc_tokenizer_add_token(LrcCtcTokenizer *tokenizer, char *token_text,
     int32 text_offset;
 
     if ((!is_blank && (token_len <= 0)) || (token_len < 0)) {
-        lrc_ctc_tokenizer_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZER_EMPTY_TOKEN,
-            "CTC tokenizer contains an empty token",
-            path,
-            line_index,
-            -1
-        );
+        lrc_ctc_tokenizer_result_set(result, LS_ERROR_CTC_TOKENIZER_EMPTY_TOKEN,
+                                     "CTC tokenizer contains an empty token",
+                                     path, line_index, -1);
         return false;
     }
     if (tokenizer->token_count >= MAXOF(tokenizer->token_count)) {
-        lrc_ctc_tokenizer_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZER_TOO_MANY_TOKENS,
-            "CTC tokenizer contains too many tokens",
-            path,
-            line_index,
-            -1
-        );
+        lrc_ctc_tokenizer_result_set(result,
+                                     LS_ERROR_CTC_TOKENIZER_TOO_MANY_TOKENS,
+                                     "CTC tokenizer contains too many tokens",
+                                     path, line_index, -1);
         return false;
     }
     if (lrc_ctc_tokenizer_token_id(tokenizer, token_text, token_len,
                                    &existing_id)) {
-        lrc_ctc_tokenizer_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZER_DUPLICATE_TOKEN,
-            "CTC tokenizer contains a duplicate token",
-            path,
-            line_index,
-            existing_id
-        );
+        lrc_ctc_tokenizer_result_set(result,
+                                     LS_ERROR_CTC_TOKENIZER_DUPLICATE_TOKEN,
+                                     "CTC tokenizer contains a duplicate token",
+                                     path, line_index, existing_id);
         return false;
     }
     if (!lrc_ctc_tokenizer_reserve_tokens(tokenizer, 1)) {
-        lrc_ctc_tokenizer_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZER_TOO_MANY_TOKENS,
-            "CTC tokenizer contains too many tokens",
-            path,
-            line_index,
-            -1
-        );
+        lrc_ctc_tokenizer_result_set(result,
+                                     LS_ERROR_CTC_TOKENIZER_TOO_MANY_TOKENS,
+                                     "CTC tokenizer contains too many tokens",
+                                     path, line_index, -1);
         return false;
     }
     if (!lrc_ctc_tokenizer_reserve_text(tokenizer, token_len + 1)) {
-        lrc_ctc_tokenizer_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZER_TOO_MANY_TOKENS,
-            "CTC tokenizer token text is too large",
-            path,
-            line_index,
-            -1
-        );
+        lrc_ctc_tokenizer_result_set(result,
+                                     LS_ERROR_CTC_TOKENIZER_TOO_MANY_TOKENS,
+                                     "CTC tokenizer token text is too large",
+                                     path, line_index, -1);
         return false;
     }
 
@@ -792,25 +724,16 @@ lrc_ctc_tokenizer_parse_text(LrcCtcTokenizer *tokenizer, char *text,
     }
 
     if (tokenizer->token_count <= 0) {
-        lrc_ctc_tokenizer_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZER_EMPTY,
-            "CTC tokenizer file is empty",
-            path,
-            -1,
-            -1
-        );
+        lrc_ctc_tokenizer_result_set(result, LS_ERROR_CTC_TOKENIZER_EMPTY,
+                                     "CTC tokenizer file is empty", path, -1,
+                                     -1);
         return false;
     }
     if (tokenizer->blank_id < 0) {
-        lrc_ctc_tokenizer_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZER_MISSING_BLANK,
+        lrc_ctc_tokenizer_result_set(result,
+                                     LS_ERROR_CTC_TOKENIZER_MISSING_BLANK,
             "CTC tokenizer file does not define <blank>",
-            path,
-            -1,
-            -1
-        );
+                                     path, -1, -1);
         return false;
     }
 
@@ -829,50 +752,31 @@ lrc_ctc_tokenizer_load_file(LrcCtcTokenizer *tokenizer, char *path,
         lrc_ctc_tokenizer_result_init(result);
     }
     if (tokenizer == NULL) {
-        lrc_ctc_tokenizer_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZER_INVALID_ARGUMENT,
+        lrc_ctc_tokenizer_result_set(result,
+                                     LS_ERROR_CTC_TOKENIZER_INVALID_ARGUMENT,
             "CTC tokenizer load received invalid arguments",
-            path,
-            -1,
-            -1
-        );
+                                     path, -1, -1);
         return false;
     }
 
     lrc_ctc_tokenizer_destroy(tokenizer);
 
     if (path_missing(path)) {
-        lrc_ctc_tokenizer_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZER_MISSING_PATH,
-            "CTC tokenizer path is missing",
-            path,
-            -1,
-            -1
-        );
+        lrc_ctc_tokenizer_result_set(result, LS_ERROR_CTC_TOKENIZER_MISSING_PATH,
+                                     "CTC tokenizer path is missing", path, -1,
+                                     -1);
         return false;
     }
     if ((file_len = read_entire_file(path, &file_text)) < 0) {
-        lrc_ctc_tokenizer_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZER_READ_FAILED,
-            "could not read CTC tokenizer file",
-            path,
-            -1,
-            -1
-        );
+        lrc_ctc_tokenizer_result_set(result, LS_ERROR_CTC_TOKENIZER_READ_FAILED,
+                                     "could not read CTC tokenizer file", path,
+                                     -1, -1);
         return false;
     }
     if (!utf8_valid(file_text, file_len, &bad_offset)) {
-        lrc_ctc_tokenizer_result_set(
-            result,
-            LS_ERROR_CTC_TOKENIZER_INVALID_UTF8,
-            "CTC tokenizer file is not valid UTF-8",
-            path,
-            bad_offset,
-            -1
-        );
+        lrc_ctc_tokenizer_result_set(result, LS_ERROR_CTC_TOKENIZER_INVALID_UTF8,
+                                     "CTC tokenizer file is not valid UTF-8",
+                                     path, bad_offset, -1);
         free2(file_text, (file_len + 1)*SIZEOF(*file_text));
         return false;
     }
@@ -1347,12 +1251,8 @@ ctc_tokenizer_test_word_target_prevents_multi_character_match(void) {
                                       "ctc_tokenizer_word_target")) {
         fatal(ctc_tokenizer_test_fail("load word target vocabulary"));
     }
-    if (!ctc_tokenizer_normalize_lyrics_text(
-        &lyrics,
-        &normalized,
-        lyrics_text,
-        "ctc_tokenizer_word_target_lyrics"
-    )) {
+    if (!ctc_tokenizer_normalize_lyrics_text(&lyrics, &normalized, lyrics_text,
+        "ctc_tokenizer_word_target_lyrics")) {
         lrc_ctc_tokenizer_destroy(&tokenizer);
         fatal(ctc_tokenizer_test_fail("normalize word target lyrics"));
     }
@@ -1416,12 +1316,8 @@ ctc_tokenizer_test_marks_segment_starts(void) {
                                       "ctc_tokenizer_segments")) {
         fatal(ctc_tokenizer_test_fail("load segment start vocabulary"));
     }
-    if (!ctc_tokenizer_normalize_lyrics_text(
-        &lyrics,
-        &normalized,
-        lyrics_text,
-        "ctc_tokenizer_segment_lyrics"
-    )) {
+    if (!ctc_tokenizer_normalize_lyrics_text(&lyrics, &normalized, lyrics_text,
+                                             "ctc_tokenizer_segment_lyrics")) {
         lrc_ctc_tokenizer_destroy(&tokenizer);
         fatal(ctc_tokenizer_test_fail("normalize segment start lyrics"));
     }

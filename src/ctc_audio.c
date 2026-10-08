@@ -77,13 +77,10 @@ lrc_ctc_audio_validate_samples(LrcCtcAudio *audio, LrcCtcAudioResult *result,
         float abs_sample;
 
         if (!isfinite((double)sample)) {
-            lrc_ctc_audio_result_set(
-                result,
-                LS_ERROR_CTC_AUDIO_NON_FINITE_SAMPLE,
+            lrc_ctc_audio_result_set(result,
+                                     LS_ERROR_CTC_AUDIO_NON_FINITE_SAMPLE,
                 "decoded CTC audio contains a non-finite sample",
-                path,
-                i
-            );
+                                     path, i);
             return false;
         }
 
@@ -108,13 +105,9 @@ lrc_ctc_audio_decode_file(LrcCtcAudio *audio, char *path,
         lrc_ctc_audio_result_init(result);
     }
     if (audio == NULL) {
-        lrc_ctc_audio_result_set(
-            result,
-            LS_ERROR_CTC_AUDIO_INVALID_ARGUMENT,
-            "CTC audio decode received invalid arguments",
-            path,
-            -1
-        );
+        lrc_ctc_audio_result_set(result, LS_ERROR_CTC_AUDIO_INVALID_ARGUMENT,
+                                 "CTC audio decode received invalid arguments",
+                                 path, -1);
         return false;
     }
 
@@ -125,33 +118,19 @@ lrc_ctc_audio_decode_file(LrcCtcAudio *audio, char *path,
     }
 
     if (path_missing(path)) {
-        lrc_ctc_audio_result_set(
-            result,
-            LS_ERROR_CTC_AUDIO_MISSING_PATH,
-            "CTC audio input path is missing",
-            path,
-            -1
-        );
+        lrc_ctc_audio_result_set(result, LS_ERROR_CTC_AUDIO_MISSING_PATH,
+                                 "CTC audio input path is missing", path, -1);
         return false;
     }
     if (path_missing(config->ffmpeg_path)) {
-        lrc_ctc_audio_result_set(
-            result,
-            LS_ERROR_CTC_AUDIO_MISSING_FFMPEG,
-            "ffmpeg path is missing",
-            config->ffmpeg_path,
-            -1
-        );
+        lrc_ctc_audio_result_set(result, LS_ERROR_CTC_AUDIO_MISSING_FFMPEG,
+                                 "ffmpeg path is missing", config->ffmpeg_path,
+                                 -1);
         return false;
     }
     if (config->sample_rate <= 0) {
-        lrc_ctc_audio_result_set(
-            result,
-            LS_ERROR_CTC_AUDIO_INVALID_SAMPLE_RATE,
-            "CTC audio sample rate is invalid",
-            path,
-            -1
-        );
+        lrc_ctc_audio_result_set(result, LS_ERROR_CTC_AUDIO_INVALID_SAMPLE_RATE,
+                                 "CTC audio sample rate is invalid", path, -1);
         return false;
     }
 
@@ -161,24 +140,14 @@ lrc_ctc_audio_decode_file(LrcCtcAudio *audio, char *path,
     audio_buffer_init(&decoded);
     if (!audio_read_file_format(&decoded, path, &format, config->ffmpeg_path)) {
         audio_buffer_destroy(&decoded);
-        lrc_ctc_audio_result_set(
-            result,
-            LS_ERROR_CTC_AUDIO_DECODE_FAILED,
-            "could not decode CTC audio input",
-            path,
-            -1
-        );
+        lrc_ctc_audio_result_set(result, LS_ERROR_CTC_AUDIO_DECODE_FAILED,
+                                 "could not decode CTC audio input", path, -1);
         return false;
     }
     if (decoded.frame_count <= 0) {
         audio_buffer_destroy(&decoded);
-        lrc_ctc_audio_result_set(
-            result,
-            LS_ERROR_CTC_AUDIO_EMPTY_AUDIO,
-            "decoded CTC audio is empty",
-            path,
-            -1
-        );
+        lrc_ctc_audio_result_set(result, LS_ERROR_CTC_AUDIO_EMPTY_AUDIO,
+                                 "decoded CTC audio is empty", path, -1);
         return false;
     }
 

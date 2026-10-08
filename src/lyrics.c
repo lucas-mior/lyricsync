@@ -55,13 +55,9 @@ lrc_lyrics_normalize_text(LrcLyrics *lyrics, char *file_text, int32 file_len,
     String normalized;
 
     if (!utf8_valid(file_text, file_len, &bad_offset)) {
-        lrc_lyrics_load_result_set(
-            result,
-            LS_ERROR_LYRICS_LOAD_INVALID_UTF8,
-            "lyrics file is not valid UTF-8",
-            path,
-            bad_offset
-        );
+        lrc_lyrics_load_result_set(result, LS_ERROR_LYRICS_LOAD_INVALID_UTF8,
+                                   "lyrics file is not valid UTF-8", path,
+                                   bad_offset);
         return false;
     }
 
@@ -173,36 +169,21 @@ lrc_lyrics_load_file(LrcLyrics *lyrics, char *path,
         lrc_lyrics_load_result_init(result);
     }
     if (lyrics == NULL) {
-        lrc_lyrics_load_result_set(
-            result,
-            LS_ERROR_LYRICS_LOAD_INVALID_ARGUMENT,
-            "lyrics object is missing",
-            path,
-            -1
-        );
+        lrc_lyrics_load_result_set(result, LS_ERROR_LYRICS_LOAD_INVALID_ARGUMENT,
+                                   "lyrics object is missing", path, -1);
         return false;
     }
     if (path_missing(path)) {
-        lrc_lyrics_load_result_set(
-            result,
-            LS_ERROR_LYRICS_LOAD_MISSING_PATH,
-            "lyrics path is missing",
-            path,
-            -1
-        );
+        lrc_lyrics_load_result_set(result, LS_ERROR_LYRICS_LOAD_MISSING_PATH,
+                                   "lyrics path is missing", path, -1);
         return false;
     }
 
     lrc_lyrics_destroy(lyrics);
     file_text = NULL;
     if ((file_len = read_entire_file(path, &file_text)) < 0) {
-        lrc_lyrics_load_result_set(
-            result,
-            LS_ERROR_LYRICS_LOAD_READ_FAILED,
-            "could not read lyrics file",
-            path,
-            -1
-        );
+        lrc_lyrics_load_result_set(result, LS_ERROR_LYRICS_LOAD_READ_FAILED,
+                                   "could not read lyrics file", path, -1);
         return false;
     }
     if (!lrc_lyrics_normalize_text(lyrics, file_text, file_len, result, path)) {
@@ -213,24 +194,14 @@ lrc_lyrics_load_file(LrcLyrics *lyrics, char *path,
     free2(file_text, ((int64)file_len + 1)*SIZEOF(*file_text));
 
     if (!lrc_lyrics_split_lines(lyrics)) {
-        lrc_lyrics_load_result_set(
-            result,
-            LS_ERROR_LYRICS_LOAD_FILE_TOO_LARGE,
-            "lyrics file has too many lines",
-            path,
-            -1
-        );
+        lrc_lyrics_load_result_set(result, LS_ERROR_LYRICS_LOAD_FILE_TOO_LARGE,
+                                   "lyrics file has too many lines", path, -1);
         lrc_lyrics_destroy(lyrics);
         return false;
     }
     if (lyrics->nonempty_line_count <= 0) {
-        lrc_lyrics_load_result_set(
-            result,
-            LS_ERROR_LYRICS_LOAD_EMPTY,
-            "lyrics file is empty",
-            path,
-            -1
-        );
+        lrc_lyrics_load_result_set(result, LS_ERROR_LYRICS_LOAD_EMPTY,
+                                   "lyrics file is empty", path, -1);
         lrc_lyrics_destroy(lyrics);
         return false;
     }
@@ -456,11 +427,8 @@ lyrics_test_normalize_punctuation_sections_and_mapping(void) {
     ASSERT_EQ(normalized.alignable_line_count, 2);
     ASSERT_EQ(normalized.line_count, lyrics.line_count);
     lyrics_test_assert_line_range(&normalized, 0, 0, 11);
-    lyrics_test_assert_no_line_range(
-        &normalized,
-        1,
-        LRC_LYRICS_NORMALIZED_LINE_KIND_SECTION_MARKER
-    );
+    lyrics_test_assert_no_line_range(&normalized, 1,
+        LRC_LYRICS_NORMALIZED_LINE_KIND_SECTION_MARKER);
     lyrics_test_assert_line_range(&normalized, 2, 12, 31);
     ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 0));
     ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 10));
@@ -501,16 +469,10 @@ lyrics_test_normalize_unicode_and_blank_lines(void) {
     ASSERT_EQ(normalized.alignable_line_count, 2);
     ASSERT_EQ(normalized.line_count, lyrics.line_count);
     lyrics_test_assert_line_range(&normalized, 0, 0, 11);
-    lyrics_test_assert_no_line_range(
-        &normalized,
-        1,
-        LRC_LYRICS_NORMALIZED_LINE_KIND_BLANK
-    );
-    lyrics_test_assert_no_line_range(
-        &normalized,
-        2,
-        LRC_LYRICS_NORMALIZED_LINE_KIND_SECTION_MARKER
-    );
+    lyrics_test_assert_no_line_range(&normalized, 1,
+                                     LRC_LYRICS_NORMALIZED_LINE_KIND_BLANK);
+    lyrics_test_assert_no_line_range(&normalized, 2,
+        LRC_LYRICS_NORMALIZED_LINE_KIND_SECTION_MARKER);
     lyrics_test_assert_line_range(&normalized, 3, 12, 17);
     ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 0));
     ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 3));
@@ -547,16 +509,10 @@ lyrics_test_normalized_ranges_blank_punctuation_repeated(void) {
     ASSERT_EQ(normalized.line_count, 4);
     ASSERT_EQ(normalized.alignable_line_count, 2);
     lyrics_test_assert_line_range(&normalized, 0, 0, 6);
-    lyrics_test_assert_no_line_range(
-        &normalized,
-        1,
-        LRC_LYRICS_NORMALIZED_LINE_KIND_BLANK
-    );
-    lyrics_test_assert_no_line_range(
-        &normalized,
-        2,
-        LRC_LYRICS_NORMALIZED_LINE_KIND_PUNCTUATION_ONLY
-    );
+    lyrics_test_assert_no_line_range(&normalized, 1,
+                                     LRC_LYRICS_NORMALIZED_LINE_KIND_BLANK);
+    lyrics_test_assert_no_line_range(&normalized, 2,
+        LRC_LYRICS_NORMALIZED_LINE_KIND_PUNCTUATION_ONLY);
     lyrics_test_assert_line_range(&normalized, 3, 7, 13);
     ASSERT_EQ(lrc_lyrics_normalized_line_at(&normalized, 6), 3);
     ASSERT_EQ(lrc_lyrics_normalized_line_at(&normalized, 7), 3);
@@ -651,8 +607,7 @@ lyrics_test_optional_maxwell_txt(void) {
             fatal(lyrics_test_fail("normalize maxwell lyrics"));
         }
 
-        ASSERT_EQ(
-            normalized.text,
+        ASSERT_EQ(normalized.text,
             "can i take you out to the pictures joan "
             "but as shes getting ready to go "
             "a knock comes on the door "
@@ -663,11 +618,8 @@ lyrics_test_optional_maxwell_txt(void) {
         lyrics_test_assert_line_range(&normalized, 0, 0, 39);
         lyrics_test_assert_line_range(&normalized, 1, 40, 71);
         lyrics_test_assert_line_range(&normalized, 2, 72, 97);
-        lyrics_test_assert_no_line_range(
-            &normalized,
-            3,
-            LRC_LYRICS_NORMALIZED_LINE_KIND_BLANK
-        );
+        lyrics_test_assert_no_line_range(&normalized, 3,
+                                         LRC_LYRICS_NORMALIZED_LINE_KIND_BLANK);
         lyrics_test_assert_line_range(&normalized, 4, 98, 130);
         lyrics_test_assert_line_range(&normalized, 5, 131, 154);
         ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 0));
