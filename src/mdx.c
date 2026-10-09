@@ -65,18 +65,17 @@ mdx_config_prepare(MdxConfig *config) {
         return false;
     }
     if (config->sample_rate != 44100) {
-        error2("MDX sample rate must be 44100, got %d\n",
-                config->sample_rate);
+        error2("MDX sample rate must be 44100, got %d\n", config->sample_rate);
         return false;
     }
     if (config->channel_count != 2) {
         error2("MDX audio channel count must be 2, got %d\n",
-                config->channel_count);
+               config->channel_count);
         return false;
     }
     if (config->dim_c != 4) {
         error2("MDX spectrogram channel count must be 4, got %d\n",
-                config->dim_c);
+               config->dim_c);
         return false;
     }
     if (config->n_fft <= 0) {
@@ -84,8 +83,7 @@ mdx_config_prepare(MdxConfig *config) {
         return false;
     }
     if ((config->n_fft & 1) != 0) {
-        error2("MDX n_fft must be even, got %d\n",
-                config->n_fft);
+        error2("MDX n_fft must be even, got %d\n", config->n_fft);
         return false;
     }
     if (config->hop <= 0) {
@@ -94,8 +92,8 @@ mdx_config_prepare(MdxConfig *config) {
     }
     if (config->hop > config->n_fft) {
         error2("MDX hop must not exceed n_fft, got %d/%d\n",
-                config->hop,
-                config->n_fft);
+               config->hop,
+               config->n_fft);
         return false;
     }
     if (config->dim_f <= 0) {
@@ -103,8 +101,7 @@ mdx_config_prepare(MdxConfig *config) {
         return false;
     }
     if (config->dim_t <= 1) {
-        error2("MDX dim_t must be greater than 1, got %d\n",
-                config->dim_t);
+        error2("MDX dim_t must be greater than 1, got %d\n", config->dim_t);
         return false;
     }
     if (config->chunk_seconds <= 0) {
@@ -122,9 +119,7 @@ mdx_config_prepare(MdxConfig *config) {
 
     max_dim_f = config->n_fft/2 + 1;
     if (config->dim_f > max_dim_f) {
-        error2("MDX dim_f=%d exceeds STFT bins=%d\n",
-                config->dim_f,
-                max_dim_f);
+        error2("MDX dim_f=%d exceeds STFT bins=%d\n", config->dim_f, max_dim_f);
         return false;
     }
     if ((config->dim_t - 1) > INT32_MAX/config->hop) {
@@ -606,10 +601,11 @@ mdx_process_song_with_progress(MdxConfig *config, StftPlan *stft_plan,
                 int64 window_index = (int64)config->trim + i;
 
                 output->left[output_index] = mdx_output_sample(config,
-                    input->left[output_index], window_output_left[window_index]);
+                                                               input->left[output_index],
+                                                               window_output_left[window_index]);
                 output->right[output_index] = mdx_output_sample(config,
-                    input->right[output_index],
-                    window_output_right[window_index]);
+                                                                input->right[output_index],
+                                                                window_output_right[window_index]);
             }
 
             ort_tensor_destroy(ort_context, &output_tensor);
@@ -627,10 +623,8 @@ cleanup:
     free2(input_data, tensor_len*SIZEOF(*input_data));
     free2(window_left, config->chunk_size*SIZEOF(*window_left));
     free2(window_right, config->chunk_size*SIZEOF(*window_right));
-    free2(window_output_left,
-          config->chunk_size*SIZEOF(*window_output_left));
-    free2(window_output_right,
-          config->chunk_size*SIZEOF(*window_output_right));
+    free2(window_output_left, config->chunk_size*SIZEOF(*window_output_left));
+    free2(window_output_right, config->chunk_size*SIZEOF(*window_output_right));
     if (result) {
         lrc_progress_finish(&progress);
     } else {
@@ -672,12 +666,12 @@ mdx_model_inspect(MdxModelInfo *info, MdxConfig *config, OrtModel *model) {
     }
     if (input_info.shape_len != 4) {
         error2("MDX model input rank must be 4, got %d\n",
-                input_info.shape_len);
+               input_info.shape_len);
         return false;
     }
     if (output_info.shape_len != 4) {
         error2("MDX model output rank must be 4, got %d\n",
-                output_info.shape_len);
+               output_info.shape_len);
         return false;
     }
 
@@ -691,25 +685,23 @@ mdx_model_inspect(MdxModelInfo *info, MdxConfig *config, OrtModel *model) {
     output_dim_t = output_info.shape[3];
 
     if ((input_batch > 0) && (input_batch != 1)) {
-        error2("MDX model input batch must be 1, got %lld\n",
-                input_batch);
+        error2("MDX model input batch must be 1, got %lld\n", input_batch);
         return false;
     }
     if ((output_batch > 0) && (output_batch != 1)) {
-        error2("MDX model output batch must be 1, got %lld\n",
-                output_batch);
+        error2("MDX model output batch must be 1, got %lld\n", output_batch);
         return false;
     }
     if ((input_channels > 0) && (input_channels != config->dim_c)) {
         error2("MDX model input channels must be %d, got %lld\n",
-                config->dim_c,
-                input_channels);
+               config->dim_c,
+               input_channels);
         return false;
     }
     if ((output_channels > 0) && (output_channels != config->dim_c)) {
         error2("MDX model output channels must be %d, got %lld\n",
-                config->dim_c,
-                output_channels);
+               config->dim_c,
+               output_channels);
         return false;
     }
 
@@ -725,8 +717,8 @@ mdx_model_inspect(MdxModelInfo *info, MdxConfig *config, OrtModel *model) {
     if (input_dim_f > 0) {
         if ((config->dim_f > 0) && (config->dim_f != input_dim_f)) {
             error2("--dim-f=%d does not match model dim_f=%lld\n",
-                    config->dim_f,
-                    input_dim_f);
+                   config->dim_f,
+                   input_dim_f);
             return false;
         }
         config->dim_f = (int32)input_dim_f;
@@ -734,8 +726,8 @@ mdx_model_inspect(MdxModelInfo *info, MdxConfig *config, OrtModel *model) {
     if (input_dim_t > 0) {
         if ((config->dim_t > 0) && (config->dim_t != input_dim_t)) {
             error2("--dim-t=%d does not match model dim_t=%lld\n",
-                    config->dim_t,
-                    input_dim_t);
+                   config->dim_t,
+                   input_dim_t);
             return false;
         }
         config->dim_t = (int32)input_dim_t;

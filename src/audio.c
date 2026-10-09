@@ -194,9 +194,7 @@ audio_read_file_format(AudioBuffer *audio, char *path, AudioIoFormat *format,
     for (int64 i = 0; i < audio->frame_count; i += 1) {
         int64 frame_offset = frame_bytes*i;
 
-        memcpy64(&audio->left[i],
-                 raw + frame_offset,
-                 SIZEOF(*audio->left));
+        memcpy64(&audio->left[i], raw + frame_offset, SIZEOF(*audio->left));
         if (audio->channel_count == 2) {
             memcpy64(&audio->right[i],
                      raw + frame_offset + SIZEOF(*audio->left),
@@ -1067,21 +1065,21 @@ audio_compare_result_print(AudioCompareResult *result, char *name) {
         "actual_frames=%lld delta=%lld compared_frames=%lld "
         "offset=%lld max_abs=%g rms=%g snr_db=%.2f "
         "expected_peak=%g actual_peak=%g nan=%lld inf=%lld\n",
-        label,
-        result->passed,
-        mode,
-        result->expected_frames,
-        result->actual_frames,
-        result->length_delta_frames,
-        result->compared_frames,
-        result->best_offset_frames,
-        (double)result->max_abs_error,
-        (double)result->rms_error,
-        result->snr_db,
-        (double)result->expected_peak,
-        (double)result->actual_peak,
-        result->nan_samples,
-        result->infinite_samples);
+           label,
+           result->passed,
+           mode,
+           result->expected_frames,
+           result->actual_frames,
+           result->length_delta_frames,
+           result->compared_frames,
+           result->best_offset_frames,
+           (double)result->max_abs_error,
+           (double)result->rms_error,
+           result->snr_db,
+           (double)result->expected_peak,
+           (double)result->actual_peak,
+           result->nan_samples,
+           result->infinite_samples);
 
     return;
 }
@@ -1202,18 +1200,15 @@ audio_test_compare_helpers(void) {
     audio_compare_options_init(&options);
     options.mode = AUDIO_COMPARE_MODE_STRICT;
     if (!audio_compare_reconstruction_buffers(&result,
-                                               &mixture,
-                                               &stem_a,
-                                               &stem_b,
-                                               &options)) {
+                                              &mixture,
+                                              &stem_a,
+                                              &stem_b,
+                                              &options)) {
         audio_compare_result_print(&result, "reconstruction");
         fatal(audio_test_fail("reconstruction compare"));
     }
 
-    audio_test_buffer(&actual,
-                      actual_left,
-                      actual_right,
-                      LENGTH(actual_left));
+    audio_test_buffer(&actual, actual_left, actual_right, LENGTH(actual_left));
     audio_compare_options_init(&options);
     options.mode = AUDIO_COMPARE_MODE_SNR;
     options.min_snr_db = 200.0;

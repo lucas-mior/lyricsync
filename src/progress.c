@@ -116,9 +116,9 @@ lrc_progress_write_bar(LrcProgress *progress, int32 percent, int32 filled) {
     }
 
     fprintf(stderr, "%-*.*s [",
-            LRC_PROGRESS_LABEL_WIDTH,
-            LRC_PROGRESS_LABEL_WIDTH,
-            label);
+                    LRC_PROGRESS_LABEL_WIDTH,
+                    LRC_PROGRESS_LABEL_WIDTH,
+                    label);
     for (int32 i = 0; i < progress->width; i += 1) {
         if (i < filled) {
             fputc('#', stderr);

@@ -45,8 +45,7 @@ lrc_ctc_emissions_destroy(LrcCtcEmissions *emissions) {
         return;
     }
 
-    free2(emissions->values,
-          emissions->value_count*SIZEOF(*emissions->values));
+    free2(emissions->values, emissions->value_count*SIZEOF(*emissions->values));
 
     memset64(emissions, 0, SIZEOF(*emissions));
 
@@ -128,8 +127,9 @@ lrc_ctc_emissions_values_valid(float *values, int64 value_count,
     for (int64 i = 0; i < value_count; i += 1) {
         if (!isfinite((double)values[i])) {
             lrc_ctc_inference_result_set(result,
-                LS_ERROR_CTC_INFERENCE_NON_FINITE_OUTPUT,
-                "CTC emissions contain a non-finite value",
+                                         LS_ERROR_CTC_INFERENCE_NON_FINITE_OUTPUT,
+                                         "CTC emissions contain "
+                                         "a non-finite value",
                                          i);
             return false;
         }
@@ -154,7 +154,8 @@ lrc_ctc_emissions_copy_shape(LrcCtcEmissions *emissions, float *values,
     if (emissions == NULL) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT,
-            "CTC emissions destination is missing", -1);
+                                     "CTC emissions destination is missing",
+                                     -1);
         return false;
     }
 
@@ -172,7 +173,8 @@ lrc_ctc_emissions_copy_shape(LrcCtcEmissions *emissions, float *values,
     if (value_count != expected_count) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
-            "CTC emissions value count does not match shape",
+                                     "CTC emissions value count "
+                                     "does not match shape",
                                      -1);
         return false;
     }
@@ -208,7 +210,8 @@ lrc_ctc_emissions_value_count(int64 emission_count, int64 vocabulary_size,
     if (value_count == NULL) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT,
-            "CTC trimmed emission value count destination is missing",
+                                     "CTC trimmed emission value "
+                                     "count destination is missing",
                                      -1);
         return false;
     }
@@ -216,14 +219,16 @@ lrc_ctc_emissions_value_count(int64 emission_count, int64 vocabulary_size,
     if ((emission_count <= 0) || (vocabulary_size <= 0)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
-            "CTC trimmed emissions have invalid dimensions",
+                                     "CTC trimmed emissions "
+                                     "have invalid dimensions",
                                      -1);
         return false;
     }
     if (emission_count > INT64_MAX/vocabulary_size) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_OUTPUT_TOO_LARGE,
-            "CTC trimmed emissions frame count is too large",
+                                     "CTC trimmed emissions "
+                                     "frame count is too large",
                                      -1);
         return false;
     }
@@ -247,14 +252,16 @@ lrc_ctc_emissions_input_chunks_ready(LrcCtcModelInput *input,
     if ((input == NULL) || (input->chunks == NULL)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_INPUT,
-            "CTC rank-3 emission trimming requires chunk metadata",
+                                     "CTC rank-3 emission trimming "
+                                     "requires chunk metadata",
                                      -1);
         return false;
     }
     if ((input->chunk_count <= 0) || (input->chunk_count != raw_chunk_count)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
-            "CTC rank-3 output chunk count does not match input metadata",
+                                     "CTC rank-3 output chunk count "
+                                     "does not match input metadata",
                                      -1);
         return false;
     }
@@ -283,7 +290,8 @@ lrc_ctc_emissions_output_frame_count(LrcCtcModelInput *input,
     if (output_frame_count == NULL) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT,
-            "CTC trimmed output frame count destination is missing",
+                                     "CTC trimmed output frame "
+                                     "count destination is missing",
                                      -1);
         return false;
     }
@@ -291,7 +299,8 @@ lrc_ctc_emissions_output_frame_count(LrcCtcModelInput *input,
     if ((input == NULL) || (raw_chunk_emission_count <= 0)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT,
-            "CTC trimmed output frame count arguments are invalid",
+                                     "CTC trimmed output frame "
+                                     "count arguments are invalid",
                                      -1);
         return false;
     }
@@ -304,7 +313,8 @@ lrc_ctc_emissions_output_frame_count(LrcCtcModelInput *input,
     if (*output_frame_count <= 0) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
-            "CTC rank-3 output trimming produced no frames",
+                                     "CTC rank-3 output trimming "
+                                     "produced no frames",
                                      -1);
         return false;
     }
@@ -325,7 +335,8 @@ lrc_ctc_emissions_chunk_trim_range(LrcCtcModelInput *input,
         || (kept_count == NULL)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_INPUT,
-            "CTC input chunk metadata entry is missing",
+                                     "CTC input chunk metadata "
+                                     "entry is missing",
                                      chunk_index);
         return false;
     }
@@ -334,7 +345,8 @@ lrc_ctc_emissions_chunk_trim_range(LrcCtcModelInput *input,
     if (raw_chunk_emission_count <= 0) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
-            "CTC rank-3 output chunk has invalid frame count",
+                                     "CTC rank-3 output chunk "
+                                     "has invalid frame count",
                                      chunk_index);
         return false;
     }
@@ -351,7 +363,8 @@ lrc_ctc_emissions_chunk_trim_range(LrcCtcModelInput *input,
         || (count > raw_chunk_emission_count - offset)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
-            "CTC rank-3 output is too short for input chunk trimming",
+                                     "CTC rank-3 output is too "
+                                     "short for input chunk trimming",
                                      chunk_index);
         return false;
     }
@@ -392,19 +405,21 @@ lrc_ctc_emissions_copy_rank3_trimmed(LrcCtcEmissions *emissions,
     if (value_count != raw_value_count) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
-            "CTC rank-3 output value count does not match shape",
+                                     "CTC rank-3 output value "
+                                     "count does not match shape",
                                      -1);
         return false;
     }
     if (values == NULL) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
-            "CTC rank-3 output values are missing", -1);
+                                     "CTC rank-3 output values are missing",
+                                     -1);
         return false;
     }
     if (!lrc_ctc_emissions_input_chunks_ready(input,
-                                             raw_chunk_count,
-                                             result)) {
+                                              raw_chunk_count,
+                                              result)) {
         return false;
     }
     if (!lrc_ctc_emissions_output_frame_count(input,
@@ -467,7 +482,8 @@ lrc_ctc_emissions_copy_rank3_trimmed(LrcCtcEmissions *emissions,
     if (kept_frame != output_frame_count) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
-            "CTC rank-3 output trimming produced too few frames",
+                                     "CTC rank-3 output trimming "
+                                     "produced too few frames",
                                      kept_frame);
         lrc_progress_cancel(&progress);
         free2(emissions->values,
@@ -508,7 +524,8 @@ lrc_ctc_emissions_copy_model_output(LrcCtcEmissions *emissions,
     if (emissions == NULL) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT,
-            "CTC emissions destination is missing", -1);
+                                     "CTC emissions destination is missing",
+                                     -1);
         return false;
     }
 
@@ -532,7 +549,8 @@ lrc_ctc_emissions_copy_model_output(LrcCtcEmissions *emissions,
     }
 
     lrc_ctc_inference_result_set(result, LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
-        "CTC emissions must have rank 2 or rank 3", -1);
+                                 "CTC emissions must have rank 2 or rank 3",
+                                 -1);
     return false;
 }
 
@@ -565,7 +583,8 @@ lrc_ctc_emissions_ready(LrcCtcEmissions *emissions,
         != emissions->frame_count*emissions->vocabulary_size) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
-            "CTC emissions value count does not match dimensions",
+                                     "CTC emissions value count "
+                                     "does not match dimensions",
                                      -1);
         return false;
     }
@@ -584,7 +603,8 @@ lrc_ctc_emissions_log_softmax_row(float *row, int64 vocabulary_size,
     if ((row == NULL) || (vocabulary_size <= 0)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT,
-            "CTC log-softmax row arguments are invalid",
+                                     "CTC log-softmax row "
+                                     "arguments are invalid",
                                      row_offset);
         return false;
     }
@@ -603,7 +623,8 @@ lrc_ctc_emissions_log_softmax_row(float *row, int64 vocabulary_size,
     if (!isfinite(sum) || (sum <= 0.0)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_PROBABILITY,
-            "CTC log-softmax row has invalid normalizer",
+                                     "CTC log-softmax row "
+                                     "has invalid normalizer",
                                      row_offset);
         return false;
     }
@@ -623,7 +644,8 @@ lrc_ctc_emissions_log_probabilities_from_probabilities_row(
     if ((row == NULL) || (vocabulary_size <= 0)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT,
-            "CTC probability row arguments are invalid",
+                                     "CTC probability row "
+                                     "arguments are invalid",
                                      row_offset);
         return false;
     }
@@ -631,8 +653,9 @@ lrc_ctc_emissions_log_probabilities_from_probabilities_row(
     for (int64 i = 0; i < vocabulary_size; i += 1) {
         if (!isfinite((double)row[i]) || (row[i] <= 0.0f)) {
             lrc_ctc_inference_result_set(result,
-                LS_ERROR_CTC_INFERENCE_INVALID_PROBABILITY,
-                "CTC probabilities must be finite and positive",
+                                         LS_ERROR_CTC_INFERENCE_INVALID_PROBABILITY,
+                                         "CTC probabilities must "
+                                         "be finite and positive",
                                          row_offset + i);
             return false;
         }
@@ -664,7 +687,8 @@ lrc_ctc_emissions_convert_to_log_probabilities(
             int64 offset = frame*emissions->vocabulary_size;
 
             if (!lrc_ctc_emissions_log_softmax_row(emissions->values + offset,
-                emissions->vocabulary_size, offset, result)) {
+                                                   emissions->vocabulary_size,
+                                                   offset, result)) {
                 return false;
             }
         }
@@ -674,7 +698,9 @@ lrc_ctc_emissions_convert_to_log_probabilities(
             int64 offset = frame*emissions->vocabulary_size;
 
             if (!lrc_ctc_emissions_log_probabilities_from_probabilities_row(emissions->values + offset,
-                emissions->vocabulary_size, offset, result)) {
+                                                                            emissions->vocabulary_size,
+                                                                            offset,
+                                                                            result)) {
                 return false;
             }
         }
@@ -727,7 +753,8 @@ lrc_ctc_inference_input_ready(LrcCtcModelInput *input,
         || (input->shape_len != LRC_CTC_MODEL_INPUT_RANK)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_INPUT,
-            "CTC inference input tensor is not prepared",
+                                     "CTC inference input "
+                                     "tensor is not prepared",
                                      -1);
         return false;
     }
@@ -746,7 +773,8 @@ lrc_ctc_inference_run(LrcCtcInferenceBackend *backend, LrcCtcModelInput *input,
         || (emissions == NULL)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT,
-            "CTC inference backend arguments are invalid",
+                                     "CTC inference backend "
+                                     "arguments are invalid",
                                      -1);
         return false;
     }
@@ -842,8 +870,13 @@ lrc_ctc_fake_inference_run(void *backend, LrcCtcModelInput *input,
     }
 
     return lrc_ctc_emissions_build_trimmed_from_model_output(emissions, input,
-        fake->values, fake->value_count, fake->shape, fake->shape_len,
-        values_kind, print_progress, result);
+                                                             fake->values,
+                                                             fake->value_count,
+                                                             fake->shape,
+                                                             fake->shape_len,
+                                                             values_kind,
+                                                             print_progress,
+                                                             result);
 }
 
 static void
@@ -951,7 +984,8 @@ lrc_ctc_onnx_chunk_output_shape(OrtTensor *output, int64 chunk_index,
         || (chunk_value_count == NULL)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT,
-            "CTC chunk output shape arguments are invalid",
+                                     "CTC chunk output shape "
+                                     "arguments are invalid",
                                      chunk_index);
         return false;
     }
@@ -970,7 +1004,8 @@ lrc_ctc_onnx_chunk_output_shape(OrtTensor *output, int64 chunk_index,
     } else {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
-            "CTC chunk output must have rank 2 or rank 3",
+                                     "CTC chunk output must "
+                                     "have rank 2 or rank 3",
                                      chunk_index);
         return false;
     }
@@ -995,7 +1030,8 @@ lrc_ctc_onnx_chunk_output_shape(OrtTensor *output, int64 chunk_index,
     if (output->data_len != value_count) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
-            "CTC chunk output value count does not match shape",
+                                     "CTC chunk output value "
+                                     "count does not match shape",
                                      chunk_index);
         return false;
     }
@@ -1018,7 +1054,8 @@ lrc_ctc_onnx_inference_load(LrcCtcOnnxInference *onnx, char *model_path,
     if ((onnx == NULL) || (model_path == NULL) || (model_path[0] == '\0')) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT,
-            "CTC ONNX inference load received invalid arguments",
+                                     "CTC ONNX inference load "
+                                     "received invalid arguments",
                                      -1);
         return false;
     }
@@ -1028,7 +1065,8 @@ lrc_ctc_onnx_inference_load(LrcCtcOnnxInference *onnx, char *model_path,
     if (!ort_context_init(&onnx->context)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_MODEL_LOAD_FAILED,
-            "could not initialize ONNX Runtime for CTC inference",
+                                     "could not initialize ONNX "
+                                     "Runtime for CTC inference",
                                      -1);
         return false;
     }
@@ -1051,7 +1089,8 @@ lrc_ctc_onnx_inference_load(LrcCtcOnnxInference *onnx, char *model_path,
     (void)session_config;
     lrc_ctc_inference_result_set(result,
                                  LS_ERROR_CTC_INFERENCE_BACKEND_UNAVAILABLE,
-        "CTC ONNX inference backend is not enabled in this build",
+                                 "CTC ONNX inference backend "
+                                 "is not enabled in this build",
                                  -1);
     return false;
 #endif
@@ -1079,7 +1118,8 @@ lrc_ctc_onnx_chunked_prepare_values(LrcCtcModelInput *input,
         || (chunk_value_count <= 0)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT,
-            "CTC chunked output allocation arguments are invalid",
+                                     "CTC chunked output allocation "
+                                     "arguments are invalid",
                                      -1);
         return false;
     }
@@ -1099,7 +1139,8 @@ lrc_ctc_onnx_chunked_prepare_values(LrcCtcModelInput *input,
     if (*value_count > INT64_MAX/SIZEOF(**values)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_OUTPUT_TOO_LARGE,
-            "CTC chunked output copy is too large", -1);
+                                     "CTC chunked output copy is too large",
+                                     -1);
         *value_count = 0;
         return false;
     }
@@ -1127,7 +1168,8 @@ lrc_ctc_onnx_run_one_chunk(LrcCtcOnnxInference *onnx, LrcCtcModelInput *input,
                                LRC_CTC_MODEL_INPUT_RANK)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_BACKEND_FAILED,
-            "could not create CTC ONNX chunk input tensor",
+                                     "could not create CTC "
+                                     "ONNX chunk input tensor",
                                      chunk_index);
         return false;
     }
@@ -1185,7 +1227,8 @@ lrc_ctc_onnx_chunked_copy_output(LrcCtcModelInput *input, OrtTensor *output,
                || (current_value_count != *chunk_value_count)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
-            "CTC chunk output shape changed between chunks",
+                                     "CTC chunk output shape "
+                                     "changed between chunks",
                                      chunk_index);
         return false;
     }
@@ -1259,8 +1302,12 @@ lrc_ctc_onnx_inference_run_chunked(LrcCtcOnnxInference *onnx,
         output_shape[1] = chunk_emission_count;
         output_shape[2] = vocabulary_size;
         ok = lrc_ctc_emissions_build_trimmed_from_model_output(emissions, input,
-            values, value_count, output_shape, 3, values_kind, print_progress,
-            result);
+                                                               values,
+                                                               value_count,
+                                                               output_shape,
+                                                               3, values_kind,
+                                                               print_progress,
+                                                               result);
     } else {
         lrc_progress_cancel(&progress);
     }
@@ -1298,7 +1345,8 @@ lrc_ctc_onnx_inference_run(void *backend, LrcCtcModelInput *input,
                                               &input_result)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_INPUT,
-            "CTC model input does not match ONNX model input",
+                                     "CTC model input does not "
+                                     "match ONNX model input",
                                      -1);
         return false;
     }
@@ -1339,8 +1387,13 @@ lrc_ctc_onnx_inference_run(void *backend, LrcCtcModelInput *input,
     if (ok) {
         lrc_progress_finish(&progress);
         ok = lrc_ctc_emissions_build_trimmed_from_model_output(emissions, input,
-            output_tensor.data, output_tensor.data_len, output_tensor.shape,
-            output_tensor.shape_len, values_kind, print_progress, result);
+                                                               output_tensor.data,
+                                                               output_tensor.data_len,
+                                                               output_tensor.shape,
+                                                               output_tensor.shape_len,
+                                                               values_kind,
+                                                               print_progress,
+                                                               result);
     } else {
         lrc_progress_cancel(&progress);
         lrc_ctc_inference_result_set(result,
@@ -1360,7 +1413,8 @@ lrc_ctc_onnx_inference_run(void *backend, LrcCtcModelInput *input,
     (void)print_progress;
     lrc_ctc_inference_result_set(result,
                                  LS_ERROR_CTC_INFERENCE_BACKEND_UNAVAILABLE,
-        "CTC ONNX inference backend is not enabled in this build",
+                                 "CTC ONNX inference backend "
+                                 "is not enabled in this build",
                                  -1);
     return false;
 #endif
@@ -2394,7 +2448,8 @@ ctc_inference_test_log_probability_bypass(void) {
         fatal(ctc_inference_test_fail("copy log-probability emissions"));
     }
     if (!lrc_ctc_emissions_convert_to_log_probabilities(&emissions,
-        LRC_CTC_EMISSION_VALUES_LOG_PROBABILITIES, &result)) {
+                                                        LRC_CTC_EMISSION_VALUES_LOG_PROBABILITIES,
+                                                        &result)) {
         fatal(ctc_inference_test_fail("bypass log probabilities"));
     }
 
@@ -2436,7 +2491,8 @@ ctc_inference_test_logits_to_log_probabilities(void) {
         fatal(ctc_inference_test_fail("copy logits emissions"));
     }
     if (!lrc_ctc_emissions_convert_to_log_probabilities(&emissions,
-        LRC_CTC_EMISSION_VALUES_LOGITS, &result)) {
+                                                        LRC_CTC_EMISSION_VALUES_LOGITS,
+                                                        &result)) {
         fatal(ctc_inference_test_fail("convert logits to log probabilities"));
     }
 
@@ -2488,7 +2544,8 @@ ctc_inference_test_probabilities_to_log_probabilities(void) {
         fatal(ctc_inference_test_fail("copy probability emissions"));
     }
     if (!lrc_ctc_emissions_convert_to_log_probabilities(&emissions,
-        LRC_CTC_EMISSION_VALUES_PROBABILITIES, &result)) {
+                                                        LRC_CTC_EMISSION_VALUES_PROBABILITIES,
+                                                        &result)) {
         fatal(ctc_inference_test_fail("convert probabilities"));
     }
 
@@ -2529,7 +2586,8 @@ ctc_inference_test_rejects_invalid_probability_conversion(void) {
         fatal(ctc_inference_test_fail("copy invalid probabilities"));
     }
     if (lrc_ctc_emissions_convert_to_log_probabilities(&emissions,
-        LRC_CTC_EMISSION_VALUES_PROBABILITIES, &result)) {
+                                                       LRC_CTC_EMISSION_VALUES_PROBABILITIES,
+                                                       &result)) {
         fatal(ctc_inference_test_fail("zero probability accepted"));
     }
     ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_INVALID_PROBABILITY);
@@ -2545,7 +2603,8 @@ ctc_inference_test_rejects_invalid_probability_conversion(void) {
         fatal(ctc_inference_test_fail("copy valid probabilities"));
     }
     if (lrc_ctc_emissions_convert_to_log_probabilities(&emissions,
-        (enum LrcCtcEmissionValuesKind)777, &result)) {
+                                                       (enum LrcCtcEmissionValuesKind)777,
+                                                       &result)) {
         fatal(ctc_inference_test_fail("invalid value kind accepted"));
     }
     ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT);
@@ -2572,9 +2631,9 @@ ctc_inference_test_optional_onnx_backend(void) {
 
     ctc_inference_make_input(&input);
     if (!lrc_ctc_onnx_inference_load(&onnx,
-                                      model_path,
-                                      NULL,
-                                      &result)) {
+                                     model_path,
+                                     NULL,
+                                     &result)) {
         fatal(ctc_inference_test_fail("load optional ONNX CTC model"));
     }
     lrc_ctc_onnx_inference_backend(&onnx, &backend);
@@ -2593,9 +2652,9 @@ ctc_inference_test_optional_onnx_backend(void) {
     LrcCtcOnnxInference onnx = {0};
 
     if (lrc_ctc_onnx_inference_load(&onnx,
-                                     "missing.onnx",
-                                     NULL,
-                                     &result)) {
+                                    "missing.onnx",
+                                    NULL,
+                                    &result)) {
         fatal(ctc_inference_test_fail("disabled ONNX backend loaded"));
     }
     ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_BACKEND_UNAVAILABLE);

@@ -85,14 +85,14 @@ vocals_print_model_info(MdxModelInfo *info, MdxConfig *config) {
            info->channel_count, info->dim_f, info->dim_t);
     error2("MDX config: sample_rate=%d channels=%d dim_c=%d n_fft=%d "
         "hop=%d chunk_size=%d trim=%d gen_size=%d\n",
-        config->sample_rate,
-        config->channel_count,
-        config->dim_c,
-        config->n_fft,
-        config->hop,
-        config->chunk_size,
-        config->trim,
-        config->gen_size);
+           config->sample_rate,
+           config->channel_count,
+           config->dim_c,
+           config->n_fft,
+           config->hop,
+           config->chunk_size,
+           config->trim,
+           config->gen_size);
 
     return;
 }
@@ -113,7 +113,8 @@ vocals_request_valid(LrcVocalsExtractRequest *request,
         return false;
     }
     if (path_missing(request->output_path)) {
-        vocals_extract_result_set(result, LS_ERROR_VOCALS_EXTRACT_MISSING_OUTPUT,
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_MISSING_OUTPUT,
                                   "output vocals path is missing",
                                   request->output_path);
         return false;
@@ -132,7 +133,8 @@ vocals_request_valid(LrcVocalsExtractRequest *request,
         return false;
     }
     if (path_missing(request->ffmpeg_path)) {
-        vocals_extract_result_set(result, LS_ERROR_VOCALS_EXTRACT_MISSING_FFMPEG,
+        vocals_extract_result_set(result,
+                                  LS_ERROR_VOCALS_EXTRACT_MISSING_FFMPEG,
                                   "FFmpeg executable path is missing",
                                   request->ffmpeg_path);
         return false;
@@ -277,7 +279,8 @@ vocals_extract_audio(AudioBuffer *output_audio, char *input_path,
     if ((output_audio == NULL) || (input_path == NULL) || (config == NULL)) {
         vocals_extract_result_set(result,
                                   LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT,
-            "vocals extraction received invalid arguments",
+                                  "vocals extraction "
+                                  "received invalid arguments",
                                   NULL);
         return false;
     }
@@ -325,12 +328,12 @@ vocals_extract_audio(AudioBuffer *output_audio, char *input_path,
     lrc_progress_finish(&progress);
 
     if (!mdx_process_song_with_progress(&mdx_config,
-                                         &stft_plan,
-                                         &ort_context,
-                                         &ort_model,
-                                         &input_audio,
-                                         output_audio,
-                                         config->print_info)) {
+                                        &stft_plan,
+                                        &ort_context,
+                                        &ort_model,
+                                        &input_audio,
+                                        output_audio,
+                                        config->print_info)) {
         vocals_extract_result_set(result,
                                   LS_ERROR_VOCALS_EXTRACT_MDX_PROCESS_FAILED,
                                   "could not process audio through MDX model",
@@ -570,7 +573,8 @@ vocals_test_optional_real_extraction(void) {
     request.mdx_config.margin_seconds = 0;
 
     if (!lrc_extract_vocals(&request, &result)) {
-        error2("optional extraction failed: %s\n", result.path_header.header.message);
+        error2("optional extraction failed: %s\n",
+               result.path_header.header.message);
         test_remove_tree(temp_dir);
         fatal(vocals_test_fail("optional real extraction"));
     }

@@ -92,14 +92,15 @@ lrc_ctc_model_config_prepare(LrcCtcModelConfig *config, int64 *window_samples,
                              LrcCtcModelInputResult *result) {
     if (config == NULL) {
         lrc_ctc_model_input_result_set(result,
-            LS_ERROR_CTC_MODEL_INPUT_INVALID_ARGUMENT,
-            "CTC model input configuration is missing",
+                                       LS_ERROR_CTC_MODEL_INPUT_INVALID_ARGUMENT,
+                                       "CTC model input "
+                                       "configuration is missing",
                                        -1);
         return false;
     }
     if (config->sample_rate <= 0) {
         lrc_ctc_model_input_result_set(result,
-            LS_ERROR_CTC_MODEL_INPUT_INVALID_SAMPLE_RATE,
+                                       LS_ERROR_CTC_MODEL_INPUT_INVALID_SAMPLE_RATE,
                                        "CTC model input sample rate is invalid",
                                        -1);
         return false;
@@ -107,7 +108,8 @@ lrc_ctc_model_config_prepare(LrcCtcModelConfig *config, int64 *window_samples,
     if (config->inputs_to_logits_ratio <= 0) {
         lrc_ctc_model_input_result_set(result,
                                        LS_ERROR_CTC_MODEL_INPUT_INVALID_RATIO,
-            "CTC model input stride ratio is invalid",
+                                       "CTC model input stride "
+                                       "ratio is invalid",
                                        -1);
         return false;
     }
@@ -125,20 +127,23 @@ lrc_ctc_model_config_prepare(LrcCtcModelConfig *config, int64 *window_samples,
                                           context_samples)) {
         lrc_ctc_model_input_result_set(result,
                                        LS_ERROR_CTC_MODEL_INPUT_INVALID_CONTEXT,
-            "CTC model input context is invalid", -1);
+                                       "CTC model input context is invalid",
+                                       -1);
         return false;
     }
     if ((*window_samples % config->inputs_to_logits_ratio) != 0) {
         lrc_ctc_model_input_result_set(result,
                                        LS_ERROR_CTC_MODEL_INPUT_INVALID_WINDOW,
-            "CTC model input window is not aligned to model stride",
+                                       "CTC model input window is "
+                                       "not aligned to model stride",
                                        -1);
         return false;
     }
     if ((*context_samples % config->inputs_to_logits_ratio) != 0) {
         lrc_ctc_model_input_result_set(result,
                                        LS_ERROR_CTC_MODEL_INPUT_INVALID_CONTEXT,
-            "CTC model input context is not aligned to model stride",
+                                       "CTC model input context is "
+                                       "not aligned to model stride",
                                        -1);
         return false;
     }
@@ -151,14 +156,15 @@ lrc_ctc_model_audio_valid(LrcCtcAudio *audio, LrcCtcModelConfig *config,
                           LrcCtcModelInputResult *result) {
     if (audio == NULL) {
         lrc_ctc_model_input_result_set(result,
-            LS_ERROR_CTC_MODEL_INPUT_INVALID_ARGUMENT,
+                                       LS_ERROR_CTC_MODEL_INPUT_INVALID_ARGUMENT,
                                        "CTC model input audio is missing", -1);
         return false;
     }
     if (audio->sample_rate != config->sample_rate) {
         lrc_ctc_model_input_result_set(result,
-            LS_ERROR_CTC_MODEL_INPUT_AUDIO_SAMPLE_RATE,
-            "CTC model input audio sample rate does not match config",
+                                       LS_ERROR_CTC_MODEL_INPUT_AUDIO_SAMPLE_RATE,
+                                       "CTC model input audio sample "
+                                       "rate does not match config",
                                        -1);
         return false;
     }
@@ -172,8 +178,9 @@ lrc_ctc_model_audio_valid(LrcCtcAudio *audio, LrcCtcModelConfig *config,
     for (int64 i = 0; i < audio->sample_count; i += 1) {
         if (!isfinite((double)audio->samples[i])) {
             lrc_ctc_model_input_result_set(result,
-                LS_ERROR_CTC_MODEL_INPUT_NON_FINITE_SAMPLE,
-                "CTC model input audio contains a non-finite sample",
+                                           LS_ERROR_CTC_MODEL_INPUT_NON_FINITE_SAMPLE,
+                                           "CTC model input audio "
+                                           "contains a non-finite sample",
                                            i);
             return false;
         }
@@ -315,15 +322,16 @@ lrc_ctc_model_input_allocate(LrcCtcModelInput *input,
     }
     if (input->sample_count > INT64_MAX/SIZEOF(*input->samples)) {
         lrc_ctc_model_input_result_set(result,
-            LS_ERROR_CTC_MODEL_INPUT_TOO_MANY_SAMPLES,
+                                       LS_ERROR_CTC_MODEL_INPUT_TOO_MANY_SAMPLES,
                                        "CTC model input tensor is too large",
                                        -1);
         return false;
     }
     if (input->chunk_count > INT64_MAX/SIZEOF(*input->chunks)) {
         lrc_ctc_model_input_result_set(result,
-            LS_ERROR_CTC_MODEL_INPUT_TOO_MANY_SAMPLES,
-            "CTC model input chunk metadata is too large",
+                                       LS_ERROR_CTC_MODEL_INPUT_TOO_MANY_SAMPLES,
+                                       "CTC model input chunk "
+                                       "metadata is too large",
                                        -1);
         return false;
     }
@@ -376,11 +384,13 @@ lrc_ctc_model_input_prepare_emission_counts(LrcCtcModelInput *input) {
         return false;
     }
     if (!lrc_ctc_model_samples_to_emission_frames(input->original_sample_count,
-        input->inputs_to_logits_ratio, &input->original_emission_count)) {
+                                                  input->inputs_to_logits_ratio,
+                                                  &input->original_emission_count)) {
         return false;
     }
     if (!lrc_ctc_model_samples_to_emission_frames_floor(input->extension_sample_count,
-        input->inputs_to_logits_ratio, &extension_emissions)) {
+                                                        input->inputs_to_logits_ratio,
+                                                        &extension_emissions)) {
         return false;
     }
 
@@ -529,7 +539,7 @@ lrc_ctc_model_input_prepare(LrcCtcModelInput *input, LrcCtcAudio *audio,
     }
     if (input == NULL) {
         lrc_ctc_model_input_result_set(result,
-            LS_ERROR_CTC_MODEL_INPUT_INVALID_ARGUMENT,
+                                       LS_ERROR_CTC_MODEL_INPUT_INVALID_ARGUMENT,
                                        "CTC model input destination is missing",
                                        -1);
         return false;
@@ -565,12 +575,13 @@ lrc_ctc_model_input_prepare(LrcCtcModelInput *input, LrcCtcAudio *audio,
     if (audio->sample_count < window_samples) {
         lrc_ctc_model_input_shape_short(audio, input);
     } else if (!lrc_ctc_model_input_shape_chunked(audio,
-                                                 window_samples,
-                                                 context_samples,
-                                                 input)) {
+                                                  window_samples,
+                                                  context_samples,
+                                                  input)) {
         lrc_ctc_model_input_result_set(result,
-            LS_ERROR_CTC_MODEL_INPUT_TOO_MANY_SAMPLES,
-            "CTC model input tensor shape is too large",
+                                       LS_ERROR_CTC_MODEL_INPUT_TOO_MANY_SAMPLES,
+                                       "CTC model input tensor "
+                                       "shape is too large",
                                        -1);
         lrc_ctc_model_input_destroy(input);
         return false;
@@ -589,8 +600,9 @@ lrc_ctc_model_input_prepare(LrcCtcModelInput *input, LrcCtcAudio *audio,
 
     if (!lrc_ctc_model_input_prepare_chunk_metadata(input)) {
         lrc_ctc_model_input_result_set(result,
-            LS_ERROR_CTC_MODEL_INPUT_TOO_MANY_SAMPLES,
-            "CTC model input chunk metadata could not be prepared",
+                                       LS_ERROR_CTC_MODEL_INPUT_TOO_MANY_SAMPLES,
+                                       "CTC model input chunk "
+                                       "metadata could not be prepared",
                                        -1);
         lrc_ctc_model_input_destroy(input);
         return false;
@@ -621,8 +633,9 @@ lrc_ctc_model_input_validate_model_io(LrcCtcModelInput *input,
     }
     if ((input == NULL) || (info == NULL)) {
         lrc_ctc_model_input_result_set(result,
-            LS_ERROR_CTC_MODEL_INPUT_INVALID_ARGUMENT,
-            "CTC model input shape validation received invalid arguments",
+                                       LS_ERROR_CTC_MODEL_INPUT_INVALID_ARGUMENT,
+                                       "CTC model input shape validation "
+                                       "received invalid arguments",
                                        -1);
         return false;
     }
@@ -630,7 +643,7 @@ lrc_ctc_model_input_validate_model_io(LrcCtcModelInput *input,
         || (input->sample_count <= 0)
         || (input->samples == NULL)) {
         lrc_ctc_model_input_result_set(result,
-            LS_ERROR_CTC_MODEL_INPUT_INVALID_ARGUMENT,
+                                       LS_ERROR_CTC_MODEL_INPUT_INVALID_ARGUMENT,
                                        "CTC model input tensor is not prepared",
                                        -1);
         return false;
@@ -638,16 +651,18 @@ lrc_ctc_model_input_validate_model_io(LrcCtcModelInput *input,
     if ((info->count != 1) || (info->shape_len != LRC_CTC_MODEL_INPUT_RANK)
         || !info->is_float32) {
         lrc_ctc_model_input_result_set(result,
-            LS_ERROR_CTC_MODEL_INPUT_INVALID_MODEL_IO,
-            "CTC model input must be one rank-2 float tensor",
+                                       LS_ERROR_CTC_MODEL_INPUT_INVALID_MODEL_IO,
+                                       "CTC model input must be "
+                                       "one rank-2 float tensor",
                                        -1);
         return false;
     }
     if (!lrc_ctc_model_dim_matches(info->shape[0], input->shape[0])
         || !lrc_ctc_model_dim_matches(info->shape[1], input->shape[1])) {
         lrc_ctc_model_input_result_set(result,
-            LS_ERROR_CTC_MODEL_INPUT_INVALID_MODEL_IO,
-            "CTC model input shape does not match prepared tensor",
+                                       LS_ERROR_CTC_MODEL_INPUT_INVALID_MODEL_IO,
+                                       "CTC model input shape does "
+                                       "not match prepared tensor",
                                        -1);
         return false;
     }
@@ -1200,7 +1215,7 @@ ctc_model_test_prepares_maxwell_shaped_input(void) {
     lrc_ctc_audio_config_init(&audio_config);
     audio_config.sample_rate = 16000;
     if (!lrc_ctc_audio_decode_file(&audio, path, &audio_config,
-                                    &audio_result)) {
+                                   &audio_result)) {
         fatal(ctc_model_test_fail("decode Maxwell vocals"));
     }
 

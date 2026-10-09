@@ -16,3 +16,4 @@ static-analyzers-warnings.txt
 .tags.vim
 tags
 cbase/CuSb9Ofs
+.cache/

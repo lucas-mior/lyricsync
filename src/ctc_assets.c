@@ -34,7 +34,8 @@ lrc_ctc_assets_validate(LrcCtcAssets *assets, LrcCtcAssetsConfig *config,
                         LrcCtcAssetsResult *result) {
     if ((assets == NULL) || (config == NULL)) {
         lrc_ctc_assets_result_set(result, LS_ERROR_CTC_ASSETS_INVALID_ARGUMENT,
-            "CTC asset validation received invalid arguments",
+                                  "CTC asset validation "
+                                  "received invalid arguments",
                                   NULL);
         return false;
     }
@@ -43,7 +44,8 @@ lrc_ctc_assets_validate(LrcCtcAssets *assets, LrcCtcAssetsConfig *config,
     lrc_ctc_assets_result_init(result);
 
     if (path_missing(config->model_path)) {
-        lrc_ctc_assets_result_set(result, LS_ERROR_CTC_ASSETS_MISSING_MODEL_PATH,
+        lrc_ctc_assets_result_set(result,
+                                  LS_ERROR_CTC_ASSETS_MISSING_MODEL_PATH,
                                   "CTC model path is missing",
                                   config->model_path);
         return false;
@@ -124,9 +126,9 @@ ctc_assets_test_valid_generated_files(void) {
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "ctc_assets_valid");
     test_join_path(model_path, SIZEOF(model_path), temp_dir,
-                         "model.onnx");
+                   "model.onnx");
     test_join_path(tokenizer_path, SIZEOF(tokenizer_path), temp_dir,
-                         "tokens.txt");
+                   "tokens.txt");
 
     if (!ctc_assets_write_file(model_path, "fake model\n")) {
         test_remove_tree(temp_dir);
@@ -167,7 +169,8 @@ ctc_assets_test_missing_model_path(void) {
         fatal(ctc_assets_test_fail("missing model path accepted"));
     }
     ASSERT(result.path_header.header.error == LS_ERROR_CTC_ASSETS_MISSING_MODEL_PATH);
-    ASSERT(strequal(result.path_header.header.message, "CTC model path is missing"));
+    ASSERT(strequal(result.path_header.header.message,
+                    "CTC model path is missing"));
     ASSERT(result.path_header.path == NULL);
     ASSERT(!assets.validated);
 
@@ -186,7 +189,8 @@ ctc_assets_test_missing_tokenizer_path(void) {
         fatal(ctc_assets_test_fail("missing tokenizer path accepted"));
     }
     ASSERT(result.path_header.header.error == LS_ERROR_CTC_ASSETS_MISSING_TOKENIZER_PATH);
-    ASSERT(strequal(result.path_header.header.message, "CTC tokenizer path is missing"));
+    ASSERT(strequal(result.path_header.header.message,
+                    "CTC tokenizer path is missing"));
     ASSERT(result.path_header.path == NULL);
     ASSERT(!assets.validated);
 
@@ -204,9 +208,9 @@ ctc_assets_test_missing_model_file(void) {
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "ctc_assets_no_model");
     test_join_path(model_path, SIZEOF(model_path), temp_dir,
-                         "missing.onnx");
+                   "missing.onnx");
     test_join_path(tokenizer_path, SIZEOF(tokenizer_path), temp_dir,
-                         "tokens.txt");
+                   "tokens.txt");
 
     if (!ctc_assets_write_file(tokenizer_path, "<blank>\na\n")) {
         test_remove_tree(temp_dir);
@@ -240,9 +244,9 @@ ctc_assets_test_missing_tokenizer_file(void) {
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "ctc_assets_no_tokens");
     test_join_path(model_path, SIZEOF(model_path), temp_dir,
-                         "model.onnx");
+                   "model.onnx");
     test_join_path(tokenizer_path, SIZEOF(tokenizer_path), temp_dir,
-                         "missing.txt");
+                   "missing.txt");
 
     if (!ctc_assets_write_file(model_path, "fake model\n")) {
         test_remove_tree(temp_dir);

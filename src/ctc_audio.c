@@ -79,7 +79,8 @@ lrc_ctc_audio_validate_samples(LrcCtcAudio *audio, LrcCtcAudioResult *result,
         if (!isfinite((double)sample)) {
             lrc_ctc_audio_result_set(result,
                                      LS_ERROR_CTC_AUDIO_NON_FINITE_SAMPLE,
-                "decoded CTC audio contains a non-finite sample",
+                                     "decoded CTC audio contains "
+                                     "a non-finite sample",
                                      path, i);
             return false;
         }
@@ -417,16 +418,8 @@ ctc_audio_test_maxwell_vocals(void) {
 int32
 main(void) {
     ctc_audio_test_defaults_and_invalid_inputs();
-    ctc_audio_test_generated_decode(48000,
-                                    2,
-                                    0.125,
-                                    16000,
-                                    "ctc_audio_stereo");
-    ctc_audio_test_generated_decode(22050,
-                                    1,
-                                    0.20,
-                                    8000,
-                                    "ctc_audio_mono");
+    ctc_audio_test_generated_decode(48000, 2, 0.125, 16000, "ctc_audio_stereo");
+    ctc_audio_test_generated_decode(22050, 1, 0.20, 8000, "ctc_audio_mono");
     ctc_audio_test_maxwell_vocals();
 
     exit(EXIT_SUCCESS);

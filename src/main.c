@@ -44,101 +44,101 @@ typedef struct MainOptions {
 
 #define MAIN_TASK_VALUE_OPTIONS(XX) \
     XX(INPUT_SONG, "--input-song", "PATH", \
-      "original song to process", NULL, \
-      MAIN_VALUE_STRING, MAIN_FIELD(config.song_path)) \
+       "original song to process", NULL, \
+       MAIN_VALUE_STRING, MAIN_FIELD(config.song_path)) \
     XX(INPUT_VOCALS, "--input-vocals", "PATH", \
-      "already extracted vocals to use", NULL, \
-      MAIN_VALUE_STRING, MAIN_FIELD(config.existing_vocals_path)) \
+       "already extracted vocals to use", NULL, \
+       MAIN_VALUE_STRING, MAIN_FIELD(config.existing_vocals_path)) \
     XX(OUTPUT_VOCALS, "--output-vocals", "PATH", \
-      "save extracted vocals at PATH", NULL, \
-      MAIN_VALUE_STRING_INFER_VOCALS_FORMAT, \
-      MAIN_FIELD(config.vocals_path)) \
+       "save extracted vocals at PATH", NULL, \
+       MAIN_VALUE_STRING_INFER_VOCALS_FORMAT, \
+       MAIN_FIELD(config.vocals_path)) \
     XX(INPUT_LYRICS, "--input-lyrics", "PATH", \
-      "plain-text lyrics to align", "derived from input prefix", \
-      MAIN_VALUE_STRING, MAIN_FIELD(config.lyrics_text_path)) \
+       "plain-text lyrics to align", "derived from input prefix", \
+       MAIN_VALUE_STRING, MAIN_FIELD(config.lyrics_text_path)) \
     XX(OUTPUT_LRC, "--output-lrc", "PATH", \
-      "synced lyrics output path", NULL, \
-      MAIN_VALUE_STRING, MAIN_FIELD(config.output_lrc_path))
+       "synced lyrics output path", NULL, \
+       MAIN_VALUE_STRING, MAIN_FIELD(config.output_lrc_path))
 
 #define MAIN_MODEL_VALUE_OPTIONS(XX) \
     XX(MODEL_VOCAL, "--model-vocal", "PATH", \
-      "MDX-Net ONNX model", LRC_DEFAULT_VOCALS_MODEL_PATH, \
-      MAIN_VALUE_STRING, MAIN_FIELD(config.vocals_model_path)) \
+       "MDX-Net ONNX model", LRC_DEFAULT_VOCALS_MODEL_PATH, \
+       MAIN_VALUE_STRING, MAIN_FIELD(config.vocals_model_path)) \
     XX(MODEL_CTC, "--model-ctc", "PATH", \
-      "CTC ONNX model", LRC_DEFAULT_CTC_MODEL_PATH, \
-      MAIN_VALUE_STRING, MAIN_FIELD(config.ctc_model_path)) \
+       "CTC ONNX model", LRC_DEFAULT_CTC_MODEL_PATH, \
+       MAIN_VALUE_STRING, MAIN_FIELD(config.ctc_model_path)) \
     XX(TOKENIZER, "--tokenizer", "PATH", \
-      "CTC tokenizer tokens file", LRC_DEFAULT_CTC_TOKENIZER_PATH, \
-      MAIN_VALUE_STRING, MAIN_FIELD(config.tokenizer_path)) \
+       "CTC tokenizer tokens file", LRC_DEFAULT_CTC_TOKENIZER_PATH, \
+       MAIN_VALUE_STRING, MAIN_FIELD(config.tokenizer_path)) \
     XX(ONNX_PROVIDER, "--onnx-provider", "KIND", \
-      "ONNX provider (" ORT_EXECUTION_PROVIDER_NAMES ")", "auto", \
-      MAIN_VALUE_ONNX_PROVIDER, \
-      MAIN_FIELD(config.ort_session_config.execution_provider)) \
+       "ONNX provider (" ORT_EXECUTION_PROVIDER_NAMES ")", "auto", \
+       MAIN_VALUE_ONNX_PROVIDER, \
+       MAIN_FIELD(config.ort_session_config.execution_provider)) \
     XX(ONNX_DEVICE, "--onnx-device", "N", \
-      "CUDA device id", "0", MAIN_VALUE_ONNX_DEVICE, \
-      MAIN_FIELD(config.ort_session_config.device_id))
+       "CUDA device id", "0", MAIN_VALUE_ONNX_DEVICE, \
+       MAIN_FIELD(config.ort_session_config.device_id))
 
 #define MAIN_AUDIO_VALUE_OPTIONS(XX) \
     XX(FFMPEG, "--ffmpeg", "PATH", \
-      "ffmpeg executable", "ffmpeg", \
-      MAIN_VALUE_STRING, MAIN_FIELD(config.ffmpeg_path)) \
+       "ffmpeg executable", "ffmpeg", \
+       MAIN_VALUE_STRING, MAIN_FIELD(config.ffmpeg_path)) \
     XX(TEMP_DIR, "--temp-dir", "PATH", \
-      "temporary directory", "/tmp", \
-      MAIN_VALUE_STRING, MAIN_FIELD(config.temp_dir)) \
+       "temporary directory", "/tmp", \
+       MAIN_VALUE_STRING, MAIN_FIELD(config.temp_dir)) \
     XX(VOCALS_FORMAT, "--vocals-format", "KIND", \
-      "extracted vocals container (" LRC_AUDIO_FORMAT_NAMES ")", \
-      "inferred", MAIN_VALUE_VOCALS_FORMAT, \
-      MAIN_FIELD(config.vocals_container_format)) \
+       "extracted vocals container (" LRC_AUDIO_FORMAT_NAMES ")", \
+       "inferred", MAIN_VALUE_VOCALS_FORMAT, \
+       MAIN_FIELD(config.vocals_container_format)) \
     XX(CHUNK_SECONDS, "--chunk-seconds", "N", \
-      "MDX chunk size in seconds", "30", \
-      MAIN_VALUE_POSITIVE_INT32, \
-      MAIN_FIELD(config.mdx_config.chunk_seconds)) \
+       "MDX chunk size in seconds", "30", \
+       MAIN_VALUE_POSITIVE_INT32, \
+       MAIN_FIELD(config.mdx_config.chunk_seconds)) \
     XX(MARGIN_SECONDS, "--margin-seconds", "N", \
-      "MDX chunk margin in seconds", "3", \
-      MAIN_VALUE_INT32, MAIN_FIELD(config.mdx_config.margin_seconds)) \
+       "MDX chunk margin in seconds", "3", \
+       MAIN_VALUE_INT32, MAIN_FIELD(config.mdx_config.margin_seconds)) \
     XX(COMPENSATE, "--compensate", "X", \
-      "output gain", "1.035", \
-      MAIN_VALUE_FLOAT, MAIN_FIELD(config.mdx_config.compensate)) \
+       "output gain", "1.035", \
+       MAIN_VALUE_FLOAT, MAIN_FIELD(config.mdx_config.compensate)) \
     XX(N_FFT, "--n-fft", "N", \
-      "STFT size", "6144", \
-      MAIN_VALUE_POSITIVE_INT32, MAIN_FIELD(config.mdx_config.n_fft)) \
+       "STFT size", "6144", \
+       MAIN_VALUE_POSITIVE_INT32, MAIN_FIELD(config.mdx_config.n_fft)) \
     XX(HOP, "--hop", "N", \
-      "STFT hop", "1024", \
-      MAIN_VALUE_POSITIVE_INT32, MAIN_FIELD(config.mdx_config.hop)) \
+       "STFT hop", "1024", \
+       MAIN_VALUE_POSITIVE_INT32, MAIN_FIELD(config.mdx_config.hop)) \
     XX(DIM_F, "--dim-f", "N", \
-      "override model frequency bins", NULL, \
-      MAIN_VALUE_POSITIVE_INT32, MAIN_FIELD(config.mdx_config.dim_f)) \
+       "override model frequency bins", NULL, \
+       MAIN_VALUE_POSITIVE_INT32, MAIN_FIELD(config.mdx_config.dim_f)) \
     XX(DIM_T, "--dim-t", "N", \
-      "override model time frames", NULL, \
-      MAIN_VALUE_POSITIVE_INT32, MAIN_FIELD(config.mdx_config.dim_t)) \
+       "override model time frames", NULL, \
+       MAIN_VALUE_POSITIVE_INT32, MAIN_FIELD(config.mdx_config.dim_t)) \
     XX(MODEL_OUTPUT, "--model-output", "KIND", \
-      "model output stem (" MDX_MODEL_OUTPUT_NAMES ")", "vocals", \
-      MAIN_VALUE_MODEL_OUTPUT, \
-      MAIN_FIELD(config.mdx_config.model_output)) \
+       "model output stem (" MDX_MODEL_OUTPUT_NAMES ")", "vocals", \
+       MAIN_VALUE_MODEL_OUTPUT, \
+       MAIN_FIELD(config.mdx_config.model_output)) \
     XX(CLIP_MODE, "--clip-mode", "KIND", \
-      "final clipping policy (" MDX_CLIP_MODE_NAMES ")", "clamp", \
-      MAIN_VALUE_CLIP_MODE, MAIN_FIELD(config.mdx_config.clip_mode))
+       "final clipping policy (" MDX_CLIP_MODE_NAMES ")", "clamp", \
+       MAIN_VALUE_CLIP_MODE, MAIN_FIELD(config.mdx_config.clip_mode))
 
 #define MAIN_LYRICS_VALUE_OPTIONS(XX) \
     XX(CTC_DEBUG_DUMP, "--ctc-debug-dump", "PATH", \
-      "write CTC parity debug dump", NULL, \
-      MAIN_VALUE_STRING, MAIN_FIELD(config.ctc_debug_dump_path)) \
+       "write CTC parity debug dump", NULL, \
+       MAIN_VALUE_STRING, MAIN_FIELD(config.ctc_debug_dump_path)) \
     XX(SPLIT_SIZE, "--split-size", "KIND", \
-      "lyrics split size (current|word|char|sentence)", "word", \
-      MAIN_VALUE_SPLIT_SIZE, MAIN_NO_FIELD) \
+       "lyrics split size (current|word|char|sentence)", "word", \
+       MAIN_VALUE_SPLIT_SIZE, MAIN_NO_FIELD) \
     XX(STAR_FREQUENCY, "--star-frequency", "KIND", \
-      "star-token placement (none|edges|segment)", "edges", \
-      MAIN_VALUE_STAR_FREQUENCY, MAIN_NO_FIELD) \
+       "star-token placement (none|edges|segment)", "edges", \
+       MAIN_VALUE_STAR_FREQUENCY, MAIN_NO_FIELD) \
     XX(ROMANIZATION, "--romanization", "KIND", \
-      "romanization backend (off|icu)", "icu", \
-      MAIN_VALUE_ROMANIZATION, MAIN_NO_FIELD) \
+       "romanization backend (off|icu)", "icu", \
+       MAIN_VALUE_ROMANIZATION, MAIN_NO_FIELD) \
     XX(LANGUAGE, "--language", "CODE", \
-      "3-letter language code", "eng", \
-      MAIN_VALUE_LANGUAGE, MAIN_NO_FIELD) \
+       "3-letter language code", "eng", \
+       MAIN_VALUE_LANGUAGE, MAIN_NO_FIELD) \
     XX(EMISSIONS, "--emissions", "KIND", \
-      "model emission values (" LRC_CTC_EMISSION_VALUES_KIND_NAMES ")", \
-      "logits", MAIN_VALUE_EMISSIONS, \
-      MAIN_FIELD(config.ctc_emission_values_kind))
+       "model emission values (" LRC_CTC_EMISSION_VALUES_KIND_NAMES ")", \
+       "logits", MAIN_VALUE_EMISSIONS, \
+       MAIN_FIELD(config.ctc_emission_values_kind))
 
 #define MAIN_VALUE_OPTIONS(XX) \
     MAIN_TASK_VALUE_OPTIONS(XX) \
@@ -148,34 +148,34 @@ typedef struct MainOptions {
 
 #define MAIN_VALUE_OPTION_ALIASES(XX) \
     XX(OUTPUT_VOCALS, "--vocals-output", \
-      MAIN_VALUE_STRING_INFER_VOCALS_FORMAT, \
-      MAIN_FIELD(config.vocals_path)) \
+       MAIN_VALUE_STRING_INFER_VOCALS_FORMAT, \
+       MAIN_FIELD(config.vocals_path)) \
     XX(INPUT_LYRICS, "--lyrics", \
-      MAIN_VALUE_STRING, MAIN_FIELD(config.lyrics_text_path)) \
+       MAIN_VALUE_STRING, MAIN_FIELD(config.lyrics_text_path)) \
     XX(INPUT_LYRICS, "-l", \
-      MAIN_VALUE_STRING, MAIN_FIELD(config.lyrics_text_path)) \
+       MAIN_VALUE_STRING, MAIN_FIELD(config.lyrics_text_path)) \
     XX(OUTPUT_LRC, "--output", \
-      MAIN_VALUE_STRING, MAIN_FIELD(config.output_lrc_path)) \
+       MAIN_VALUE_STRING, MAIN_FIELD(config.output_lrc_path)) \
     XX(OUTPUT_LRC, "-o", \
-      MAIN_VALUE_STRING, MAIN_FIELD(config.output_lrc_path)) \
+       MAIN_VALUE_STRING, MAIN_FIELD(config.output_lrc_path)) \
     XX(VOCALS_FORMAT, "--format", \
-      MAIN_VALUE_VOCALS_FORMAT, \
-      MAIN_FIELD(config.vocals_container_format))
+       MAIN_VALUE_VOCALS_FORMAT, \
+       MAIN_FIELD(config.vocals_container_format))
 
 #define MAIN_GENERAL_FLAG_OPTIONS(XX) \
     XX(HELP, "--help", "show this help", \
-      MAIN_FLAG_HELP, MAIN_NO_FIELD)
+       MAIN_FLAG_HELP, MAIN_NO_FIELD)
 
 #define MAIN_AUDIO_FLAG_OPTIONS(XX) \
     XX(DENOISE, "--denoise", "run denoising inference mode", \
-      MAIN_FLAG_SET_TRUE, MAIN_FIELD(config.mdx_config.denoise))
+       MAIN_FLAG_SET_TRUE, MAIN_FIELD(config.mdx_config.denoise))
 
 #define MAIN_LYRICS_FLAG_OPTIONS(XX) \
     XX(KEEP_TEMP_FILES, "--keep-temp-files", \
-      "keep generated temporary files", \
-      MAIN_FLAG_SET_TRUE, MAIN_FIELD(config.keep_temp_files)) \
+       "keep generated temporary files", \
+       MAIN_FLAG_SET_TRUE, MAIN_FIELD(config.keep_temp_files)) \
     XX(ROMANIZE, "--romanize", "select ICU romanization", \
-      MAIN_FLAG_ROMANIZE, MAIN_NO_FIELD)
+       MAIN_FLAG_ROMANIZE, MAIN_NO_FIELD)
 
 #define MAIN_FLAG_OPTIONS(XX) \
     MAIN_GENERAL_FLAG_OPTIONS(XX) \
@@ -589,7 +589,8 @@ main_apply_value_option(MainOptions *options, MainValueOption *option,
         return true;
     case MAIN_VALUE_ONNX_PROVIDER:
         if (!ort_execution_provider_parse(value, &provider)) {
-            error2("%s must be %s\n", option->name,
+            error2("%s must be %s\n",
+                   option->name,
                    ORT_EXECUTION_PROVIDER_NAMES);
             return false;
         }
@@ -604,9 +605,7 @@ main_apply_value_option(MainOptions *options, MainValueOption *option,
         *(int32 *)field = parsed;
         return true;
     case MAIN_VALUE_VOCALS_FORMAT:
-        return main_parse_vocals_format(&options->config,
-                                        option->name,
-                                        value);
+        return main_parse_vocals_format(&options->config, option->name, value);
     case MAIN_VALUE_MODEL_OUTPUT:
         if (!main_parse_enum_value(option->name,
                                    value,
@@ -893,8 +892,7 @@ main_input_prefix_path(MainOptions *options, char *output_path,
         input_path = config->existing_vocals_path;
     }
     if (path_missing(input_path)) {
-        error2("could not derive %s path without an input path\n",
-               description);
+        error2("could not derive %s path without an input path\n", description);
         return false;
     }
 
@@ -923,9 +921,7 @@ main_input_prefix_path(MainOptions *options, char *output_path,
                     input_path,
                     extension);
     if ((len <= 0) || (len >= output_size)) {
-        error2("default %s path is too long: %s\n",
-               description,
-               input_path);
+        error2("default %s path is too long: %s\n", description, input_path);
         return false;
     }
 

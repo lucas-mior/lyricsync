@@ -674,8 +674,10 @@ lrc_format_output_lines(String *builder, LrcOutputLine *lines,
             LrcFormatResult format_result;
 
             if (!lrc_format_timestamped_line_hundredths(builder,
-                line->timestamp_hundredths, line->text, line->text_len,
-                &format_result)) {
+                                                        line->timestamp_hundredths,
+                                                        line->text,
+                                                        line->text_len,
+                                                        &format_result)) {
                 lrc_write_result_set(result,
                                      LS_ERROR_WRITE_FORMAT_FAILED,
                                      "LRC output line formatting failed",
@@ -1161,9 +1163,9 @@ lrc_test_format_timestamped_line_preserves_text(void) {
 
     builder = (String){0};
     if (!lrc_format_timestamped_line(&builder,
-                                      14.14f,
-                                      text, strlen32(text),
-                                      &result)) {
+                                     14.14f,
+                                     text, strlen32(text),
+                                     &result)) {
         fatal(lrc_test_fail("format timestamped line"));
     }
     ASSERT(strequal(builder.data, "[00:14.14]Bang, bang, Café's hammer!"));
@@ -1180,10 +1182,10 @@ lrc_test_format_timestamped_empty_line(void) {
 
     builder = (String){0};
     if (!lrc_format_timestamped_line(&builder,
-                                      3.40f,
-                                      NULL,
-                                      0,
-                                      &result)) {
+                                     3.40f,
+                                     NULL,
+                                     0,
+                                     &result)) {
         fatal(lrc_test_fail("format timestamped empty line"));
     }
     ASSERT(strequal(builder.data, "[00:03.40]"));
@@ -1489,8 +1491,10 @@ lrc_test_optional_maxwell_formatting(void) {
 
         if (line->kind == LRC_PARSED_LINE_KIND_TIMESTAMPED) {
             if (!lrc_format_timestamped_line_hundredths(&builder,
-                line->timestamp_hundredths, line->text, line->text_len,
-                &format_result)) {
+                                                        line->timestamp_hundredths,
+                                                        line->text,
+                                                        line->text_len,
+                                                        &format_result)) {
                 lrc_parsed_file_destroy(&parsed);
                 str_free(&builder);
                 free2(text, ((int64)text_len + 1)*SIZEOF(*text));
@@ -1523,9 +1527,9 @@ lrc_test_assert_same_parsed_structure(LrcParsedFile *a, LrcParsedFile *b) {
         ASSERT(a->lines[i].timestamp_hundredths
                == b->lines[i].timestamp_hundredths);
         ASSERT_EQ(a->lines[i].text,
-                     a->lines[i].text_len,
-                     b->lines[i].text,
-                     b->lines[i].text_len);
+                  a->lines[i].text_len,
+                  b->lines[i].text,
+                  b->lines[i].text_len);
     }
 
     return;

@@ -184,8 +184,7 @@ ort_session_options_append_cuda(OrtContext *context, OrtSessionOptions *options,
         return false;
     }
 
-    len = SNPRINTF(device_id, "%d",
-                    context->session_config.device_id);
+    len = SNPRINTF(device_id, "%d", context->session_config.device_id);
     if ((len <= 0) || (len >= SIZEOF(device_id))) {
         api->ReleaseCUDAProviderOptions(cuda_options);
         lrc_progress_end_line();
@@ -208,7 +207,7 @@ ort_session_options_append_cuda(OrtContext *context, OrtSessionOptions *options,
     }
 
     status = api->SessionOptionsAppendExecutionProvider_CUDA_V2(options,
-        cuda_options);
+                                                                cuda_options);
     api->ReleaseCUDAProviderOptions(cuda_options);
     if (!ort_provider_check(context,
                             status,
@@ -283,7 +282,7 @@ ort_model_read_tensor_info(OrtContext *context, OrtSession *session, bool input,
     }
 
     status = api->CastTypeInfoToTensorInfo(type_info,
-        (OrtTensorTypeAndShapeInfo const **)&tensor_info);
+                                           (OrtTensorTypeAndShapeInfo const **)&tensor_info);
     if (!ort_check(context, status, "casting ONNX type info to tensor info")) {
         api->ReleaseTypeInfo(type_info);
         return false;
@@ -311,8 +310,7 @@ ort_model_read_tensor_info(OrtContext *context, OrtSession *session, bool input,
         return false;
     }
     if (dim_count > ORT_TENSOR_MAX_RANK) {
-        error2("ONNX tensor rank is too large: %lld\n",
-                (int64)dim_count);
+        error2("ONNX tensor rank is too large: %lld\n", (int64)dim_count);
         api->ReleaseTypeInfo(type_info);
         return false;
     }
@@ -601,10 +599,12 @@ ort_model_get_io_info(OrtContext *context, OrtModel *model) {
     }
 
     if (!ort_model_read_tensor_info(context, (OrtSession *)model->session, true,
-        model->input_shape, &model->input_shape_len)) {
+                                    model->input_shape,
+                                    &model->input_shape_len)) {
         return false;
     }
-    if (!ort_model_read_tensor_info(context, (OrtSession *)model->session, false,
+    if (!ort_model_read_tensor_info(context,
+                                    (OrtSession *)model->session, false,
                                     model->output_shape,
                                     &model->output_shape_len)) {
         return false;
@@ -713,8 +713,11 @@ ort_tensor_create_f32(OrtContext *context, OrtTensor *tensor, float *data,
     }
 
     status = api->CreateTensorWithDataAsOrtValue((OrtMemoryInfo *)context->memory_info,
-        data, (size_t)(data_len*SIZEOF(*data)), ort_shape, (size_t)shape_len,
-        ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT, (OrtValue **)&tensor->value);
+                                                 data,
+                                                 (size_t)(data_len*SIZEOF(*data)),
+                                                 ort_shape, (size_t)shape_len,
+                                                 ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT,
+                                                 (OrtValue **)&tensor->value);
     if (!ort_check(context, status, "creating ONNX float32 tensor")) {
         ort_tensor_init_empty(tensor);
         return false;
@@ -807,7 +810,7 @@ ort_model_run_f32(OrtContext *context, OrtModel *model, OrtTensor *input,
     }
     if (dim_count > ORT_TENSOR_MAX_RANK) {
         error2("ONNX output tensor rank is too large: %lld\n",
-                (int64)dim_count);
+               (int64)dim_count);
         api->ReleaseTensorTypeAndShapeInfo(tensor_info);
         api->ReleaseValue(output_value);
         return false;
@@ -829,7 +832,7 @@ ort_model_run_f32(OrtContext *context, OrtModel *model, OrtTensor *input,
 
     if (element_count > (size_t)INT64_MAX) {
         error2("ONNX output tensor is too large: %llu\n",
-                (uint64)element_count);
+               (uint64)element_count);
         api->ReleaseTensorTypeAndShapeInfo(tensor_info);
         api->ReleaseValue(output_value);
         return false;
@@ -1033,8 +1036,7 @@ ort_test_write_identity_model(char *path, char *temp_dir) {
         return false;
     }
 
-    len = SNPRINTF(script_path, "%s/write_identity_model.py",
-                    temp_dir);
+    len = SNPRINTF(script_path, "%s/write_identity_model.py", temp_dir);
     if ((len <= 0) || (len >= SIZEOF(script_path))) {
         return false;
     }
@@ -1089,8 +1091,7 @@ ort_test_optional_identity_model(void) {
     int32 len;
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "ort_identity");
-    len = SNPRINTF(model_path, "%s/identity.onnx",
-                    temp_dir);
+    len = SNPRINTF(model_path, "%s/identity.onnx", temp_dir);
     if ((len <= 0) || (len >= SIZEOF(model_path))) {
         test_remove_tree(temp_dir);
         fatal(ort_test_fail("identity model path"));
