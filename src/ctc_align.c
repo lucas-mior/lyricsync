@@ -902,8 +902,7 @@ lrc_ctc_trellis_allocate_for_state_count(LrcCtcTrellis *trellis,
     trellis->cell_count = cell_count;
     trellis->star_token_id = star_token_id;
     trellis->has_edge_stars = star_mode == LRC_CTC_ALIGN_STAR_MODE_EDGES;
-    trellis->has_segment_stars =
-        star_mode == LRC_CTC_ALIGN_STAR_MODE_SEGMENT;
+    trellis->has_segment_stars = star_mode == LRC_CTC_ALIGN_STAR_MODE_SEGMENT;
 
     for (int64 i = 0; i < trellis->cell_count; i += 1) {
         trellis->scores[i] = -INFINITY;
