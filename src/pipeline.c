@@ -926,7 +926,7 @@ lrc_ctc_debug_dump_write_target_tokens(LrcCtcDebugDumpWriter *writer,
     lrc_ctc_debug_dump_write_section(writer, "target_tokens");
     lrc_ctc_debug_dump_printf(writer,
                               "index\ttoken_id\ttoken_text\tline_index\tsegment_index\t"
-        "starts_segment\tnormalized_start\tnormalized_end\n"
+                              "starts_segment\tnormalized_start\tnormalized_end\n"
     );
     if (tokens == NULL) {
         return;
@@ -1089,7 +1089,7 @@ lrc_ctc_debug_dump_write_path_segments(LrcCtcDebugDumpWriter *writer,
     lrc_ctc_debug_dump_write_section(writer, "merged_path_segments");
     lrc_ctc_debug_dump_printf(writer,
                               "index\ttoken_index\ttoken_id\ttoken_text\tstart_frame\t"
-        "end_frame\tstart_seconds\tend_seconds\tscore\tis_blank\tis_star\n"
+                              "end_frame\tstart_seconds\tend_seconds\tscore\tis_blank\tis_star\n"
     );
     if (segments == NULL) {
         return;
@@ -1159,9 +1159,9 @@ lrc_ctc_debug_dump_write_word_spans(LrcCtcDebugDumpWriter *writer,
     lrc_ctc_debug_dump_write_section(writer, section_name);
     lrc_ctc_debug_dump_printf(writer,
                               "index\tline_index\tword_index\ttext\tnormalized_start\t"
-        "normalized_end\ttoken_start_index\ttoken_end_index\t"
-        "span_start_index\tspan_end_index\tstart_seconds\t"
-        "end_seconds\tscore\n"
+                              "normalized_end\ttoken_start_index\ttoken_end_index\t"
+                              "span_start_index\tspan_end_index\tstart_seconds\t"
+                              "end_seconds\tscore\n"
     );
     if (word_spans == NULL) {
         return;

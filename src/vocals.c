@@ -84,7 +84,7 @@ vocals_print_model_info(MdxModelInfo *info, MdxConfig *config) {
            info->input_name, info->output_name, info->batch_size,
            info->channel_count, info->dim_f, info->dim_t);
     error2("MDX config: sample_rate=%d channels=%d dim_c=%d n_fft=%d "
-        "hop=%d chunk_size=%d trim=%d gen_size=%d\n",
+           "hop=%d chunk_size=%d trim=%d gen_size=%d\n",
            config->sample_rate,
            config->channel_count,
            config->dim_c,

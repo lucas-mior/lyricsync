@@ -601,10 +601,10 @@ lyrics_test_optional_maxwell_txt(void) {
 
         ASSERT_EQ(normalized.text,
                   "can i take you out to the pictures joan "
-            "but as shes getting ready to go "
-            "a knock comes on the door "
-            "bang bang maxwells silver hammer "
-            "came down upon her head");
+                  "but as shes getting ready to go "
+                  "a knock comes on the door "
+                  "bang bang maxwells silver hammer "
+                  "came down upon her head");
         ASSERT_EQ(normalized.alignable_line_count, 5);
         ASSERT_EQ(normalized.line_count, lyrics.line_count);
         lyrics_test_assert_line_range(&normalized, 0, 0, 39);
