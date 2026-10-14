@@ -154,8 +154,7 @@ lrc_pipeline_config_init(LrcPipelineConfig *config) {
     mdx_config_init(&config->mdx_config);
     lrc_ctc_model_config_init(&config->ctc_model_config);
     lrc_lyrics_preprocess_options_init(&config->lyrics_preprocess_options);
-    config->ort_session_config.execution_provider =
-        ORT_EXECUTION_PROVIDER_AUTO;
+    config->ort_session_config.execution_provider = ORT_EXECUTION_PROVIDER_AUTO;
     config->ort_session_config.device_id = 0;
     config->ort_session_config.print_info = config->print_info;
     config->ctc_emission_values_kind = LRC_CTC_EMISSION_VALUES_LOGITS;
