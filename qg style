@@ -1,0 +1,108 @@
+[0m[1mdiff --git a/src/audio.c b/src/audio.c[m[0m
+[0m[1mindex 45bdc72..e6c37ea 100644[m[0m
+[0m[1m--- a/src/audio.c[m[0m
+[0m[1m+++ b/src/audio.c[m[0m
+[0m[36m@@ -1060,13 +1060,13 @@[m [maudio_compare_result_print(AudioCompareResult *result, char *name) {[m[0m
+[0m         return;[0m
+[0m     }[0m
+[0m [0m
+[0m     mode = AUDIO_COMPARE_MODE_str(result->mode);[0m
+[0m     error2("%s: passed=%d mode=%s expected_frames=%lld "[0m
+[0m[48;5;17m-        [0m[0m[48;5;17m"actual_frames=%lld delta=%lld compared_frames=%lld "[0m
+[0m[48;5;17m-        [0m[0m[48;5;17m"offset=%lld max_abs=%g rms=%g snr_db=%.2f "[0m
+[0m[48;5;17m-        [0m[0m[48;5;17m"expected_peak=%g actual_peak=%g nan=%lld inf=%lld\n",[0m
+[0m[48;5;18m+           [0m[0m[48;5;18m"actual_frames=%lld delta=%lld compared_frames=%lld "[0m
+[0m[48;5;18m+           [0m[0m[48;5;18m"offset=%lld max_abs=%g rms=%g snr_db=%.2f "[0m
+[0m[48;5;18m+           [0m[0m[48;5;18m"expected_peak=%g actual_peak=%g nan=%lld inf=%lld\n",[0m
+[0m            label,[0m
+[0m            result->passed,[0m
+[0m            mode,[0m
+[0m            result->expected_frames,[0m
+[0m            result->actual_frames,[0m
+[0m[1mdiff --git a/src/lyrics.c b/src/lyrics.c[m[0m
+[0m[1mindex 1ca124e..2a15863 100644[m[0m
+[0m[1m--- a/src/lyrics.c[m[0m
+[0m[1m+++ b/src/lyrics.c[m[0m
+[0m[36m@@ -599,14 +599,14 @@[m [mlyrics_test_optional_maxwell_txt(void) {[m[0m
+[0m             fatal(lyrics_test_fail("normalize maxwell lyrics"));[0m
+[0m         }[0m
+[0m [0m
+[0m         ASSERT_EQ(normalized.text,[0m
+[0m                   "can i take you out to the pictures joan "[0m
+[0m[48;5;17m-            [0m[0m[48;5;17m"but as shes getting ready to go "[0m
+[0m[48;5;17m-            [0m[0m[48;5;17m"a knock comes on the door "[0m
+[0m[48;5;17m-            [0m[0m[48;5;17m"bang bang maxwells silver hammer "[0m
+[0m[48;5;17m-            [0m[0m[48;5;17m"came down upon her head");[0m
+[0m[48;5;18m+                  [0m[0m[48;5;18m"but as shes getting ready to go "[0m
+[0m[48;5;18m+                  [0m[0m[48;5;18m"a knock comes on the door "[0m
+[0m[48;5;18m+                  [0m[0m[48;5;18m"bang bang maxwells silver hammer "[0m
+[0m[48;5;18m+                  [0m[0m[48;5;18m"came down upon her head");[0m
+[0m         ASSERT_EQ(normalized.alignable_line_count, 5);[0m
+[0m         ASSERT_EQ(normalized.line_count, lyrics.line_count);[0m
+[0m         lyrics_test_assert_line_range(&normalized, 0, 0, 39);[0m
+[0m         lyrics_test_assert_line_range(&normalized, 1, 40, 71);[0m
+[0m         lyrics_test_assert_line_range(&normalized, 2, 72, 97);[0m
+[0m[1mdiff --git a/src/pipeline.c b/src/pipeline.c[m[0m
+[0m[1mindex 092a671..eede69f 100644[m[0m
+[0m[1m--- a/src/pipeline.c[m[0m
+[0m[1m+++ b/src/pipeline.c[m[0m
+[0m[36m@@ -924,11 +924,11 @@[m [mlrc_ctc_debug_dump_write_target_tokens(LrcCtcDebugDumpWriter *writer,[m[0m
+[0m                                        LrcCtcTokenizer *tokenizer,[0m
+[0m                                        LrcCtcTokenizedText *tokens) {[0m
+[0m     lrc_ctc_debug_dump_write_section(writer, "target_tokens");[0m
+[0m     lrc_ctc_debug_dump_printf(writer,[0m
+[0m                               "index\ttoken_id\ttoken_text\tline_index\tsegment_index\t"[0m
+[0m[48;5;17m-        [0m[0m[48;5;17m"starts_segment\tnormalized_start\tnormalized_end\n"[0m
+[0m[48;5;18m+                              [0m[0m[48;5;18m"starts_segment\tnormalized_start\tnormalized_end\n"[0m
+[0m     );[0m
+[0m     if (tokens == NULL) {[0m
+[0m         return;[0m
+[0m     }[0m
+[0m [0m
+[0m[36m@@ -1087,11 +1087,11 @@[m [mlrc_ctc_debug_dump_write_path_segments(LrcCtcDebugDumpWriter *writer,[m[0m
+[0m                                        LrcCtcTokenizer *tokenizer,[0m
+[0m                                        LrcCtcPathSegments *segments) {[0m
+[0m     lrc_ctc_debug_dump_write_section(writer, "merged_path_segments");[0m
+[0m     lrc_ctc_debug_dump_printf(writer,[0m
+[0m                               "index\ttoken_index\ttoken_id\ttoken_text\tstart_frame\t"[0m
+[0m[48;5;17m-        [0m[0m[48;5;17m"end_frame\tstart_seconds\tend_seconds\tscore\tis_blank\tis_star\n"[0m
+[0m[48;5;18m+                              [0m[0m[48;5;18m"end_frame\tstart_seconds\tend_seconds\tscore\tis_blank\tis_star\n"[0m
+[0m     );[0m
+[0m     if (segments == NULL) {[0m
+[0m         return;[0m
+[0m     }[0m
+[0m [0m
+[0m[36m@@ -1157,13 +1157,13 @@[m [mlrc_ctc_debug_dump_write_word_spans(LrcCtcDebugDumpWriter *writer,[m[0m
+[0m                                     LrcLyricsNormalized *normalized,[0m
+[0m                                     LrcCtcWordSpans *word_spans) {[0m
+[0m     lrc_ctc_debug_dump_write_section(writer, section_name);[0m
+[0m     lrc_ctc_debug_dump_printf(writer,[0m
+[0m                               "index\tline_index\tword_index\ttext\tnormalized_start\t"[0m
+[0m[48;5;17m-        [0m[0m[48;5;17m"normalized_end\ttoken_start_index\ttoken_end_index\t"[0m
+[0m[48;5;17m-        [0m[0m[48;5;17m"span_start_index\tspan_end_index\tstart_seconds\t"[0m
+[0m[48;5;17m-        [0m[0m[48;5;17m"end_seconds\tscore\n"[0m
+[0m[48;5;18m+                              [0m[0m[48;5;18m"normalized_end\ttoken_start_index\ttoken_end_index\t"[0m
+[0m[48;5;18m+                              [0m[0m[48;5;18m"span_start_index\tspan_end_index\tstart_seconds\t"[0m
+[0m[48;5;18m+                              [0m[0m[48;5;18m"end_seconds\tscore\n"[0m
+[0m     );[0m
+[0m     if (word_spans == NULL) {[0m
+[0m         return;[0m
+[0m     }[0m
+[0m [0m
+[0m[1mdiff --git a/src/vocals.c b/src/vocals.c[m[0m
+[0m[1mindex 5ac792a..6d15624 100644[m[0m
+[0m[1m--- a/src/vocals.c[m[0m
+[0m[1m+++ b/src/vocals.c[m[0m
+[0m[36m@@ -82,11 +82,11 @@[m [mstatic void[m[0m
+[0m vocals_print_model_info(MdxModelInfo *info, MdxConfig *config) {[0m
+[0m     error2("MDX model: input=%s output=%s shape=[%d, %d, %d, %d]\n",[0m
+[0m            info->input_name, info->output_name, info->batch_size,[0m
+[0m            info->channel_count, info->dim_f, info->dim_t);[0m
+[0m     error2("MDX config: sample_rate=%d channels=%d dim_c=%d n_fft=%d "[0m
+[0m[48;5;17m-        [0m[0m[48;5;17m"hop=%d chunk_size=%d trim=%d gen_size=%d\n",[0m
+[0m[48;5;18m+           [0m[0m[48;5;18m"hop=%d chunk_size=%d trim=%d gen_size=%d\n",[0m
+[0m            config->sample_rate,[0m
+[0m            config->channel_count,[0m
+[0m            config->dim_c,[0m
+[0m            config->n_fft,[0m
+[0m            config->hop,[0m
