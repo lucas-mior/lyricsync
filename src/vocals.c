@@ -459,7 +459,8 @@ vocals_test_request_validation(void) {
     if (lrc_extract_vocals(&request, &result)) {
         fatal(vocals_test_fail("missing input accepted"));
     }
-    if (result.path_header.header.error != LS_ERROR_VOCALS_EXTRACT_MISSING_INPUT) {
+    if (result.path_header.header.error
+        != LS_ERROR_VOCALS_EXTRACT_MISSING_INPUT) {
         fatal(vocals_test_fail("missing input error"));
     }
 
@@ -467,7 +468,8 @@ vocals_test_request_validation(void) {
     if (lrc_extract_vocals(&request, &result)) {
         fatal(vocals_test_fail("missing output accepted"));
     }
-    if (result.path_header.header.error != LS_ERROR_VOCALS_EXTRACT_MISSING_OUTPUT) {
+    if (result.path_header.header.error
+        != LS_ERROR_VOCALS_EXTRACT_MISSING_OUTPUT) {
         fatal(vocals_test_fail("missing output error"));
     }
 
@@ -475,7 +477,8 @@ vocals_test_request_validation(void) {
     if (lrc_extract_vocals(&request, &result)) {
         fatal(vocals_test_fail("missing model accepted"));
     }
-    if (result.path_header.header.error != LS_ERROR_VOCALS_EXTRACT_MISSING_MODEL) {
+    if (result.path_header.header.error
+        != LS_ERROR_VOCALS_EXTRACT_MISSING_MODEL) {
         fatal(vocals_test_fail("missing model error"));
     }
 
@@ -484,7 +487,8 @@ vocals_test_request_validation(void) {
     if (lrc_extract_vocals(&request, &result)) {
         fatal(vocals_test_fail("missing temp dir accepted"));
     }
-    if (result.path_header.header.error != LS_ERROR_VOCALS_EXTRACT_MISSING_TEMP_DIR) {
+    if (result.path_header.header.error
+        != LS_ERROR_VOCALS_EXTRACT_MISSING_TEMP_DIR) {
         fatal(vocals_test_fail("missing temp dir error"));
     }
 
@@ -493,7 +497,8 @@ vocals_test_request_validation(void) {
     if (lrc_extract_vocals(&request, &result)) {
         fatal(vocals_test_fail("missing ffmpeg accepted"));
     }
-    if (result.path_header.header.error != LS_ERROR_VOCALS_EXTRACT_MISSING_FFMPEG) {
+    if (result.path_header.header.error
+        != LS_ERROR_VOCALS_EXTRACT_MISSING_FFMPEG) {
         fatal(vocals_test_fail("missing ffmpeg error"));
     }
 
@@ -502,7 +507,8 @@ vocals_test_request_validation(void) {
     if (lrc_extract_vocals(&request, &result)) {
         fatal(vocals_test_fail("invalid output format accepted"));
     }
-    if (result.path_header.header.error != LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT) {
+    if (result.path_header.header.error
+        != LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT) {
         fatal(vocals_test_fail("invalid output format error"));
     }
 
@@ -524,7 +530,8 @@ vocals_test_missing_external_resources(void) {
     if (lrc_extract_vocals(&request, &result)) {
         fatal(vocals_test_fail("missing ffmpeg extraction accepted"));
     }
-    if (result.path_header.header.error != LS_ERROR_VOCALS_EXTRACT_FFMPEG_UNAVAILABLE) {
+    if (result.path_header.header.error
+        != LS_ERROR_VOCALS_EXTRACT_FFMPEG_UNAVAILABLE) {
         fatal(vocals_test_fail("missing ffmpeg extraction error"));
     }
 

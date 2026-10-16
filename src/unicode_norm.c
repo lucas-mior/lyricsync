@@ -575,7 +575,8 @@ unicode_norm_test_icu_transliterate_latin(void) {
     CtcUnicodeNormResult result;
 
     ctc_unicode_norm_result_init(&result);
-    if (!ctc_unicode_norm_transliterate_latin(STRLIT("猫 Привет"), &result)) {
+    if (!ctc_unicode_norm_transliterate_latin(STRLIT("猫 Привет"),
+                                              &result)) {
         return unicode_norm_test_fail("transliterate latin");
     }
 
