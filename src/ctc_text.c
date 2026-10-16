@@ -341,7 +341,7 @@ lrc_lyrics_normalized_append_target_space(LrcLyricsNormalized *normalized,
 }
 
 static bool
-lrc_lyrics_normalized_append_target_from_normalized(
+ctc_text_append_normalized_target(
     LrcLyricsNormalized *normalized, int32 line_index, int32 normalized_start,
     int32 normalized_end, int32 *target_start_out, int32 *target_end_out) {
     int32 target_start;
@@ -1034,8 +1034,11 @@ ctc_text_reference_remove_parentheses_rune(CtcTextUtf8Transform *transform,
 static bool
 ctc_text_reference_remove_number_parentheses(char *text, int32 text_len,
                                              CtcUnicodeNormResult *result) {
+    CtcTextUtf8TransformRuneFn *transform_fn =
+        ctc_text_reference_remove_parentheses_rune;
+
     return ctc_text_utf8_transform_run(text, text_len, result,
-                                       ctc_text_reference_remove_parentheses_rune,
+                                       transform_fn,
                                        NULL, NULL, false);
 }
 
@@ -1121,8 +1124,11 @@ ctc_text_reference_replace_punctuation_rune(CtcTextUtf8Transform *transform,
 static bool
 ctc_text_reference_replace_punctuation_delete(char *text, int32 text_len,
                                               CtcUnicodeNormResult *result) {
+    CtcTextUtf8TransformRuneFn *transform_fn =
+        ctc_text_reference_replace_punctuation_rune;
+
     return ctc_text_utf8_transform_run(text, text_len, result,
-                                       ctc_text_reference_replace_punctuation_rune,
+                                       transform_fn,
                                        NULL, NULL, false);
 }
 
@@ -1638,12 +1644,9 @@ lrc_lyrics_normalize_split_segment(LrcLyrics *lyrics,
         }
         normalized_end = normalized->text_len;
 
-        if (!lrc_lyrics_normalized_append_target_from_normalized(normalized,
-                                                                 line_index,
-                                                                 normalized_start,
-                                                                 normalized_end,
-                                                                 &target_start,
-                                                                 &target_end)) {
+        if (!ctc_text_append_normalized_target(normalized, line_index,
+                                               normalized_start, normalized_end,
+                                               &target_start, &target_end)) {
             goto done;
         }
 
@@ -2520,8 +2523,10 @@ ctc_text_reference_load_word_fixture(char *fixture_name,
             }
 
             if (ctc_text_reference_field_equal(line, tab, "input")) {
+                int32 input_cap = CTC_TEXT_REFERENCE_WORD_INPUT_MAX;
+
                 fixture->input_len = ctc_text_decode_hex(fixture->input,
-                                                         CTC_TEXT_REFERENCE_WORD_INPUT_MAX,
+                                                         input_cap,
                                                          line + tab + 1,
                                                          line_len - tab - 1);
                 ASSERT_GE(fixture->input_len, 0);
@@ -2716,7 +2721,8 @@ ctc_text_test_word_normalization_matches_reference_fixtures(void) {
     status += ctc_text_test_word_normalized_fixture_case("apostrophes");
     status += ctc_text_test_word_normalized_fixture_case("punctuation_digits");
     status += ctc_text_test_word_normalized_fixture_case("accents");
-    status += ctc_text_test_word_normalized_fixture_case("portuguese_soltasbruxa");
+    status +=
+        ctc_text_test_word_normalized_fixture_case("portuguese_soltasbruxa");
     status += ctc_text_test_word_normalized_fixture_case("german_ich_will");
 
     return status;
@@ -2826,12 +2832,13 @@ ctc_text_test_star_target_sequence_fixture_case(char *fixture_name) {
     expected_index = 1;
     for (int32 i = 0; i < normalized.segment_count; i += 1) {
         CtcTextSegment *segment;
+        char *expected = fixture.edges_tokens[expected_index];
+        int32 expected_len = fixture.edges_tokens_lens[expected_index];
 
         segment = lrc_lyrics_normalized_segment(&normalized, i);
         ASSERT(segment);
         ctc_text_test_assert_target_item(&normalized, segment,
-                                         fixture.edges_tokens[expected_index],
-                                         fixture.edges_tokens_lens[expected_index]);
+                                         expected, expected_len);
         expected_index += 1;
     }
     ASSERT_EQ(fixture.edges_tokens[expected_index], "<star>");
@@ -2840,14 +2847,17 @@ ctc_text_test_star_target_sequence_fixture_case(char *fixture_name) {
     expected_index = 0;
     for (int32 i = 0; i < normalized.segment_count; i += 1) {
         CtcTextSegment *segment;
+        char *expected;
+        int32 expected_len;
 
         segment = lrc_lyrics_normalized_segment(&normalized, i);
         ASSERT(segment);
         ASSERT_EQ(fixture.segment_tokens[expected_index], "<star>");
         expected_index += 1;
+        expected = fixture.segment_tokens[expected_index];
+        expected_len = fixture.segment_tokens_lens[expected_index];
         ctc_text_test_assert_target_item(&normalized, segment,
-                                         fixture.segment_tokens[expected_index],
-                                         fixture.segment_tokens_lens[expected_index]);
+                                         expected, expected_len);
         expected_index += 1;
     }
     ASSERT_EQ(expected_index, fixture.segment_tokens_count);
@@ -2865,7 +2875,8 @@ ctc_text_test_star_target_sequences_match_reference(void) {
 
     status += ctc_text_test_star_target_sequence_fixture_case("plain_english");
     status += ctc_text_test_star_target_sequence_fixture_case("apostrophes");
-    status += ctc_text_test_star_target_sequence_fixture_case("punctuation_digits");
+    status +=
+        ctc_text_test_star_target_sequence_fixture_case("punctuation_digits");
 
     return status;
 }
@@ -2989,14 +3000,18 @@ ctc_text_test_char_fixture_case(char *fixture_name, char *language,
 static int32
 ctc_text_test_char_split_matches_reference_fixtures(void) {
     int32 status = 0;
+    enum LrcLyricsPreprocessSplitSize char_split =
+        LRC_LYRICS_PREPROCESS_SPLIT_SIZE_CHAR;
+    enum LrcLyricsPreprocessSplitSize word_split =
+        LRC_LYRICS_PREPROCESS_SPLIT_SIZE_WORD;
 
 
     status += ctc_text_test_char_fixture_case("english_char", "eng",
-                                              LRC_LYRICS_PREPROCESS_SPLIT_SIZE_CHAR);
+                                              char_split);
     status += ctc_text_test_char_fixture_case("japanese_force_char", "jpn",
-                                              LRC_LYRICS_PREPROCESS_SPLIT_SIZE_WORD);
+                                              word_split);
     status += ctc_text_test_char_fixture_case("chinese_force_char", "chi",
-                                              LRC_LYRICS_PREPROCESS_SPLIT_SIZE_WORD);
+                                              word_split);
 
     return status;
 }
@@ -3139,7 +3154,8 @@ ctc_text_test_default_options(void) {
     lrc_lyrics_preprocess_options_init(&options);
 
     ASSERT(options.split_size == LRC_LYRICS_PREPROCESS_SPLIT_SIZE_WORD);
-    ASSERT(options.star_frequency == LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_EDGES);
+    ASSERT(options.star_frequency
+           == LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_EDGES);
     ASSERT(options.romanization == LRC_LYRICS_PREPROCESS_ROMANIZATION_ICU);
     ASSERT_EQ(options.language, "eng");
 

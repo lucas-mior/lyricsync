@@ -1168,7 +1168,8 @@ lyrics_extract_vocals(LrcPipelineConfig *config,
     if (config == NULL) {
         lrc_vocals_extract_result_init(result);
         if (result) {
-            result->path_header.header.error = LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT;
+            result->path_header.header.error =
+                LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT;
             result->path_header.header.message = "missing pipeline config";
         }
         return false;
@@ -1191,7 +1192,8 @@ lyrics_generate_lrc(LrcPipelineConfig *config,
     if (config == NULL) {
         lrc_pipeline_generate_result_init(result);
         if (result) {
-            result->path_header.header.error = LS_ERROR_PIPELINE_GENERATE_INVALID_ARGUMENT;
+            result->path_header.header.error =
+                LS_ERROR_PIPELINE_GENERATE_INVALID_ARGUMENT;
             result->path_header.header.message = "missing pipeline config";
         }
         return false;

@@ -476,8 +476,10 @@ mdx_process_song_with_progress(MdxConfig *config, StftPlan *stft_plan,
     input_data = malloc2(tensor_len*SIZEOF(*input_data));
     window_left = malloc2(config->chunk_size*SIZEOF(*window_left));
     window_right = malloc2(config->chunk_size*SIZEOF(*window_right));
-    window_output_left = malloc2(config->chunk_size*SIZEOF(*window_output_left));
-    window_output_right = malloc2(config->chunk_size*SIZEOF(*window_output_right));
+    window_output_left =
+        malloc2(config->chunk_size*SIZEOF(*window_output_left));
+    window_output_right =
+        malloc2(config->chunk_size*SIZEOF(*window_output_right));
 
     model_shape[0] = 1;
     model_shape[1] = config->dim_c;
@@ -600,12 +602,12 @@ mdx_process_song_with_progress(MdxConfig *config, StftPlan *stft_plan,
                 int64 output_index = output_start + i;
                 int64 window_index = (int64)config->trim + i;
 
-                output->left[output_index] = mdx_output_sample(config,
-                                                               input->left[output_index],
-                                                               window_output_left[window_index]);
-                output->right[output_index] = mdx_output_sample(config,
-                                                                input->right[output_index],
-                                                                window_output_right[window_index]);
+                output->left[output_index] =
+                    mdx_output_sample(config, input->left[output_index],
+                                      window_output_left[window_index]);
+                output->right[output_index] =
+                    mdx_output_sample(config, input->right[output_index],
+                                      window_output_right[window_index]);
             }
 
             ort_tensor_destroy(ort_context, &output_tensor);

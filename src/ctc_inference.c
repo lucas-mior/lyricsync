@@ -117,6 +117,8 @@ lrc_ctc_emissions_shape_valid(int64 *shape, int32 shape_len, int64 *row_count,
 static bool
 lrc_ctc_emissions_values_valid(float *values, int64 value_count,
                                LrcCtcInferenceResult *result) {
+    enum LsError non_finite_error = LS_ERROR_CTC_INFERENCE_NON_FINITE_OUTPUT;
+
     if ((values == NULL) || (value_count <= 0)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT,
@@ -127,7 +129,7 @@ lrc_ctc_emissions_values_valid(float *values, int64 value_count,
     for (int64 i = 0; i < value_count; i += 1) {
         if (!isfinite((double)values[i])) {
             lrc_ctc_inference_result_set(result,
-                                         LS_ERROR_CTC_INFERENCE_NON_FINITE_OUTPUT,
+                                         non_finite_error,
                                          "CTC emissions contain "
                                          "a non-finite value",
                                          i);
@@ -638,9 +640,11 @@ lrc_ctc_emissions_log_softmax_row(float *row, int64 vocabulary_size,
 }
 
 static bool
-lrc_ctc_emissions_log_probabilities_from_probabilities_row(
+ctc_log_probability_row(
     float *row, int64 vocabulary_size, int64 row_offset,
     LrcCtcInferenceResult *result) {
+    enum LsError invalid_error = LS_ERROR_CTC_INFERENCE_INVALID_PROBABILITY;
+
     if ((row == NULL) || (vocabulary_size <= 0)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT,
@@ -653,7 +657,7 @@ lrc_ctc_emissions_log_probabilities_from_probabilities_row(
     for (int64 i = 0; i < vocabulary_size; i += 1) {
         if (!isfinite((double)row[i]) || (row[i] <= 0.0f)) {
             lrc_ctc_inference_result_set(result,
-                                         LS_ERROR_CTC_INFERENCE_INVALID_PROBABILITY,
+                                         invalid_error,
                                          "CTC probabilities must "
                                          "be finite and positive",
                                          row_offset + i);
@@ -669,7 +673,7 @@ lrc_ctc_emissions_log_probabilities_from_probabilities_row(
 }
 
 static bool
-lrc_ctc_emissions_convert_to_log_probabilities(
+ctc_emissions_to_log_probabilities(
     LrcCtcEmissions *emissions, enum LrcCtcEmissionValuesKind values_kind,
     LrcCtcInferenceResult *result) {
     if (result) {
@@ -697,10 +701,9 @@ lrc_ctc_emissions_convert_to_log_probabilities(
         for (int64 frame = 0; frame < emissions->frame_count; frame += 1) {
             int64 offset = frame*emissions->vocabulary_size;
 
-            if (!lrc_ctc_emissions_log_probabilities_from_probabilities_row(emissions->values + offset,
-                                                                            emissions->vocabulary_size,
-                                                                            offset,
-                                                                            result)) {
+            if (!ctc_log_probability_row(emissions->values + offset,
+                                         emissions->vocabulary_size,
+                                         offset, result)) {
                 return false;
             }
         }
@@ -715,7 +718,7 @@ lrc_ctc_emissions_convert_to_log_probabilities(
 }
 
 static bool
-lrc_ctc_emissions_build_trimmed_from_model_output(
+ctc_emissions_build_trimmed_output(
     LrcCtcEmissions *emissions, LrcCtcModelInput *input, float *values,
     int64 value_count, int64 *shape, int32 shape_len,
     enum LrcCtcEmissionValuesKind values_kind, bool print_progress,
@@ -730,9 +733,7 @@ lrc_ctc_emissions_build_trimmed_from_model_output(
                                              result)) {
         return false;
     }
-    if (!lrc_ctc_emissions_convert_to_log_probabilities(emissions,
-                                                        values_kind,
-                                                        result)) {
+    if (!ctc_emissions_to_log_probabilities(emissions, values_kind, result)) {
         lrc_ctc_emissions_destroy(emissions);
         return false;
     }
@@ -869,14 +870,11 @@ lrc_ctc_fake_inference_run(void *backend, LrcCtcModelInput *input,
         return false;
     }
 
-    return lrc_ctc_emissions_build_trimmed_from_model_output(emissions, input,
-                                                             fake->values,
-                                                             fake->value_count,
-                                                             fake->shape,
-                                                             fake->shape_len,
-                                                             values_kind,
-                                                             print_progress,
-                                                             result);
+    return ctc_emissions_build_trimmed_output(emissions, input,
+                                              fake->values, fake->value_count,
+                                              fake->shape, fake->shape_len,
+                                              values_kind, print_progress,
+                                              result);
 }
 
 static void
@@ -1301,13 +1299,10 @@ lrc_ctc_onnx_inference_run_chunked(LrcCtcOnnxInference *onnx,
         output_shape[0] = input->chunk_count;
         output_shape[1] = chunk_emission_count;
         output_shape[2] = vocabulary_size;
-        ok = lrc_ctc_emissions_build_trimmed_from_model_output(emissions, input,
-                                                               values,
-                                                               value_count,
-                                                               output_shape,
-                                                               3, values_kind,
-                                                               print_progress,
-                                                               result);
+        ok = ctc_emissions_build_trimmed_output(emissions, input,
+                                                values, value_count,
+                                                output_shape, 3, values_kind,
+                                                print_progress, result);
     } else {
         lrc_progress_cancel(&progress);
     }
@@ -1386,14 +1381,13 @@ lrc_ctc_onnx_inference_run(void *backend, LrcCtcModelInput *input,
                            &output_tensor);
     if (ok) {
         lrc_progress_finish(&progress);
-        ok = lrc_ctc_emissions_build_trimmed_from_model_output(emissions, input,
-                                                               output_tensor.data,
-                                                               output_tensor.data_len,
-                                                               output_tensor.shape,
-                                                               output_tensor.shape_len,
-                                                               values_kind,
-                                                               print_progress,
-                                                               result);
+        ok = ctc_emissions_build_trimmed_output(emissions, input,
+                                                output_tensor.data,
+                                                output_tensor.data_len,
+                                                output_tensor.shape,
+                                                output_tensor.shape_len,
+                                                values_kind, print_progress,
+                                                result);
     } else {
         lrc_progress_cancel(&progress);
         lrc_ctc_inference_result_set(result,
@@ -1633,6 +1627,8 @@ static void
 ctc_inference_test_empty_initializers(void) {
     LrcCtcInferenceResult result;
     LrcCtcEmissions emissions = {0};
+    enum LrcCtcEmissionValuesKind values_kind =
+        LRC_CTC_EMISSION_VALUES_LOG_PROBABILITIES;
     LrcCtcFakeInference fake = {0};
     LrcCtcInferenceBackend backend;
     LrcCtcOnnxInference onnx = {0};
@@ -2447,9 +2443,7 @@ ctc_inference_test_log_probability_bypass(void) {
                                       &result)) {
         fatal(ctc_inference_test_fail("copy log-probability emissions"));
     }
-    if (!lrc_ctc_emissions_convert_to_log_probabilities(&emissions,
-                                                        LRC_CTC_EMISSION_VALUES_LOG_PROBABILITIES,
-                                                        &result)) {
+    if (!ctc_emissions_to_log_probabilities(&emissions, values_kind, &result)) {
         fatal(ctc_inference_test_fail("bypass log probabilities"));
     }
 
@@ -2467,6 +2461,8 @@ static void
 ctc_inference_test_logits_to_log_probabilities(void) {
     LrcCtcInferenceResult result;
     LrcCtcEmissions emissions = {0};
+    enum LrcCtcEmissionValuesKind values_kind =
+        LRC_CTC_EMISSION_VALUES_LOGITS;
     int64 shape[2];
     double row1_norm;
     double row2_norm;
@@ -2490,9 +2486,7 @@ ctc_inference_test_logits_to_log_probabilities(void) {
                                       &result)) {
         fatal(ctc_inference_test_fail("copy logits emissions"));
     }
-    if (!lrc_ctc_emissions_convert_to_log_probabilities(&emissions,
-                                                        LRC_CTC_EMISSION_VALUES_LOGITS,
-                                                        &result)) {
+    if (!ctc_emissions_to_log_probabilities(&emissions, values_kind, &result)) {
         fatal(ctc_inference_test_fail("convert logits to log probabilities"));
     }
 
@@ -2526,6 +2520,8 @@ static void
 ctc_inference_test_probabilities_to_log_probabilities(void) {
     LrcCtcInferenceResult result;
     LrcCtcEmissions emissions = {0};
+    enum LrcCtcEmissionValuesKind values_kind =
+        LRC_CTC_EMISSION_VALUES_PROBABILITIES;
     int64 shape[2];
     float values[] = {
         0.25f, 0.75f,
@@ -2543,9 +2539,7 @@ ctc_inference_test_probabilities_to_log_probabilities(void) {
                                       &result)) {
         fatal(ctc_inference_test_fail("copy probability emissions"));
     }
-    if (!lrc_ctc_emissions_convert_to_log_probabilities(&emissions,
-                                                        LRC_CTC_EMISSION_VALUES_PROBABILITIES,
-                                                        &result)) {
+    if (!ctc_emissions_to_log_probabilities(&emissions, values_kind, &result)) {
         fatal(ctc_inference_test_fail("convert probabilities"));
     }
 
@@ -2572,6 +2566,10 @@ static void
 ctc_inference_test_rejects_invalid_probability_conversion(void) {
     LrcCtcInferenceResult result;
     LrcCtcEmissions emissions = {0};
+    enum LrcCtcEmissionValuesKind values_kind =
+        LRC_CTC_EMISSION_VALUES_PROBABILITIES;
+    enum LrcCtcEmissionValuesKind invalid_kind =
+        (enum LrcCtcEmissionValuesKind)777;
     int64 shape[2];
     float values[] = {1.0f, 0.0f};
 
@@ -2585,9 +2583,7 @@ ctc_inference_test_rejects_invalid_probability_conversion(void) {
                                       &result)) {
         fatal(ctc_inference_test_fail("copy invalid probabilities"));
     }
-    if (lrc_ctc_emissions_convert_to_log_probabilities(&emissions,
-                                                       LRC_CTC_EMISSION_VALUES_PROBABILITIES,
-                                                       &result)) {
+    if (ctc_emissions_to_log_probabilities(&emissions, values_kind, &result)) {
         fatal(ctc_inference_test_fail("zero probability accepted"));
     }
     ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_INVALID_PROBABILITY);
@@ -2602,9 +2598,7 @@ ctc_inference_test_rejects_invalid_probability_conversion(void) {
                                       &result)) {
         fatal(ctc_inference_test_fail("copy valid probabilities"));
     }
-    if (lrc_ctc_emissions_convert_to_log_probabilities(&emissions,
-                                                       (enum LrcCtcEmissionValuesKind)777,
-                                                       &result)) {
+    if (ctc_emissions_to_log_probabilities(&emissions, invalid_kind, &result)) {
         fatal(ctc_inference_test_fail("invalid value kind accepted"));
     }
     ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT);

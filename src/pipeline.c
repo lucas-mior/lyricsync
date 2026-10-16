@@ -342,15 +342,14 @@ static bool
 lrc_pipeline_extract_vocals(LrcPipeline *pipeline,
                             LrcVocalsExtractResult *result) {
     LrcVocalsExtractRequest request;
+    enum LsError invalid_error = LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT;
 
-    lrc_pipeline_vocals_result_set(result,
-                                   LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT,
+    lrc_pipeline_vocals_result_set(result, invalid_error,
                                    "pipeline is missing", NULL);
 
     if (!lrc_pipeline_vocals_request(pipeline, &request)) {
         if (pipeline) {
-            lrc_pipeline_vocals_result_set(result,
-                                           LS_ERROR_VOCALS_EXTRACT_INVALID_ARGUMENT,
+            lrc_pipeline_vocals_result_set(result, invalid_error,
                                            pipeline->message, pipeline->path);
         }
         return false;
@@ -388,9 +387,8 @@ lrc_pipeline_generate_result_init(LrcPipelineGenerateResult *result) {
 }
 
 static void
-lrc_pipeline_generate_result_set(LrcPipelineGenerateResult *result,
-                                 enum LsError error, char *message,
-                                 char *path) {
+pipeline_result_set(LrcPipelineGenerateResult *result,
+                    enum LsError error, char *message, char *path) {
     if (result == NULL) {
         return;
     }
@@ -691,42 +689,45 @@ static char *
 lrc_pipeline_preprocess_split_size_name(
     enum LrcLyricsPreprocessSplitSize split_size) {
     static char buffer[32];
+    char *name;
+    char *prefix = QUOTE(LRC_LYRICS_PREPROCESS_SPLIT_SIZE_);
 
     if (split_size >= LRC_LYRICS_PREPROCESS_SPLIT_SIZE_COUNT) {
         return "invalid";
     }
 
-    return lrc_pipeline_enum_lower_suffix(LRC_LYRICS_PREPROCESS_SPLIT_SIZE_str(split_size),
-                                          QUOTE(LRC_LYRICS_PREPROCESS_SPLIT_SIZE_),
-                                          buffer, SIZEOF(buffer));
+    name = LRC_LYRICS_PREPROCESS_SPLIT_SIZE_str(split_size);
+    return lrc_pipeline_enum_lower_suffix(name, prefix, buffer, SIZEOF(buffer));
 }
 
 static char *
 lrc_pipeline_preprocess_star_frequency_name(
     enum LrcLyricsPreprocessStarFrequency star_frequency) {
     static char buffer[32];
+    char *name;
+    char *prefix = QUOTE(LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_);
 
     if (star_frequency >= LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_COUNT) {
         return "invalid";
     }
 
-    return lrc_pipeline_enum_lower_suffix(LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_str(star_frequency),
-                                          QUOTE(LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_),
-                                          buffer, SIZEOF(buffer));
+    name = LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_str(star_frequency);
+    return lrc_pipeline_enum_lower_suffix(name, prefix, buffer, SIZEOF(buffer));
 }
 
 static char *
 lrc_pipeline_preprocess_romanization_name(
     enum LrcLyricsPreprocessRomanization romanization) {
     static char buffer[32];
+    char *name;
+    char *prefix = QUOTE(LRC_LYRICS_PREPROCESS_ROMANIZATION_);
 
     if (romanization >= LRC_LYRICS_PREPROCESS_ROMANIZATION_COUNT) {
         return "invalid";
     }
 
-    return lrc_pipeline_enum_lower_suffix(LRC_LYRICS_PREPROCESS_ROMANIZATION_str(romanization),
-                                          QUOTE(LRC_LYRICS_PREPROCESS_ROMANIZATION_),
-                                          buffer, SIZEOF(buffer));
+    name = LRC_LYRICS_PREPROCESS_ROMANIZATION_str(romanization);
+    return lrc_pipeline_enum_lower_suffix(name, prefix, buffer, SIZEOF(buffer));
 }
 
 static bool
@@ -739,10 +740,10 @@ lrc_pipeline_parse_preprocess_split_size(LrcPipelineConfig *config,
     for (uint32 i = 0; i < LRC_LYRICS_PREPROCESS_SPLIT_SIZE_COUNT; i += 1) {
         enum LrcLyricsPreprocessSplitSize split_size =
             (enum LrcLyricsPreprocessSplitSize)i;
+        char *name = LRC_LYRICS_PREPROCESS_SPLIT_SIZE_str(split_size);
+        char *prefix = QUOTE(LRC_LYRICS_PREPROCESS_SPLIT_SIZE_);
 
-        if (lrc_pipeline_enum_value_matches(LRC_LYRICS_PREPROCESS_SPLIT_SIZE_str(split_size),
-                                            QUOTE(LRC_LYRICS_PREPROCESS_SPLIT_SIZE_),
-                                            value)) {
+        if (lrc_pipeline_enum_value_matches(name, prefix, value)) {
             config->lyrics_preprocess_options.split_size = split_size;
             return true;
         }
@@ -764,10 +765,11 @@ lrc_pipeline_parse_preprocess_star_frequency(LrcPipelineConfig *config,
          i += 1) {
         enum LrcLyricsPreprocessStarFrequency star_frequency =
             (enum LrcLyricsPreprocessStarFrequency)i;
+        char *name =
+            LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_str(star_frequency);
+        char *prefix = QUOTE(LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_);
 
-        if (lrc_pipeline_enum_value_matches(LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_str(star_frequency),
-                                            QUOTE(LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_),
-                                            value)) {
+        if (lrc_pipeline_enum_value_matches(name, prefix, value)) {
             config->lyrics_preprocess_options.star_frequency = star_frequency;
             return true;
         }
@@ -789,10 +791,10 @@ lrc_pipeline_parse_preprocess_romanization(LrcPipelineConfig *config,
          i += 1) {
         enum LrcLyricsPreprocessRomanization romanization =
             (enum LrcLyricsPreprocessRomanization)i;
+        char *name = LRC_LYRICS_PREPROCESS_ROMANIZATION_str(romanization);
+        char *prefix = QUOTE(LRC_LYRICS_PREPROCESS_ROMANIZATION_);
 
-        if (lrc_pipeline_enum_value_matches(LRC_LYRICS_PREPROCESS_ROMANIZATION_str(romanization),
-                                            QUOTE(LRC_LYRICS_PREPROCESS_ROMANIZATION_),
-                                            value)) {
+        if (lrc_pipeline_enum_value_matches(name, prefix, value)) {
             config->lyrics_preprocess_options.romanization = romanization;
             return true;
         }
@@ -840,6 +842,9 @@ static void
 lrc_ctc_debug_dump_write_config(LrcCtcDebugDumpWriter *writer,
                                 LrcPipeline *pipeline) {
     LrcLyricsPreprocessOptions *options;
+    char *split_size_name;
+    char *star_frequency_name;
+    char *romanization_name;
 
     lrc_ctc_debug_dump_write_section(writer, "config");
     if (pipeline == NULL) {
@@ -847,6 +852,12 @@ lrc_ctc_debug_dump_write_config(LrcCtcDebugDumpWriter *writer,
     }
 
     options = &pipeline->config.lyrics_preprocess_options;
+    split_size_name =
+        lrc_pipeline_preprocess_split_size_name(options->split_size);
+    star_frequency_name =
+        lrc_pipeline_preprocess_star_frequency_name(options->star_frequency);
+    romanization_name =
+        lrc_pipeline_preprocess_romanization_name(options->romanization);
     lrc_ctc_debug_dump_write_key_value(writer,
                                        "ctc_model_path",
                                        pipeline->ctc_assets.model_path);
@@ -862,12 +873,11 @@ lrc_ctc_debug_dump_write_config(LrcCtcDebugDumpWriter *writer,
     lrc_ctc_debug_dump_write_key_value(writer,
                                        "output_path",
                                        pipeline->config.output_lrc_path);
-    lrc_ctc_debug_dump_write_key_value(writer, "split_size",
-                                       lrc_pipeline_preprocess_split_size_name(options->split_size));
+    lrc_ctc_debug_dump_write_key_value(writer, "split_size", split_size_name);
     lrc_ctc_debug_dump_write_key_value(writer, "star_frequency",
-                                       lrc_pipeline_preprocess_star_frequency_name(options->star_frequency));
+                                       star_frequency_name);
     lrc_ctc_debug_dump_write_key_value(writer, "romanization",
-                                       lrc_pipeline_preprocess_romanization_name(options->romanization));
+                                       romanization_name);
     lrc_ctc_debug_dump_write_key_value(writer, "language", options->language);
 
     return;
@@ -924,8 +934,9 @@ lrc_ctc_debug_dump_write_target_tokens(LrcCtcDebugDumpWriter *writer,
                                        LrcCtcTokenizedText *tokens) {
     lrc_ctc_debug_dump_write_section(writer, "target_tokens");
     lrc_ctc_debug_dump_printf(writer,
-                              "index\ttoken_id\ttoken_text\tline_index\tsegment_index\t"
-                              "starts_segment\tnormalized_start\tnormalized_end\n"
+                              "index\ttoken_id\ttoken_text\tline_index\t"
+                              "segment_index\tstarts_segment\t"
+                              "normalized_start\tnormalized_end\n"
     );
     if (tokens == NULL) {
         return;
@@ -995,6 +1006,7 @@ lrc_ctc_debug_dump_write_audio_model(LrcCtcDebugDumpWriter *writer,
                                      LrcCtcEmissions *emissions,
                                      LrcCtcTokenizer *tokenizer,
                                      int32 star_token_id) {
+    LrcCtcModelConfig *model_config;
     double frame_duration_seconds;
 
     lrc_ctc_debug_dump_write_section(writer, "frames");
@@ -1005,6 +1017,7 @@ lrc_ctc_debug_dump_write_audio_model(LrcCtcDebugDumpWriter *writer,
         return;
     }
 
+    model_config = &pipeline->config.ctc_model_config;
     frame_duration_seconds = input->stride_ms/1000.0;
 
     lrc_ctc_debug_dump_write_key_int32(writer,
@@ -1047,9 +1060,9 @@ lrc_ctc_debug_dump_write_audio_model(LrcCtcDebugDumpWriter *writer,
                                        "row_sample_count",
                                        input->row_sample_count);
     lrc_ctc_debug_dump_write_key_int32(writer, "window_seconds",
-                                       pipeline->config.ctc_model_config.window_seconds);
+                                       model_config->window_seconds);
     lrc_ctc_debug_dump_write_key_int32(writer, "context_seconds",
-                                       pipeline->config.ctc_model_config.context_seconds);
+                                       model_config->context_seconds);
 
     return;
 }
@@ -1087,8 +1100,9 @@ lrc_ctc_debug_dump_write_path_segments(LrcCtcDebugDumpWriter *writer,
                                        LrcCtcPathSegments *segments) {
     lrc_ctc_debug_dump_write_section(writer, "merged_path_segments");
     lrc_ctc_debug_dump_printf(writer,
-                              "index\ttoken_index\ttoken_id\ttoken_text\tstart_frame\t"
-                              "end_frame\tstart_seconds\tend_seconds\tscore\tis_blank\tis_star\n"
+                              "index\ttoken_index\ttoken_id\ttoken_text\t"
+                              "start_frame\tend_frame\tstart_seconds\t"
+                              "end_seconds\tscore\tis_blank\tis_star\n"
     );
     if (segments == NULL) {
         return;
@@ -1113,13 +1127,14 @@ lrc_ctc_debug_dump_write_path_segments(LrcCtcDebugDumpWriter *writer,
         lrc_ctc_debug_dump_write_segment_token_text(writer,
                                                     tokenizer,
                                                     segment);
-        lrc_ctc_debug_dump_printf(writer, "\t%d\t%d\t%.9g\t%.9g\t%.9g\t%d\t%d\n",
-                                          segment->start_frame,
-                                          segment->end_frame,
-                                          (double)segment->start_seconds,
-                                          (double)segment->end_seconds,
-                                          (double)segment->score,
-                                          is_blank, is_star);
+        lrc_ctc_debug_dump_printf(writer,
+                                  "\t%d\t%d\t%.9g\t%.9g\t%.9g\t%d\t%d\n",
+                                  segment->start_frame,
+                                  segment->end_frame,
+                                  (double)segment->start_seconds,
+                                  (double)segment->end_seconds,
+                                  (double)segment->score,
+                                  is_blank, is_star);
     }
 
     return;
@@ -1157,9 +1172,11 @@ lrc_ctc_debug_dump_write_word_spans(LrcCtcDebugDumpWriter *writer,
                                     LrcCtcWordSpans *word_spans) {
     lrc_ctc_debug_dump_write_section(writer, section_name);
     lrc_ctc_debug_dump_printf(writer,
-                              "index\tline_index\tword_index\ttext\tnormalized_start\t"
-                              "normalized_end\ttoken_start_index\ttoken_end_index\t"
-                              "span_start_index\tspan_end_index\tstart_seconds\t"
+                              "index\tline_index\tword_index\ttext\t"
+                              "normalized_start\tnormalized_end\t"
+                              "token_start_index\ttoken_end_index\t"
+                              "span_start_index\tspan_end_index\t"
+                              "start_seconds\t"
                               "end_seconds\tscore\n"
     );
     if (word_spans == NULL) {
@@ -1196,10 +1213,10 @@ lrc_pipeline_debug_dump_check_writer(LrcPipeline *pipeline,
         return true;
     }
 
-    lrc_pipeline_generate_result_set(result,
-                                     LS_ERROR_PIPELINE_GENERATE_LRC_WRITE_FAILED,
-                                     "could not write CTC debug dump",
-                                     pipeline->config.ctc_debug_dump_path);
+    pipeline_result_set(result,
+                        LS_ERROR_PIPELINE_GENERATE_LRC_WRITE_FAILED,
+                        "could not write CTC debug dump",
+                        pipeline->config.ctc_debug_dump_path);
 
     return false;
 }
@@ -1247,9 +1264,9 @@ lrc_pipeline_debug_dump_write_active_word_spans(
         if (align_result) {
             message = align_result->header.message;
         }
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_ALIGNMENT_FAILED,
-                                         message, NULL);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_ALIGNMENT_FAILED,
+                            message, NULL);
         return false;
     }
 
@@ -1298,9 +1315,9 @@ lrc_pipeline_debug_dump_write_path_segments(LrcPipeline *pipeline,
         if (align_result) {
             message = align_result->header.message;
         }
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_ALIGNMENT_FAILED,
-                                         message, NULL);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_ALIGNMENT_FAILED,
+                            message, NULL);
         lrc_ctc_path_segments_destroy(&segments);
         return false;
     }
@@ -1308,10 +1325,10 @@ lrc_pipeline_debug_dump_write_path_segments(LrcPipeline *pipeline,
     lrc_ctc_debug_dump_write_path_segments(writer, tokenizer, &segments);
     lrc_ctc_path_segments_destroy(&segments);
     if (!writer->ok) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_LRC_WRITE_FAILED,
-                                         "could not write CTC debug dump",
-                                         pipeline->config.ctc_debug_dump_path);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_LRC_WRITE_FAILED,
+                            "could not write CTC debug dump",
+                            pipeline->config.ctc_debug_dump_path);
         return false;
     }
 
@@ -1330,10 +1347,10 @@ lrc_pipeline_debug_dump_open_and_write_text(LrcPipeline *pipeline,
     }
     if (!lrc_ctc_debug_dump_writer_open(writer,
                                         pipeline->config.ctc_debug_dump_path)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_LRC_WRITE_FAILED,
-                                         "could not open CTC debug dump",
-                                         pipeline->config.ctc_debug_dump_path);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_LRC_WRITE_FAILED,
+                            "could not open CTC debug dump",
+                            pipeline->config.ctc_debug_dump_path);
         return false;
     }
 
@@ -1343,10 +1360,10 @@ lrc_pipeline_debug_dump_open_and_write_text(LrcPipeline *pipeline,
                                              tokenizer,
                                              tokens);
     if (!writer->ok) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_LRC_WRITE_FAILED,
-                                         "could not write CTC debug dump",
-                                         pipeline->config.ctc_debug_dump_path);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_LRC_WRITE_FAILED,
+                            "could not write CTC debug dump",
+                            pipeline->config.ctc_debug_dump_path);
         return false;
     }
 
@@ -1374,9 +1391,9 @@ lrc_pipeline_ctc_align_plan_init(LrcPipeline *pipeline, LrcCtcAlignPlan *plan,
         break;
     case LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_COUNT:
     default:
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_ALIGNMENT_FAILED,
-                                         "star frequency is invalid", NULL);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_ALIGNMENT_FAILED,
+                            "star frequency is invalid", NULL);
         return false;
     }
 
@@ -1411,9 +1428,9 @@ lrc_pipeline_ctc_align_ok(bool ok, LrcCtcAlignResult *align_result,
         token_index = align_result->token_index;
     }
 
-    lrc_pipeline_generate_result_set(result,
-                                     LS_ERROR_PIPELINE_GENERATE_ALIGNMENT_FAILED,
-                                     message, NULL);
+    pipeline_result_set(result,
+                        LS_ERROR_PIPELINE_GENERATE_ALIGNMENT_FAILED,
+                        message, NULL);
     if (result) {
         result->frame_index = frame_index;
         result->token_index = token_index;
@@ -1484,10 +1501,10 @@ lrc_pipeline_line_timing_audio_from_ctc_audio(
     }
     if ((line_audio == NULL) || (audio == NULL) || (audio->samples == NULL)
         || (audio->sample_count <= 0) || (audio->sample_rate <= 0)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_INVALID_ARGUMENT,
-                                         "line timing audio context is invalid",
-                                         NULL);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_INVALID_ARGUMENT,
+                            "line timing audio context is invalid",
+                            NULL);
         return false;
     }
 
@@ -1670,6 +1687,10 @@ lrc_pipeline_audio_find_silence_start(float *samples, int64 sample_count,
     int64 sustained_count;
     int64 silent_run_start;
     int64 last_start;
+    float window_seconds = LRC_SILENCE_WINDOW_SECONDS;
+    float hop_seconds = LRC_SILENCE_HOP_SECONDS;
+    float margin_db = noise_margin_db;
+    float silence_seconds = sustained_silence_seconds;
     float silence_threshold_db;
     double duration_seconds;
 
@@ -1715,11 +1736,11 @@ lrc_pipeline_audio_find_silence_start(float *samples, int64 sample_count,
         return false;
     }
 
-    window_count = lrc_pipeline_audio_second_to_sample_count(LRC_SILENCE_WINDOW_SECONDS,
+    window_count = lrc_pipeline_audio_second_to_sample_count(window_seconds,
                                                              sample_rate);
-    hop_count = lrc_pipeline_audio_second_to_sample_count(LRC_SILENCE_HOP_SECONDS,
+    hop_count = lrc_pipeline_audio_second_to_sample_count(hop_seconds,
                                                           sample_rate);
-    sustained_count = lrc_pipeline_audio_second_to_sample_count(sustained_silence_seconds,
+    sustained_count = lrc_pipeline_audio_second_to_sample_count(silence_seconds,
                                                                 sample_rate);
     if ((window_count <= 0) || (hop_count <= 0) || (sustained_count <= 0)
         || (window_count > search_end - search_start)) {
@@ -1731,7 +1752,7 @@ lrc_pipeline_audio_find_silence_start(float *samples, int64 sample_count,
                                                                    search_end,
                                                                    window_count,
                                                                    hop_count,
-                                                                   noise_margin_db);
+                                                                   margin_db);
 
     last_start = search_end - window_count;
     silent_run_start = -1;
@@ -1772,10 +1793,10 @@ lrc_pipeline_output_line_set_timestamped(LrcOutputLine *line, char *text,
     if (!lrc_timestamp_hundredths_from_seconds(seconds,
                                                &hundredths,
                                                &format_result)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_OUTPUT_LINES_FAILED,
-                                         "could not format LRC timestamp",
-                                         NULL);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_OUTPUT_LINES_FAILED,
+                            "could not format LRC timestamp",
+                            NULL);
         return false;
     }
 
@@ -1814,11 +1835,11 @@ lrc_pipeline_line_timestamps_correct_ends_from_audio(
         || (timestamps->line_count < 0) || (audio == NULL)
         || (audio->samples == NULL) || (audio->sample_count <= 0)
         || (audio->sample_rate <= 0)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_INVALID_ARGUMENT,
-                                         "line timing audio correction "
-                                         "arguments are invalid",
-                                         NULL);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_INVALID_ARGUMENT,
+                            "line timing audio correction "
+                            "arguments are invalid",
+                            NULL);
         return false;
     }
 
@@ -1907,18 +1928,18 @@ lrc_pipeline_output_lines_from_timestamps(LrcLyrics *lyrics,
     }
     if ((lyrics == NULL) || (timestamps == NULL) || (lines == NULL)
         || (line_count == NULL)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_INVALID_ARGUMENT,
-                                         "LRC output line conversion "
-                                         "arguments are invalid",
-                                         NULL);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_INVALID_ARGUMENT,
+                            "LRC output line conversion "
+                            "arguments are invalid",
+                            NULL);
         return false;
     }
     if ((timestamps->line_count < 0)
         || (line_cap < timestamps->line_count)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_TOO_LARGE,
-                                         "too many LRC output lines", NULL);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_TOO_LARGE,
+                            "too many LRC output lines", NULL);
         return false;
     }
 
@@ -1926,23 +1947,25 @@ lrc_pipeline_output_lines_from_timestamps(LrcLyrics *lyrics,
     for (int32 i = 0; i < timestamps->line_count; i += 1) {
         LrcCtcLineTimestamp *timestamp = timestamps->lines + i;
         LrcLyricsLine *lyrics_line;
+        float start_seconds = timestamp->start_seconds;
+        float end_seconds = timestamp->end_seconds;
 
         if ((timestamp->line_index < 0)
             || (timestamp->line_index >= lyrics->line_count)) {
-            lrc_pipeline_generate_result_set(result,
-                                             LS_ERROR_PIPELINE_GENERATE_OUTPUT_LINES_FAILED,
-                                             "LRC timestamp line "
-                                             "index is invalid",
-                                             NULL);
+            pipeline_result_set(result,
+                                LS_ERROR_PIPELINE_GENERATE_OUTPUT_LINES_FAILED,
+                                "LRC timestamp line "
+                                "index is invalid",
+                                NULL);
             if (result) {
                 result->line_index = timestamp->line_index;
             }
             return false;
         }
         if (out_index >= line_cap) {
-            lrc_pipeline_generate_result_set(result,
-                                             LS_ERROR_PIPELINE_GENERATE_TOO_LARGE,
-                                             "too many LRC output lines", NULL);
+            pipeline_result_set(result,
+                                LS_ERROR_PIPELINE_GENERATE_TOO_LARGE,
+                                "too many LRC output lines", NULL);
             return false;
         }
 
@@ -1952,7 +1975,7 @@ lrc_pipeline_output_lines_from_timestamps(LrcLyrics *lyrics,
             if (!lrc_pipeline_output_line_set_timestamped(lines + out_index,
                                                           lyrics_line->text,
                                                           lyrics_line->text_len,
-                                                          timestamp->start_seconds,
+                                                          start_seconds,
                                                           result)) {
                 return false;
             }
@@ -1961,15 +1984,15 @@ lrc_pipeline_output_lines_from_timestamps(LrcLyrics *lyrics,
                 break;
             }
             if (out_index >= line_cap) {
-                lrc_pipeline_generate_result_set(result,
-                                                 LS_ERROR_PIPELINE_GENERATE_TOO_LARGE,
-                                                 "too many LRC output lines",
-                                                 NULL);
+                pipeline_result_set(result,
+                                    LS_ERROR_PIPELINE_GENERATE_TOO_LARGE,
+                                    "too many LRC output lines",
+                                    NULL);
                 return false;
             }
             if (!lrc_pipeline_output_line_set_timestamped(lines + out_index, "",
                                                           0,
-                                                          timestamp->end_seconds,
+                                                          end_seconds,
                                                           result)) {
                 return false;
             }
@@ -1983,10 +2006,10 @@ lrc_pipeline_output_lines_from_timestamps(LrcLyrics *lyrics,
             out_index += 1;
             break;
         default:
-            lrc_pipeline_generate_result_set(result,
-                                             LS_ERROR_PIPELINE_GENERATE_OUTPUT_LINES_FAILED,
-                                             "LRC timestamp kind is invalid",
-                                             NULL);
+            pipeline_result_set(result,
+                                LS_ERROR_PIPELINE_GENERATE_OUTPUT_LINES_FAILED,
+                                "LRC timestamp kind is invalid",
+                                NULL);
             return false;
         }
     }
@@ -2008,10 +2031,10 @@ lrc_pipeline_generate_targets(LrcCtcTokenizedText *tokens,
         || (target_segment_starts == NULL)
         || (target_token_count == NULL) || (tokens->tokens == NULL)
         || (tokens->token_count <= 0)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_TOKENIZE_FAILED,
-                                         "CTC tokenized lyrics are empty",
-                                         NULL);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_TOKENIZE_FAILED,
+                            "CTC tokenized lyrics are empty",
+                            NULL);
         return false;
     }
 
@@ -2034,9 +2057,9 @@ lrc_pipeline_prepare_vocals_stage_for_generation(
     LrcVocalsExtractResult vocals_result;
 
     if (!lrc_pipeline_prepare(pipeline)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_PREPARE_FAILED,
-                                         pipeline->message, pipeline->path);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_PREPARE_FAILED,
+                            pipeline->message, pipeline->path);
         return false;
     }
 
@@ -2045,10 +2068,10 @@ lrc_pipeline_prepare_vocals_stage_for_generation(
     }
 
     if (!lrc_pipeline_extract_vocals(pipeline, &vocals_result)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_VOCALS_EXTRACT_FAILED,
-                                         vocals_result.path_header.header.message,
-                                         vocals_result.path_header.path);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_VOCALS_EXTRACT_FAILED,
+                            vocals_result.path_header.header.message,
+                            vocals_result.path_header.path);
         return false;
     }
 
@@ -2083,40 +2106,43 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
     LrcCtcTokenSpans token_spans = {0};
     LrcCtcWordSpans word_spans = {0};
     LrcCtcLineTimestamps line_timestamps = {0};
+    LrcCtcLineTimestamps *timestamps = &line_timestamps;
     LrcPipelineLineTimingAudio line_audio = {0};
     LrcCtcDebugDumpWriter debug_dump;
     LrcOutputLine *output_lines;
     LrcWriteResult write_result;
+    LrcLyricsPreprocessOptions *preprocess_options;
     int32 *target_token_ids;
     bool *target_segment_starts;
     int32 target_token_count;
     int32 output_line_cap;
     int32 output_line_count;
     int32 star_token_id;
-    float frame_duration_seconds;
+    float frame_duration;
     bool ok;
 
     if (result) {
         lrc_pipeline_generate_result_init(result);
     }
     if (pipeline == NULL) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_INVALID_ARGUMENT,
-                                         "pipeline is missing", NULL);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_INVALID_ARGUMENT,
+                            "pipeline is missing", NULL);
         return false;
     }
+    preprocess_options = &pipeline->config.lyrics_preprocess_options;
     if (path_missing(pipeline->config.lyrics_text_path)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_MISSING_LYRICS,
-                                         "lyrics text path is missing",
-                                         pipeline->config.lyrics_text_path);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_MISSING_LYRICS,
+                            "lyrics text path is missing",
+                            pipeline->config.lyrics_text_path);
         return false;
     }
     if (path_missing(pipeline->config.output_lrc_path)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_MISSING_OUTPUT,
-                                         "output LRC path is missing",
-                                         pipeline->config.output_lrc_path);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_MISSING_OUTPUT,
+                            "output LRC path is missing",
+                            pipeline->config.output_lrc_path);
         return false;
     }
 
@@ -2137,45 +2163,45 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
         ok = false;
     }
     if (ok && !lrc_pipeline_validate_ctc_assets(pipeline, &assets_result)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_CTC_ASSETS_INVALID,
-                                         assets_result.path_header.header.message,
-                                         assets_result.path_header.path);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_CTC_ASSETS_INVALID,
+                            assets_result.path_header.header.message,
+                            assets_result.path_header.path);
         ok = false;
     }
     if (ok && !lrc_lyrics_load_file(&lyrics,
                                     pipeline->config.lyrics_text_path,
                                     &lyrics_result)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_LYRICS_LOAD_FAILED,
-                                         lyrics_result.path_header.header.message,
-                                         lyrics_result.path_header.path);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_LYRICS_LOAD_FAILED,
+                            lyrics_result.path_header.header.message,
+                            lyrics_result.path_header.path);
         ok = false;
     }
     if (ok && !lrc_lyrics_normalize_with_options(&lyrics, &normalized,
-                                                 &pipeline->config.lyrics_preprocess_options)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_LYRICS_NORMALIZE_FAILED,
-                                         "could not normalize lyrics",
-                                         pipeline->config.lyrics_text_path);
+                                                 preprocess_options)) {
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_LYRICS_NORMALIZE_FAILED,
+                            "could not normalize lyrics",
+                            pipeline->config.lyrics_text_path);
         ok = false;
     }
     if (ok && !lrc_ctc_tokenizer_load_file(&tokenizer,
                                            pipeline->ctc_assets.tokenizer_path,
                                            &tokenizer_result)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_TOKENIZER_LOAD_FAILED,
-                                         tokenizer_result.path_header.header.message,
-                                         tokenizer_result.path_header.path);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_TOKENIZER_LOAD_FAILED,
+                            tokenizer_result.path_header.header.message,
+                            tokenizer_result.path_header.path);
         ok = false;
     }
     if (ok && !lrc_ctc_tokenizer_tokenize_normalized(&tokenizer,
                                                      &normalized,
                                                      &tokens,
                                                      &tokenize_result)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_TOKENIZE_FAILED,
-                                         tokenize_result.header.message, NULL);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_TOKENIZE_FAILED,
+                            tokenize_result.header.message, NULL);
         if (result) {
             result->line_index = tokenize_result.line_index;
             result->token_index = tokenize_result.token_id;
@@ -2198,10 +2224,10 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
                                          pipeline->vocals_stage_path,
                                          &audio_config,
                                          &audio_result)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_AUDIO_DECODE_FAILED,
-                                         audio_result.path_header.header.message,
-                                         audio_result.path_header.path);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_AUDIO_DECODE_FAILED,
+                            audio_result.path_header.header.message,
+                            audio_result.path_header.path);
         if (result) {
             result->frame_index = audio_result.sample_index;
         }
@@ -2211,10 +2237,10 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
                                            &audio,
                                            &pipeline->config.ctc_model_config,
                                            &model_result)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_MODEL_INPUT_FAILED,
-                                         model_result.header.message,
-                                         pipeline->vocals_stage_path);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_MODEL_INPUT_FAILED,
+                            model_result.header.message,
+                            pipeline->vocals_stage_path);
         if (result) {
             result->frame_index = model_result.sample_index;
         }
@@ -2226,10 +2252,10 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
                                            pipeline->ctc_assets.model_path,
                                            &ort_session_config,
                                            &inference_result)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_CTC_MODEL_LOAD_FAILED,
-                                         inference_result.header.message,
-                                         pipeline->ctc_assets.model_path);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_CTC_MODEL_LOAD_FAILED,
+                            inference_result.header.message,
+                            pipeline->ctc_assets.model_path);
         ok = false;
     }
     if (ok) {
@@ -2240,10 +2266,10 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
                                    &input,
                                    &emissions,
                                    &inference_result)) {
-            lrc_pipeline_generate_result_set(result,
-                                             LS_ERROR_PIPELINE_GENERATE_CTC_INFERENCE_FAILED,
-                                             inference_result.header.message,
-                                             pipeline->ctc_assets.model_path);
+            pipeline_result_set(result,
+                                LS_ERROR_PIPELINE_GENERATE_CTC_INFERENCE_FAILED,
+                                inference_result.header.message,
+                                pipeline->ctc_assets.model_path);
             if (result) {
                 result->frame_index = inference_result.output_index;
             }
@@ -2259,11 +2285,11 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
     }
     if (ok) {
         if (emissions.vocabulary_size > MAXOF(star_token_id)) {
-            lrc_pipeline_generate_result_set(result,
-                                             LS_ERROR_PIPELINE_GENERATE_TOO_LARGE,
-                                             "CTC vocabulary is too "
-                                             "large for a star token",
-                                             NULL);
+            pipeline_result_set(result,
+                                LS_ERROR_PIPELINE_GENERATE_TOO_LARGE,
+                                "CTC vocabulary is too "
+                                "large for a star token",
+                                NULL);
             ok = false;
         } else {
             star_token_id = (int32)emissions.vocabulary_size;
@@ -2288,10 +2314,10 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
                                              &tokenizer,
                                              star_token_id);
         if (!debug_dump.ok) {
-            lrc_pipeline_generate_result_set(result,
-                                             LS_ERROR_PIPELINE_GENERATE_LRC_WRITE_FAILED,
-                                             "could not write CTC debug dump",
-                                             pipeline->config.ctc_debug_dump_path);
+            pipeline_result_set(result,
+                                LS_ERROR_PIPELINE_GENERATE_LRC_WRITE_FAILED,
+                                "could not write CTC debug dump",
+                                pipeline->config.ctc_debug_dump_path);
             ok = false;
         }
     }
@@ -2311,12 +2337,12 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
         ok = false;
     }
 
-    frame_duration_seconds = (float)(input.stride_ms/1000.0);
+    frame_duration = (float)(input.stride_ms/1000.0);
     if (ok && !lrc_pipeline_debug_dump_write_path_segments(pipeline,
                                                            &debug_dump,
                                                            &path, &emissions,
                                                            &tokenizer,
-                                                           frame_duration_seconds,
+                                                           frame_duration,
                                                            &align_result,
                                                            result)) {
         ok = false;
@@ -2327,14 +2353,14 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
                                                                &emissions,
                                                                &tokens,
                                                                &normalized,
-                                                               frame_duration_seconds,
+                                                               frame_duration,
                                                                &align_result,
                                                                result)) {
         ok = false;
     }
     if (ok && !lrc_pipeline_path_to_padded_token_spans(&path, &emissions,
                                                        &align_plan,
-                                                       frame_duration_seconds,
+                                                       frame_duration,
                                                        &token_spans,
                                                        &align_result,
                                                        result)) {
@@ -2345,9 +2371,9 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
                                                  &normalized,
                                                  &word_spans,
                                                  &align_result)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_ALIGNMENT_FAILED,
-                                         align_result.header.message, NULL);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_ALIGNMENT_FAILED,
+                            align_result.header.message, NULL);
         ok = false;
     }
     if (ok && !lrc_pipeline_debug_dump_write_padded_word_spans(pipeline,
@@ -2361,9 +2387,9 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
                                                      &normalized,
                                                      &line_timestamps,
                                                      &align_result)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_ALIGNMENT_FAILED,
-                                         align_result.header.message, NULL);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_ALIGNMENT_FAILED,
+                            align_result.header.message, NULL);
         ok = false;
     }
     if (ok && !lrc_pipeline_line_timing_audio_from_ctc_audio(&line_audio,
@@ -2371,20 +2397,22 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
                                                              result)) {
         ok = false;
     }
-    if (ok && !lrc_pipeline_line_timestamps_correct_ends_from_audio(&line_timestamps,
-                                                                    &line_audio,
-                                                                    result)) {
-        ok = false;
+    if (ok) {
+        if (!lrc_pipeline_line_timestamps_correct_ends_from_audio(timestamps,
+                                                                  &line_audio,
+                                                                  result)) {
+            ok = false;
+        }
     }
     if (ok) {
         output_line_cap = 2*line_timestamps.line_count;
         if ((line_timestamps.line_count < 0)
             || (line_timestamps.line_count > INT32_MAX/2)) {
-            lrc_pipeline_generate_result_set(result,
-                                             LS_ERROR_PIPELINE_GENERATE_TOO_LARGE,
-                                             "LRC output line "
-                                             "allocation is too large",
-                                             NULL);
+            pipeline_result_set(result,
+                                LS_ERROR_PIPELINE_GENERATE_TOO_LARGE,
+                                "LRC output line "
+                                "allocation is too large",
+                                NULL);
             ok = false;
         }
     }
@@ -2403,10 +2431,10 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
                                      output_lines,
                                      output_line_count,
                                      &write_result)) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_LRC_WRITE_FAILED,
-                                         write_result.path_header.header.message,
-                                         write_result.path_header.path);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_LRC_WRITE_FAILED,
+                            write_result.path_header.header.message,
+                            write_result.path_header.path);
         if (result) {
             result->line_index = write_result.line_index;
         }
@@ -2415,10 +2443,10 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
 
     if (debug_dump.file) {
         if (!lrc_ctc_debug_dump_writer_close(&debug_dump) && ok) {
-            lrc_pipeline_generate_result_set(result,
-                                             LS_ERROR_PIPELINE_GENERATE_LRC_WRITE_FAILED,
-                                             "could not close CTC debug dump",
-                                             pipeline->config.ctc_debug_dump_path);
+            pipeline_result_set(result,
+                                LS_ERROR_PIPELINE_GENERATE_LRC_WRITE_FAILED,
+                                "could not close CTC debug dump",
+                                pipeline->config.ctc_debug_dump_path);
             ok = false;
         }
     }
@@ -2972,13 +3000,13 @@ lrc_extract_vocals(LrcVocalsExtractRequest *request,
 #include "ctc_assets.c"
 
 static bool
-lrc_generate_config_path_ready(char *path, enum LsError error, char *message,
-                               LrcPipelineGenerateResult *result) {
+pipeline_path_ready(char *path, enum LsError error, char *message,
+                    LrcPipelineGenerateResult *result) {
     if (!path_missing(path)) {
         return true;
     }
 
-    lrc_pipeline_generate_result_set(result, error, message, path);
+    pipeline_result_set(result, error, message, path);
 
     return false;
 }
@@ -2993,43 +3021,40 @@ lrc_generate_from_song(LrcPipelineConfig *config,
         lrc_pipeline_generate_result_init(result);
     }
     if (config == NULL) {
-        lrc_pipeline_generate_result_set(result,
-                                         LS_ERROR_PIPELINE_GENERATE_INVALID_ARGUMENT,
-                                         "generation configuration is missing",
-                                         NULL);
+        pipeline_result_set(result,
+                            LS_ERROR_PIPELINE_GENERATE_INVALID_ARGUMENT,
+                            "generation configuration is missing",
+                            NULL);
         return false;
     }
-    if (!lrc_generate_config_path_ready(config->song_path,
-                                        LS_ERROR_PIPELINE_GENERATE_MISSING_SONG,
-                                        "input song path is missing", result)) {
+    if (!pipeline_path_ready(config->song_path,
+                             LS_ERROR_PIPELINE_GENERATE_MISSING_SONG,
+                             "input song path is missing", result)) {
         return false;
     }
-    if (!lrc_generate_config_path_ready(config->lyrics_text_path,
-                                        LS_ERROR_PIPELINE_GENERATE_MISSING_LYRICS,
-                                        "lyrics text path is missing",
-                                        result)) {
+    if (!pipeline_path_ready(config->lyrics_text_path,
+                             LS_ERROR_PIPELINE_GENERATE_MISSING_LYRICS,
+                             "lyrics text path is missing", result)) {
         return false;
     }
-    if (!lrc_generate_config_path_ready(config->output_lrc_path,
-                                        LS_ERROR_PIPELINE_GENERATE_MISSING_OUTPUT,
-                                        "output LRC path is missing", result)) {
+    if (!pipeline_path_ready(config->output_lrc_path,
+                             LS_ERROR_PIPELINE_GENERATE_MISSING_OUTPUT,
+                             "output LRC path is missing", result)) {
         return false;
     }
-    if (!lrc_generate_config_path_ready(config->vocals_model_path,
-                                        LS_ERROR_PIPELINE_GENERATE_MISSING_VOCALS_MODEL,
-                                        "vocals model path is missing",
-                                        result)) {
+    if (!pipeline_path_ready(config->vocals_model_path,
+                             LS_ERROR_PIPELINE_GENERATE_MISSING_VOCALS_MODEL,
+                             "vocals model path is missing", result)) {
         return false;
     }
-    if (!lrc_generate_config_path_ready(config->ctc_model_path,
-                                        LS_ERROR_PIPELINE_GENERATE_MISSING_CTC_MODEL,
-                                        "CTC model path is missing", result)) {
+    if (!pipeline_path_ready(config->ctc_model_path,
+                             LS_ERROR_PIPELINE_GENERATE_MISSING_CTC_MODEL,
+                             "CTC model path is missing", result)) {
         return false;
     }
-    if (!lrc_generate_config_path_ready(config->tokenizer_path,
-                                        LS_ERROR_PIPELINE_GENERATE_MISSING_TOKENIZER,
-                                        "CTC tokenizer path is missing",
-                                        result)) {
+    if (!pipeline_path_ready(config->tokenizer_path,
+                             LS_ERROR_PIPELINE_GENERATE_MISSING_TOKENIZER,
+                             "CTC tokenizer path is missing", result)) {
         return false;
     }
 
@@ -3662,10 +3687,12 @@ pipeline_test_cafe_vocals_audio_corrected_clear_lines(void) {
 
     output_index = 1;
     for (int32 i = 0; i < LENGTH(expected_clear_hundredths); i += 1) {
-        if ((output_lines[output_index].kind
+        LrcOutputLine *line = output_lines + output_index;
+
+        if ((line->kind
              != LRC_OUTPUT_LINE_KIND_TIMESTAMPED)
-            || (output_lines[output_index].text_len != 0)
-            || !pipeline_test_hundredths_near(output_lines[output_index].timestamp_hundredths,
+            || (line->text_len != 0)
+            || !pipeline_test_hundredths_near(line->timestamp_hundredths,
                                               expected_clear_hundredths[i],
                                               35)) {
             fatal(pipeline_test_fail("cafe-vocals clear output time"));
@@ -4180,7 +4207,8 @@ pipeline_test_ctc_debug_dump_text_and_tokens(void) {
         fatal(pipeline_test_fail("debug dump romanization"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("[normalized_text]\ntext=Ich\\nMoskau\n"))) {
+                                     STRLIT("[normalized_text]\n"
+                                            "text=Ich\\nMoskau\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump normalized text"));
     }
@@ -4286,7 +4314,8 @@ pipeline_test_ctc_debug_dump_audio_model(void) {
         fatal(pipeline_test_fail("debug dump emission frame count"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("emission_vocabulary_size=1130\n"))) {
+                                     STRLIT("emission_vocabulary_size="
+                                            "1130\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump vocabulary size"));
     }
@@ -4418,22 +4447,26 @@ pipeline_test_ctc_debug_dump_path_segments(void) {
         fatal(pipeline_test_fail("debug dump path segment section"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("index\ttoken_index\ttoken_id\ttoken_text"))) {
+                                     STRLIT("index\ttoken_index\ttoken_id\t"
+                                            "token_text"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump path segment header"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("0\t-1\t0\t\t0\t2\t0\t2\t-1\t1\t0\n"))) {
+                                     STRLIT("0\t-1\t0\t\t0\t2\t0\t2\t"
+                                            "-1\t1\t0\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump first path segment"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("1\t0\t1\tA\t2\t4\t2\t4\t-2\t0\t0\n"))) {
+                                     STRLIT("1\t0\t1\tA\t2\t4\t2\t4\t"
+                                            "-2\t0\t0\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump second path segment"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("4\t-1\t0\t\t6\t7\t6\t7\t-4\t1\t0\n"))) {
+                                     STRLIT("4\t-1\t0\t\t6\t7\t6\t7\t"
+                                            "-4\t1\t0\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump fifth path segment"));
     }
@@ -4547,22 +4580,26 @@ pipeline_test_ctc_debug_dump_word_spans(void) {
         fatal(pipeline_test_fail("debug dump after word span section"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("index\tline_index\tword_index\ttext\tnormalized_start"))) {
+                                     STRLIT("index\tline_index\tword_index\t"
+                                            "text\tnormalized_start"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump word span header"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("0\t0\t0\tIch\t0\t3\t0\t3\t0\t3\t1\t1.5\t-1\n"))) {
+                                     STRLIT("0\t0\t0\tIch\t0\t3\t0\t3\t"
+                                            "0\t3\t1\t1.5\t-1\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump before first word span"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("0\t0\t0\tIch\t0\t3\t0\t3\t0\t3\t0.5\t1.75\t-1\n"))) {
+                                     STRLIT("0\t0\t0\tIch\t0\t3\t0\t3\t"
+                                            "0\t3\t0.5\t1.75\t-1\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump after first word span"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("1\t0\t1\tsehe\t4\t8\t3\t7\t3\t7\t1.75\t3\t-2\n"))) {
+                                     STRLIT("1\t0\t1\tsehe\t4\t8\t3\t7\t"
+                                            "3\t7\t1.75\t3\t-2\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump after second word span"));
     }
@@ -4936,7 +4973,8 @@ pipeline_test_ctc_assets_missing_path(void) {
     if (lrc_pipeline_validate_ctc_assets(&pipeline, &result)) {
         fatal(pipeline_test_fail("accepted missing ctc model path"));
     }
-    ASSERT(result.path_header.header.error == LS_ERROR_CTC_ASSETS_MISSING_MODEL_PATH);
+    ASSERT(result.path_header.header.error
+           == LS_ERROR_CTC_ASSETS_MISSING_MODEL_PATH);
     ASSERT(pipeline.error == LS_ERROR_PIPELINE_CTC_ASSETS_INVALID);
     ASSERT(!pipeline.ctc_assets.validated);
 
@@ -4972,7 +5010,8 @@ pipeline_test_ctc_assets_missing_file(void) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("accepted missing ctc model file"));
     }
-    ASSERT(result.path_header.header.error == LS_ERROR_CTC_ASSETS_MODEL_NOT_FOUND);
+    ASSERT(result.path_header.header.error
+           == LS_ERROR_CTC_ASSETS_MODEL_NOT_FOUND);
     ASSERT(strequal(result.path_header.path, model_path));
     ASSERT(pipeline.error == LS_ERROR_PIPELINE_CTC_ASSETS_INVALID);
     ASSERT(strequal(pipeline.path, model_path));
@@ -4999,14 +5038,16 @@ pipeline_test_generate_requires_lyrics_and_output(void) {
     if (lrc_pipeline_generate_lrc(&pipeline, &result)) {
         fatal(pipeline_test_fail("accepted missing lyrics path"));
     }
-    ASSERT(result.path_header.header.error == LS_ERROR_PIPELINE_GENERATE_MISSING_LYRICS);
+    ASSERT(result.path_header.header.error
+           == LS_ERROR_PIPELINE_GENERATE_MISSING_LYRICS);
 
     config.lyrics_text_path = "lyrics.txt";
     lrc_pipeline_init(&pipeline, &config);
     if (lrc_pipeline_generate_lrc(&pipeline, &result)) {
         fatal(pipeline_test_fail("accepted missing output path"));
     }
-    ASSERT(result.path_header.header.error == LS_ERROR_PIPELINE_GENERATE_MISSING_OUTPUT);
+    ASSERT(result.path_header.header.error
+           == LS_ERROR_PIPELINE_GENERATE_MISSING_OUTPUT);
 
     return;
 }
@@ -5020,37 +5061,43 @@ pipeline_test_generate_from_song_requires_full_config(void) {
     if (lrc_generate_from_song(&config, &result)) {
         fatal(pipeline_test_fail("accepted missing song path"));
     }
-    ASSERT(result.path_header.header.error == LS_ERROR_PIPELINE_GENERATE_MISSING_SONG);
+    ASSERT(result.path_header.header.error
+           == LS_ERROR_PIPELINE_GENERATE_MISSING_SONG);
 
     config.song_path = "song.flac";
     if (lrc_generate_from_song(&config, &result)) {
         fatal(pipeline_test_fail("accepted missing lyrics path"));
     }
-    ASSERT(result.path_header.header.error == LS_ERROR_PIPELINE_GENERATE_MISSING_LYRICS);
+    ASSERT(result.path_header.header.error
+           == LS_ERROR_PIPELINE_GENERATE_MISSING_LYRICS);
 
     config.lyrics_text_path = "lyrics.txt";
     if (lrc_generate_from_song(&config, &result)) {
         fatal(pipeline_test_fail("accepted missing output path"));
     }
-    ASSERT(result.path_header.header.error == LS_ERROR_PIPELINE_GENERATE_MISSING_OUTPUT);
+    ASSERT(result.path_header.header.error
+           == LS_ERROR_PIPELINE_GENERATE_MISSING_OUTPUT);
 
     config.output_lrc_path = "out.lrc";
     if (lrc_generate_from_song(&config, &result)) {
         fatal(pipeline_test_fail("accepted missing vocals model path"));
     }
-    ASSERT(result.path_header.header.error == LS_ERROR_PIPELINE_GENERATE_MISSING_VOCALS_MODEL);
+    ASSERT(result.path_header.header.error
+           == LS_ERROR_PIPELINE_GENERATE_MISSING_VOCALS_MODEL);
 
     config.vocals_model_path = "vocals.onnx";
     if (lrc_generate_from_song(&config, &result)) {
         fatal(pipeline_test_fail("accepted missing CTC model path"));
     }
-    ASSERT(result.path_header.header.error == LS_ERROR_PIPELINE_GENERATE_MISSING_CTC_MODEL);
+    ASSERT(result.path_header.header.error
+           == LS_ERROR_PIPELINE_GENERATE_MISSING_CTC_MODEL);
 
     config.ctc_model_path = "ctc.onnx";
     if (lrc_generate_from_song(&config, &result)) {
         fatal(pipeline_test_fail("accepted missing tokenizer path"));
     }
-    ASSERT(result.path_header.header.error == LS_ERROR_PIPELINE_GENERATE_MISSING_TOKENIZER);
+    ASSERT(result.path_header.header.error
+           == LS_ERROR_PIPELINE_GENERATE_MISSING_TOKENIZER);
 
     return;
 }

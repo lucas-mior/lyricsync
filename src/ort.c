@@ -266,6 +266,7 @@ ort_model_read_tensor_info(OrtContext *context, OrtSession *session, bool input,
     OrtStatus *status;
     ONNXTensorElementDataType element_type;
     OrtTensorTypeAndShapeInfo *tensor_info;
+    OrtTensorTypeAndShapeInfo const **tensor_info_out;
     int64_t dims[ORT_TENSOR_MAX_RANK];
     size_t dim_count;
 
@@ -281,8 +282,8 @@ ort_model_read_tensor_info(OrtContext *context, OrtSession *session, bool input,
         }
     }
 
-    status = api->CastTypeInfoToTensorInfo(type_info,
-                                           (OrtTensorTypeAndShapeInfo const **)&tensor_info);
+    tensor_info_out = (OrtTensorTypeAndShapeInfo const **)&tensor_info;
+    status = api->CastTypeInfoToTensorInfo(type_info, tensor_info_out);
     if (!ort_check(context, status, "casting ONNX type info to tensor info")) {
         api->ReleaseTypeInfo(type_info);
         return false;
@@ -423,6 +424,7 @@ ort_context_session_config_set(OrtContext *context, OrtSessionConfig *config) {
 static bool
 ort_context_init(OrtContext *context) {
     OrtApi *api;
+    OrtAllocator **allocator_out;
     OrtStatus *status;
 
     ort_context_init_empty(context);
@@ -434,6 +436,7 @@ ort_context_init(OrtContext *context) {
     }
 
     api = (OrtApi *)context->api;
+    allocator_out = (OrtAllocator **)&context->allocator;
     status = api->CreateEnv(ORT_LOGGING_LEVEL_WARNING, "uvr-c",
                             (OrtEnv **)&context->environment);
     if (!ort_check(context, status, "creating ONNX Runtime environment")) {
@@ -448,7 +451,7 @@ ort_context_init(OrtContext *context) {
         return false;
     }
 
-    status = api->GetAllocatorWithDefaultOptions((OrtAllocator **)&context->allocator);
+    status = api->GetAllocatorWithDefaultOptions(allocator_out);
     if (!ort_check(context, status, "getting ONNX Runtime default allocator")) {
         ort_context_destroy(context);
         return false;
@@ -685,8 +688,13 @@ ort_tensor_create_f32(OrtContext *context, OrtTensor *tensor, float *data,
                       int64 data_len, int64 *shape, int32 shape_len) {
     OrtApi *api;
     OrtStatus *status;
+    OrtMemoryInfo *memory_info;
+    OrtValue **value_out;
+    ONNXTensorElementDataType element_type;
     int64 shape_count;
     int64_t ort_shape[ORT_TENSOR_MAX_RANK];
+    size_t data_size;
+    size_t ort_shape_len;
 
     ort_tensor_init_empty(tensor);
     api = (OrtApi *)context->api;
@@ -712,12 +720,15 @@ ort_tensor_create_f32(OrtContext *context, OrtTensor *tensor, float *data,
         tensor->shape[i] = shape[i];
     }
 
-    status = api->CreateTensorWithDataAsOrtValue((OrtMemoryInfo *)context->memory_info,
-                                                 data,
-                                                 (size_t)(data_len*SIZEOF(*data)),
-                                                 ort_shape, (size_t)shape_len,
-                                                 ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT,
-                                                 (OrtValue **)&tensor->value);
+    memory_info = (OrtMemoryInfo *)context->memory_info;
+    value_out = (OrtValue **)&tensor->value;
+    element_type = ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT;
+    data_size = (size_t)(data_len*SIZEOF(*data));
+    ort_shape_len = (size_t)shape_len;
+    status =
+        api->CreateTensorWithDataAsOrtValue(memory_info, data, data_size,
+                                            ort_shape, ort_shape_len,
+                                            element_type, value_out);
     if (!ort_check(context, status, "creating ONNX float32 tensor")) {
         ort_tensor_init_empty(tensor);
         return false;

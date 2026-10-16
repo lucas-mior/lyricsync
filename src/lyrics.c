@@ -392,7 +392,8 @@ lyrics_test_reject_invalid_utf8(void) {
         test_remove_tree(temp_dir);
         fatal(lyrics_test_fail("invalid utf8 accepted"));
     }
-    ASSERT(result.path_header.header.error == LS_ERROR_LYRICS_LOAD_INVALID_UTF8);
+    ASSERT(result.path_header.header.error
+           == LS_ERROR_LYRICS_LOAD_INVALID_UTF8);
     ASSERT_EQ(result.byte_offset, 3);
 
     test_remove_tree(temp_dir);
@@ -406,6 +407,8 @@ lyrics_test_normalize_punctuation_sections_and_mapping(void) {
     LrcLyrics lyrics;
     LrcLyricsNormalized normalized = {0};
     char text[] = "  Hello, WORLD!!\n[Chorus]\nBang-bang   MAXWELL's\n";
+    enum LrcLyricsNormalizedLineKind section_kind =
+        LRC_LYRICS_NORMALIZED_LINE_KIND_SECTION_MARKER;
     int32 bang_offset;
     char *bang;
 
@@ -423,8 +426,7 @@ lyrics_test_normalize_punctuation_sections_and_mapping(void) {
     ASSERT_EQ(normalized.alignable_line_count, 2);
     ASSERT_EQ(normalized.line_count, lyrics.line_count);
     lyrics_test_assert_line_range(&normalized, 0, 0, 11);
-    lyrics_test_assert_no_line_range(&normalized, 1,
-                                     LRC_LYRICS_NORMALIZED_LINE_KIND_SECTION_MARKER);
+    lyrics_test_assert_no_line_range(&normalized, 1, section_kind);
     lyrics_test_assert_line_range(&normalized, 2, 12, 31);
     ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 0));
     ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 10));
@@ -447,6 +449,8 @@ lyrics_test_normalize_unicode_and_blank_lines(void) {
     LrcLyrics lyrics;
     LrcLyricsNormalized normalized = {0};
     char text[] = "Olá,   世界!\n\n(Bridge)\nAgain\n";
+    enum LrcLyricsNormalizedLineKind section_kind =
+        LRC_LYRICS_NORMALIZED_LINE_KIND_SECTION_MARKER;
     char *again;
     int32 again_offset;
 
@@ -465,8 +469,7 @@ lyrics_test_normalize_unicode_and_blank_lines(void) {
     lyrics_test_assert_line_range(&normalized, 0, 0, 11);
     lyrics_test_assert_no_line_range(&normalized, 1,
                                      LRC_LYRICS_NORMALIZED_LINE_KIND_BLANK);
-    lyrics_test_assert_no_line_range(&normalized, 2,
-                                     LRC_LYRICS_NORMALIZED_LINE_KIND_SECTION_MARKER);
+    lyrics_test_assert_no_line_range(&normalized, 2, section_kind);
     lyrics_test_assert_line_range(&normalized, 3, 12, 17);
     ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 0));
     ASSERT_ZERO(lrc_lyrics_normalized_line_at(&normalized, 3));
@@ -487,6 +490,8 @@ lyrics_test_normalized_ranges_blank_punctuation_repeated(void) {
     LrcLyrics lyrics;
     LrcLyricsNormalized normalized = {0};
     char text[] = "Repeat\n\n!!! ???\nRepeat\n";
+    enum LrcLyricsNormalizedLineKind punctuation_kind =
+        LRC_LYRICS_NORMALIZED_LINE_KIND_PUNCTUATION_ONLY;
 
     if (!lyrics_test_load_text(&lyrics, text, strlen32(text))) {
         fatal(lyrics_test_fail("load repeated range text"));
@@ -503,8 +508,7 @@ lyrics_test_normalized_ranges_blank_punctuation_repeated(void) {
     lyrics_test_assert_line_range(&normalized, 0, 0, 6);
     lyrics_test_assert_no_line_range(&normalized, 1,
                                      LRC_LYRICS_NORMALIZED_LINE_KIND_BLANK);
-    lyrics_test_assert_no_line_range(&normalized, 2,
-                                     LRC_LYRICS_NORMALIZED_LINE_KIND_PUNCTUATION_ONLY);
+    lyrics_test_assert_no_line_range(&normalized, 2, punctuation_kind);
     lyrics_test_assert_line_range(&normalized, 3, 7, 13);
     ASSERT_EQ(lrc_lyrics_normalized_line_at(&normalized, 6), 3);
     ASSERT_EQ(lrc_lyrics_normalized_line_at(&normalized, 7), 3);

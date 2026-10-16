@@ -672,9 +672,10 @@ lrc_format_output_lines(String *builder, LrcOutputLine *lines,
 
         if (line->kind == LRC_OUTPUT_LINE_KIND_TIMESTAMPED) {
             LrcFormatResult format_result;
+            int64 timestamp = line->timestamp_hundredths;
 
             if (!lrc_format_timestamped_line_hundredths(builder,
-                                                        line->timestamp_hundredths,
+                                                        timestamp,
                                                         line->text,
                                                         line->text_len,
                                                         &format_result)) {
@@ -1490,8 +1491,10 @@ lrc_test_optional_maxwell_formatting(void) {
         LrcParsedLine *line = parsed.lines + i;
 
         if (line->kind == LRC_PARSED_LINE_KIND_TIMESTAMPED) {
+            int64 timestamp = line->timestamp_hundredths;
+
             if (!lrc_format_timestamped_line_hundredths(&builder,
-                                                        line->timestamp_hundredths,
+                                                        timestamp,
                                                         line->text,
                                                         line->text_len,
                                                         &format_result)) {
