@@ -51,14 +51,12 @@ typedef struct LrcCtcEmissions {
     int32 shape_len;
 } LrcCtcEmissions;
 
-typedef bool (*LrcCtcInferenceRunFunction)(
-    void *backend,
-    LrcCtcModelInput *input,
-    LrcCtcEmissions *emissions,
-    enum LrcCtcEmissionValuesKind values_kind,
-    bool print_progress,
-    LrcCtcInferenceResult *result
-);
+typedef bool (*LrcCtcInferenceRunFunction)(void *backend,
+                                           LrcCtcModelInput *input,
+                                           LrcCtcEmissions *emissions,
+                                           enum LrcCtcEmissionValuesKind kind,
+                                           bool print_progress,
+                                           LrcCtcInferenceResult *result);
 
 typedef struct LrcCtcInferenceBackend {
     void *backend;
