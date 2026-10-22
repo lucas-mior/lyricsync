@@ -754,7 +754,7 @@ ctc_model_test_prepares_short_input(void) {
     LrcCtcModelInput input = {0};
     LrcCtcModelInputResult result;
     LrcCtcAudio audio;
-    float samples[] = {-0.50f, -0.25f, 0.0f, 0.25f, 0.50f};
+    float samples[] = {-0.50f, -0.25f, 0.0f, 0.25f, 0.50f,};
 
     lrc_ctc_model_config_init(&config);
     ctc_model_make_audio(&audio, samples, LENGTH(samples), 16000);

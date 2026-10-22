@@ -373,7 +373,7 @@ lyrics_test_reject_invalid_utf8(void) {
     LrcLyricsLoadResult result;
     char temp_dir[PATH_MAX];
     char path[PATH_MAX];
-    char text[] = {'o', 'k', '\n', (char)0xC0, '\0'};
+    char text[] = {'o', 'k', '\n', (char)0xC0, '\0',};
     int32 len;
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "lyrics_invalid_utf8");

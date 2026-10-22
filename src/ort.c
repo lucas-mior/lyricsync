@@ -267,7 +267,7 @@ ort_model_read_tensor_info(OrtContext *context, OrtSession *session, bool input,
     ONNXTensorElementDataType element_type;
     OrtTensorTypeAndShapeInfo *tensor_info;
     OrtTensorTypeAndShapeInfo const **tensor_info_out;
-    int64_t dims[ORT_TENSOR_MAX_RANK];
+    int64 dims[ORT_TENSOR_MAX_RANK];
     size_t dim_count;
 
     if (input) {
@@ -692,7 +692,7 @@ ort_tensor_create_f32(OrtContext *context, OrtTensor *tensor, float *data,
     OrtValue **value_out;
     ONNXTensorElementDataType element_type;
     int64 shape_count;
-    int64_t ort_shape[ORT_TENSOR_MAX_RANK];
+    int64 ort_shape[ORT_TENSOR_MAX_RANK];
     size_t data_size;
     size_t ort_shape_len;
 
