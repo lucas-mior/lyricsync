@@ -750,7 +750,7 @@ ort_model_run_f32(OrtContext *context, OrtModel *model, OrtTensor *input,
     OrtValue *output_value;
     OrtTensorTypeAndShapeInfo *tensor_info;
     ONNXTensorElementDataType element_type;
-    int64_t dims[ORT_TENSOR_MAX_RANK];
+    int64 dims[ORT_TENSOR_MAX_RANK];
     size_t dim_count;
     size_t element_count;
     int32 is_tensor;
