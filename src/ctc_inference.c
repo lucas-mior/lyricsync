@@ -1453,7 +1453,7 @@ ctc_inference_float_close(float a, float b, float max_error) {
 
 static void
 ctc_inference_make_input(LrcCtcModelInput *input) {
-    static float samples[] = {0.0f, 0.1f, -0.1f, 0.2f};
+    static float samples[] = {0.0f, 0.1f, -0.1f, 0.2f,};
 
     memset64(input, 0, SIZEOF(*input));
     input->samples = samples;
@@ -1470,7 +1470,7 @@ static void
 ctc_inference_make_rank3_trim_input(LrcCtcModelInput *input,
                                     LrcCtcModelChunk *chunks,
                                     int64 original_emission_count) {
-    static float samples[] = {0.0f, 0.1f, -0.1f, 0.2f, 0.3f, -0.3f};
+    static float samples[] = {0.0f, 0.1f, -0.1f, 0.2f, 0.3f, -0.3f,};
 
     memset64(input, 0, SIZEOF(*input));
     memset64(chunks, 0, 2*SIZEOF(*chunks));
@@ -2397,8 +2397,7 @@ static void
 ctc_inference_test_rejects_bad_shapes(void) {
     LrcCtcFakeInference fake = {0};
     int64 shape[3];
-    float values[] = {0.0f, 1.0f, 2.0f, 3.0f};
-
+    float values[] = {0.0f, 1.0f, 2.0f, 3.0f,};
 
     shape[0] = 0;
     shape[1] = 2;

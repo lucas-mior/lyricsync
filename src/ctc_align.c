@@ -4902,7 +4902,7 @@ ctc_align_test_required_frame_count_for_tokens(void) {
     int32 one_token[] = {1};
     int32 different_tokens[] = {1, 2};
     int32 repeated_tokens[] = {1, 1};
-    int32 mixed_tokens[] = {1, 1, 2, 2};
+    int32 mixed_tokens[] = {1, 1, 2, 2,};
     int32 separated_repeat_tokens[] = {1, 2, 1};
 
     ASSERT_EQ(lrc_ctc_required_frame_count_for_tokens(one_token, 1), 1);
