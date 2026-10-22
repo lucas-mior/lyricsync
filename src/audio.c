@@ -1114,18 +1114,18 @@ audio_test_compare_helpers(void) {
     AudioCompareOptions options;
     AudioCompareResult result;
     char *mode_name;
-    float actual_left[] = {0.0f, 0.25f, -0.5f, 0.75f};
-    float actual_right[] = {1.0f, -1.0f, 0.5f, -0.25f};
-    float expected_left[] = {0.0f, 0.25f, -0.5f, 0.75f};
-    float expected_right[] = {1.0f, -1.0f, 0.5f, -0.25f};
-    float shifted_left[] = {9.0f, 0.0f, 0.25f, -0.5f};
-    float shifted_right[] = {9.0f, 1.0f, -1.0f, 0.5f};
-    float mixture_left[] = {1.0f, 0.5f, -0.25f};
-    float mixture_right[] = {-0.5f, 0.75f, 0.125f};
-    float stem_a_left[] = {0.25f, 0.25f, -0.125f};
-    float stem_a_right[] = {-0.25f, 0.25f, 0.5f};
-    float stem_b_left[] = {0.75f, 0.25f, -0.125f};
-    float stem_b_right[] = {-0.25f, 0.5f, -0.375f};
+    float actual_left[] = {0.0f, 0.25f, -0.5f, 0.75f,};
+    float actual_right[] = {1.0f, -1.0f, 0.5f, -0.25f,};
+    float expected_left[] = {0.0f, 0.25f, -0.5f, 0.75f,};
+    float expected_right[] = {1.0f, -1.0f, 0.5f, -0.25f,};
+    float shifted_left[] = {9.0f, 0.0f, 0.25f, -0.5f,};
+    float shifted_right[] = {9.0f, 1.0f, -1.0f, 0.5f,};
+    float mixture_left[] = {1.0f, 0.5f, -0.25f,};
+    float mixture_right[] = {-0.5f, 0.75f, 0.125f,};
+    float stem_a_left[] = {0.25f, 0.25f, -0.125f,};
+    float stem_a_right[] = {-0.25f, 0.25f, 0.5f,};
+    float stem_b_left[] = {0.75f, 0.25f, -0.125f,};
+    float stem_b_right[] = {-0.25f, 0.5f, -0.375f,};
 
     audio_test_buffer(&expected,
                       expected_left,
