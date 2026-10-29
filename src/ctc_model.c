@@ -362,7 +362,7 @@ lrc_ctc_model_input_prepare_emission_counts(LrcCtcModelInput *input) {
     int64 extension_emissions;
     int64 extension_samples;
     int64 *original_count;
-    int64 ratio;
+    int32 ratio;
 
     if ((input == NULL) || (input->inputs_to_logits_ratio <= 0)) {
         return false;

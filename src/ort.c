@@ -85,6 +85,12 @@ ort_check(OrtContext *context, OrtStatus *status, char *operation) {
     return false;
 }
 
+static OrtStatus *
+ort_get_dimensions(OrtApi *api, OrtTensorTypeAndShapeInfo *info,
+                   int64 *dimensions, size_t dimensions_len) {
+    return api->GetDimensions(info, (int64_t *)dimensions, dimensions_len);
+}
+
 
 static bool
 ort_cuda_preload_cudnn_library(OrtContext *context, char *name, bool required) {
@@ -316,7 +322,7 @@ ort_model_read_tensor_info(OrtContext *context, OrtSession *session, bool input,
         return false;
     }
 
-    status = api->GetDimensions(tensor_info, dims, dim_count);
+    status = ort_get_dimensions(api, tensor_info, dims, dim_count);
     if (!ort_check(context, status, "getting ONNX tensor shape")) {
         api->ReleaseTypeInfo(type_info);
         return false;
@@ -727,7 +733,8 @@ ort_tensor_create_f32(OrtContext *context, OrtTensor *tensor, float *data,
     ort_shape_len = (size_t)shape_len;
     status =
         api->CreateTensorWithDataAsOrtValue(memory_info, data, data_size,
-                                            ort_shape, ort_shape_len,
+                                            (int64_t const *)ort_shape,
+                                            ort_shape_len,
                                             element_type, value_out);
     if (!ort_check(context, status, "creating ONNX float32 tensor")) {
         ort_tensor_init_empty(tensor);
@@ -827,7 +834,7 @@ ort_model_run_f32(OrtContext *context, OrtModel *model, OrtTensor *input,
         return false;
     }
 
-    status = api->GetDimensions(tensor_info, dims, dim_count);
+    status = ort_get_dimensions(api, tensor_info, dims, dim_count);
     if (!ort_check(context, status, "getting ONNX output dimensions")) {
         api->ReleaseTensorTypeAndShapeInfo(tensor_info);
         api->ReleaseValue(output_value);
