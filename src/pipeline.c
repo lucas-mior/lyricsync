@@ -456,17 +456,35 @@ lrc_ctc_debug_dump_writer_close(LrcCtcDebugDumpWriter *writer) {
 
 static void
 lrc_ctc_debug_dump_printf(LrcCtcDebugDumpWriter *writer, char *format, ...) {
+    char buffer[4096];
+    char *big_buffer = NULL;
+    char *pbuffer = buffer;
+    int64 capacity = SIZEOF(buffer);
     va_list args;
+    va_list args_copy;
+    int32 len;
 
     if ((writer == NULL) || (writer->file == NULL) || !writer->ok) {
         return;
     }
 
     va_start(args, format);
-    if (vfprintf(writer->file, format, args) < 0) {
+    va_copy(args_copy, args);
+    len = fmt_vsnprintf(pbuffer, capacity, format, args);
+    va_end(args);
+
+    if (len >= capacity) {
+        capacity = (int64)len + 1;
+        big_buffer = malloc2(capacity);
+        pbuffer = big_buffer;
+        len = fmt_vsnprintf(pbuffer, capacity, format, args_copy);
+    }
+    va_end(args_copy);
+
+    if ((len < 0) || (fwrite64(pbuffer, 1, len, writer->file) != len)) {
         writer->ok = false;
     }
-    va_end(args);
+    free2(big_buffer, capacity);
 
     return;
 }

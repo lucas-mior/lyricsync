@@ -107,6 +107,7 @@ lrc_progress_filled_width(LrcProgress *progress) {
 static void
 lrc_progress_write_bar(LrcProgress *progress, int32 percent, int32 filled) {
     int32 total_digits;
+    int32 label_len;
     char *label;
 
     total_digits = lrc_progress_decimal_digits(progress->total);
@@ -115,10 +116,12 @@ lrc_progress_write_bar(LrcProgress *progress, int32 percent, int32 filled) {
         label = "progress";
     }
 
-    fprintf(stderr, "%-*.*s [",
-                    LRC_PROGRESS_LABEL_WIDTH,
-                    LRC_PROGRESS_LABEL_WIDTH,
-                    label);
+    label_len = strnlen32(label, LRC_PROGRESS_LABEL_WIDTH);
+    fwrite64(label, 1, label_len, stderr);
+    for (int32 i = label_len; i < LRC_PROGRESS_LABEL_WIDTH; i += 1) {
+        fputc(' ', stderr);
+    }
+    fputs(" [", stderr);
     for (int32 i = 0; i < progress->width; i += 1) {
         if (i < filled) {
             fputc('#', stderr);
@@ -126,12 +129,9 @@ lrc_progress_write_bar(LrcProgress *progress, int32 percent, int32 filled) {
             fputc('.', stderr);
         }
     }
-    fprintf(stderr,
-            "] %3d%% %*lld/%lld",
-            percent,
-            total_digits,
-            progress->current,
-            progress->total);
+    fmt_fprintf(stderr, "] %3d%% %*lld/%lld",
+                        percent, total_digits,
+                        progress->current, progress->total);
 
     return;
 }
