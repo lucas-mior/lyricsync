@@ -119,9 +119,7 @@ ort_cuda_preload_cudnn_library(OrtContext *context, char *name, bool required) {
     if (required || context->session_config.print_info) {
         lrc_progress_end_line();
         error2("warning: preloading ONNX CUDA dependency %s: %s; "
-               "trying CUDA provider anyway\n",
-               name,
-               message);
+               "trying CUDA provider anyway\n", name, message);
     }
 
     return false;
@@ -149,8 +147,7 @@ ort_provider_check(OrtContext *context, OrtStatus *status, char *operation,
         error2("%s: %s\n", operation, api->GetErrorMessage(status));
     } else {
         error2("warning: %s: %s; using CPU ONNX provider\n",
-               operation,
-               api->GetErrorMessage(status));
+               operation, api->GetErrorMessage(status));
     }
     api->ReleaseStatus(status);
 

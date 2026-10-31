@@ -590,8 +590,7 @@ main_apply_value_option(MainOptions *options, MainValueOption *option,
     case MAIN_VALUE_ONNX_PROVIDER:
         if (!ort_execution_provider_parse(value, &provider)) {
             error2("%s must be %s\n",
-                   option->name,
-                   ORT_EXECUTION_PROVIDER_NAMES);
+                   option->name, ORT_EXECUTION_PROVIDER_NAMES);
             return false;
         }
         options->onnx_provider_set = true;
@@ -916,10 +915,7 @@ main_input_prefix_path(MainOptions *options, char *output_path,
     }
     len = fmt_sprintf(output_path,
                     output_size,
-                    "%.*s.%s",
-                    prefix_len,
-                    input_path,
-                    extension);
+                    "%.*s.%s", prefix_len, input_path, extension);
     if ((len <= 0) || (len >= output_size)) {
         error2("default %s path is too long: %s\n", description, input_path);
         return false;

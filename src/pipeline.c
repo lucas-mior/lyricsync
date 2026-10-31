@@ -1139,9 +1139,7 @@ lrc_ctc_debug_dump_write_path_segments(LrcCtcDebugDumpWriter *writer,
         }
         lrc_ctc_debug_dump_printf(writer,
                                   "%d\t%d\t%d\t",
-                                  i,
-                                  segment->token_index,
-                                  segment->token_id);
+                                  i, segment->token_index, segment->token_id);
         lrc_ctc_debug_dump_write_segment_token_text(writer,
                                                     tokenizer,
                                                     segment);
@@ -1206,9 +1204,7 @@ lrc_ctc_debug_dump_write_word_spans(LrcCtcDebugDumpWriter *writer,
 
         lrc_ctc_debug_dump_printf(writer,
                                   "%d\t%d\t%d\t",
-                                  i,
-                                  word->line_index,
-                                  word->word_index);
+                                  i, word->line_index, word->word_index);
         lrc_ctc_debug_dump_write_word_span_text(writer, normalized, word);
         lrc_ctc_debug_dump_printf(writer,
             "\t%d\t%d\t%d\t%d\t%d\t%d\t%.9g\t%.9g\t%.9g\n",

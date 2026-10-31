@@ -92,8 +92,7 @@ mdx_config_prepare(MdxConfig *config) {
     }
     if (config->hop > config->n_fft) {
         error2("MDX hop must not exceed n_fft, got %d/%d\n",
-               config->hop,
-               config->n_fft);
+               config->hop, config->n_fft);
         return false;
     }
     if (config->dim_f <= 0) {
@@ -696,14 +695,12 @@ mdx_model_inspect(MdxModelInfo *info, MdxConfig *config, OrtModel *model) {
     }
     if ((input_channels > 0) && (input_channels != config->dim_c)) {
         error2("MDX model input channels must be %d, got %lld\n",
-               config->dim_c,
-               input_channels);
+               config->dim_c, input_channels);
         return false;
     }
     if ((output_channels > 0) && (output_channels != config->dim_c)) {
         error2("MDX model output channels must be %d, got %lld\n",
-               config->dim_c,
-               output_channels);
+               config->dim_c, output_channels);
         return false;
     }
 
@@ -719,8 +716,7 @@ mdx_model_inspect(MdxModelInfo *info, MdxConfig *config, OrtModel *model) {
     if (input_dim_f > 0) {
         if ((config->dim_f > 0) && (config->dim_f != input_dim_f)) {
             error2("--dim-f=%d does not match model dim_f=%lld\n",
-                   config->dim_f,
-                   input_dim_f);
+                   config->dim_f, input_dim_f);
             return false;
         }
         config->dim_f = (int32)input_dim_f;
@@ -728,8 +724,7 @@ mdx_model_inspect(MdxModelInfo *info, MdxConfig *config, OrtModel *model) {
     if (input_dim_t > 0) {
         if ((config->dim_t > 0) && (config->dim_t != input_dim_t)) {
             error2("--dim-t=%d does not match model dim_t=%lld\n",
-                   config->dim_t,
-                   input_dim_t);
+                   config->dim_t, input_dim_t);
             return false;
         }
         config->dim_t = (int32)input_dim_t;
