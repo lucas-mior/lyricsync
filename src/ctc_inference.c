@@ -419,9 +419,7 @@ lrc_ctc_emissions_copy_rank3_trimmed(LrcCtcEmissions *emissions,
                                      -1);
         return false;
     }
-    if (!lrc_ctc_emissions_input_chunks_ready(input,
-                                              raw_chunk_count,
-                                              result)) {
+    if (!lrc_ctc_emissions_input_chunks_ready(input, raw_chunk_count, result)) {
         return false;
     }
     if (!lrc_ctc_emissions_output_frame_count(input,
@@ -2587,10 +2585,7 @@ ctc_inference_test_optional_onnx_backend(void) {
     }
 
     ctc_inference_make_input(&input);
-    if (!lrc_ctc_onnx_inference_load(&onnx,
-                                     model_path,
-                                     NULL,
-                                     &result)) {
+    if (!lrc_ctc_onnx_inference_load(&onnx, model_path, NULL, &result)) {
         fatal(ctc_inference_test_fail("load optional ONNX CTC model"));
     }
     lrc_ctc_onnx_inference_backend(&onnx, &backend);
@@ -2608,10 +2603,7 @@ ctc_inference_test_optional_onnx_backend(void) {
     LrcCtcInferenceResult result;
     LrcCtcOnnxInference onnx = {0};
 
-    if (lrc_ctc_onnx_inference_load(&onnx,
-                                    "missing.onnx",
-                                    NULL,
-                                    &result)) {
+    if (lrc_ctc_onnx_inference_load(&onnx, "missing.onnx", NULL, &result)) {
         fatal(ctc_inference_test_fail("disabled ONNX backend loaded"));
     }
     ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_BACKEND_UNAVAILABLE);

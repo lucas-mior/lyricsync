@@ -290,19 +290,13 @@ ctc_unicode_norm_nfkc_lower_icu(char *text, int32 text_len,
                                &nfkc_len)) {
         goto done;
     }
-    if (!ctc_unicode_norm_preflight_lower(nfkc,
-                                          nfkc_len,
-                                          &lower_len)) {
+    if (!ctc_unicode_norm_preflight_lower(nfkc, nfkc_len, &lower_len)) {
         goto done;
     }
 
     lower_cap = lower_len + 1;
     lower = malloc2((int64)lower_cap*SIZEOF(*lower));
-    if (!ctc_unicode_norm_lower(nfkc,
-                                nfkc_len,
-                                lower,
-                                lower_cap,
-                                &lower_len)) {
+    if (!ctc_unicode_norm_lower(nfkc, nfkc_len, lower, lower_cap, &lower_len)) {
         goto done;
     }
 

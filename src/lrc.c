@@ -548,11 +548,7 @@ lrc_parse_text(LrcParsedFile *parsed, char *text, int32 text_len,
     line_index = 0;
     for (int32 i = 0; i < parsed->text_len; i += 1) {
         if (parsed->text[i] == '\n') {
-            if (!lrc_parse_line(parsed,
-                                line_index,
-                                line_start,
-                                i,
-                                result)) {
+            if (!lrc_parse_line(parsed, line_index, line_start, i, result)) {
                 lrc_parsed_file_destroy(parsed);
                 return false;
             }
@@ -850,10 +846,7 @@ lrc_write_output_file(char *path, LrcOutputLine *lines, int32 line_count,
         str_free(&builder);
         return false;
     }
-    if (!lrc_write_text_file_atomic(path,
-                                    builder.data,
-                                    builder.len,
-                                    result)) {
+    if (!lrc_write_text_file_atomic(path, builder.data, builder.len, result)) {
         str_free(&builder);
         return false;
     }
@@ -1009,9 +1002,7 @@ lrc_test_reject_malformed_timestamps(void) {
     char bad_seconds[] = "[00:60.00]Bad\n";
     char bad_fraction[] = "[00:00.1]Bad\n";
 
-    if (lrc_parse_text(&parsed,
-                       bad_seconds, strlen32(bad_seconds),
-                       &result)) {
+    if (lrc_parse_text(&parsed, bad_seconds, strlen32(bad_seconds), &result)) {
         lrc_parsed_file_destroy(&parsed);
         fatal(lrc_test_fail("accepted bad seconds"));
     }
@@ -1114,9 +1105,7 @@ lrc_test_format_timestamp_seconds_rounding(void) {
     char buffer[32];
     int32 hundredths;
 
-    if (!lrc_timestamp_hundredths_from_seconds(1.231f,
-                                               &hundredths,
-                                               &result)) {
+    if (!lrc_timestamp_hundredths_from_seconds(1.231f, &hundredths, &result)) {
         fatal(lrc_test_fail("round seconds down"));
     }
     ASSERT_EQ(hundredths, 123);
@@ -1177,11 +1166,7 @@ lrc_test_format_timestamped_empty_line(void) {
     String builder;
 
     builder = (String){0};
-    if (!lrc_format_timestamped_line(&builder,
-                                     3.40f,
-                                     NULL,
-                                     0,
-                                     &result)) {
+    if (!lrc_format_timestamped_line(&builder, 3.40f, NULL, 0, &result)) {
         fatal(lrc_test_fail("format timestamped empty line"));
     }
     ASSERT(strequal(builder.data, "[00:03.40]"));
@@ -1200,16 +1185,12 @@ lrc_test_format_reject_bad_inputs(void) {
 
     builder = (String){0};
 
-    if (lrc_timestamp_hundredths_from_seconds(-0.01f,
-                                              &hundredths,
-                                              &result)) {
+    if (lrc_timestamp_hundredths_from_seconds(-0.01f, &hundredths, &result)) {
         fatal(lrc_test_fail("accepted negative seconds"));
     }
     ASSERT(result.header.error == LS_ERROR_FORMAT_INVALID_TIMESTAMP);
 
-    if (lrc_timestamp_hundredths_from_seconds(INFINITY,
-                                              &hundredths,
-                                              &result)) {
+    if (lrc_timestamp_hundredths_from_seconds(INFINITY, &hundredths, &result)) {
         fatal(lrc_test_fail("accepted infinite seconds"));
     }
     ASSERT(result.header.error == LS_ERROR_FORMAT_INVALID_TIMESTAMP);
@@ -1232,11 +1213,7 @@ lrc_test_format_reject_bad_inputs(void) {
     }
     ASSERT(result.header.error == LS_ERROR_FORMAT_TOO_LARGE);
 
-    if (lrc_format_timestamped_line_hundredths(&builder,
-                                               0,
-                                               NULL,
-                                               1,
-                                               &result)) {
+    if (lrc_format_timestamped_line_hundredths(&builder, 0, NULL, 1, &result)) {
         fatal(lrc_test_fail("accepted missing line text"));
     }
     ASSERT(result.header.error == LS_ERROR_FORMAT_INVALID_ARGUMENT);
@@ -1380,17 +1357,11 @@ lrc_test_write_overwrites_existing_file(void) {
                              200,
                              second, strlen32(second));
 
-    if (!lrc_write_output_file(path,
-                               first_lines,
-                               1,
-                               &result)) {
+    if (!lrc_write_output_file(path, first_lines, 1, &result)) {
         test_remove_tree(temp_dir);
         fatal(lrc_test_fail("write first lrc file"));
     }
-    if (!lrc_write_output_file(path,
-                               second_lines,
-                               1,
-                               &result)) {
+    if (!lrc_write_output_file(path, second_lines, 1, &result)) {
         test_remove_tree(temp_dir);
         fatal(lrc_test_fail("overwrite lrc file"));
     }

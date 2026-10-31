@@ -6318,11 +6318,7 @@ ctc_align_test_token_spans_reject_bad_inputs(void) {
     ASSERT(result.header.error == LS_ERROR_CTC_ALIGN_INVALID_FRAME_DURATION);
 
     path.steps[1].token_id = 2;
-    if (lrc_ctc_path_to_token_spans(&path,
-                                    &emissions,
-                                    0.1f,
-                                    &spans,
-                                    &result)) {
+    if (lrc_ctc_path_to_token_spans(&path, &emissions, 0.1f, &spans, &result)) {
         fatal(ctc_align_test_fail("bad path token id accepted"));
     }
     ASSERT(result.header.error == LS_ERROR_CTC_ALIGN_INVALID_PATH);
@@ -6350,11 +6346,7 @@ ctc_align_test_token_spans_reject_out_of_order_targets(void) {
     }
 
     lrc_ctc_path_set_token_step(&path, 0, 3, 1, 1);
-    if (lrc_ctc_path_to_token_spans(&path,
-                                    &emissions,
-                                    0.1f,
-                                    &spans,
-                                    &result)) {
+    if (lrc_ctc_path_to_token_spans(&path, &emissions, 0.1f, &spans, &result)) {
         fatal(ctc_align_test_fail("out-of-order path target accepted"));
     }
     ASSERT(result.header.error == LS_ERROR_CTC_ALIGN_INVALID_PATH);

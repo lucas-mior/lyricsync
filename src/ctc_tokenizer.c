@@ -902,8 +902,7 @@ ctc_tokenizer_test_load_minimal_vocabulary(void) {
 
     test_make_temp_dir(temp_dir, SIZEOF(temp_dir), "ctc_tokenizer_minimal");
     test_join_path(path, SIZEOF(path), temp_dir, "tokens.txt");
-    if (!ctc_tokenizer_write_file(path,
-                                  "<blank>\n<space>\na\nb\nc\n<unk>\n")) {
+    if (!ctc_tokenizer_write_file(path, "<blank>\n<space>\na\nb\nc\n<unk>\n")) {
         test_remove_tree(temp_dir);
         fatal(ctc_tokenizer_test_fail("write minimal vocabulary"));
     }
