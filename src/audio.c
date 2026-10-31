@@ -934,9 +934,7 @@ audio_compare_buffers(AudioCompareResult *result, AudioBuffer *expected,
         }
         candidate.mode = options->mode;
         candidate.length_ok = result->length_ok;
-        if (audio_compare_better_result(&candidate,
-                                        &best_result,
-                                        have_best)) {
+        if (audio_compare_better_result(&candidate, &best_result, have_best)) {
             best_result = candidate;
             have_best = true;
         }
@@ -1412,19 +1410,14 @@ main(void) {
     if (audio_check_ffmpeg("/definitely/missing/ffmpeg")) {
         fatal(audio_test_fail("missing ffmpeg accepted"));
     }
-    if (audio_can_decode_file("missing.wav",
-                              "/definitely/missing/ffmpeg")) {
+    if (audio_can_decode_file("missing.wav", "/definitely/missing/ffmpeg")) {
         fatal(audio_test_fail("missing ffmpeg decode accepted"));
     }
 
-    if (SNPRINTF(script,
-                 "/tmp/uvr_fake_ffmpeg_%lld",
-                 (int64)getpid()) < 0) {
+    if (SNPRINTF(script, "/tmp/uvr_fake_ffmpeg_%lld", (int64)getpid()) < 0) {
         fatal(audio_test_fail("fake ffmpeg path"));
     }
-    if (SNPRINTF(output,
-                 "/tmp/uvr_fake_audio_%lld",
-                 (int64)getpid()) < 0) {
+    if (SNPRINTF(output, "/tmp/uvr_fake_audio_%lld", (int64)getpid()) < 0) {
         fatal(audio_test_fail("fake output path"));
     }
     fd = open(script, O_WRONLY|O_CREAT|O_EXCL, 0700);
@@ -1523,10 +1516,7 @@ main(void) {
     }
 
     audio_buffer_destroy(&audio);
-    if (!audio_read_file_format(&audio,
-                                "input.mp3",
-                                &mono_format,
-                                script)) {
+    if (!audio_read_file_format(&audio, "input.mp3", &mono_format, script)) {
         unlink(script);
         unlink(output);
         fatal(audio_test_fail("read fake mono audio"));
@@ -1564,11 +1554,7 @@ main(void) {
     }
 
     unlink(output);
-    if (!audio_write_file_format(&audio,
-                                 output,
-                                 "wav",
-                                 &mono_format,
-                                 script)) {
+    if (!audio_write_file_format(&audio, output, "wav", &mono_format, script)) {
         audio_buffer_destroy(&audio);
         unlink(script);
         fatal(audio_test_fail("write fake mono audio"));
