@@ -261,7 +261,7 @@ ctc_unicode_norm_nfkc_lower_icu(char *text, int32 text_len,
     utf16_cap = utf16_len + 1;
     nfkc_cap = 0;
     lower_cap = 0;
-    utf16 = malloc2((int64)utf16_cap*SIZEOF(*utf16));
+    utf16 = malloc2(utf16_cap*SIZEOF(*utf16));
     nfkc = NULL;
     lower = NULL;
     ok = false;
@@ -281,7 +281,7 @@ ctc_unicode_norm_nfkc_lower_icu(char *text, int32 text_len,
     }
 
     nfkc_cap = nfkc_len + 1;
-    nfkc = malloc2((int64)nfkc_cap*SIZEOF(*nfkc));
+    nfkc = malloc2(nfkc_cap*SIZEOF(*nfkc));
     if (!ctc_unicode_norm_nfkc(utf16,
                                utf16_len,
                                normalizer,
@@ -295,7 +295,7 @@ ctc_unicode_norm_nfkc_lower_icu(char *text, int32 text_len,
     }
 
     lower_cap = lower_len + 1;
-    lower = malloc2((int64)lower_cap*SIZEOF(*lower));
+    lower = malloc2(lower_cap*SIZEOF(*lower));
     if (!ctc_unicode_norm_lower(nfkc, nfkc_len, lower, lower_cap, &lower_len)) {
         goto done;
     }
@@ -303,9 +303,9 @@ ctc_unicode_norm_nfkc_lower_icu(char *text, int32 text_len,
     ok = ctc_unicode_norm_utf8_from_utf16(lower, lower_len, result);
 
 done:
-    free2(lower, (int64)lower_cap*SIZEOF(*lower));
-    free2(nfkc, (int64)nfkc_cap*SIZEOF(*nfkc));
-    free2(utf16, (int64)utf16_cap*SIZEOF(*utf16));
+    free2(lower, lower_cap*SIZEOF(*lower));
+    free2(nfkc, nfkc_cap*SIZEOF(*nfkc));
+    free2(utf16, utf16_cap*SIZEOF(*utf16));
 
     return ok;
 }
@@ -319,7 +319,7 @@ ctc_unicode_norm_open_latin_transliterator(UTransliterator **transliterator) {
     int32 id_cap;
 
     *transliterator = NULL;
-    id_cap = (int32)(SIZEOF(id)/SIZEOF(id[0]));
+    id_cap = LENGTH(id);
     if (!ctc_unicode_norm_utf16_from_utf8(STRLIT("Any-Latin; Latin-ASCII"),
                                           id,
                                           id_cap,
@@ -353,7 +353,7 @@ ctc_unicode_norm_copy_utf16(UChar *destination, int32 destination_cap,
     }
 
     if (source_len > 0) {
-        memcpy64(destination, source, (int64)source_len*SIZEOF(*source));
+        memcpy64(destination, source, source_len*SIZEOF(*source));
     }
     destination[source_len] = 0;
 
@@ -377,7 +377,7 @@ ctc_unicode_norm_transliterate_latin_try_cap(UTransliterator *transliterator,
         return false;
     }
 
-    work = malloc2((int64)work_cap*SIZEOF(*work));
+    work = malloc2(work_cap*SIZEOF(*work));
     ok = false;
     if (!ctc_unicode_norm_copy_utf16(work, work_cap, source, source_len)) {
         goto done;
@@ -404,7 +404,7 @@ ctc_unicode_norm_transliterate_latin_try_cap(UTransliterator *transliterator,
     ok = ctc_unicode_norm_utf8_from_utf16(work, work_len, result);
 
 done:
-    free2(work, (int64)work_cap*SIZEOF(*work));
+    free2(work, work_cap*SIZEOF(*work));
 
     return ok;
 }
@@ -433,7 +433,7 @@ ctc_unicode_norm_transliterate_latin_icu(char *text, int32 text_len,
     }
 
     source_cap = source_len + 1;
-    source = malloc2((int64)source_cap*SIZEOF(*source));
+    source = malloc2(source_cap*SIZEOF(*source));
     ok = false;
     if (!ctc_unicode_norm_utf16_from_utf8(text,
                                           text_len,
@@ -462,7 +462,7 @@ ctc_unicode_norm_transliterate_latin_icu(char *text, int32 text_len,
     }
 
 done:
-    free2(source, (int64)source_cap*SIZEOF(*source));
+    free2(source, source_cap*SIZEOF(*source));
     utrans_close(transliterator);
 
     return ok;

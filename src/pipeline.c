@@ -2053,9 +2053,8 @@ lrc_pipeline_generate_targets(LrcCtcTokenizedText *tokens,
     }
 
     count = tokens->token_count;
-    *target_token_ids = malloc2((int64)count*SIZEOF(**target_token_ids));
-    *target_segment_starts =
-        malloc2((int64)count*SIZEOF(**target_segment_starts));
+    *target_token_ids = malloc2(count*SIZEOF(**target_token_ids));
+    *target_segment_starts = malloc2(count*SIZEOF(**target_segment_starts));
     *target_token_count = count;
     for (int32 i = 0; i < count; i += 1) {
         (*target_token_ids)[i] = tokens->tokens[i].token_id;
@@ -4130,10 +4129,27 @@ pipeline_test_ctc_debug_dump_text_and_tokens(void) {
     char temp_dir[PATH_MAX];
     char dump_path[PATH_MAX];
     LrcCtcToken tokenizer_tokens[] = {
-        {.text = "", .text_len = 0, .id = 0, .is_blank = true},
-        {.text = " ", .text_len = 1, .id = 1},
-        {.text = "i", .text_len = 1, .id = 2},
-        {.text = "ch", .text_len = 2, .id = 3},
+        {
+            .text = "",
+            .text_len = 0,
+            .id = 0,
+            .is_blank = true,
+        },
+        {
+            .text = " ",
+            .text_len = 1,
+            .id = 1,
+        },
+        {
+            .text = "i",
+            .text_len = 1,
+            .id = 2,
+        },
+        {
+            .text = "ch",
+            .text_len = 2,
+            .id = 3,
+        },
     };
     LrcCtcTextToken text_tokens[] = {
         {
@@ -4373,9 +4389,22 @@ pipeline_test_ctc_debug_dump_path_segments(void) {
     char temp_dir[PATH_MAX];
     char dump_path[PATH_MAX];
     LrcCtcToken tokenizer_tokens[] = {
-        {.text = "", .text_len = 0, .id = 0, .is_blank = true},
-        {.text = "A", .text_len = 1, .id = 1},
-        {.text = "B", .text_len = 1, .id = 2},
+        {
+            .text = "",
+            .text_len = 0,
+            .id = 0,
+            .is_blank = true,
+        },
+        {
+            .text = "A",
+            .text_len = 1,
+            .id = 1,
+        },
+        {
+            .text = "B",
+            .text_len = 1,
+            .id = 2,
+        },
     };
     LrcCtcTokenizer tokenizer = {
         .tokens = tokenizer_tokens,
