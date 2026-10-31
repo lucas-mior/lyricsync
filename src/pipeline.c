@@ -3362,10 +3362,7 @@ pipeline_test_line_timing_audio_correction(void) {
 
     pipeline_test_audio_fill(samples, LENGTH(samples), 0.50f);
     pipeline_test_audio_fill(samples + 6500, 5500, 0.0f);
-    pipeline_test_line_timing_audio_set(&audio,
-                                        samples,
-                                        LENGTH(samples),
-                                        1000);
+    pipeline_test_line_timing_audio_set(&audio, samples, LENGTH(samples), 1000);
     pipeline_test_make_two_line_timestamps(&timestamps,
                                            lines,
                                            2.0f,
@@ -3523,10 +3520,7 @@ pipeline_test_lrc_clear_uses_audio_corrected_end(void) {
 
     pipeline_test_audio_fill(samples, LENGTH(samples), 0.50f);
     pipeline_test_audio_fill(samples + 6500, 5500, 0.0f);
-    pipeline_test_line_timing_audio_set(&audio,
-                                        samples,
-                                        LENGTH(samples),
-                                        1000);
+    pipeline_test_line_timing_audio_set(&audio, samples, LENGTH(samples), 1000);
     pipeline_test_make_two_line_timestamps(&timestamps,
                                            timestamp_lines,
                                            2.0f,
@@ -4702,8 +4696,7 @@ pipeline_test_config_defaults(void) {
     ASSERT(config.lyrics_preprocess_options.romanization
            == LRC_LYRICS_PREPROCESS_ROMANIZATION_ICU);
     ASSERT_EQ(config.lyrics_preprocess_options.language, "eng");
-    ASSERT(config.ctc_emission_values_kind
-           == LRC_CTC_EMISSION_VALUES_LOGITS);
+    ASSERT(config.ctc_emission_values_kind == LRC_CTC_EMISSION_VALUES_LOGITS);
     ASSERT(pipeline.error == LS_ERROR_NONE);
     ASSERT(strequal(pipeline.message, "ok"));
     ASSERT(pipeline.path == NULL);

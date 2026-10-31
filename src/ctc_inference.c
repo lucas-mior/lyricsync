@@ -488,8 +488,7 @@ lrc_ctc_emissions_copy_rank3_trimmed(LrcCtcEmissions *emissions,
                                      "produced too few frames",
                                      kept_frame);
         lrc_progress_cancel(&progress);
-        free2(emissions->values,
-              kept_value_count*SIZEOF(*emissions->values));
+        free2(emissions->values, kept_value_count*SIZEOF(*emissions->values));
         emissions->values = NULL;
         return false;
     }

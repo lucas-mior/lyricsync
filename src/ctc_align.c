@@ -5726,9 +5726,7 @@ ctc_align_test_path_segments_merge_blanks_and_tokens(void) {
     ASSERT_ZERO(segments.segments[1].token_index);
     ASSERT_EQ(segments.segments[1].start_frame, 2);
     ASSERT_EQ(segments.segments[1].end_frame, 4);
-    ASSERT(ctc_align_float_close(segments.segments[1].score,
-                                 -0.40f,
-                                 0.00001f));
+    ASSERT(ctc_align_float_close(segments.segments[1].score, -0.40f, 0.00001f));
     ASSERT(segments.segments[2].is_blank);
     ASSERT_EQ(segments.segments[2].start_frame, 4);
     ASSERT_EQ(segments.segments[2].end_frame, 5);
@@ -6708,12 +6706,8 @@ ctc_align_test_word_spans_use_active_token_boundaries(void) {
     }
 
     ASSERT_EQ(word_spans.span_count, 2);
-    ctc_align_assert_word_text(&normalized,
-                               word_spans.spans + 0,
-                               STRLIT("ab"));
-    ctc_align_assert_word_text(&normalized,
-                               word_spans.spans + 1,
-                               STRLIT("cd"));
+    ctc_align_assert_word_text(&normalized, word_spans.spans + 0, STRLIT("ab"));
+    ctc_align_assert_word_text(&normalized, word_spans.spans + 1, STRLIT("cd"));
     ASSERT(ctc_align_float_close(word_spans.spans[0].start_seconds,
                                  0.0f,
                                  0.00001f));
@@ -7015,12 +7009,8 @@ ctc_align_test_word_spans_handle_removed_punctuation(void) {
     }
 
     ASSERT_EQ(word_spans.span_count, 2);
-    ctc_align_assert_word_text(&normalized,
-                               word_spans.spans + 0,
-                               STRLIT("ab"));
-    ctc_align_assert_word_text(&normalized,
-                               word_spans.spans + 1,
-                               STRLIT("c"));
+    ctc_align_assert_word_text(&normalized, word_spans.spans + 0, STRLIT("ab"));
+    ctc_align_assert_word_text(&normalized, word_spans.spans + 1, STRLIT("c"));
     ASSERT_ZERO(word_spans.spans[0].line_index);
     ASSERT_ZERO(word_spans.spans[1].line_index);
     ASSERT(ctc_align_float_close(word_spans.spans[0].start_seconds,
@@ -7177,9 +7167,7 @@ ctc_align_test_word_spans_keep_repeated_token_positions(void) {
 
     ASSERT(result.header.error == LS_ERROR_NONE);
     ASSERT_EQ(word_spans.span_count, 1);
-    ctc_align_assert_word_text(&normalized,
-                               word_spans.spans + 0,
-                               STRLIT("aa"));
+    ctc_align_assert_word_text(&normalized, word_spans.spans + 0, STRLIT("aa"));
     ASSERT_ZERO(word_spans.spans[0].token_start_index);
     ASSERT_EQ(word_spans.spans[0].token_end_index, 2);
     ASSERT_ZERO(word_spans.spans[0].span_start_index);

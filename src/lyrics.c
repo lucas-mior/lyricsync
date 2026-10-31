@@ -551,10 +551,8 @@ lyrics_test_preprocess_option_defaults_preserve_normalization(void) {
     }
 
     ASSERT_EQ(default_normalized.text, option_normalized.text);
-    ASSERT_EQ(default_normalized.byte_count,
-              option_normalized.byte_count);
-    ASSERT_EQ(default_normalized.line_count,
-              option_normalized.line_count);
+    ASSERT_EQ(default_normalized.byte_count, option_normalized.byte_count);
+    ASSERT_EQ(default_normalized.line_count, option_normalized.line_count);
     ASSERT(default_normalized.alignable_line_count
            == option_normalized.alignable_line_count);
 
