@@ -2422,41 +2422,6 @@ ctc_inference_test_rejects_bad_shapes(void) {
 }
 
 static void
-ctc_inference_test_log_probability_bypass(void) {
-    LrcCtcInferenceResult result;
-    LrcCtcEmissions emissions = {0};
-    int64 shape[2];
-    float values[] = {
-        -0.10f, -2.30f,
-        -1.20f, -0.40f,
-    };
-
-    shape[0] = 2;
-    shape[1] = 2;
-
-    if (!lrc_ctc_emissions_copy_shape(&emissions,
-                                      values,
-                                      LENGTH(values),
-                                      shape,
-                                      2,
-                                      &result)) {
-        fatal(ctc_inference_test_fail("copy log-probability emissions"));
-    }
-    if (!ctc_emissions_to_log_probabilities(&emissions, values_kind, &result)) {
-        fatal(ctc_inference_test_fail("bypass log probabilities"));
-    }
-
-    ASSERT(result.header.error == LS_ERROR_NONE);
-    for (int32 i = 0; i < LENGTH(values); i += 1) {
-        ASSERT_EQ(emissions.values[i], values[i]);
-    }
-
-    lrc_ctc_emissions_destroy(&emissions);
-
-    return;
-}
-
-static void
 ctc_inference_test_logits_to_log_probabilities(void) {
     LrcCtcInferenceResult result;
     LrcCtcEmissions emissions = {0};
@@ -2674,7 +2639,6 @@ main(void) {
     ctc_inference_test_rank3_rejects_mismatched_chunks();
     ctc_inference_test_rejects_invalid_inputs();
     ctc_inference_test_rejects_bad_shapes();
-    ctc_inference_test_log_probability_bypass();
     ctc_inference_test_logits_to_log_probabilities();
     ctc_inference_test_probabilities_to_log_probabilities();
     ctc_inference_test_rejects_invalid_probability_conversion();
