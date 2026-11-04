@@ -570,8 +570,7 @@ lrc_ctc_emissions_ready(LrcCtcEmissions *emissions,
                                      "CTC emissions are not prepared", -1);
         return false;
     }
-    if (emissions->frame_count
-        > INT64_MAX/emissions->vocabulary_size) {
+    if (emissions->frame_count > (INT64_MAX/emissions->vocabulary_size)) {
         lrc_ctc_inference_result_set(result,
                                      LS_ERROR_CTC_INFERENCE_OUTPUT_TOO_LARGE,
                                      "CTC emissions dimensions are too large",
