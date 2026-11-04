@@ -65,7 +65,7 @@ lrc_ctc_align_plan_init(LrcCtcAlignPlan *plan, int32 *target_token_ids,
 
 static bool
 lrc_ctc_align_plan_missing(LrcCtcAlignPlan *plan, LrcCtcAlignResult *result) {
-    if (plan != NULL) {
+    if (plan) {
         return false;
     }
 
