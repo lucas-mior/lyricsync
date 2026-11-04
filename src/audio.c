@@ -1497,8 +1497,7 @@ main(void) {
         unlink(script);
         fatal(audio_test_fail("open fake output"));
     }
-    if (read64(fd, output_raw, SIZEOF(output_raw))
-        != SIZEOF(output_raw)) {
+    if (read64(fd, output_raw, SIZEOF(output_raw)) != SIZEOF(output_raw)) {
         close(fd);
         audio_buffer_destroy(&audio);
         unlink(script);
