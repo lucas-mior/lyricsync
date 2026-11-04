@@ -1,0 +1,5 @@
+src/ctc_text.c:881: STYLE-POINTER-NOT
+The negated expression is the bool returned by rune_fn(), not a pointer.
+
+src/ctc_text.c:893: STYLE-POINTER-NOT
+The negated expression is the bool returned by finish_fn(), not a pointer.

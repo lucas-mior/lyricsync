@@ -1436,7 +1436,7 @@ lrc_pipeline_ctc_align_ok(bool ok, LrcCtcAlignResult *align_result,
     message = "CTC alignment failed";
     frame_index = -1;
     token_index = -1;
-    if (align_result != NULL) {
+    if (align_result) {
         message = align_result->header.message;
         frame_index = align_result->frame_index;
         token_index = align_result->token_index;

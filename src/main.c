@@ -257,7 +257,7 @@ main_print_value_option_usage(char *name, char *metavar, char *description,
     }
 
     error2("    %-28s %s", option, description);
-    if (default_text != NULL) {
+    if (default_text) {
         error2(" [%s]", default_text);
     }
     error2("\n");
