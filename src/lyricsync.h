@@ -7,7 +7,7 @@
 #if !defined(LYRICS_API)
 #if defined(_WIN32)
 #define LYRICS_API __declspec(dllexport)
-#elif defined(__GNUC__) || defined(__clang__)
+#elif CC_GCC || CC_CLANG
 #define LYRICS_API __attribute__((visibility("default")))
 #else
 #define LYRICS_API
