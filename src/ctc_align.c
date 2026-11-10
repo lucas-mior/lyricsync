@@ -1013,8 +1013,9 @@ lrc_ctc_trellis_prepare_for_graph(LrcCtcTrellis *trellis,
         cell = lrc_ctc_trellis_cell(trellis, frame - 1, 0);
         ASSERT(cell);
         previous = *cell;
-        blank_score = emissions->values[frame*emissions->vocabulary_size
-                                        + blank_token_id];
+        blank_score = LRC_MATRIX_AT(emissions->values,
+                                    emissions->vocabulary_size,
+                                    frame, blank_token_id);
 
         cell = lrc_ctc_trellis_cell(trellis, frame, 0);
         ASSERT(cell);
@@ -3884,8 +3885,9 @@ lrc_ctc_trellis_prepare(LrcCtcTrellis *trellis, LrcCtcEmissions *emissions,
         cell = lrc_ctc_trellis_cell(trellis, frame - 1, 0);
         ASSERT(cell);
         previous = *cell;
-        blank_score = emissions->values[frame*emissions->vocabulary_size
-                                        + blank_token_id];
+        blank_score = LRC_MATRIX_AT(emissions->values,
+                                    emissions->vocabulary_size,
+                                    frame, blank_token_id);
 
         cell = lrc_ctc_trellis_cell(trellis, frame, 0);
         ASSERT(cell);
@@ -4347,13 +4349,13 @@ ctc_align_fill_predictable_values(float *values, int32 frame_count,
     }
 
     for (int32 frame = 0; frame < frame_count; frame += 1) {
-        values[frame*vocabulary_size + blank_token_id] = -0.05f;
+        LRC_MATRIX_AT(values, vocabulary_size, frame, blank_token_id) = -0.05f;
     }
     for (int32 i = 0; i < token_count; i += 1) {
         int32 frame = i + 1;
 
-        values[frame*vocabulary_size + blank_token_id] = -6.0f;
-        values[frame*vocabulary_size + token_ids[i]] = -0.05f;
+        LRC_MATRIX_AT(values, vocabulary_size, frame, blank_token_id) = -6.0f;
+        LRC_MATRIX_AT(values, vocabulary_size, frame, token_ids[i]) = -0.05f;
     }
 
     return;
@@ -4506,14 +4508,14 @@ ctc_align_fill_token_frame_values(float *values, int32 frame_count,
         values[i] = -12.0f;
     }
     for (int32 frame = 0; frame < frame_count; frame += 1) {
-        values[frame*vocabulary_size + blank_token_id] = -0.05f;
+        LRC_MATRIX_AT(values, vocabulary_size, frame, blank_token_id) = -0.05f;
     }
     for (int32 i = 0; i < token_count; i += 1) {
         int32 frame = token_frames[i];
 
         ASSERT_BETWEEN(frame, 0, frame_count - 1);
-        values[frame*vocabulary_size + blank_token_id] = -6.0f;
-        values[frame*vocabulary_size + token_ids[i]] = -0.05f;
+        LRC_MATRIX_AT(values, vocabulary_size, frame, blank_token_id) = -6.0f;
+        LRC_MATRIX_AT(values, vocabulary_size, frame, token_ids[i]) = -0.05f;
     }
 
     return;
@@ -7209,12 +7211,13 @@ ctc_align_test_line_timestamps_repeated_boundary_alignment(void) {
         values[i] = -12.0f;
     }
     for (int32 frame = 0; frame < frame_count; frame += 1) {
-        values[frame*vocabulary_size + tokenizer.blank_id] = -0.05f;
+        LRC_MATRIX_AT(values, vocabulary_size,
+                      frame, tokenizer.blank_id) = -0.05f;
     }
-    values[1*vocabulary_size + tokenizer.blank_id] = -6.0f;
-    values[1*vocabulary_size + target_token_ids[0]] = -0.01f;
-    values[3*vocabulary_size + tokenizer.blank_id] = -6.0f;
-    values[3*vocabulary_size + target_token_ids[1]] = -0.02f;
+    LRC_MATRIX_AT(values, vocabulary_size, 1, tokenizer.blank_id) = -6.0f;
+    LRC_MATRIX_AT(values, vocabulary_size, 1, target_token_ids[0]) = -0.01f;
+    LRC_MATRIX_AT(values, vocabulary_size, 3, tokenizer.blank_id) = -6.0f;
+    LRC_MATRIX_AT(values, vocabulary_size, 3, target_token_ids[1]) = -0.02f;
     ctc_align_make_emissions(&emissions, values, frame_count, vocabulary_size);
 
     if (!lrc_ctc_trellis_score_forward(&trellis,
@@ -8545,9 +8548,9 @@ static void
 ctc_align_set_rank3_row_preference(float *values, int64 row_index,
                                    int32 vocabulary_size, int32 token_id) {
     for (int32 i = 0; i < vocabulary_size; i += 1) {
-        values[row_index*vocabulary_size + i] = -10.0f;
+        LRC_MATRIX_AT(values, vocabulary_size, row_index, i) = -10.0f;
     }
-    values[row_index*vocabulary_size + token_id] = 10.0f;
+    LRC_MATRIX_AT(values, vocabulary_size, row_index, token_id) = 10.0f;
 
     return;
 }

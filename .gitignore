@@ -19,3 +19,4 @@ cbase/CuSb9Ofs
 .cache/
 cbase/csanecheck
 cmeta
+*.bin

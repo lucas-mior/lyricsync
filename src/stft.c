@@ -118,8 +118,10 @@ stft_forward_channel(StftPlan *plan, float *input, int64 input_len,
         }
 
         for (int32 bin = 0; bin < complex_count; bin += 1) {
-            output_real[bin*frame_count + frame_index] = plan->real[bin];
-            output_imag[bin*frame_count + frame_index] = plan->imag[bin];
+            LRC_MATRIX_AT(output_real, frame_count, bin, frame_index) =
+                plan->real[bin];
+            LRC_MATRIX_AT(output_imag, frame_count, bin, frame_index) =
+                plan->imag[bin];
         }
     }
 
@@ -156,8 +158,10 @@ stft_inverse_channel(StftPlan *plan, float *input_real, float *input_imag,
     center = plan->n_fft/2;
     for (int32 frame_index = 0; frame_index < frame_count; frame_index += 1) {
         for (int32 bin = 0; bin < plan->complex_count; bin += 1) {
-            plan->real[bin] = input_real[bin*frame_count + frame_index];
-            plan->imag[bin] = input_imag[bin*frame_count + frame_index];
+            plan->real[bin] =
+                LRC_MATRIX_AT(input_real, frame_count, bin, frame_index);
+            plan->imag[bin] =
+                LRC_MATRIX_AT(input_imag, frame_count, bin, frame_index);
         }
 
         if (!fftw_real_inverse(&plan->fftw_plan,

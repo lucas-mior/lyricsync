@@ -4,6 +4,9 @@
 #include "cbase.h"
 #include "pipeline.h"
 
+#define LRC_MATRIX_AT(VALUES, NCOLS, ROW, COLUMN) \
+  ((VALUES)[(ROW)*(NCOLS) + (COLUMN)])
+
 #if !defined(LYRICS_API)
 #if defined(_WIN32)
 #define LYRICS_API __declspec(dllexport)

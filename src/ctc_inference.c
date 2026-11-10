@@ -1991,7 +1991,7 @@ ctc_inference_test_rank3_accepts_wav2vec_actual_chunk_length(void) {
 
     for (int64 chunk = 0; chunk < 2; chunk += 1) {
         for (int64 frame = 0; frame < 5; frame += 1) {
-            values[chunk*5 + frame] = (float)(chunk*100 + frame);
+            LRC_MATRIX_AT(values, 5, chunk, frame) = (float)(chunk*100 + frame);
         }
     }
     shape[0] = 2;
@@ -2053,7 +2053,7 @@ ctc_inference_test_rank3_python_slicing_vectors(void) {
 
     for (int64 chunk = 0; chunk < 3; chunk += 1) {
         for (int64 frame = 0; frame < 6; frame += 1) {
-            values[chunk*6 + frame] = (float)(chunk*100 + frame);
+            LRC_MATRIX_AT(values, 6, chunk, frame) = (float)(chunk*100 + frame);
         }
     }
     shape[0] = 3;

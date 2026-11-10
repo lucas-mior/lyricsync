@@ -264,8 +264,10 @@ mdx_pack_input(MdxConfig *config, StftPlan *stft_plan, float *left,
 
             tensor[output_index] = left_real[input_index];
             tensor[channel_stride + output_index] = left_imag[input_index];
-            tensor[2*channel_stride + output_index] = right_real[input_index];
-            tensor[3*channel_stride + output_index] = right_imag[input_index];
+            LRC_MATRIX_AT(tensor, channel_stride, 2, output_index) =
+                right_real[input_index];
+            LRC_MATRIX_AT(tensor, channel_stride, 3, output_index) =
+                right_imag[input_index];
         }
     }
 
@@ -360,8 +362,10 @@ mdx_unpack_output(MdxConfig *config, StftPlan *stft_plan, float *tensor,
 
             left_real[output_index] = tensor[input_index];
             left_imag[output_index] = tensor[channel_stride + input_index];
-            right_real[output_index] = tensor[2*channel_stride + input_index];
-            right_imag[output_index] = tensor[3*channel_stride + input_index];
+            right_real[output_index] =
+                LRC_MATRIX_AT(tensor, channel_stride, 2, input_index);
+            right_imag[output_index] =
+                LRC_MATRIX_AT(tensor, channel_stride, 3, input_index);
         }
     }
 
@@ -1000,9 +1004,11 @@ main(void) {
                                    left_real[input_index]));
             ASSERT(mdx_float_close(tensor[channel_stride + output_index],
                                    left_imag[input_index]));
-            ASSERT(mdx_float_close(tensor[2*channel_stride + output_index],
+            ASSERT(mdx_float_close(LRC_MATRIX_AT(tensor, channel_stride,
+                                                 2, output_index),
                                    right_real[input_index]));
-            ASSERT(mdx_float_close(tensor[3*channel_stride + output_index],
+            ASSERT(mdx_float_close(LRC_MATRIX_AT(tensor, channel_stride,
+                                                 3, output_index),
                                    right_imag[input_index]));
         }
     }
