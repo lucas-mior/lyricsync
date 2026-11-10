@@ -643,7 +643,6 @@ audio_test_generate_sine_wav(char *path, AudioTestSineOptions *options,
 }
 #endif
 
-
 #if TESTING_audio
 
 #define CBASE_IMPLEMENT
@@ -714,7 +713,6 @@ audio_float_abs(float value) {
 
     return value;
 }
-
 
 static float
 audio_buffer_channel_sample(AudioBuffer *audio, int64 frame, int32 channel) {

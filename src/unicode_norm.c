@@ -587,7 +587,6 @@ int32
 main(void) {
     int32 status = 0;
 
-
     status += unicode_norm_test_fallback_or_icu_copy();
 #if LRC_UNICODE_ENABLE_ICU
     status += unicode_norm_test_icu_nfkc_lower();

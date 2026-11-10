@@ -210,8 +210,6 @@ lrc_lyrics_load_file(LrcLyrics *lyrics, char *path,
     return true;
 }
 
-
-
 #if TESTING_lyrics
 #define CBASE_IMPLEMENT
 #include "cbase.h"
@@ -400,7 +398,6 @@ lyrics_test_reject_invalid_utf8(void) {
 
     return;
 }
-
 
 static void
 lyrics_test_normalize_punctuation_sections_and_mapping(void) {

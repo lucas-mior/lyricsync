@@ -26,7 +26,6 @@ enum {
     LRC_AUDIO_NOISE_PERCENTILE_DIVISOR = 10,
 };
 
-
 typedef struct LrcPipelineLineTimingAudio {
     float *samples;
 
@@ -397,7 +396,6 @@ pipeline_result_set(LrcPipelineGenerateResult *result,
 
     return;
 }
-
 
 typedef struct LrcCtcDebugDumpWriter {
     FILE *file;
@@ -1156,7 +1154,6 @@ lrc_ctc_debug_dump_write_path_segments(LrcCtcDebugDumpWriter *writer,
     return;
 }
 
-
 static void
 lrc_ctc_debug_dump_write_word_span_text(LrcCtcDebugDumpWriter *writer,
                                         LrcLyricsNormalized *normalized,
@@ -1248,7 +1245,6 @@ lrc_pipeline_debug_dump_write_active_word_spans(
     if (!lrc_pipeline_debug_dump_enabled(pipeline)) {
         return true;
     }
-
 
     ok = lrc_ctc_path_to_token_spans(path,
                                      emissions,
@@ -2526,7 +2522,6 @@ mdx_config_init(MdxConfig *config) {
     return;
 }
 
-
 static void
 lrc_ctc_model_config_init(LrcCtcModelConfig *config) {
     memset64(config, 0, SIZEOF(*config));
@@ -2546,7 +2541,6 @@ lrc_pipeline_test_noop(void *pointer) {
 
     return;
 }
-
 
 static void
 lrc_lyrics_destroy(LrcLyrics *lyrics) {
@@ -2569,7 +2563,6 @@ lrc_lyrics_load_file(LrcLyrics *lyrics, char *path,
 
     return false;
 }
-
 
 static void
 lrc_lyrics_normalized_destroy(LrcLyricsNormalized *normalized) {
@@ -2608,7 +2601,6 @@ lrc_ctc_tokenize_result_init(LrcCtcTokenizeResult *result) {
 
     return;
 }
-
 
 static void
 lrc_ctc_tokenized_text_destroy(LrcCtcTokenizedText *text) {
@@ -2675,7 +2667,6 @@ lrc_ctc_audio_config_init(LrcCtcAudioConfig *config) {
     return;
 }
 
-
 static void
 lrc_ctc_audio_destroy(LrcCtcAudio *audio) {
     lrc_pipeline_test_noop(audio);
@@ -2695,7 +2686,6 @@ lrc_ctc_audio_decode_file(LrcCtcAudio *audio, char *path,
     return false;
 }
 
-
 static void
 lrc_ctc_model_input_destroy(LrcCtcModelInput *input) {
     lrc_pipeline_test_noop(input);
@@ -2714,7 +2704,6 @@ lrc_ctc_model_input_prepare(LrcCtcModelInput *input, LrcCtcAudio *audio,
 
     return false;
 }
-
 
 static void
 lrc_ctc_onnx_inference_destroy(LrcCtcOnnxInference *onnx) {
@@ -2756,7 +2745,6 @@ lrc_ctc_inference_run(LrcCtcInferenceBackend *backend, LrcCtcModelInput *input,
     return false;
 }
 
-
 static void
 lrc_ctc_emissions_destroy(LrcCtcEmissions *emissions) {
     lrc_pipeline_test_noop(emissions);
@@ -2774,7 +2762,6 @@ lrc_ctc_emissions_convert_to_log_probabilities(
 
     return false;
 }
-
 
 static void
 lrc_ctc_trellis_destroy(LrcCtcTrellis *trellis) {
@@ -2836,7 +2823,6 @@ lrc_ctc_path_destroy(LrcCtcPath *path) {
 
     return;
 }
-
 
 static void
 lrc_ctc_path_segments_destroy(LrcCtcPathSegments *segments) {
@@ -2912,7 +2898,6 @@ lrc_ctc_token_spans_to_word_spans(LrcCtcTokenSpans *token_spans,
     return false;
 }
 
-
 static void
 lrc_ctc_word_spans_destroy(LrcCtcWordSpans *spans) {
     lrc_pipeline_test_noop(spans);
@@ -2932,7 +2917,6 @@ lrc_ctc_word_spans_to_line_timestamps(LrcCtcWordSpans *word_spans,
 
     return false;
 }
-
 
 static void
 lrc_ctc_line_timestamps_destroy(LrcCtcLineTimestamps *timestamps) {
@@ -3005,7 +2989,6 @@ lrc_extract_vocals(LrcVocalsExtractRequest *request,
 
     return false;
 }
-
 
 #define CBASE_IMPLEMENT
 #include "cbase.h"
@@ -3090,8 +3073,6 @@ pipeline_test_write_file(char *path) {
     return write_entire_file(path, STRLIT("x")) >= 0;
 }
 
-
-
 static bool
 pipeline_test_file_contains(char *path, char *needle, int32 needle_len) {
     char *text;
@@ -3109,7 +3090,6 @@ pipeline_test_file_contains(char *path, char *needle, int32 needle_len) {
 
     return found;
 }
-
 
 static bool
 pipeline_test_output_text_equal(LrcOutputLine *line, char *text, int32 len) {
@@ -3275,7 +3255,6 @@ pipeline_test_audio_silence_detector(void) {
 
     return;
 }
-
 
 static void
 pipeline_test_audio_silence_detector_scaled(void) {
@@ -3488,7 +3467,6 @@ pipeline_test_line_timing_audio_correction_edges(void) {
 
     return;
 }
-
 
 static void
 pipeline_test_lrc_clear_uses_audio_corrected_end(void) {
@@ -3949,7 +3927,6 @@ pipeline_test_line_timestamp_clear_keeps_blank_line(void) {
     return;
 }
 
-
 static bool
 pipeline_test_sample_has_blank_line_between(char *text, int32 text_len,
                                             char *first, int32 first_len,
@@ -3957,7 +3934,6 @@ pipeline_test_sample_has_blank_line_between(char *text, int32 text_len,
     bool found_first = false;
     bool saw_blank = false;
     int32 pos = 0;
-
 
     while (pos < text_len) {
         int32 start = pos;
@@ -4075,7 +4051,6 @@ pipeline_test_line_timestamp_end_writes_clear_line(void) {
 
     return;
 }
-
 
 static void
 pipeline_test_ctc_debug_dump_escape(void) {
@@ -4512,7 +4487,6 @@ pipeline_test_ctc_debug_dump_path_segments(void) {
 
     return;
 }
-
 
 static void
 pipeline_test_ctc_debug_dump_word_spans(void) {
@@ -5057,7 +5031,6 @@ pipeline_test_ctc_assets_missing_file(void) {
 
     return;
 }
-
 
 static void
 pipeline_test_generate_requires_lyrics_and_output(void) {

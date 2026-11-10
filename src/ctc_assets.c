@@ -94,7 +94,6 @@ ctc_assets_write_file(char *path, char *text) {
     return write_entire_file(path, text, strlen32(text)) >= 0;
 }
 
-
 static void
 ctc_assets_test_config_defaults(void) {
     LrcCtcAssetsConfig config = {0};
@@ -278,7 +277,6 @@ ctc_assets_test_invalid_arguments(void) {
     LrcCtcAssetsConfig config = {0};
     LrcCtcAssetsResult result;
     LrcCtcAssets assets;
-
 
     if (lrc_ctc_assets_validate(NULL, &config, &result)) {
         fatal(ctc_assets_test_fail("null assets accepted"));

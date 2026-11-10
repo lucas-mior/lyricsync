@@ -8,7 +8,6 @@
 #define TESTING_ctc_text 0
 #endif
 
-
 static void
 lrc_lyrics_normalized_destroy(LrcLyricsNormalized *normalized) {
     if (normalized == NULL) {
@@ -1749,7 +1748,6 @@ lrc_lyrics_normalize_line_word(LrcLyrics *lyrics,
     LrcLyricsNormalizedLine *line_range = &normalized->lines[line_index];
     bool wrote_line = false;
 
-
     for (int32 i = start; i < end;) {
         uint32 rune;
         int32 step;
@@ -1813,7 +1811,6 @@ lrc_lyrics_normalize_line_char(LrcLyrics *lyrics,
                                int32 line_index, int32 start, int32 end) {
     LrcLyricsNormalizedLine *line_range = &normalized->lines[line_index];
     bool wrote_line = false;
-
 
     for (int32 i = start; i < end;) {
         uint32 rune;
@@ -2022,7 +2019,6 @@ ctc_text_test_fail(char *name) {
     return 1;
 }
 
-
 static bool
 ctc_text_load_lyrics(LrcLyrics *lyrics, char *text, char *name) {
     LrcLyricsLoadResult result;
@@ -2078,8 +2074,6 @@ ctc_text_test_assert_segment(LrcLyrics *lyrics, LrcLyricsNormalized *normalized,
 
     return;
 }
-
-
 
 enum CtcTextReferenceCase {
     CTC_TEXT_REFERENCE_CASE_OTHER,
@@ -2386,7 +2380,6 @@ ctc_text_test_reference_fixtures_load(void) {
     return 0;
 }
 
-
 #define CTC_TEXT_REFERENCE_WORD_INPUT_MAX 1024
 #define CTC_TEXT_REFERENCE_WORD_MAX 64
 #define CTC_TEXT_REFERENCE_WORD_TEXT_MAX 128
@@ -2659,7 +2652,6 @@ static int32
 ctc_text_test_word_split_matches_reference_fixtures(void) {
     int32 status = 0;
 
-
     status += ctc_text_test_word_split_fixture_case("plain_english");
     status += ctc_text_test_word_split_fixture_case("apostrophes");
     status += ctc_text_test_word_split_fixture_case("punctuation_digits");
@@ -2715,7 +2707,6 @@ ctc_text_test_word_normalized_fixture_case(char *fixture_name) {
 static int32
 ctc_text_test_word_normalization_matches_reference_fixtures(void) {
     int32 status = 0;
-
 
     status += ctc_text_test_word_normalized_fixture_case("plain_english");
     status += ctc_text_test_word_normalized_fixture_case("apostrophes");
@@ -2777,7 +2768,6 @@ ctc_text_test_word_target_fixture_case(char *fixture_name) {
 static int32
 ctc_text_test_word_targets_match_reference_fixtures(void) {
     int32 status = 0;
-
 
     status += ctc_text_test_word_target_fixture_case("plain_english");
     status += ctc_text_test_word_target_fixture_case("apostrophes");
@@ -2871,7 +2861,6 @@ ctc_text_test_star_target_sequence_fixture_case(char *fixture_name) {
 static int32
 ctc_text_test_star_target_sequences_match_reference(void) {
     int32 status = 0;
-
 
     status += ctc_text_test_star_target_sequence_fixture_case("plain_english");
     status += ctc_text_test_star_target_sequence_fixture_case("apostrophes");
@@ -3004,7 +2993,6 @@ ctc_text_test_char_split_matches_reference_fixtures(void) {
         LRC_LYRICS_PREPROCESS_SPLIT_SIZE_CHAR;
     enum LrcLyricsPreprocessSplitSize word_split =
         LRC_LYRICS_PREPROCESS_SPLIT_SIZE_WORD;
-
 
     status += ctc_text_test_char_fixture_case("english_char", "eng",
                                               char_split);
@@ -3231,7 +3219,6 @@ ctc_text_test_current_normalization_mapping(void) {
 int32
 main(void) {
     int32 status = 0;
-
 
     status += ctc_text_test_default_options();
     status += ctc_text_test_word_segments_preserve_line_mapping();

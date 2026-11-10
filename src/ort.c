@@ -91,7 +91,6 @@ ort_get_dimensions(OrtApi *api, OrtTensorTypeAndShapeInfo *info,
     return api->GetDimensions(info, (int64_t *)dimensions, dimensions_len);
 }
 
-
 static bool
 ort_cuda_preload_cudnn_library(OrtContext *context, char *name, bool required) {
 #if ORT_CUDA_PRELOAD_CUDNN
@@ -334,7 +333,6 @@ ort_model_read_tensor_info(OrtContext *context, OrtSession *session, bool input,
 
     return true;
 }
-
 
 static void
 ort_model_io_info_init_empty(OrtModelIoInfo *info) {
@@ -978,7 +976,6 @@ ort_test_model_io_info_copy(void) {
 
     return;
 }
-
 
 static void
 ort_test_execution_provider_parse(void) {

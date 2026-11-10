@@ -38,7 +38,6 @@ lrc_ctc_tokenize_result_set(LrcCtcTokenizeResult *result, enum LsError error,
     return;
 }
 
-
 static void
 lrc_ctc_tokenized_text_destroy(LrcCtcTokenizedText *text) {
     if (text == NULL) {
@@ -145,7 +144,6 @@ lrc_ctc_tokenizer_best_match(LrcCtcTokenizer *tokenizer, char *text,
 
     return true;
 }
-
 
 static bool
 lrc_ctc_tokenizer_is_unmatched_separator(char *text, int32 text_len,
@@ -830,12 +828,10 @@ ctc_tokenizer_test_fail(char *name) {
     return 1;
 }
 
-
 static bool
 ctc_tokenizer_write_file(char *path, char *text) {
     return write_entire_file(path, text, strlen32(text)) >= 0;
 }
-
 
 static bool
 ctc_tokenizer_load_from_text(LrcCtcTokenizer *tokenizer, char *text,
@@ -1083,7 +1079,6 @@ ctc_tokenizer_test_rejects_invalid_utf8(void) {
     return;
 }
 
-
 static void
 ctc_tokenizer_test_tokenizes_normalized_text(void) {
     LrcCtcTokenizer tokenizer;
@@ -1245,7 +1240,6 @@ ctc_tokenizer_test_unknown_token_covers_one_utf8_rune(void) {
 
     return;
 }
-
 
 static void
 ctc_tokenizer_test_word_target_prevents_multi_character_match(void) {

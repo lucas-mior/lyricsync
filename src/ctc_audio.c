@@ -45,7 +45,6 @@ lrc_ctc_audio_result_set(LrcCtcAudioResult *result, enum LsError error,
     return;
 }
 
-
 static void
 lrc_ctc_audio_destroy(LrcCtcAudio *audio) {
     if (audio == NULL) {
@@ -182,7 +181,6 @@ ctc_audio_test_fail(char *name) {
 
     return 1;
 }
-
 
 static bool
 ctc_audio_double_close(double a, double b, double max_error) {

@@ -35,7 +35,6 @@ lrc_ctc_align_result_set(LrcCtcAlignResult *result, enum LsError error,
     return;
 }
 
-
 static void
 lrc_ctc_align_plan_init(LrcCtcAlignPlan *plan, int32 *target_token_ids,
                         bool *target_segment_starts, int32 target_token_count,
@@ -97,7 +96,6 @@ typedef struct LrcCtcAlignGraph {
     int32 state_count;
     int32 target_token_count;
 } LrcCtcAlignGraph;
-
 
 static void
 lrc_ctc_align_graph_destroy(LrcCtcAlignGraph *graph) {
@@ -489,7 +487,6 @@ lrc_ctc_align_graph_transition_allowed(LrcCtcAlignGraph *graph,
     return lrc_ctc_align_state_can_skip(graph, from_state, to_state);
 }
 
-
 static void
 lrc_ctc_trellis_destroy(LrcCtcTrellis *trellis) {
     if (trellis == NULL) {
@@ -506,8 +503,6 @@ lrc_ctc_trellis_destroy(LrcCtcTrellis *trellis) {
     return;
 }
 
-
-
 static void
 lrc_ctc_path_destroy(LrcCtcPath *path) {
     if (path == NULL) {
@@ -521,7 +516,6 @@ lrc_ctc_path_destroy(LrcCtcPath *path) {
     return;
 }
 
-
 static void
 lrc_ctc_path_segments_destroy(LrcCtcPathSegments *segments) {
     if (segments == NULL) {
@@ -534,7 +528,6 @@ lrc_ctc_path_segments_destroy(LrcCtcPathSegments *segments) {
 
     return;
 }
-
 
 static void
 lrc_ctc_aligned_token_intervals_destroy(
@@ -550,7 +543,6 @@ lrc_ctc_aligned_token_intervals_destroy(
     return;
 }
 
-
 static void
 lrc_ctc_token_spans_destroy(LrcCtcTokenSpans *spans) {
     if (spans == NULL) {
@@ -564,7 +556,6 @@ lrc_ctc_token_spans_destroy(LrcCtcTokenSpans *spans) {
     return;
 }
 
-
 static void
 lrc_ctc_word_spans_destroy(LrcCtcWordSpans *spans) {
     if (spans == NULL) {
@@ -577,7 +568,6 @@ lrc_ctc_word_spans_destroy(LrcCtcWordSpans *spans) {
 
     return;
 }
-
 
 static void
 lrc_ctc_line_timestamps_destroy(LrcCtcLineTimestamps *timestamps) {
@@ -2115,7 +2105,6 @@ lrc_ctc_path_segments_to_aligned_token_intervals(
     return ok;
 }
 
-
 static bool
 ctc_interval_valid_for_padding(
     LrcCtcAlignedTokenInterval *interval, int32 interval_index,
@@ -2236,7 +2225,6 @@ lrc_ctc_pad_token_intervals_with_blanks(LrcCtcPathSegments *segments,
         LrcCtcPathSegment *next;
         int32 padded_start_frame = interval->token_start_frame;
         int32 padded_end_frame = interval->token_end_frame;
-
 
         if (interval->segment_start_index > 0) {
             previous = path_segments + interval->segment_start_index - 1;
@@ -2610,7 +2598,6 @@ lrc_ctc_path_to_padded_token_spans_for_mode(LrcCtcPath *path,
                                  -1, -1);
         return false;
     }
-
 
     ok = lrc_ctc_path_to_token_spans(path,
                                      emissions,
@@ -3770,7 +3757,6 @@ lrc_ctc_word_spans_to_line_timestamps(LrcCtcWordSpans *word_spans,
     return true;
 }
 
-
 #if TESTING_ctc_align
 #define CBASE_IMPLEMENT
 #include "cbase.h"
@@ -4161,7 +4147,6 @@ ctc_align_make_emissions(LrcCtcEmissions *emissions, float *values,
 
     return;
 }
-
 
 static void
 ctc_align_set_path_segment(LrcCtcPathSegments *segments, int32 segment_index,
@@ -4564,7 +4549,6 @@ ctc_align_parsed_files_close(LrcParsedFile *actual, LrcParsedFile *expected,
 
     return true;
 }
-
 
 static bool
 ctc_align_output_lines_from_timestamps(LrcLyrics *lyrics,
@@ -5038,7 +5022,6 @@ ctc_align_test_prepare_initializes_start_state(void) {
     return;
 }
 
-
 static void
 ctc_align_test_forward_scores_simple_path(void) {
     LrcCtcAlignResult result;
@@ -5265,7 +5248,6 @@ ctc_align_test_forward_rejects_bad_targets(void) {
 
     return;
 }
-
 
 static void
 ctc_align_test_backtracks_simple_path(void) {
@@ -5956,7 +5938,6 @@ ctc_align_test_aligned_intervals_keep_segment_star_order(void) {
     return;
 }
 
-
 static void
 ctc_align_test_pad_intervals_distributes_blank_frames(void) {
     LrcCtcAlignResult result;
@@ -6300,7 +6281,6 @@ ctc_align_test_token_spans_reject_bad_inputs(void) {
     return;
 }
 
-
 static void
 ctc_align_test_token_spans_reject_out_of_order_targets(void) {
     LrcCtcAlignResult result;
@@ -6327,9 +6307,6 @@ ctc_align_test_token_spans_reject_out_of_order_targets(void) {
 
     return;
 }
-
-
-
 
 static void
 ctc_align_test_padded_token_spans_use_blank_boundaries(void) {
@@ -6396,7 +6373,6 @@ ctc_align_test_padded_token_spans_use_blank_boundaries(void) {
 
     return;
 }
-
 
 static void
 ctc_align_test_synthetic_lrc_uses_active_token_boundaries(void) {
@@ -6864,7 +6840,6 @@ ctc_align_test_word_spans_group_generated_words(void) {
     return;
 }
 
-
 static void
 ctc_align_test_word_spans_use_skipped_space_gaps(void) {
     LrcLyrics lyrics;
@@ -6995,7 +6970,6 @@ ctc_align_test_word_spans_handle_removed_punctuation(void) {
 
     return;
 }
-
 
 static void
 ctc_align_test_word_spans_follow_reference_segments(void) {
@@ -7470,8 +7444,6 @@ ctc_align_test_maxwell_word_line_mapping(void) {
 
     return;
 }
-
-
 
 static void
 ctc_align_test_line_timestamps_from_generated_words(void) {
@@ -7987,7 +7959,6 @@ ctc_align_test_maxwell_fake_token_timing(void) {
 
     return;
 }
-
 
 static void
 ctc_align_test_full_synthetic_lrc_pipeline(void) {
@@ -8542,7 +8513,6 @@ ctc_align_test_maxwell_fixture_lrc_pipeline(void) {
 
     return;
 }
-
 
 static void
 ctc_align_set_rank3_row_preference(float *values, int64 row_index,

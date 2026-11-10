@@ -1235,7 +1235,6 @@ lrc_test_set_output_line(LrcOutputLine *line, enum LrcOutputLineKind kind,
     return;
 }
 
-
 static void
 lrc_test_write_generated_file(void) {
     LrcOutputLine lines[3];

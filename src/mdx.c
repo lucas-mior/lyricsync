@@ -359,7 +359,6 @@ mdx_unpack_output(MdxConfig *config, StftPlan *stft_plan, float *tensor,
             int64 input_index = (int64)bin*(int64)config->dim_t + (int64)frame;
             int64 output_index = (int64)bin*(int64)stft_frames + (int64)frame;
 
-
             left_real[output_index] = tensor[input_index];
             left_imag[output_index] = tensor[channel_stride + input_index];
             right_real[output_index] =
@@ -401,7 +400,6 @@ mdx_unpack_output(MdxConfig *config, StftPlan *stft_plan, float *tensor,
 
     return true;
 }
-
 
 static bool
 mdx_process_song_with_progress(MdxConfig *config, StftPlan *stft_plan,
@@ -889,7 +887,6 @@ main(void) {
     ASSERT(mdx_float_close(mdx_output_sample(&config, 0.75f, 0.0f), 1.0f));
     config.clip_mode = MDX_CLIP_MODE_NONE;
     ASSERT(mdx_float_close(mdx_output_sample(&config, 0.75f, 0.0f), 1.5f));
-
 
     ort_model_init_empty(&model);
     model.input_name = "input";

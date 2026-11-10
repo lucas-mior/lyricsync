@@ -49,7 +49,6 @@ ctc_model_result_set(LrcCtcModelInputResult *result,
     return;
 }
 
-
 static void
 lrc_ctc_model_input_destroy(LrcCtcModelInput *input) {
     if (input == NULL) {

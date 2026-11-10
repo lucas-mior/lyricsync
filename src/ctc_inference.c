@@ -38,7 +38,6 @@ lrc_ctc_inference_result_set(LrcCtcInferenceResult *result, enum LsError error,
     return;
 }
 
-
 static void
 lrc_ctc_emissions_destroy(LrcCtcEmissions *emissions) {
     if (emissions == NULL) {
@@ -787,7 +786,6 @@ lrc_ctc_inference_run(LrcCtcInferenceBackend *backend, LrcCtcModelInput *input,
                         result);
 }
 
-
 #if TESTING
 static bool
 lrc_ctc_fake_inference_set_shape(LrcCtcFakeInference *fake, float *values,
@@ -888,7 +886,6 @@ lrc_ctc_fake_inference_backend(LrcCtcFakeInference *fake,
     return;
 }
 #endif
-
 
 static void
 lrc_ctc_onnx_inference_destroy(LrcCtcOnnxInference *onnx) {
@@ -1461,7 +1458,6 @@ ctc_inference_make_input(LrcCtcModelInput *input) {
     return;
 }
 
-
 static void
 ctc_inference_make_rank3_trim_input(LrcCtcModelInput *input,
                                     LrcCtcModelChunk *chunks,
@@ -1499,7 +1495,6 @@ ctc_inference_make_rank3_trim_input(LrcCtcModelInput *input,
 
     return;
 }
-
 
 static void
 ctc_inference_make_custom_rank3_trim_input(LrcCtcModelInput *input,
@@ -1912,7 +1907,6 @@ ctc_inference_test_rank3_probability_trim_before_convert(void) {
     return;
 }
 
-
 static void
 ctc_inference_test_rank3_accepts_short_actual_model_length(void) {
     LrcCtcInferenceBackend backend;
@@ -2028,7 +2022,6 @@ ctc_inference_test_rank3_accepts_wav2vec_actual_chunk_length(void) {
 
     return;
 }
-
 
 static void
 ctc_inference_test_rank3_python_slicing_vectors(void) {
