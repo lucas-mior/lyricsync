@@ -32,13 +32,14 @@ lrc_ctc_audio_result_init(LrcCtcAudioResult *result) {
 }
 
 static void
-lrc_ctc_audio_result_set(LrcCtcAudioResult *result, enum LsError error,
+lrc_ctc_audio_result_set(LrcCtcAudioResult *result, enum LsError audio_error,
                          char *message, char *path, int64 sample_index) {
     if (result == NULL) {
         return;
     }
 
-    lrc_path_result_header_set(&result->path_header, error, message, path);
+    lrc_path_result_header_set(&result->path_header, audio_error, message,
+                               path);
 
     result->sample_index = sample_index;
 
@@ -202,7 +203,7 @@ ctc_audio_test_defaults_and_invalid_inputs(void) {
 
     ASSERT(strequal(config.ffmpeg_path, "ffmpeg"));
     ASSERT_EQ(config.sample_rate, LRC_CTC_AUDIO_DEFAULT_SAMPLE_RATE);
-    ASSERT(result.path_header.header.error == LS_ERROR_NONE);
+    ASSERT(result.path_header.header.result_error == LS_ERROR_NONE);
     ASSERT(strequal(result.path_header.header.message, "ok"));
     ASSERT(result.path_header.path == NULL);
     ASSERT_EQ(result.sample_index, -1);
@@ -214,19 +215,20 @@ ctc_audio_test_defaults_and_invalid_inputs(void) {
     if (lrc_ctc_audio_decode_file(NULL, "song.wav", &config, &result)) {
         fatal(ctc_audio_test_fail("invalid null audio accepted"));
     }
-    ASSERT(result.path_header.header.error
+    ASSERT(result.path_header.header.result_error
            == LS_ERROR_CTC_AUDIO_INVALID_ARGUMENT);
 
     if (lrc_ctc_audio_decode_file(&audio, NULL, &config, &result)) {
         fatal(ctc_audio_test_fail("missing path accepted"));
     }
-    ASSERT(result.path_header.header.error == LS_ERROR_CTC_AUDIO_MISSING_PATH);
+    ASSERT(result.path_header.header.result_error
+           == LS_ERROR_CTC_AUDIO_MISSING_PATH);
 
     config.ffmpeg_path = "";
     if (lrc_ctc_audio_decode_file(&audio, "song.wav", &config, &result)) {
         fatal(ctc_audio_test_fail("missing ffmpeg accepted"));
     }
-    ASSERT(result.path_header.header.error
+    ASSERT(result.path_header.header.result_error
            == LS_ERROR_CTC_AUDIO_MISSING_FFMPEG);
 
     lrc_ctc_audio_config_init(&config);
@@ -234,7 +236,7 @@ ctc_audio_test_defaults_and_invalid_inputs(void) {
     if (lrc_ctc_audio_decode_file(&audio, "song.wav", &config, &result)) {
         fatal(ctc_audio_test_fail("invalid sample rate accepted"));
     }
-    ASSERT(result.path_header.header.error
+    ASSERT(result.path_header.header.result_error
            == LS_ERROR_CTC_AUDIO_INVALID_SAMPLE_RATE);
 
     lrc_ctc_audio_destroy(&audio);

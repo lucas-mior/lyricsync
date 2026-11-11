@@ -34,13 +34,15 @@ lrc_lyrics_load_result_init(LrcLyricsLoadResult *result) {
 }
 
 static void
-lrc_lyrics_load_result_set(LrcLyricsLoadResult *result, enum LsError error,
-                           char *message, char *path, int32 byte_offset) {
+lrc_lyrics_load_result_set(LrcLyricsLoadResult *result,
+                           enum LsError lyrics_error, char *message, char *path,
+                           int32 byte_offset) {
     if (result == NULL) {
         return;
     }
 
-    lrc_path_result_header_set(&result->path_header, error, message, path);
+    lrc_path_result_header_set(&result->path_header, lyrics_error, message,
+                               path);
 
     result->byte_offset = byte_offset;
 
@@ -356,7 +358,8 @@ lyrics_test_reject_empty(void) {
         test_remove_tree(temp_dir);
         fatal(lyrics_test_fail("empty text accepted"));
     }
-    ASSERT(result.path_header.header.error == LS_ERROR_LYRICS_LOAD_EMPTY);
+    ASSERT(result.path_header.header.result_error
+           == LS_ERROR_LYRICS_LOAD_EMPTY);
     ASSERT(lyrics.text == NULL);
     ASSERT_EQ(lyrics.line_count, 0);
 
@@ -390,7 +393,7 @@ lyrics_test_reject_invalid_utf8(void) {
         test_remove_tree(temp_dir);
         fatal(lyrics_test_fail("invalid utf8 accepted"));
     }
-    ASSERT(result.path_header.header.error
+    ASSERT(result.path_header.header.result_error
            == LS_ERROR_LYRICS_LOAD_INVALID_UTF8);
     ASSERT_EQ(result.byte_offset, 3);
 

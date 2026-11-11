@@ -36,13 +36,13 @@ lrc_ctc_model_input_result_init(LrcCtcModelInputResult *result) {
 
 static void
 ctc_model_result_set(LrcCtcModelInputResult *result,
-                     enum LsError error, char *message,
+                     enum LsError model_error, char *message,
                      int64 sample_index) {
     if (result == NULL) {
         return;
     }
 
-    lrc_result_header_set(&result->header, error, message);
+    lrc_result_header_set(&result->header, model_error, message);
 
     result->sample_index = sample_index;
 
@@ -702,7 +702,7 @@ ctc_model_test_defaults_and_invalid_inputs(void) {
     ASSERT_EQ(config.inputs_to_logits_ratio, 320);
     ASSERT_EQ(config.window_seconds, 30);
     ASSERT_EQ(config.context_seconds, 2);
-    ASSERT(result.header.error == LS_ERROR_NONE);
+    ASSERT(result.header.result_error == LS_ERROR_NONE);
     ASSERT(strequal(result.header.message, "ok"));
     ASSERT_EQ(result.sample_index, -1);
     ASSERT(input.samples == NULL);
@@ -711,34 +711,39 @@ ctc_model_test_defaults_and_invalid_inputs(void) {
     if (lrc_ctc_model_input_prepare(NULL, &audio, &config, &result)) {
         fatal(ctc_model_test_fail("null input destination accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_MODEL_INPUT_INVALID_ARGUMENT);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_MODEL_INPUT_INVALID_ARGUMENT);
 
     config.sample_rate = 0;
     if (lrc_ctc_model_input_prepare(&input, &audio, &config, &result)) {
         fatal(ctc_model_test_fail("invalid sample rate accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_MODEL_INPUT_INVALID_SAMPLE_RATE);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_MODEL_INPUT_INVALID_SAMPLE_RATE);
 
     lrc_ctc_model_config_init(&config);
     config.inputs_to_logits_ratio = 0;
     if (lrc_ctc_model_input_prepare(&input, &audio, &config, &result)) {
         fatal(ctc_model_test_fail("invalid stride ratio accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_MODEL_INPUT_INVALID_RATIO);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_MODEL_INPUT_INVALID_RATIO);
 
     lrc_ctc_model_config_init(&config);
     config.sample_rate = 8000;
     if (lrc_ctc_model_input_prepare(&input, &audio, &config, &result)) {
         fatal(ctc_model_test_fail("mismatched audio sample rate accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_MODEL_INPUT_AUDIO_SAMPLE_RATE);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_MODEL_INPUT_AUDIO_SAMPLE_RATE);
 
     lrc_ctc_model_config_init(&config);
     samples[1] = NAN;
     if (lrc_ctc_model_input_prepare(&input, &audio, &config, &result)) {
         fatal(ctc_model_test_fail("non-finite sample accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_MODEL_INPUT_NON_FINITE_SAMPLE);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_MODEL_INPUT_NON_FINITE_SAMPLE);
     ASSERT_EQ(result.sample_index, 1);
     samples[1] = 0.1f;
 
@@ -762,7 +767,7 @@ ctc_model_test_prepares_short_input(void) {
         fatal(ctc_model_test_fail("prepare short input"));
     }
 
-    ASSERT(result.header.error == LS_ERROR_NONE);
+    ASSERT(result.header.result_error == LS_ERROR_NONE);
     ASSERT(!input.chunked);
     ASSERT_EQ(input.sample_rate, 16000);
     ASSERT_EQ(input.inputs_to_logits_ratio, 320);
@@ -1076,7 +1081,8 @@ ctc_model_test_rejects_unaligned_window_or_context(void) {
         lrc_ctc_model_input_destroy(&input);
         fatal(ctc_model_test_fail("unaligned window accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_MODEL_INPUT_INVALID_WINDOW);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_MODEL_INPUT_INVALID_WINDOW);
 
     config.inputs_to_logits_ratio = 4;
     config.window_seconds = 2;
@@ -1085,7 +1091,8 @@ ctc_model_test_rejects_unaligned_window_or_context(void) {
         lrc_ctc_model_input_destroy(&input);
         fatal(ctc_model_test_fail("unaligned context accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_MODEL_INPUT_INVALID_CONTEXT);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_MODEL_INPUT_INVALID_CONTEXT);
 
     lrc_ctc_model_input_destroy(&input);
 
@@ -1129,7 +1136,8 @@ ctc_model_test_validates_model_io(void) {
         lrc_ctc_model_input_destroy(&input);
         fatal(ctc_model_test_fail("non-float IO accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_MODEL_INPUT_INVALID_MODEL_IO);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_MODEL_INPUT_INVALID_MODEL_IO);
 
     info.is_float32 = true;
     info.shape_len = 3;
@@ -1137,7 +1145,8 @@ ctc_model_test_validates_model_io(void) {
         lrc_ctc_model_input_destroy(&input);
         fatal(ctc_model_test_fail("rank-3 IO accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_MODEL_INPUT_INVALID_MODEL_IO);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_MODEL_INPUT_INVALID_MODEL_IO);
 
     info.shape_len = 2;
     info.shape[0] = 1;
@@ -1146,7 +1155,8 @@ ctc_model_test_validates_model_io(void) {
         lrc_ctc_model_input_destroy(&input);
         fatal(ctc_model_test_fail("mismatched IO width accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_MODEL_INPUT_INVALID_MODEL_IO);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_MODEL_INPUT_INVALID_MODEL_IO);
 
     lrc_ctc_model_input_destroy(&input);
 

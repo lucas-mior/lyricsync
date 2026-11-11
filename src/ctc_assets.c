@@ -18,13 +18,14 @@ lrc_ctc_assets_result_init(LrcCtcAssetsResult *result) {
 }
 
 static void
-lrc_ctc_assets_result_set(LrcCtcAssetsResult *result, enum LsError error,
+lrc_ctc_assets_result_set(LrcCtcAssetsResult *result, enum LsError assets_error,
                           char *message, char *path) {
     if (result == NULL) {
         return;
     }
 
-    lrc_path_result_header_set(&result->path_header, error, message, path);
+    lrc_path_result_header_set(&result->path_header, assets_error, message,
+                               path);
 
     return;
 }
@@ -104,7 +105,7 @@ ctc_assets_test_config_defaults(void) {
 
     ASSERT(config.model_path == NULL);
     ASSERT(config.tokenizer_path == NULL);
-    ASSERT(result.path_header.header.error == LS_ERROR_NONE);
+    ASSERT(result.path_header.header.result_error == LS_ERROR_NONE);
     ASSERT(strequal(result.path_header.header.message, "ok"));
     ASSERT(result.path_header.path == NULL);
     ASSERT(assets.model_path == NULL);
@@ -145,7 +146,7 @@ ctc_assets_test_valid_generated_files(void) {
         test_remove_tree(temp_dir);
         fatal(ctc_assets_test_fail("validate generated files"));
     }
-    ASSERT(result.path_header.header.error == LS_ERROR_NONE);
+    ASSERT(result.path_header.header.result_error == LS_ERROR_NONE);
     ASSERT(strequal(result.path_header.header.message, "ok"));
     ASSERT(strequal(assets.model_path, model_path));
     ASSERT(strequal(assets.tokenizer_path, tokenizer_path));
@@ -167,7 +168,7 @@ ctc_assets_test_missing_model_path(void) {
     if (lrc_ctc_assets_validate(&assets, &config, &result)) {
         fatal(ctc_assets_test_fail("missing model path accepted"));
     }
-    ASSERT(result.path_header.header.error
+    ASSERT(result.path_header.header.result_error
            == LS_ERROR_CTC_ASSETS_MISSING_MODEL_PATH);
     ASSERT(strequal(result.path_header.header.message,
                     "CTC model path is missing"));
@@ -188,7 +189,7 @@ ctc_assets_test_missing_tokenizer_path(void) {
     if (lrc_ctc_assets_validate(&assets, &config, &result)) {
         fatal(ctc_assets_test_fail("missing tokenizer path accepted"));
     }
-    ASSERT(result.path_header.header.error
+    ASSERT(result.path_header.header.result_error
            == LS_ERROR_CTC_ASSETS_MISSING_TOKENIZER_PATH);
     ASSERT(strequal(result.path_header.header.message,
                     "CTC tokenizer path is missing"));
@@ -225,7 +226,7 @@ ctc_assets_test_missing_model_file(void) {
         test_remove_tree(temp_dir);
         fatal(ctc_assets_test_fail("missing model file accepted"));
     }
-    ASSERT(result.path_header.header.error
+    ASSERT(result.path_header.header.result_error
            == LS_ERROR_CTC_ASSETS_MODEL_NOT_FOUND);
     ASSERT(strequal(result.path_header.path, model_path));
     ASSERT(!assets.validated);
@@ -262,7 +263,7 @@ ctc_assets_test_missing_tokenizer_file(void) {
         test_remove_tree(temp_dir);
         fatal(ctc_assets_test_fail("missing tokenizer file accepted"));
     }
-    ASSERT(result.path_header.header.error
+    ASSERT(result.path_header.header.result_error
            == LS_ERROR_CTC_ASSETS_TOKENIZER_NOT_FOUND);
     ASSERT(strequal(result.path_header.path, tokenizer_path));
     ASSERT(!assets.validated);
@@ -281,13 +282,13 @@ ctc_assets_test_invalid_arguments(void) {
     if (lrc_ctc_assets_validate(NULL, &config, &result)) {
         fatal(ctc_assets_test_fail("null assets accepted"));
     }
-    ASSERT(result.path_header.header.error
+    ASSERT(result.path_header.header.result_error
            == LS_ERROR_CTC_ASSETS_INVALID_ARGUMENT);
 
     if (lrc_ctc_assets_validate(&assets, NULL, &result)) {
         fatal(ctc_assets_test_fail("null config accepted"));
     }
-    ASSERT(result.path_header.header.error
+    ASSERT(result.path_header.header.result_error
            == LS_ERROR_CTC_ASSETS_INVALID_ARGUMENT);
 
     return;

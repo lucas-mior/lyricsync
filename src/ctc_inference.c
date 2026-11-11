@@ -25,13 +25,14 @@ lrc_ctc_inference_result_init(LrcCtcInferenceResult *result) {
 }
 
 static void
-lrc_ctc_inference_result_set(LrcCtcInferenceResult *result, enum LsError error,
-                             char *message, int64 output_index) {
+lrc_ctc_inference_result_set(LrcCtcInferenceResult *result,
+                             enum LsError inference_error, char *message,
+                             int64 output_index) {
     if (result == NULL) {
         return;
     }
 
-    lrc_result_header_set(&result->header, error, message);
+    lrc_result_header_set(&result->header, inference_error, message);
 
     result->output_index = (int32)CLAMP(output_index, INT32_MIN, INT32_MAX);
 
@@ -1627,7 +1628,7 @@ ctc_inference_test_empty_initializers(void) {
     lrc_ctc_inference_result_init(&result);
     lrc_ctc_fake_inference_backend(&fake, &backend);
 
-    ASSERT(result.header.error == LS_ERROR_NONE);
+    ASSERT(result.header.result_error == LS_ERROR_NONE);
     ASSERT(strequal(result.header.message, "ok"));
     ASSERT_EQ(result.output_index, -1);
 
@@ -1670,7 +1671,7 @@ ctc_inference_test_fake_rank2(void) {
         fatal(ctc_inference_test_fail("run fake rank-2 backend"));
     }
 
-    ASSERT(result.header.error == LS_ERROR_NONE);
+    ASSERT(result.header.result_error == LS_ERROR_NONE);
     ASSERT_EQ(emissions.value_count, 6);
     ASSERT_EQ(emissions.row_count, 1);
     ASSERT_EQ(emissions.row_frame_count, 2);
@@ -1828,7 +1829,7 @@ ctc_inference_test_rank3_logits_converted_after_trim(void) {
         fatal(ctc_inference_test_fail("run rank-3 logits backend"));
     }
 
-    ASSERT(result.header.error == LS_ERROR_NONE);
+    ASSERT(result.header.result_error == LS_ERROR_NONE);
     ASSERT_EQ(emissions.frame_count, 2);
     ASSERT_EQ(emissions.vocabulary_size, 2);
     ASSERT(ctc_inference_float_close(emissions.values[0],
@@ -1886,7 +1887,7 @@ ctc_inference_test_rank3_probability_trim_before_convert(void) {
         fatal(ctc_inference_test_fail("run rank-3 probabilities backend"));
     }
 
-    ASSERT(result.header.error == LS_ERROR_NONE);
+    ASSERT(result.header.result_error == LS_ERROR_NONE);
     ASSERT_EQ(emissions.frame_count, 2);
     ASSERT_EQ(emissions.vocabulary_size, 2);
     ASSERT(ctc_inference_float_close(emissions.values[0],
@@ -1952,7 +1953,7 @@ ctc_inference_test_rank3_accepts_short_actual_model_length(void) {
         fatal(ctc_inference_test_fail("run short actual rank-3 output"));
     }
 
-    ASSERT(result.header.error == LS_ERROR_NONE);
+    ASSERT(result.header.result_error == LS_ERROR_NONE);
     ASSERT_EQ(emissions.frame_count, 3);
     ASSERT_EQ(emissions.value_count, 3);
     ASSERT_EQ(emissions.values[0], 10.0f);
@@ -2012,7 +2013,7 @@ ctc_inference_test_rank3_accepts_wav2vec_actual_chunk_length(void) {
         fatal(ctc_inference_test_fail("run actual wav2vec rank-3 output"));
     }
 
-    ASSERT(result.header.error == LS_ERROR_NONE);
+    ASSERT(result.header.result_error == LS_ERROR_NONE);
     ASSERT(emissions.frame_count == LENGTH(expected));
     for (int32 i = 0; i < LENGTH(expected); i += 1) {
         ASSERT_EQ(emissions.values[i], expected[i]);
@@ -2298,7 +2299,7 @@ ctc_inference_test_onnx_chunk_output_shape(void) {
                                         &result)) {
         fatal(ctc_inference_test_fail("multi-row chunk output accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT);
+    ASSERT(result.header.result_error == LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT);
 
     return;
 }
@@ -2334,7 +2335,7 @@ ctc_inference_test_rank3_rejects_mismatched_chunks(void) {
     if (lrc_ctc_inference_run(&backend, &input, &emissions, &result)) {
         fatal(ctc_inference_test_fail("mismatched rank-3 chunks accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT);
+    ASSERT(result.header.result_error == LS_ERROR_CTC_INFERENCE_INVALID_OUTPUT);
 
     return;
 }
@@ -2354,18 +2355,20 @@ ctc_inference_test_rejects_invalid_inputs(void) {
     if (lrc_ctc_inference_run(NULL, &input, &emissions, &result)) {
         fatal(ctc_inference_test_fail("missing backend accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT);
 
     if (lrc_ctc_inference_run(&backend, NULL, &emissions, &result)) {
         fatal(ctc_inference_test_fail("missing input accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT);
 
     input.samples = NULL;
     if (lrc_ctc_inference_run(&backend, &input, &emissions, &result)) {
         fatal(ctc_inference_test_fail("unprepared input accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_INVALID_INPUT);
+    ASSERT(result.header.result_error == LS_ERROR_CTC_INFERENCE_INVALID_INPUT);
     ctc_inference_make_input(&input);
 
     if (lrc_ctc_fake_inference_set(&fake, values, 1, 2)) {
@@ -2373,7 +2376,8 @@ ctc_inference_test_rejects_invalid_inputs(void) {
         if (lrc_ctc_inference_run(&backend, &input, &emissions, &result)) {
             fatal(ctc_inference_test_fail("non-finite emissions accepted"));
         }
-        ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_NON_FINITE_OUTPUT);
+        ASSERT(result.header.result_error
+               == LS_ERROR_CTC_INFERENCE_NON_FINITE_OUTPUT);
         ASSERT_EQ(result.output_index, 1);
     } else {
         fatal(ctc_inference_test_fail("set non-finite fake emissions"));
@@ -2443,7 +2447,7 @@ ctc_inference_test_logits_to_log_probabilities(void) {
         fatal(ctc_inference_test_fail("convert logits to log probabilities"));
     }
 
-    ASSERT(result.header.error == LS_ERROR_NONE);
+    ASSERT(result.header.result_error == LS_ERROR_NONE);
     ASSERT(ctc_inference_float_close(emissions.values[0],
                                      (float)-row1_norm,
                                      0.00001f));
@@ -2496,7 +2500,7 @@ ctc_inference_test_probabilities_to_log_probabilities(void) {
         fatal(ctc_inference_test_fail("convert probabilities"));
     }
 
-    ASSERT(result.header.error == LS_ERROR_NONE);
+    ASSERT(result.header.result_error == LS_ERROR_NONE);
     ASSERT(ctc_inference_float_close(emissions.values[0],
                                      logf(values[0]),
                                      0.00001f));
@@ -2539,7 +2543,8 @@ ctc_inference_test_rejects_invalid_probability_conversion(void) {
     if (ctc_emissions_to_log_probabilities(&emissions, values_kind, &result)) {
         fatal(ctc_inference_test_fail("zero probability accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_INVALID_PROBABILITY);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_INFERENCE_INVALID_PROBABILITY);
     ASSERT_EQ(result.output_index, 1);
 
     values[1] = 1.0f;
@@ -2554,7 +2559,8 @@ ctc_inference_test_rejects_invalid_probability_conversion(void) {
     if (ctc_emissions_to_log_probabilities(&emissions, invalid_kind, &result)) {
         fatal(ctc_inference_test_fail("invalid value kind accepted"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_INFERENCE_INVALID_ARGUMENT);
 
     lrc_ctc_emissions_destroy(&emissions);
 
@@ -2598,7 +2604,8 @@ ctc_inference_test_optional_onnx_backend(void) {
     if (lrc_ctc_onnx_inference_load(&onnx, "missing.onnx", NULL, &result)) {
         fatal(ctc_inference_test_fail("disabled ONNX backend loaded"));
     }
-    ASSERT(result.header.error == LS_ERROR_CTC_INFERENCE_BACKEND_UNAVAILABLE);
+    ASSERT(result.header.result_error
+           == LS_ERROR_CTC_INFERENCE_BACKEND_UNAVAILABLE);
 #endif
 
     return;

@@ -144,7 +144,7 @@
 #undef XENUMS_NO_TESTS
 
 typedef struct LrcResultHeader {
-    enum LsError error;
+    enum LsError result_error;
     char *message;
 } LrcResultHeader;
 
@@ -159,20 +159,20 @@ lrc_result_header_init(LrcResultHeader *header) {
         return;
     }
 
-    header->error = LS_ERROR_NONE;
+    header->result_error = LS_ERROR_NONE;
     header->message = "ok";
 
     return;
 }
 
 static void
-lrc_result_header_set(LrcResultHeader *header, enum LsError error,
+lrc_result_header_set(LrcResultHeader *header, enum LsError result_error,
                       char *message) {
     if (header == NULL) {
         return;
     }
 
-    header->error = error;
+    header->result_error = result_error;
     header->message = message;
 
     return;
@@ -191,13 +191,14 @@ lrc_path_result_header_init(LrcPathResultHeader *header) {
 }
 
 static void
-lrc_path_result_header_set(LrcPathResultHeader *header, enum LsError error,
-                           char *message, char *path) {
+lrc_path_result_header_set(LrcPathResultHeader *header,
+                           enum LsError result_error, char *message,
+                           char *path) {
     if (header == NULL) {
         return;
     }
 
-    lrc_result_header_set(&header->header, error, message);
+    lrc_result_header_set(&header->header, result_error, message);
     header->path = path;
 
     return;

@@ -774,7 +774,7 @@ audio_compare_measure_offset(AudioCompareResult *result, AudioBuffer *expected,
     for (int64 i = 0; i < frame_count; i += 1) {
         for (int32 channel = 0; channel < expected->channel_count;
              channel += 1) {
-            double error;
+            double sample_error;
             float actual_abs;
             float actual_sample;
             float expected_abs;
@@ -807,11 +807,11 @@ audio_compare_measure_offset(AudioCompareResult *result, AudioBuffer *expected,
                 result->actual_peak = actual_abs;
             }
 
-            error = (double)expected_sample - (double)actual_sample;
-            error_sum += error*error;
+            sample_error = (double)expected_sample - (double)actual_sample;
+            error_sum += sample_error*sample_error;
             signal_sum += (double)expected_sample*(double)expected_sample;
-            if ((float)fabs(error) > result->max_abs_error) {
-                result->max_abs_error = (float)fabs(error);
+            if ((float)fabs(sample_error) > result->max_abs_error) {
+                result->max_abs_error = (float)fabs(sample_error);
             }
         }
     }

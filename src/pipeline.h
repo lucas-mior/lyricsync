@@ -59,7 +59,7 @@ typedef struct LrcPipelineConfig {
 typedef struct LrcPipeline {
     LrcPipelineConfig config;
 
-    enum LsError error;
+    enum LsError pipeline_error;
     char *message;
     char *path;
 
