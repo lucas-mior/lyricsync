@@ -3677,7 +3677,7 @@ pipeline_test_cafe_vocals_audio_corrected_clear_lines(void) {
 
         if ((line->kind
              != LRC_OUTPUT_LINE_KIND_TIMESTAMPED)
-            || (line->text_len != 0)
+            || (line->text_len > 0)
             || !pipeline_test_hundredths_near(line->timestamp_hundredths,
                                               expected_clear_hundredths[i],
                                               35)) {

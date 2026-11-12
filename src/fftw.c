@@ -173,7 +173,7 @@ main(void) {
     if (plan.n_fft != 0) {
         fatal(fftw_test_fail("empty n_fft"));
     }
-    if (plan.complex_count != 0) {
+    if (plan.complex_count > 0) {
         fatal(fftw_test_fail("empty complex count"));
     }
     if (fftw_real_plan_init(&plan, 0)) {
@@ -239,7 +239,7 @@ main(void) {
     }
 
     fftw_real_plan_destroy(&plan);
-    if ((plan.n_fft != 0) || (plan.complex_count != 0)) {
+    if ((plan.n_fft != 0) || (plan.complex_count > 0)) {
         fatal(fftw_test_fail("destroy resets plan"));
     }
 

@@ -245,7 +245,7 @@ main(void) {
 
     stft_plan_init_empty(&plan);
     if ((plan.n_fft != 0) || (plan.hop != 0)
-        || (plan.complex_count != 0)) {
+        || (plan.complex_count > 0)) {
         fatal(stft_test_fail("empty dimensions"));
     }
     if (stft_plan_init(&plan, 0, 4)) {

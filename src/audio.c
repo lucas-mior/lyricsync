@@ -1390,7 +1390,7 @@ main(void) {
     if (audio.left || audio.right) {
         fatal(audio_test_fail("buffer pointers"));
     }
-    if (audio.frame_count != 0) {
+    if (audio.frame_count > 0) {
         fatal(audio_test_fail("frame count"));
     }
     if ((default_format.sample_rate != 44100)
