@@ -780,8 +780,7 @@ lrc_pipeline_parse_preprocess_star_frequency(LrcPipelineConfig *config,
         return false;
     }
 
-    for (uint32 i = 0; i < LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_COUNT;
-         i += 1) {
+    for (uint32 i = 0; i < LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_COUNT; i += 1) {
         enum LrcLyricsPreprocessStarFrequency star_frequency =
             (enum LrcLyricsPreprocessStarFrequency)i;
         char *name =
@@ -806,8 +805,7 @@ lrc_pipeline_parse_preprocess_romanization(LrcPipelineConfig *config,
         return false;
     }
 
-    for (uint32 i = 0; i < LRC_LYRICS_PREPROCESS_ROMANIZATION_COUNT;
-         i += 1) {
+    for (uint32 i = 0; i < LRC_LYRICS_PREPROCESS_ROMANIZATION_COUNT; i += 1) {
         enum LrcLyricsPreprocessRomanization romanization =
             (enum LrcLyricsPreprocessRomanization)i;
         char *name = LRC_LYRICS_PREPROCESS_ROMANIZATION_str(romanization);
