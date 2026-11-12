@@ -82,7 +82,7 @@ mdx_config_prepare(MdxConfig *config) {
         error2("MDX n_fft must be greater than zero\n");
         return false;
     }
-    if ((config->n_fft & 1) != 0) {
+    if (config->n_fft & 1) {
         error2("MDX n_fft must be even, got %d\n", config->n_fft);
         return false;
     }
