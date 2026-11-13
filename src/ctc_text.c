@@ -2439,11 +2439,9 @@ ctc_text_decode_hex(char *buffer, int32 buffer_cap, char *hex, int32 hex_len) {
     }
 
     for (int32 i = 0; i < len; i += 1) {
-        int32 hi;
-        int32 lo;
+        int32 hi = ctc_text_hex_value(hex[i*2]);
+        int32 lo = ctc_text_hex_value(hex[i*2 + 1]);
 
-        hi = ctc_text_hex_value(hex[i*2]);
-        lo = ctc_text_hex_value(hex[i*2 + 1]);
         if ((hi < 0) || (lo < 0)) {
             return -1;
         }
