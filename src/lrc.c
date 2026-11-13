@@ -944,17 +944,17 @@ lrc_test_parse_timestamped_and_blank_lines(void) {
                          0,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
                          20,
-                         STRLIT("Hello"));
+                         SL("Hello"));
     lrc_test_assert_line(&parsed,
                          1,
                          LRC_PARSED_LINE_KIND_BLANK,
                          -1,
-                         STRLIT(""));
+                         SL(""));
     lrc_test_assert_line(&parsed,
                          2,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
                          6234,
-                         STRLIT("World"));
+                         SL("World"));
     ASSERT_EQ(parsed.lines[2].timestamp_seconds, 62.34f);
 
     lrc_parsed_file_destroy(&parsed);
@@ -979,17 +979,17 @@ lrc_test_parse_crlf_and_space_blank_line(void) {
                          0,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
                          100,
-                         STRLIT("One"));
+                         SL("One"));
     lrc_test_assert_line(&parsed,
                          1,
                          LRC_PARSED_LINE_KIND_BLANK,
                          -1,
-                         STRLIT("  \t"));
+                         SL("  \t"));
     lrc_test_assert_line(&parsed,
                          2,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
                          200,
-                         STRLIT("Two"));
+                         SL("Two"));
 
     lrc_parsed_file_destroy(&parsed);
 
@@ -1055,12 +1055,12 @@ lrc_test_duplicate_timestamps_are_preserved(void) {
                          0,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
                          100,
-                         STRLIT("A"));
+                         SL("A"));
     lrc_test_assert_line(&parsed,
                          1,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
                          100,
-                         STRLIT("B"));
+                         SL("B"));
 
     lrc_parsed_file_destroy(&parsed);
 
@@ -1090,12 +1090,12 @@ lrc_test_assert_timestamp(int32 timestamp_hundredths, char *expected,
 
 static void
 lrc_test_format_timestamp_hundredths(void) {
-    lrc_test_assert_timestamp(0, STRLIT("[00:00.00]"));
-    lrc_test_assert_timestamp(1, STRLIT("[00:00.01]"));
-    lrc_test_assert_timestamp(5999, STRLIT("[00:59.99]"));
-    lrc_test_assert_timestamp(6000, STRLIT("[01:00.00]"));
-    lrc_test_assert_timestamp(6234, STRLIT("[01:02.34]"));
-    lrc_test_assert_timestamp(360000, STRLIT("[60:00.00]"));
+    lrc_test_assert_timestamp(0, SL("[00:00.00]"));
+    lrc_test_assert_timestamp(1, SL("[00:00.01]"));
+    lrc_test_assert_timestamp(5999, SL("[00:59.99]"));
+    lrc_test_assert_timestamp(6000, SL("[01:00.00]"));
+    lrc_test_assert_timestamp(6234, SL("[01:02.34]"));
+    lrc_test_assert_timestamp(360000, SL("[60:00.00]"));
 
     return;
 }
@@ -1651,32 +1651,32 @@ lrc_test_optional_maxwell_lrc(void) {
                          0,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
                          20,
-                         STRLIT("Can I take you out to the pictures, Joan?"));
+                         SL("Can I take you out to the pictures, Joan?"));
     lrc_test_assert_line(&parsed,
                          1,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
                          684,
-                         STRLIT("But as she's getting ready to go"));
+                         SL("But as she's getting ready to go"));
     lrc_test_assert_line(&parsed,
                          2,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
                          1064,
-                         STRLIT("A knock comes on the door"));
+                         SL("A knock comes on the door"));
     lrc_test_assert_line(&parsed,
                          3,
                          LRC_PARSED_LINE_KIND_BLANK,
                          -1,
-                         STRLIT(""));
+                         SL(""));
     lrc_test_assert_line(&parsed,
                          4,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
                          1414,
-                         STRLIT("Bang, bang, Maxwell's silver hammer"));
+                         SL("Bang, bang, Maxwell's silver hammer"));
     lrc_test_assert_line(&parsed,
                          5,
                          LRC_PARSED_LINE_KIND_TIMESTAMPED,
                          1800,
-                         STRLIT("Came down upon her head"));
+                         SL("Came down upon her head"));
 
     lrc_parsed_file_destroy(&parsed);
     free2(text, ((int64)text_len + 1)*SIZEOF(*text));

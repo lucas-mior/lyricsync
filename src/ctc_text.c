@@ -1081,7 +1081,7 @@ ctc_text_reference_apply_mappings_rune(CtcTextUtf8Transform *transform,
         && (rune->previous_rune != 0)
         && (rune->next_rune != 0)) {
         return ctc_text_reference_output_append_bytes(transform->result,
-                                                      STRLIT("'"));
+                                                      SL("'"));
     }
 
     return ctc_text_reference_output_append_rune(transform->result,

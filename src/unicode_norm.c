@@ -320,7 +320,7 @@ ctc_unicode_norm_open_latin_transliterator(UTransliterator **transliterator) {
 
     *transliterator = NULL;
     id_cap = LENGTH(id);
-    if (!ctc_unicode_norm_utf16_from_utf8(STRLIT("Any-Latin; Latin-ASCII"),
+    if (!ctc_unicode_norm_utf16_from_utf8(SL("Any-Latin; Latin-ASCII"),
                                           id,
                                           id_cap,
                                           &id_len)) {
@@ -527,7 +527,7 @@ unicode_norm_test_fallback_or_icu_copy(void) {
     CtcUnicodeNormResult result;
 
     ctc_unicode_norm_result_init(&result);
-    if (!ctc_unicode_norm_nfkc_lower(STRLIT("Hello"), &result)) {
+    if (!ctc_unicode_norm_nfkc_lower(SL("Hello"), &result)) {
         return unicode_norm_test_fail("normalize ascii");
     }
 
@@ -552,7 +552,7 @@ unicode_norm_test_icu_nfkc_lower(void) {
     CtcUnicodeNormResult result;
 
     ctc_unicode_norm_result_init(&result);
-    if (!ctc_unicode_norm_nfkc_lower(STRLIT("ＡÉ"), &result)) {
+    if (!ctc_unicode_norm_nfkc_lower(SL("ＡÉ"), &result)) {
         return unicode_norm_test_fail("normalize nfkc lower");
     }
 
@@ -569,7 +569,7 @@ unicode_norm_test_icu_transliterate_latin(void) {
     CtcUnicodeNormResult result;
 
     ctc_unicode_norm_result_init(&result);
-    if (!ctc_unicode_norm_transliterate_latin(STRLIT("猫 Привет"),
+    if (!ctc_unicode_norm_transliterate_latin(SL("猫 Привет"),
                                               &result)) {
         return unicode_norm_test_fail("transliterate latin");
     }

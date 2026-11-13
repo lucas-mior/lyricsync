@@ -555,7 +555,7 @@ static void
 lrc_ctc_debug_dump_write_nullable_text(LrcCtcDebugDumpWriter *writer,
                                        char *text, int32 text_len) {
     if (text == NULL) {
-        lrc_ctc_debug_dump_write_escaped_text(writer, STRLIT("<null>"));
+        lrc_ctc_debug_dump_write_escaped_text(writer, SL("<null>"));
         return;
     }
 
@@ -567,7 +567,7 @@ lrc_ctc_debug_dump_write_nullable_text(LrcCtcDebugDumpWriter *writer,
 static void
 lrc_ctc_debug_dump_write_cstring(LrcCtcDebugDumpWriter *writer, char *text) {
     if (text == NULL) {
-        lrc_ctc_debug_dump_write_escaped_text(writer, STRLIT("<null>"));
+        lrc_ctc_debug_dump_write_escaped_text(writer, SL("<null>"));
         return;
     }
 
@@ -971,7 +971,7 @@ lrc_ctc_debug_dump_write_target_tokens(LrcCtcDebugDumpWriter *writer,
                                                   token->text,
                                                   token->text_len);
         } else {
-            lrc_ctc_debug_dump_write_escaped_text(writer, STRLIT("<invalid>"));
+            lrc_ctc_debug_dump_write_escaped_text(writer, SL("<invalid>"));
         }
         starts_segment = 0;
         if (text_token->starts_segment) {
@@ -1091,11 +1091,11 @@ lrc_ctc_debug_dump_write_segment_token_text(LrcCtcDebugDumpWriter *writer,
     LrcCtcToken *token;
 
     if (segment == NULL) {
-        lrc_ctc_debug_dump_write_escaped_text(writer, STRLIT("<invalid>"));
+        lrc_ctc_debug_dump_write_escaped_text(writer, SL("<invalid>"));
         return;
     }
     if (segment->is_star) {
-        lrc_ctc_debug_dump_write_escaped_text(writer, STRLIT("<star>"));
+        lrc_ctc_debug_dump_write_escaped_text(writer, SL("<star>"));
         return;
     }
 
@@ -1105,7 +1105,7 @@ lrc_ctc_debug_dump_write_segment_token_text(LrcCtcDebugDumpWriter *writer,
                                               token->text,
                                               token->text_len);
     } else {
-        lrc_ctc_debug_dump_write_escaped_text(writer, STRLIT("<invalid>"));
+        lrc_ctc_debug_dump_write_escaped_text(writer, SL("<invalid>"));
     }
 
     return;
@@ -1166,7 +1166,7 @@ lrc_ctc_debug_dump_write_word_span_text(LrcCtcDebugDumpWriter *writer,
         || (word->normalized_start < 0)
         || (word->normalized_end < word->normalized_start)
         || (word->normalized_end > normalized->text_len)) {
-        lrc_ctc_debug_dump_write_escaped_text(writer, STRLIT("<invalid>"));
+        lrc_ctc_debug_dump_write_escaped_text(writer, SL("<invalid>"));
         return;
     }
 
@@ -3071,7 +3071,7 @@ pipeline_test_fail(char *name) {
 
 static bool
 pipeline_test_write_file(char *path) {
-    return write_entire_file(path, STRLIT("x")) >= 0;
+    return write_entire_file(path, SL("x")) >= 0;
 }
 
 static bool
@@ -3529,7 +3529,7 @@ pipeline_test_lrc_clear_uses_audio_corrected_end(void) {
     if ((output_lines[0].kind != LRC_OUTPUT_LINE_KIND_TIMESTAMPED)
         || (output_lines[0].timestamp_hundredths != 200)
         || !pipeline_test_output_text_equal(output_lines + 0,
-                                            STRLIT("First"))) {
+                                            SL("First"))) {
         fatal(pipeline_test_fail("clear audio first lyric"));
     }
     if ((output_lines[1].kind != LRC_OUTPUT_LINE_KIND_TIMESTAMPED)
@@ -3541,7 +3541,7 @@ pipeline_test_lrc_clear_uses_audio_corrected_end(void) {
     if ((output_lines[2].kind != LRC_OUTPUT_LINE_KIND_TIMESTAMPED)
         || (output_lines[2].timestamp_hundredths != 1000)
         || !pipeline_test_output_text_equal(output_lines + 2,
-                                            STRLIT("Second"))) {
+                                            SL("Second"))) {
         fatal(pipeline_test_fail("clear audio second lyric"));
     }
 
@@ -3603,11 +3603,11 @@ pipeline_test_cafe_vocals_audio_corrected_clear_lines(void) {
     };
 
     if (!pipeline_test_file_contains("samples/cafe-vocals.txt",
-                                     STRLIT("e o gosto amargo"))) {
+                                     SL("e o gosto amargo"))) {
         fatal(pipeline_test_fail("cafe-vocals sample first text missing"));
     }
     if (!pipeline_test_file_contains("samples/cafe-vocals.txt",
-                                     STRLIT("Sombras do passado pairam "
+                                     SL("Sombras do passado pairam "
                                             "sobre o cafezal"))) {
         fatal(pipeline_test_fail("cafe-vocals sample second text missing"));
     }
@@ -3686,12 +3686,12 @@ pipeline_test_cafe_vocals_audio_corrected_clear_lines(void) {
         output_index += 2;
     }
     if (!pipeline_test_output_text_equal(output_lines + 10,
-                                         STRLIT("Sombras do passado pairam "
+                                         SL("Sombras do passado pairam "
                                                 "sobre o cafezal"))) {
         fatal(pipeline_test_fail("cafe-vocals sombras output text"));
     }
     if (!pipeline_test_output_text_equal(output_lines + 11,
-                                         STRLIT("vastos campos, "
+                                         SL("vastos campos, "
                                                 "vilas e aldeias"))) {
         fatal(pipeline_test_fail("cafe-vocals vastos output text"));
     }
@@ -3799,7 +3799,7 @@ pipeline_test_line_timestamp_clear_case(char *name, float first_end_seconds,
     if ((output_lines[0].kind != LRC_OUTPUT_LINE_KIND_TIMESTAMPED)
         || (output_lines[0].timestamp_hundredths != 100)
         || !pipeline_test_output_text_equal(output_lines + 0,
-                                            STRLIT("First"))) {
+                                            SL("First"))) {
         fatal(pipeline_test_fail(name));
     }
 
@@ -3819,7 +3819,7 @@ pipeline_test_line_timestamp_clear_case(char *name, float first_end_seconds,
         || (output_lines[second_output_index].timestamp_hundredths
             != expected_second_hundredths)
         || !pipeline_test_output_text_equal(output_lines + second_output_index,
-                                            STRLIT("Second"))) {
+                                            SL("Second"))) {
         fatal(pipeline_test_fail(name));
     }
 
@@ -3905,7 +3905,7 @@ pipeline_test_line_timestamp_clear_keeps_blank_line(void) {
     if ((output_lines[0].kind != LRC_OUTPUT_LINE_KIND_TIMESTAMPED)
         || (output_lines[0].timestamp_hundredths != 100)
         || !pipeline_test_output_text_equal(output_lines + 0,
-                                            STRLIT("First"))) {
+                                            SL("First"))) {
         fatal(pipeline_test_fail("blank case first line output"));
     }
     if ((output_lines[1].kind != LRC_OUTPUT_LINE_KIND_TIMESTAMPED)
@@ -3921,7 +3921,7 @@ pipeline_test_line_timestamp_clear_keeps_blank_line(void) {
     if ((output_lines[3].kind != LRC_OUTPUT_LINE_KIND_TIMESTAMPED)
         || (output_lines[3].timestamp_hundredths != 758)
         || !pipeline_test_output_text_equal(output_lines + 3,
-                                            STRLIT("Second"))) {
+                                            SL("Second"))) {
         fatal(pipeline_test_fail("blank case second line output"));
     }
 
@@ -4035,7 +4035,7 @@ pipeline_test_line_timestamp_end_writes_clear_line(void) {
     if ((output_lines[0].kind != LRC_OUTPUT_LINE_KIND_TIMESTAMPED)
         || (output_lines[0].timestamp_hundredths != 100)
         || !pipeline_test_output_text_equal(output_lines + 0,
-                                            STRLIT("First"))) {
+                                            SL("First"))) {
         fatal(pipeline_test_fail("first line start output"));
     }
     if ((output_lines[1].kind != LRC_OUTPUT_LINE_KIND_TIMESTAMPED)
@@ -4046,7 +4046,7 @@ pipeline_test_line_timestamp_end_writes_clear_line(void) {
     if ((output_lines[2].kind != LRC_OUTPUT_LINE_KIND_TIMESTAMPED)
         || (output_lines[2].timestamp_hundredths != 758)
         || !pipeline_test_output_text_equal(output_lines + 2,
-                                            STRLIT("Second"))) {
+                                            SL("Second"))) {
         fatal(pipeline_test_fail("second line start output"));
     }
 
@@ -4085,7 +4085,7 @@ pipeline_test_ctc_debug_dump_escape(void) {
         fatal(pipeline_test_fail("close debug dump escape"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("a\\tb\\nc\\rd\\\\e\\x01"))) {
+                                     SL("a\\tb\\nc\\rd\\\\e\\x01"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump escape contents"));
     }
@@ -4189,42 +4189,42 @@ pipeline_test_ctc_debug_dump_text_and_tokens(void) {
         fatal(pipeline_test_fail("close debug dump tokens"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("# lrc-ctc-parity-dump-v1\n"))) {
+                                     SL("# lrc-ctc-parity-dump-v1\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump version"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("ctc_model_path=model.onnx\n"))) {
+                                     SL("ctc_model_path=model.onnx\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump model path"));
     }
-    if (!pipeline_test_file_contains(dump_path, STRLIT("split_size=word\n"))) {
+    if (!pipeline_test_file_contains(dump_path, SL("split_size=word\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump split size"));
     }
-    if (!pipeline_test_file_contains(dump_path, STRLIT("romanization=icu\n"))) {
+    if (!pipeline_test_file_contains(dump_path, SL("romanization=icu\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump romanization"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("[normalized_text]\n"
+                                     SL("[normalized_text]\n"
                                             "text=Ich\\nMoskau\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump normalized text"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("[target_text]\ntext=ich "
+                                     SL("[target_text]\ntext=ich "
                                             "moskau\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump target text"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("0\t2\ti\t0\t0\t1\t0\t1\n"))) {
+                                     SL("0\t2\ti\t0\t0\t1\t0\t1\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump first token"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("1\t3\tch\t0\t0\t0\t1\t3\n"))) {
+                                     SL("1\t3\tch\t0\t0\t0\t1\t3\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump second token"));
     }
@@ -4285,70 +4285,70 @@ pipeline_test_ctc_debug_dump_audio_model(void) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("close debug dump frames"));
     }
-    if (!pipeline_test_file_contains(dump_path, STRLIT("[frames]\n"))) {
+    if (!pipeline_test_file_contains(dump_path, SL("[frames]\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump frames section"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("audio_sample_rate=16000\n"))) {
+                                     SL("audio_sample_rate=16000\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump audio sample rate"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("audio_sample_count=123456\n"))) {
+                                     SL("audio_sample_count=123456\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump audio sample count"));
     }
-    if (!pipeline_test_file_contains(dump_path, STRLIT("stride_ms=20\n"))) {
+    if (!pipeline_test_file_contains(dump_path, SL("stride_ms=20\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump stride ms"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("frame_duration_seconds=0.02\n"))) {
+                                     SL("frame_duration_seconds=0.02\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump frame duration"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("emission_frame_count=6172\n"))) {
+                                     SL("emission_frame_count=6172\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump emission frame count"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("emission_vocabulary_size="
+                                     SL("emission_vocabulary_size="
                                             "1130\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump vocabulary size"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("tokenizer_token_count=1129\n"))) {
+                                     SL("tokenizer_token_count=1129\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump tokenizer token count"));
     }
-    if (!pipeline_test_file_contains(dump_path, STRLIT("blank_token_id=0\n"))) {
+    if (!pipeline_test_file_contains(dump_path, SL("blank_token_id=0\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump blank token id"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("star_token_id=1130\n"))) {
+                                     SL("star_token_id=1130\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump star token id"));
     }
-    if (!pipeline_test_file_contains(dump_path, STRLIT("chunk_count=3\n"))) {
+    if (!pipeline_test_file_contains(dump_path, SL("chunk_count=3\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump chunk count"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("row_sample_count=512000\n"))) {
+                                     SL("row_sample_count=512000\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump row sample count"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("window_seconds=42\n"))) {
+                                     SL("window_seconds=42\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump window seconds"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("context_seconds=7\n"))) {
+                                     SL("context_seconds=7\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump context seconds"));
     }
@@ -4455,30 +4455,30 @@ pipeline_test_ctc_debug_dump_path_segments(void) {
         fatal(pipeline_test_fail("close debug dump path segments"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("[merged_path_segments]\n"))) {
+                                     SL("[merged_path_segments]\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump path segment section"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("index\ttoken_index\ttoken_id\t"
+                                     SL("index\ttoken_index\ttoken_id\t"
                                             "token_text"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump path segment header"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("0\t-1\t0\t\t0\t2\t0\t2\t"
+                                     SL("0\t-1\t0\t\t0\t2\t0\t2\t"
                                             "-1\t1\t0\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump first path segment"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("1\t0\t1\tA\t2\t4\t2\t4\t"
+                                     SL("1\t0\t1\tA\t2\t4\t2\t4\t"
                                             "-2\t0\t0\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump second path segment"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("4\t-1\t0\t\t6\t7\t6\t7\t"
+                                     SL("4\t-1\t0\t\t6\t7\t6\t7\t"
                                             "-4\t1\t0\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump fifth path segment"));
@@ -4582,35 +4582,35 @@ pipeline_test_ctc_debug_dump_word_spans(void) {
         fatal(pipeline_test_fail("close debug dump word spans"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("[word_spans_before_padding]\n"))) {
+                                     SL("[word_spans_before_padding]\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump before word span section"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("[word_spans_after_padding]\n"))) {
+                                     SL("[word_spans_after_padding]\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump after word span section"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("index\tline_index\tword_index\t"
+                                     SL("index\tline_index\tword_index\t"
                                             "text\tnormalized_start"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump word span header"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("0\t0\t0\tIch\t0\t3\t0\t3\t"
+                                     SL("0\t0\t0\tIch\t0\t3\t0\t3\t"
                                             "0\t3\t1\t1.5\t-1\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump before first word span"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("0\t0\t0\tIch\t0\t3\t0\t3\t"
+                                     SL("0\t0\t0\tIch\t0\t3\t0\t3\t"
                                             "0\t3\t0.5\t1.75\t-1\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump after first word span"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     STRLIT("1\t0\t1\tsehe\t4\t8\t3\t7\t"
+                                     SL("1\t0\t1\tsehe\t4\t8\t3\t7\t"
                                             "3\t7\t1.75\t3\t-2\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump after second word span"));

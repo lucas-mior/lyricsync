@@ -113,7 +113,7 @@ lrc_lyrics_preprocess_options_init(LrcLyricsPreprocessOptions *options) {
     options->star_frequency = LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_EDGES;
     options->romanization = LRC_LYRICS_PREPROCESS_ROMANIZATION_ICU;
 
-    memcpy64(options->language, STRLIT("eng"));
+    memcpy64(options->language, SL("eng"));
     options->language[3] = '\0';
     options->language_len = 3;
 
