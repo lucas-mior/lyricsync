@@ -1633,15 +1633,13 @@ lrc_pipeline_audio_silence_threshold_db(float *samples, int64 search_start,
     window_index = 0;
     peak_db = LRC_AUDIO_DB_FLOOR;
     for (int64 i = search_start; i <= last_start;) {
-        float rms;
-        float db;
-        int32 bin;
+        float rms = lrc_pipeline_audio_window_rms(samples, i, window_count);
+        float db = lrc_pipeline_audio_rms_db(rms);
+        int32 bin = lrc_pipeline_audio_db_bin(db);
 
-        rms = lrc_pipeline_audio_window_rms(samples, i, window_count);
-        db = lrc_pipeline_audio_rms_db(rms);
-        bin = lrc_pipeline_audio_db_bin(db);
         bins[bin] += 1;
         window_index += 1;
+
         if (db > peak_db) {
             peak_db = db;
         }
