@@ -1937,8 +1937,7 @@ lrc_pipeline_output_lines_from_timestamps(LrcLyrics *lyrics,
         || (line_count == NULL)) {
         pipeline_result_set(result,
                             LS_ERROR_PIPELINE_GENERATE_INVALID_ARGUMENT,
-                            "LRC output line conversion "
-                            "arguments are invalid",
+                            "LRC output line conversion arguments are invalid",
                             NULL);
         return false;
     }
@@ -1961,8 +1960,7 @@ lrc_pipeline_output_lines_from_timestamps(LrcLyrics *lyrics,
             || (timestamp->line_index >= lyrics->line_count)) {
             pipeline_result_set(result,
                                 LS_ERROR_PIPELINE_GENERATE_OUTPUT_LINES_FAILED,
-                                "LRC timestamp line "
-                                "index is invalid",
+                                "LRC timestamp line index is invalid",
                                 NULL);
             if (result) {
                 result->line_index = timestamp->line_index;
@@ -2293,8 +2291,7 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
         if (emissions.vocabulary_size > MAXOF(star_token_id)) {
             pipeline_result_set(result,
                                 LS_ERROR_PIPELINE_GENERATE_TOO_LARGE,
-                                "CTC vocabulary is too "
-                                "large for a star token",
+                                "CTC vocabulary is too large for a star token",
                                 NULL);
             ok = false;
         } else {
@@ -2416,8 +2413,7 @@ lrc_pipeline_generate_lrc(LrcPipeline *pipeline,
             || (line_timestamps.line_count > INT32_MAX/2)) {
             pipeline_result_set(result,
                                 LS_ERROR_PIPELINE_GENERATE_TOO_LARGE,
-                                "LRC output line "
-                                "allocation is too large",
+                                "LRC output line allocation is too large",
                                 NULL);
             ok = false;
         }
@@ -4209,8 +4205,7 @@ pipeline_test_ctc_debug_dump_text_and_tokens(void) {
         fatal(pipeline_test_fail("debug dump normalized text"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     SL("[target_text]\ntext=ich "
-                                        "moskau\n"))) {
+                                     SL("[target_text]\ntext=ich moskau\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump target text"));
     }
