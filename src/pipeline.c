@@ -3608,7 +3608,7 @@ pipeline_test_cafe_vocals_audio_corrected_clear_lines(void) {
     }
     if (!pipeline_test_file_contains("samples/cafe-vocals.txt",
                                      SL("Sombras do passado pairam "
-                                            "sobre o cafezal"))) {
+                                        "sobre o cafezal"))) {
         fatal(pipeline_test_fail("cafe-vocals sample second text missing"));
     }
 
@@ -3687,12 +3687,12 @@ pipeline_test_cafe_vocals_audio_corrected_clear_lines(void) {
     }
     if (!pipeline_test_output_text_equal(output_lines + 10,
                                          SL("Sombras do passado pairam "
-                                                "sobre o cafezal"))) {
+                                            "sobre o cafezal"))) {
         fatal(pipeline_test_fail("cafe-vocals sombras output text"));
     }
     if (!pipeline_test_output_text_equal(output_lines + 11,
                                          SL("vastos campos, "
-                                                "vilas e aldeias"))) {
+                                            "vilas e aldeias"))) {
         fatal(pipeline_test_fail("cafe-vocals vastos output text"));
     }
 
@@ -4208,13 +4208,13 @@ pipeline_test_ctc_debug_dump_text_and_tokens(void) {
     }
     if (!pipeline_test_file_contains(dump_path,
                                      SL("[normalized_text]\n"
-                                            "text=Ich\\nMoskau\n"))) {
+                                        "text=Ich\\nMoskau\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump normalized text"));
     }
     if (!pipeline_test_file_contains(dump_path,
                                      SL("[target_text]\ntext=ich "
-                                            "moskau\n"))) {
+                                        "moskau\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump target text"));
     }
@@ -4315,7 +4315,7 @@ pipeline_test_ctc_debug_dump_audio_model(void) {
     }
     if (!pipeline_test_file_contains(dump_path,
                                      SL("emission_vocabulary_size="
-                                            "1130\n"))) {
+                                        "1130\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump vocabulary size"));
     }
@@ -4328,8 +4328,7 @@ pipeline_test_ctc_debug_dump_audio_model(void) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump blank token id"));
     }
-    if (!pipeline_test_file_contains(dump_path,
-                                     SL("star_token_id=1130\n"))) {
+    if (!pipeline_test_file_contains(dump_path, SL("star_token_id=1130\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump star token id"));
     }
@@ -4342,13 +4341,11 @@ pipeline_test_ctc_debug_dump_audio_model(void) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump row sample count"));
     }
-    if (!pipeline_test_file_contains(dump_path,
-                                     SL("window_seconds=42\n"))) {
+    if (!pipeline_test_file_contains(dump_path, SL("window_seconds=42\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump window seconds"));
     }
-    if (!pipeline_test_file_contains(dump_path,
-                                     SL("context_seconds=7\n"))) {
+    if (!pipeline_test_file_contains(dump_path, SL("context_seconds=7\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump context seconds"));
     }
@@ -4461,25 +4458,25 @@ pipeline_test_ctc_debug_dump_path_segments(void) {
     }
     if (!pipeline_test_file_contains(dump_path,
                                      SL("index\ttoken_index\ttoken_id\t"
-                                            "token_text"))) {
+                                        "token_text"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump path segment header"));
     }
     if (!pipeline_test_file_contains(dump_path,
                                      SL("0\t-1\t0\t\t0\t2\t0\t2\t"
-                                            "-1\t1\t0\n"))) {
+                                        "-1\t1\t0\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump first path segment"));
     }
     if (!pipeline_test_file_contains(dump_path,
                                      SL("1\t0\t1\tA\t2\t4\t2\t4\t"
-                                            "-2\t0\t0\n"))) {
+                                        "-2\t0\t0\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump second path segment"));
     }
     if (!pipeline_test_file_contains(dump_path,
                                      SL("4\t-1\t0\t\t6\t7\t6\t7\t"
-                                            "-4\t1\t0\n"))) {
+                                        "-4\t1\t0\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump fifth path segment"));
     }
@@ -4593,25 +4590,25 @@ pipeline_test_ctc_debug_dump_word_spans(void) {
     }
     if (!pipeline_test_file_contains(dump_path,
                                      SL("index\tline_index\tword_index\t"
-                                            "text\tnormalized_start"))) {
+                                        "text\tnormalized_start"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump word span header"));
     }
     if (!pipeline_test_file_contains(dump_path,
                                      SL("0\t0\t0\tIch\t0\t3\t0\t3\t"
-                                            "0\t3\t1\t1.5\t-1\n"))) {
+                                        "0\t3\t1\t1.5\t-1\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump before first word span"));
     }
     if (!pipeline_test_file_contains(dump_path,
                                      SL("0\t0\t0\tIch\t0\t3\t0\t3\t"
-                                            "0\t3\t0.5\t1.75\t-1\n"))) {
+                                        "0\t3\t0.5\t1.75\t-1\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump after first word span"));
     }
     if (!pipeline_test_file_contains(dump_path,
                                      SL("1\t0\t1\tsehe\t4\t8\t3\t7\t"
-                                            "3\t7\t1.75\t3\t-2\n"))) {
+                                        "3\t7\t1.75\t3\t-2\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump after second word span"));
     }

@@ -618,9 +618,7 @@ lyrics_test_optional_maxwell_txt(void) {
         lyrics_test_assert_line_range(&normalized, 5, 131, 154);
         ASSERT_EQ(lrc_lyrics_normalized_line_at(&normalized, 0), 0);
 
-        bang = memmem64(normalized.text,
-                        normalized.text_len,
-                        SL("bang bang"));
+        bang = memmem64(normalized.text, normalized.text_len, SL("bang bang"));
         ASSERT(bang);
         bang_offset = (int32)(bang - normalized.text);
         ASSERT_EQ(lrc_lyrics_normalized_line_at(&normalized, bang_offset), 4);

@@ -6800,18 +6800,10 @@ ctc_align_test_word_spans_group_generated_words(void) {
 
     ASSERT(result.header.result_error == LS_ERROR_NONE);
     ASSERT_EQ(word_spans.span_count, 4);
-    ctc_align_assert_word_text(&normalized,
-                               word_spans.spans + 0,
-                               SL("hi"));
-    ctc_align_assert_word_text(&normalized,
-                               word_spans.spans + 1,
-                               SL("bob"));
-    ctc_align_assert_word_text(&normalized,
-                               word_spans.spans + 2,
-                               SL("next"));
-    ctc_align_assert_word_text(&normalized,
-                               word_spans.spans + 3,
-                               SL("line"));
+    ctc_align_assert_word_text(&normalized, word_spans.spans + 0, SL("hi"));
+    ctc_align_assert_word_text(&normalized, word_spans.spans + 1, SL("bob"));
+    ctc_align_assert_word_text(&normalized, word_spans.spans + 2, SL("next"));
+    ctc_align_assert_word_text(&normalized, word_spans.spans + 3, SL("line"));
     ASSERT_EQ(word_spans.spans[0].line_index, 0);
     ASSERT_EQ(word_spans.spans[1].line_index, 0);
     ASSERT_EQ(word_spans.spans[2].line_index, 1);
@@ -6894,12 +6886,8 @@ ctc_align_test_word_spans_use_skipped_space_gaps(void) {
     ASSERT_EQ(tokens.tokens[1].normalized_start, 1);
     ASSERT_EQ(tokens.tokens[2].normalized_start, 3);
     ASSERT_EQ(word_spans.span_count, 2);
-    ctc_align_assert_word_text(&normalized,
-                               word_spans.spans + 0,
-                               SL("hi"));
-    ctc_align_assert_word_text(&normalized,
-                               word_spans.spans + 1,
-                               SL("bob"));
+    ctc_align_assert_word_text(&normalized, word_spans.spans + 0, SL("hi"));
+    ctc_align_assert_word_text(&normalized, word_spans.spans + 1, SL("bob"));
     ASSERT_EQ(word_spans.spans[0].token_start_index, 0);
     ASSERT_EQ(word_spans.spans[0].token_end_index, 2);
     ASSERT_EQ(word_spans.spans[1].token_start_index, 2);
@@ -7434,15 +7422,9 @@ ctc_align_test_maxwell_word_line_mapping(void) {
         ASSERT_GE_VAR(word->normalized_start, line_start);
         ASSERT_LE_VAR(word->normalized_end, line_end);
     }
-    ctc_align_assert_word_text(&normalized,
-                               word_spans.spans + 0,
-                               SL("can"));
-    ctc_align_assert_word_text(&normalized,
-                               word_spans.spans + 22,
-                               SL("bang"));
-    ctc_align_assert_word_text(&normalized,
-                               word_spans.spans + 27,
-                               SL("came"));
+    ctc_align_assert_word_text(&normalized, word_spans.spans + 0, SL("can"));
+    ctc_align_assert_word_text(&normalized, word_spans.spans + 22, SL("bang"));
+    ctc_align_assert_word_text(&normalized, word_spans.spans + 27, SL("came"));
 
     lrc_ctc_word_spans_destroy(&word_spans);
     lrc_ctc_token_spans_destroy(&token_spans);
