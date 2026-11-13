@@ -1761,11 +1761,9 @@ lrc_pipeline_audio_find_silence_start(float *samples, int64 sample_count,
     last_start = search_end - window_count;
     silent_run_start = -1;
     for (int64 i = search_start; i <= last_start;) {
-        float rms;
-        float db;
+        float rms = lrc_pipeline_audio_window_rms(samples, i, window_count);
+        float db = lrc_pipeline_audio_rms_db(rms);
 
-        rms = lrc_pipeline_audio_window_rms(samples, i, window_count);
-        db = lrc_pipeline_audio_rms_db(rms);
         if (db <= silence_threshold_db) {
             if (silent_run_start < 0) {
                 silent_run_start = i;
