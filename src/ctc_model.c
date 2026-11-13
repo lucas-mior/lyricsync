@@ -550,10 +550,8 @@ lrc_ctc_model_input_prepare(LrcCtcModelInput *input, LrcCtcAudio *audio,
     input->inputs_to_logits_ratio = config->inputs_to_logits_ratio;
     input->original_sample_count = audio->sample_count;
     input->window_sample_count = window_samples;
-    input->window_frame_count =
-        window_samples/config->inputs_to_logits_ratio;
-    input->context_frame_count =
-        context_samples/config->inputs_to_logits_ratio;
+    input->window_frame_count = window_samples/config->inputs_to_logits_ratio;
+    input->context_frame_count = context_samples/config->inputs_to_logits_ratio;
     input->stride_ms = (double)config->inputs_to_logits_ratio*1000.0
                        /(double)config->sample_rate;
 

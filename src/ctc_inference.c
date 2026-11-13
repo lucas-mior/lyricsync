@@ -2418,8 +2418,7 @@ static void
 ctc_inference_test_logits_to_log_probabilities(void) {
     LrcCtcInferenceResult result;
     LrcCtcEmissions emissions = {0};
-    enum LrcCtcEmissionValuesKind values_kind =
-        LRC_CTC_EMISSION_VALUES_LOGITS;
+    enum LrcCtcEmissionValuesKind values_kind = LRC_CTC_EMISSION_VALUES_LOGITS;
     int64 shape[2];
     double row1_norm;
     double row2_norm;
