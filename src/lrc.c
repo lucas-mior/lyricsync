@@ -179,9 +179,8 @@ lrc_format_timestamp_hundredths(int32 timestamp_hundredths, char *buffer,
     minutes = timestamp_hundredths/6000;
     seconds = (timestamp_hundredths/100)%60;
     hundredths = timestamp_hundredths%100;
-    len = fmt_sprintf(buffer,
-                    buffer_len,
-                    "[%02d:%02d.%02d]", minutes, seconds, hundredths);
+    len = fmt_sprintf(buffer, buffer_len,
+                      "[%02d:%02d.%02d]", minutes, seconds, hundredths);
 
     if (formatted_len) {
         *formatted_len = len;
@@ -696,9 +695,8 @@ static bool
 lrc_make_temp_output_path(char *path, char *buffer, int32 buffer_len) {
     int32 len;
 
-    len = fmt_sprintf(buffer,
-                    buffer_len,
-                    "%s.tmp.%lld.XXXXXX", path, (int64)getpid());
+    len = fmt_sprintf(buffer, buffer_len,
+                      "%s.tmp.%lld.XXXXXX", path, (int64)getpid());
     if ((len <= 0) || (len >= buffer_len)) {
         return false;
     }

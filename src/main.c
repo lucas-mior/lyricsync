@@ -913,9 +913,8 @@ main_input_prefix_path(MainOptions *options, char *output_path,
     if (dot_index > slash_index + 1) {
         prefix_len = dot_index;
     }
-    len = fmt_sprintf(output_path,
-                    output_size,
-                    "%.*s.%s", prefix_len, input_path, extension);
+    len = fmt_sprintf(output_path, output_size,
+                      "%.*s.%s", prefix_len, input_path, extension);
     if ((len <= 0) || (len >= output_size)) {
         error2("default %s path is too long: %s\n", description, input_path);
         return false;

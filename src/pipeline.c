@@ -72,10 +72,8 @@ lrc_pipeline_store_owned_temp_dir(LrcPipeline *pipeline) {
         return false;
     }
 
-    len = fmt_sprintf(pipeline->owned_temp_dir,
-                    SIZEOF(pipeline->owned_temp_dir),
-                    "%s/lrc_gen_XXXXXX",
-                    pipeline->config.temp_dir);
+    len = SNPRINTF(pipeline->owned_temp_dir,
+                   "%s/lrc_gen_XXXXXX", pipeline->config.temp_dir);
     if ((len <= 0) || (len >= SIZEOF(pipeline->owned_temp_dir))) {
         lrc_pipeline_error_set(pipeline, LS_ERROR_PIPELINE_TEMP_PATH_TOO_LONG,
                                "temporary directory path is too long",
@@ -106,10 +104,8 @@ lrc_pipeline_store_owned_vocals_path(LrcPipeline *pipeline) {
         }
     }
 
-    len = fmt_sprintf(pipeline->owned_vocals_path,
-                    SIZEOF(pipeline->owned_vocals_path),
-                    "%s/vocals.wav",
-                    pipeline->owned_temp_dir);
+    len = SNPRINTF(pipeline->owned_vocals_path,
+                   "%s/vocals.wav", pipeline->owned_temp_dir);
     if ((len <= 0) || (len >= SIZEOF(pipeline->owned_vocals_path))) {
         lrc_pipeline_error_set(pipeline, LS_ERROR_PIPELINE_TEMP_PATH_TOO_LONG,
                                "temporary vocals path is too long",
