@@ -102,8 +102,8 @@ ort_cuda_preload_cudnn_library(OrtContext *context, char *name, bool required) {
     }
 
     dlerror();
-    handle = dlopen(name, RTLD_NOW | RTLD_GLOBAL);
-    if (handle) {
+
+    if ((handle = dlopen(name, RTLD_NOW | RTLD_GLOBAL))) {
         if (context->session_config.print_info) {
             lrc_progress_end_line();
             error2("ONNX Runtime preloaded: %s\n", name);
