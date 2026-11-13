@@ -4305,8 +4305,7 @@ pipeline_test_ctc_debug_dump_audio_model(void) {
         fatal(pipeline_test_fail("debug dump emission frame count"));
     }
     if (!pipeline_test_file_contains(dump_path,
-                                     SL("emission_vocabulary_size="
-                                        "1130\n"))) {
+                                     SL("emission_vocabulary_size=1130\n"))) {
         test_remove_tree(temp_dir);
         fatal(pipeline_test_fail("debug dump vocabulary size"));
     }
