@@ -709,9 +709,8 @@ lrc_write_all_fd(int32 fd, char *text, int32 text_len) {
     int32 written = 0;
 
     while (written < text_len) {
-        int64 n;
+        int64 n = write64(fd, text + written, text_len - written);
 
-        n = write64(fd, text + written, text_len - written);
         if (n <= 0) {
             return false;
         }
