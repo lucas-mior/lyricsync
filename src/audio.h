@@ -29,10 +29,10 @@ typedef struct AudioBuffer {
 #define ENUM_NAME AudioCompareMode
 #define ENUM_BITFLAGS 0
 #define ENUM_PREFIX_ AUDIO_COMPARE_MODE_
-#define ENUM_FIELDS \
-    XX(AUDIO_COMPARE_MODE_STRICT)          \
-    XX(AUDIO_COMPARE_MODE_TOLERANT)        \
-    XX(AUDIO_COMPARE_MODE_OFFSET_TOLERANT) \
+#define ENUM_FIELDS                             \
+    XX(AUDIO_COMPARE_MODE_STRICT)               \
+    XX(AUDIO_COMPARE_MODE_TOLERANT)             \
+    XX(AUDIO_COMPARE_MODE_OFFSET_TOLERANT)      \
     XX(AUDIO_COMPARE_MODE_SNR)
 #define XENUMS_NO_TESTS 1
 #include "cbase/xenums.c"
