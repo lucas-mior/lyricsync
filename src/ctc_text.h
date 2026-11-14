@@ -8,10 +8,10 @@ typedef struct LrcLyrics LrcLyrics;
 #define ENUM_NAME LrcLyricsPreprocessSplitSize
 #define ENUM_BITFLAGS 0
 #define ENUM_PREFIX_ LRC_LYRICS_PREPROCESS_SPLIT_SIZE_
-#define ENUM_FIELDS \
-    XX(LRC_LYRICS_PREPROCESS_SPLIT_SIZE_CURRENT)  \
-    XX(LRC_LYRICS_PREPROCESS_SPLIT_SIZE_WORD)     \
-    XX(LRC_LYRICS_PREPROCESS_SPLIT_SIZE_CHAR)     \
+#define ENUM_FIELDS                                          \
+    XX(LRC_LYRICS_PREPROCESS_SPLIT_SIZE_CURRENT)             \
+    XX(LRC_LYRICS_PREPROCESS_SPLIT_SIZE_WORD)                \
+    XX(LRC_LYRICS_PREPROCESS_SPLIT_SIZE_CHAR)                \
     XX(LRC_LYRICS_PREPROCESS_SPLIT_SIZE_SENTENCE)
 #define XENUMS_NO_TESTS 1
 #include "cbase/xenums.c"
@@ -20,9 +20,9 @@ typedef struct LrcLyrics LrcLyrics;
 #define ENUM_NAME LrcLyricsPreprocessStarFrequency
 #define ENUM_BITFLAGS 0
 #define ENUM_PREFIX_ LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_
-#define ENUM_FIELDS \
-    XX(LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_NONE)    \
-    XX(LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_EDGES)   \
+#define ENUM_FIELDS                                          \
+    XX(LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_NONE)            \
+    XX(LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_EDGES)           \
     XX(LRC_LYRICS_PREPROCESS_STAR_FREQUENCY_SEGMENT)
 #define XENUMS_NO_TESTS 1
 #include "cbase/xenums.c"
@@ -31,8 +31,8 @@ typedef struct LrcLyrics LrcLyrics;
 #define ENUM_NAME LrcLyricsPreprocessRomanization
 #define ENUM_BITFLAGS 0
 #define ENUM_PREFIX_ LRC_LYRICS_PREPROCESS_ROMANIZATION_
-#define ENUM_FIELDS \
-    XX(LRC_LYRICS_PREPROCESS_ROMANIZATION_OFF) \
+#define ENUM_FIELDS                                          \
+    XX(LRC_LYRICS_PREPROCESS_ROMANIZATION_OFF)               \
     XX(LRC_LYRICS_PREPROCESS_ROMANIZATION_ICU)
 #define XENUMS_NO_TESTS 1
 #include "cbase/xenums.c"
