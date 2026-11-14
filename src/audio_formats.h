@@ -7,7 +7,7 @@
 #define LRC_AUDIO_FORMAT_DEFAULT_ENUM LRC_AUDIO_FORMAT_WAV
 #define LRC_AUDIO_FORMAT_NAMES "wav|flac|mp3|opus"
 
-#define LRC_AUDIO_FORMAT_VALUES(XX) \
+#define LRC_AUDIO_FORMAT_VALUES(XX)                         \
     XX(LRC_AUDIO_FORMAT_WAV,  "wav",  "wav",  true,  true)  \
     XX(LRC_AUDIO_FORMAT_FLAC, "flac", "flac", true,  true)  \
     XX(LRC_AUDIO_FORMAT_MP3,  "mp3",  "mp3",  true,  false) \
