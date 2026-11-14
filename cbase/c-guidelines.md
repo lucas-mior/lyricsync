@@ -1578,6 +1578,18 @@ use_discrete_tree =
   // good
   ASSERT((baseline = cy_create_input(sys, 4, 0.5, 10.0)));
   ```
+- Do not initialize a `bool` variable and immediately assert that same
+  variable in a separate statement. Assert the initializer expression
+  directly instead (`STYLE-ASSERT-BOOL-INIT`). Comments and blank lines do
+  not separate the statements for this rule.
+  ```c
+  // bad
+  bool ok = validate(value);
+  ASSERT(ok);
+
+  // good
+  ASSERT(validate(value));
+  ```
 - Prefer `ASSERT_EQ(value, 0);` instead of `ASSERT(value == 0)`.
 - `ASSERT_EQ` and `ASSERT_NE` accept either constant or variable
   operands. For integer comparisons, both operands are normalized to `llong`.
