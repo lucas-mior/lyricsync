@@ -12,16 +12,16 @@ enum OrtModelIoKind {
 
 #define ORT_EXECUTION_PROVIDER_NAMES "auto|cpu|cuda"
 
-#define ORT_EXECUTION_PROVIDER_VALUES(XX) \
-    XX(ORT_EXECUTION_PROVIDER_AUTO, "auto") \
-    XX(ORT_EXECUTION_PROVIDER_CPU, "cpu") \
+#define ORT_EXECUTION_PROVIDER_VALUES(XX)                        \
+    XX(ORT_EXECUTION_PROVIDER_AUTO, "auto")                      \
+    XX(ORT_EXECUTION_PROVIDER_CPU, "cpu")                        \
     XX(ORT_EXECUTION_PROVIDER_CUDA, "cuda")
 
 #define ENUM_NAME OrtExecutionProvider
 #define ENUM_BITFLAGS 0
 #define ENUM_PREFIX_ ORT_EXECUTION_PROVIDER_
 #define ORT_EXECUTION_PROVIDER_ENUM_FIELD(e, name) XX(e)
-#define ENUM_FIELDS \
+#define ENUM_FIELDS                                                            \
     ORT_EXECUTION_PROVIDER_VALUES(ORT_EXECUTION_PROVIDER_ENUM_FIELD)
 #define XENUMS_NO_TESTS 1
 #include "cbase/xenums.c"
