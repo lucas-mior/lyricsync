@@ -9,8 +9,8 @@
 
 #define MDX_MODEL_OUTPUT_NAMES "vocals|instrumental"
 
-#define MDX_MODEL_OUTPUT_VALUES(XX) \
-    XX(MDX_MODEL_OUTPUT_VOCALS, "vocals") \
+#define MDX_MODEL_OUTPUT_VALUES(XX)                              \
+    XX(MDX_MODEL_OUTPUT_VOCALS, "vocals")                        \
     XX(MDX_MODEL_OUTPUT_INSTRUMENTAL, "instrumental")
 
 #define ENUM_NAME MdxModelOutput
@@ -25,8 +25,8 @@
 
 #define MDX_CLIP_MODE_NAMES "clamp|none"
 
-#define MDX_CLIP_MODE_VALUES(XX) \
-    XX(MDX_CLIP_MODE_CLAMP, "clamp") \
+#define MDX_CLIP_MODE_VALUES(XX)                                 \
+    XX(MDX_CLIP_MODE_CLAMP, "clamp")                             \
     XX(MDX_CLIP_MODE_NONE, "none")
 
 #define ENUM_NAME MdxClipMode
