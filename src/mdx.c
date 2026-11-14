@@ -829,14 +829,13 @@ mdx_test_stderr_silence_end(MdxTestStderrSilence *silence) {
     return;
 }
 
-#define ASSERT_SILENT_FAILURE(EXPRESSION) \
-    do { \
-        MdxTestStderrSilence silence; \
-        bool expression_result; \
-        mdx_test_stderr_silence_begin(&silence); \
-        expression_result = (EXPRESSION); \
-        mdx_test_stderr_silence_end(&silence); \
-        ASSERT(!expression_result); \
+#define ASSERT_SILENT_FAILURE(EXPRESSION) do {      \
+        MdxTestStderrSilence silence;               \
+        bool expression_result;                     \
+        mdx_test_stderr_silence_begin(&silence);    \
+        expression_result = (EXPRESSION);           \
+        mdx_test_stderr_silence_end(&silence);      \
+        ASSERT(!expression_result);                 \
     } while (0)
 
 static bool
