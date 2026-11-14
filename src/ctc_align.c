@@ -1295,7 +1295,7 @@ lrc_ctc_trellis_score_forward_for_mode(LrcCtcTrellis *trellis,
 
             ASSERT((previous_state_cell =
                         lrc_ctc_trellis_previous_state_cell(trellis, frame,
-                                                           state)));
+                                                            state)));
             *previous_state_cell = best_previous_state;
         }
     }
@@ -1597,7 +1597,7 @@ lrc_ctc_trellis_backtrack_for_mode(LrcCtcTrellis *trellis,
 
         ASSERT((previous_state_cell =
                     lrc_ctc_trellis_previous_state_cell(trellis, frame,
-                                                       state)));
+                                                        state)));
         previous_state = *previous_state_cell;
         if (!lrc_ctc_align_graph_transition_allowed(&graph,
                                                     previous_state,

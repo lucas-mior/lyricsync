@@ -1997,6 +1997,25 @@ double x = 2.0*a_long_variable
              / SQUARE(varibale);
 ```
 
+The arithmetic precedence and alignment rules also apply within function-call
+arguments. When an argument spans multiple lines, align its arithmetic
+operators with the first operand of their precedence group. If keeping the
+argument on the opening line would place that operand too far to the right,
+break after the preceding comma:
+
+```c
+// bad
+free2(sys->execution.input_history.u, sys->execution.input_history.capacity
+                            *sys->config.input_history.nsignals
+                            *SIZEOF(*(sys->execution.input_history.u)));
+
+// good
+free2(sys->execution.input_history.u,
+      sys->execution.input_history.capacity
+      *sys->config.input_history.nsignals
+      *SIZEOF(*(sys->execution.input_history.u)));
+```
+
 ## Abbreviations (and not abbreviate)
 As a general rule, avoid new abbreviations, keeping those already found in the
 code. Some good, allowed abbreviations are:
