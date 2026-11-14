@@ -922,19 +922,16 @@ ctc_tokenizer_test_load_minimal_vocabulary(void) {
     ASSERT_EQ(id, 2);
     ASSERT(!lrc_ctc_tokenizer_token_id(&tokenizer, "z", 1, &id));
 
-    token = lrc_ctc_tokenizer_id_to_token(&tokenizer, 0);
-    ASSERT(token);
+    ASSERT((token = lrc_ctc_tokenizer_id_to_token(&tokenizer, 0)));
     ASSERT(token->is_blank);
     ASSERT_EQ(token->text_len, 0);
 
-    token = lrc_ctc_tokenizer_id_to_token(&tokenizer, 1);
-    ASSERT(token);
+    ASSERT((token = lrc_ctc_tokenizer_id_to_token(&tokenizer, 1)));
     ASSERT(!token->is_blank);
     ASSERT_EQ(token->text_len, 1);
     ASSERT_EQ(token->text[0], ' ');
 
-    token = lrc_ctc_tokenizer_id_to_token(&tokenizer, 5);
-    ASSERT(token);
+    ASSERT((token = lrc_ctc_tokenizer_id_to_token(&tokenizer, 5)));
     ASSERT(token->is_unknown);
     ASSERT(strequal(token->text, "<unk>"));
 

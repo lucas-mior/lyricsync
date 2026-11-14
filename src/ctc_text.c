@@ -2893,15 +2893,13 @@ ctc_text_test_word_target_text_is_character_spaced(void) {
     ASSERT_EQ(normalized.target_text, "h e l l o w o r l d");
     ASSERT_EQ(normalized.segment_count, 2);
 
-    segment = lrc_lyrics_normalized_segment(&normalized, 0);
-    ASSERT(segment);
+    ASSERT((segment = lrc_lyrics_normalized_segment(&normalized, 0)));
     ASSERT_EQ(segment->normalized_start, 0);
     ASSERT_EQ(segment->normalized_end, 5);
     ASSERT_EQ(segment->target_start, 0);
     ASSERT_EQ(segment->target_end, 9);
 
-    segment = lrc_lyrics_normalized_segment(&normalized, 1);
-    ASSERT(segment);
+    ASSERT((segment = lrc_lyrics_normalized_segment(&normalized, 1)));
     ASSERT_EQ(segment->normalized_start, 6);
     ASSERT_EQ(segment->normalized_end, 11);
     ASSERT_EQ(segment->target_start, 10);
@@ -2962,8 +2960,7 @@ ctc_text_test_char_fixture_case(char *fixture_name, char *language,
         int32 normalized_len;
         int32 target_len;
 
-        segment = lrc_lyrics_normalized_segment(&normalized, i);
-        ASSERT(segment);
+        ASSERT((segment = lrc_lyrics_normalized_segment(&normalized, i)));
 
         source_len = segment->source_end - segment->source_start;
         normalized_len = segment->normalized_end - segment->normalized_start;
@@ -3029,15 +3026,13 @@ ctc_text_test_icu_word_romanization(void) {
     ASSERT_EQ(normalized.target_text, "m a o p r i v e t");
     ASSERT_EQ(normalized.segment_count, 2);
 
-    segment = lrc_lyrics_normalized_segment(&normalized, 0);
-    ASSERT(segment);
+    ASSERT((segment = lrc_lyrics_normalized_segment(&normalized, 0)));
     ASSERT_EQ(segment->normalized_start, 0);
     ASSERT_EQ(segment->normalized_end, 3);
     ASSERT_EQ(segment->target_start, 0);
     ASSERT_EQ(segment->target_end, 5);
 
-    segment = lrc_lyrics_normalized_segment(&normalized, 1);
-    ASSERT(segment);
+    ASSERT((segment = lrc_lyrics_normalized_segment(&normalized, 1)));
     ASSERT_EQ(segment->normalized_start, 4);
     ASSERT_EQ(segment->normalized_end, 10);
     ASSERT_EQ(segment->target_start, 6);
@@ -3075,15 +3070,13 @@ ctc_text_test_icu_char_romanization(void) {
     ASSERT_EQ(normalized.target_text, "n i h a o");
     ASSERT_EQ(normalized.segment_count, 2);
 
-    segment = lrc_lyrics_normalized_segment(&normalized, 0);
-    ASSERT(segment);
+    ASSERT((segment = lrc_lyrics_normalized_segment(&normalized, 0)));
     ASSERT_EQ(segment->normalized_start, 0);
     ASSERT_EQ(segment->normalized_end, 2);
     ASSERT_EQ(segment->target_start, 0);
     ASSERT_EQ(segment->target_end, 3);
 
-    segment = lrc_lyrics_normalized_segment(&normalized, 1);
-    ASSERT(segment);
+    ASSERT((segment = lrc_lyrics_normalized_segment(&normalized, 1)));
     ASSERT_EQ(segment->normalized_start, 2);
     ASSERT_EQ(segment->normalized_end, 5);
     ASSERT_EQ(segment->target_start, 4);

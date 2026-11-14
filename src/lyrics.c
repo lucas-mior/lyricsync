@@ -431,8 +431,8 @@ lyrics_test_normalize_punctuation_sections_and_mapping(void) {
     ASSERT_EQ(lrc_lyrics_normalized_line_at(&normalized, 0), 0);
     ASSERT_EQ(lrc_lyrics_normalized_line_at(&normalized, 10), 0);
 
-    bang = memmem64(normalized.text, normalized.text_len, SL("bang bang"));
-    ASSERT(bang);
+    ASSERT((bang = memmem64(normalized.text, normalized.text_len,
+                            SL("bang bang"))));
     bang_offset = (int32)(bang - normalized.text);
     ASSERT_EQ(lrc_lyrics_normalized_line_at(&normalized, bang_offset), 2);
     ASSERT(lrc_lyrics_normalized_line_at(&normalized,
@@ -474,8 +474,8 @@ lyrics_test_normalize_unicode_and_blank_lines(void) {
     ASSERT_EQ(lrc_lyrics_normalized_line_at(&normalized, 0), 0);
     ASSERT_EQ(lrc_lyrics_normalized_line_at(&normalized, 3), 0);
 
-    again = memmem64(normalized.text, normalized.text_len, SL("again"));
-    ASSERT(again);
+    ASSERT((again = memmem64(normalized.text, normalized.text_len,
+                             SL("again"))));
     again_offset = (int32)(again - normalized.text);
     ASSERT_EQ(lrc_lyrics_normalized_line_at(&normalized, again_offset), 3);
 
@@ -618,8 +618,8 @@ lyrics_test_optional_maxwell_txt(void) {
         lyrics_test_assert_line_range(&normalized, 5, 131, 154);
         ASSERT_EQ(lrc_lyrics_normalized_line_at(&normalized, 0), 0);
 
-        bang = memmem64(normalized.text, normalized.text_len, SL("bang bang"));
-        ASSERT(bang);
+        ASSERT((bang = memmem64(normalized.text, normalized.text_len,
+                                SL("bang bang"))));
         bang_offset = (int32)(bang - normalized.text);
         ASSERT_EQ(lrc_lyrics_normalized_line_at(&normalized, bang_offset), 4);
 

@@ -361,10 +361,10 @@ mdx_unpack_output(MdxConfig *config, StftPlan *stft_plan, float *tensor,
 
             left_real[output_index] = tensor[input_index];
             left_imag[output_index] = tensor[channel_stride + input_index];
-            right_real[output_index] =
-                LRC_MATRIX_AT(tensor, channel_stride, 2, input_index);
-            right_imag[output_index] =
-                LRC_MATRIX_AT(tensor, channel_stride, 3, input_index);
+            right_real[output_index] = LRC_MATRIX_AT(tensor, channel_stride, 2,
+                                                     input_index);
+            right_imag[output_index] = LRC_MATRIX_AT(tensor, channel_stride, 3,
+                                                     input_index);
         }
     }
 
