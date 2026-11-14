@@ -993,22 +993,19 @@ lrc_ctc_trellis_prepare_for_graph(LrcCtcTrellis *trellis,
         return false;
     }
 
-    cell = lrc_ctc_trellis_cell(trellis, 0, 0);
-    ASSERT(cell);
+    ASSERT((cell = lrc_ctc_trellis_cell(trellis, 0, 0)));
     *cell = emissions->values[blank_token_id];
     for (int32 frame = 1; frame < trellis->frame_count; frame += 1) {
         float previous;
         float blank_score;
 
-        cell = lrc_ctc_trellis_cell(trellis, frame - 1, 0);
-        ASSERT(cell);
+        ASSERT((cell = lrc_ctc_trellis_cell(trellis, frame - 1, 0)));
         previous = *cell;
         blank_score = LRC_MATRIX_AT(emissions->values,
                                     emissions->vocabulary_size,
                                     frame, blank_token_id);
 
-        cell = lrc_ctc_trellis_cell(trellis, frame, 0);
-        ASSERT(cell);
+        ASSERT((cell = lrc_ctc_trellis_cell(trellis, frame, 0)));
         *cell = previous + blank_score;
 
         *lrc_ctc_trellis_previous_state_cell(trellis, frame, 0) = 0;
@@ -1160,8 +1157,8 @@ lrc_ctc_trellis_try_candidate(LrcCtcTrellis *trellis, LrcCtcAlignGraph *graph,
         return;
     }
 
-    previous_cell = lrc_ctc_trellis_cell(trellis, frame - 1, previous_state);
-    ASSERT(previous_cell);
+    ASSERT((previous_cell = lrc_ctc_trellis_cell(trellis, frame - 1,
+                                                 previous_state)));
     if (!isfinite(*previous_cell)) {
         return;
     }
@@ -1249,10 +1246,9 @@ lrc_ctc_trellis_score_forward_for_mode(LrcCtcTrellis *trellis,
         return false;
     }
 
-    cell = lrc_ctc_trellis_cell(trellis, 0, 1);
-    ASSERT(cell);
-    emission_token_id =
-        lrc_ctc_align_graph_emission_token_id(&graph, 1, blank_token_id);
+    ASSERT((cell = lrc_ctc_trellis_cell(trellis, 0, 1)));
+    emission_token_id = lrc_ctc_align_graph_emission_token_id(&graph, 1,
+                                                              blank_token_id);
     *cell = lrc_ctc_emission_value(emissions, 0, emission_token_id);
 
     for (int32 frame = 1; frame < trellis->frame_count; frame += 1) {
@@ -1294,14 +1290,12 @@ lrc_ctc_trellis_score_forward_for_mode(LrcCtcTrellis *trellis,
                                           &best_score,
                                           &best_previous_state);
 
-            cell = lrc_ctc_trellis_cell(trellis, frame, state);
-            ASSERT(cell);
+            ASSERT((cell = lrc_ctc_trellis_cell(trellis, frame, state)));
             *cell = best_score;
 
-            previous_state_cell = lrc_ctc_trellis_previous_state_cell(trellis,
-                                                                      frame,
-                                                                      state);
-            ASSERT(previous_state_cell);
+            ASSERT((previous_state_cell =
+                        lrc_ctc_trellis_previous_state_cell(trellis, frame,
+                                                           state)));
             *previous_state_cell = best_previous_state;
         }
     }
@@ -1601,10 +1595,9 @@ lrc_ctc_trellis_backtrack_for_mode(LrcCtcTrellis *trellis,
             break;
         }
 
-        previous_state_cell = lrc_ctc_trellis_previous_state_cell(trellis,
-                                                                  frame,
-                                                                  state);
-        ASSERT(previous_state_cell);
+        ASSERT((previous_state_cell =
+                    lrc_ctc_trellis_previous_state_cell(trellis, frame,
+                                                       state)));
         previous_state = *previous_state_cell;
         if (!lrc_ctc_align_graph_transition_allowed(&graph,
                                                     previous_state,
@@ -3861,22 +3854,19 @@ lrc_ctc_trellis_prepare(LrcCtcTrellis *trellis, LrcCtcEmissions *emissions,
         return false;
     }
 
-    cell = lrc_ctc_trellis_cell(trellis, 0, 0);
-    ASSERT(cell);
+    ASSERT((cell = lrc_ctc_trellis_cell(trellis, 0, 0)));
     *cell = emissions->values[blank_token_id];
     for (int32 frame = 1; frame < trellis->frame_count; frame += 1) {
         float previous;
         float blank_score;
 
-        cell = lrc_ctc_trellis_cell(trellis, frame - 1, 0);
-        ASSERT(cell);
+        ASSERT((cell = lrc_ctc_trellis_cell(trellis, frame - 1, 0)));
         previous = *cell;
         blank_score = LRC_MATRIX_AT(emissions->values,
                                     emissions->vocabulary_size,
                                     frame, blank_token_id);
 
-        cell = lrc_ctc_trellis_cell(trellis, frame, 0);
-        ASSERT(cell);
+        ASSERT((cell = lrc_ctc_trellis_cell(trellis, frame, 0)));
         *cell = previous + blank_score;
 
         *lrc_ctc_trellis_previous_state_cell(trellis, frame, 0) = 0;

@@ -2050,8 +2050,8 @@ ctc_text_test_assert_segment(LrcLyrics *lyrics, LrcLyricsNormalized *normalized,
     CtcTextSegment *segment;
     int32 source_len;
 
-    segment = lrc_lyrics_normalized_segment(normalized, segment_index);
-    ASSERT(segment);
+    ASSERT((segment = lrc_lyrics_normalized_segment(normalized,
+                                                    segment_index)));
 
     source_len = segment->source_end - segment->source_start;
 
@@ -2631,8 +2631,7 @@ ctc_text_test_word_split_fixture_case(char *fixture_name) {
         CtcTextSegment *segment;
         int32 source_len;
 
-        segment = lrc_lyrics_normalized_segment(&normalized, i);
-        ASSERT(segment);
+        ASSERT((segment = lrc_lyrics_normalized_segment(&normalized, i)));
         source_len = segment->source_end - segment->source_start;
         ASSERT_EQ(lyrics.text + segment->source_start,
                   source_len,
@@ -2688,8 +2687,7 @@ ctc_text_test_word_normalized_fixture_case(char *fixture_name) {
         CtcTextSegment *segment;
         int32 normalized_len;
 
-        segment = lrc_lyrics_normalized_segment(&normalized, i);
-        ASSERT(segment);
+        ASSERT((segment = lrc_lyrics_normalized_segment(&normalized, i)));
         normalized_len = segment->normalized_end - segment->normalized_start;
         ASSERT_EQ(normalized.text + segment->normalized_start,
                   normalized_len,
@@ -2749,8 +2747,7 @@ ctc_text_test_word_target_fixture_case(char *fixture_name) {
         CtcTextSegment *segment;
         int32 target_len;
 
-        segment = lrc_lyrics_normalized_segment(&normalized, i);
-        ASSERT(segment);
+        ASSERT((segment = lrc_lyrics_normalized_segment(&normalized, i)));
         target_len = segment->target_end - segment->target_start;
         ASSERT_EQ(normalized.target_text + segment->target_start,
                   target_len,
@@ -2823,8 +2820,7 @@ ctc_text_test_star_target_sequence_fixture_case(char *fixture_name) {
         char *expected = fixture.edges_tokens[expected_index];
         int32 expected_len = fixture.edges_tokens_lens[expected_index];
 
-        segment = lrc_lyrics_normalized_segment(&normalized, i);
-        ASSERT(segment);
+        ASSERT((segment = lrc_lyrics_normalized_segment(&normalized, i)));
         ctc_text_test_assert_target_item(&normalized, segment,
                                          expected, expected_len);
         expected_index += 1;
@@ -2838,8 +2834,7 @@ ctc_text_test_star_target_sequence_fixture_case(char *fixture_name) {
         char *expected;
         int32 expected_len;
 
-        segment = lrc_lyrics_normalized_segment(&normalized, i);
-        ASSERT(segment);
+        ASSERT((segment = lrc_lyrics_normalized_segment(&normalized, i)));
         ASSERT_EQ(fixture.segment_tokens[expected_index], "<star>");
         expected_index += 1;
         expected = fixture.segment_tokens[expected_index];
