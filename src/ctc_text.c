@@ -2864,7 +2864,7 @@ ctc_text_test_star_target_sequences_match_reference(void) {
 }
 
 static int32
-ctc_text_test_word_target_text_is_character_spaced(void) {
+ctc_text_test_word_target_is_character_spaced(void) {
     LrcLyricsPreprocessOptions options;
     LrcLyricsNormalized normalized = {0};
     CtcTextSegment *segment;
@@ -3085,7 +3085,7 @@ ctc_text_test_icu_char_romanization(void) {
 #endif
 
 static int32
-ctc_text_test_word_split_option_preserves_current_text(void) {
+ctc_text_test_word_split_preserves_current_text(void) {
     LrcLyricsPreprocessOptions options;
     LrcLyricsNormalized current = {0};
     LrcLyricsNormalized word = {0};
@@ -3210,10 +3210,10 @@ main(void) {
     status += ctc_text_test_word_segments_preserve_line_mapping();
     status += ctc_text_test_current_normalization_mapping();
     status += ctc_text_test_reference_fixtures_load();
-    status += ctc_text_test_word_split_option_preserves_current_text();
+    status += ctc_text_test_word_split_preserves_current_text();
     status += ctc_text_test_word_split_matches_reference_fixtures();
     status += ctc_text_test_word_normalization_matches_reference_fixtures();
-    status += ctc_text_test_word_target_text_is_character_spaced();
+    status += ctc_text_test_word_target_is_character_spaced();
     status += ctc_text_test_word_targets_match_reference_fixtures();
     status += ctc_text_test_star_target_sequences_match_reference();
     status += ctc_text_test_char_split_matches_reference_fixtures();

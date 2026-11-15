@@ -2567,16 +2567,16 @@ lrc_ctc_token_spans_apply_padded_intervals(
 }
 
 static bool
-lrc_ctc_path_to_padded_token_spans_for_mode(LrcCtcPath *path,
-                                            LrcCtcEmissions *emissions,
-                                            int32 *target_token_ids,
-                                            bool *segment_starts,
-                                            int32 token_count,
-                                            enum LrcCtcAlignStarMode star_mode,
-                                            int32 star_token_id,
-                                            float frame_duration_seconds,
-                                            LrcCtcTokenSpans *spans,
-                                            LrcCtcAlignResult *result) {
+lrc_ctc_path_to_padded_spans_for_mode(LrcCtcPath *path,
+                                      LrcCtcEmissions *emissions,
+                                      int32 *target_token_ids,
+                                      bool *segment_starts,
+                                      int32 token_count,
+                                      enum LrcCtcAlignStarMode star_mode,
+                                      int32 star_token_id,
+                                      float frame_duration_seconds,
+                                      LrcCtcTokenSpans *spans,
+                                      LrcCtcAlignResult *result) {
     LrcCtcPathSegments segments = {0};
     LrcCtcAlignedTokenIntervals intervals = {0};
     bool ok;
@@ -2635,12 +2635,12 @@ lrc_ctc_path_to_padded_token_spans_for_mode(LrcCtcPath *path,
 }
 
 static bool
-lrc_ctc_path_to_padded_token_spans_with_plan(LrcCtcPath *path,
-                                             LrcCtcEmissions *emissions,
-                                             LrcCtcAlignPlan *plan,
-                                             float frame_duration_seconds,
-                                             LrcCtcTokenSpans *spans,
-                                             LrcCtcAlignResult *result) {
+lrc_ctc_path_to_padded_spans_with_plan(LrcCtcPath *path,
+                                       LrcCtcEmissions *emissions,
+                                       LrcCtcAlignPlan *plan,
+                                       float frame_duration_seconds,
+                                       LrcCtcTokenSpans *spans,
+                                       LrcCtcAlignResult *result) {
     bool *segment_starts;
 
     if (lrc_ctc_align_plan_missing(plan, result)) {
@@ -2648,14 +2648,14 @@ lrc_ctc_path_to_padded_token_spans_with_plan(LrcCtcPath *path,
     }
     segment_starts = plan->target_segment_starts;
 
-    return lrc_ctc_path_to_padded_token_spans_for_mode(path, emissions,
-                                                       plan->target_token_ids,
-                                                       segment_starts,
-                                                       plan->target_token_count,
-                                                       plan->star_mode,
-                                                       plan->star_token_id,
-                                                       frame_duration_seconds,
-                                                       spans, result);
+    return lrc_ctc_path_to_padded_spans_for_mode(path, emissions,
+                                                 plan->target_token_ids,
+                                                 segment_starts,
+                                                 plan->target_token_count,
+                                                 plan->star_mode,
+                                                 plan->star_token_id,
+                                                 frame_duration_seconds,
+                                                 spans, result);
 }
 
 static bool
@@ -4036,23 +4036,23 @@ lrc_ctc_path_to_padded_token_spans(LrcCtcPath *path, LrcCtcEmissions *emissions,
                             LRC_CTC_ALIGN_STAR_MODE_NONE,
                             -1);
 
-    return lrc_ctc_path_to_padded_token_spans_with_plan(path,
-                                                        emissions,
-                                                        &plan,
-                                                        frame_duration_seconds,
-                                                        spans,
-                                                        result);
+    return lrc_ctc_path_to_padded_spans_with_plan(path,
+                                                  emissions,
+                                                  &plan,
+                                                  frame_duration_seconds,
+                                                  spans,
+                                                  result);
 }
 
 static bool
-lrc_ctc_path_to_padded_token_spans_with_edge_stars(LrcCtcPath *path,
-                                                   LrcCtcEmissions *emissions,
-                                                   int32 *target_token_ids,
-                                                   int32 target_token_count,
-                                                   int32 star_token_id,
-                                                   float frame_duration_seconds,
-                                                   LrcCtcTokenSpans *spans,
-                                                   LrcCtcAlignResult *result) {
+lrc_ctc_path_padded_spans_with_edge_stars(LrcCtcPath *path,
+                                          LrcCtcEmissions *emissions,
+                                          int32 *target_token_ids,
+                                          int32 target_token_count,
+                                          int32 star_token_id,
+                                          float frame_duration_seconds,
+                                          LrcCtcTokenSpans *spans,
+                                          LrcCtcAlignResult *result) {
     LrcCtcAlignPlan plan;
 
     lrc_ctc_align_plan_init(&plan,
@@ -4063,16 +4063,16 @@ lrc_ctc_path_to_padded_token_spans_with_edge_stars(LrcCtcPath *path,
                             LRC_CTC_ALIGN_STAR_MODE_EDGES,
                             star_token_id);
 
-    return lrc_ctc_path_to_padded_token_spans_with_plan(path,
-                                                        emissions,
-                                                        &plan,
-                                                        frame_duration_seconds,
-                                                        spans,
-                                                        result);
+    return lrc_ctc_path_to_padded_spans_with_plan(path,
+                                                  emissions,
+                                                  &plan,
+                                                  frame_duration_seconds,
+                                                  spans,
+                                                  result);
 }
 
 static bool
-lrc_ctc_path_to_padded_token_spans_with_segment_stars(
+lrc_ctc_path_padded_spans_with_segment_stars(
     LrcCtcPath *path, LrcCtcEmissions *emissions, int32 *target_token_ids,
     bool *target_segment_starts, int32 target_token_count, int32 star_token_id,
     float frame_duration_seconds, LrcCtcTokenSpans *spans,
@@ -4087,12 +4087,12 @@ lrc_ctc_path_to_padded_token_spans_with_segment_stars(
                             LRC_CTC_ALIGN_STAR_MODE_SEGMENT,
                             star_token_id);
 
-    return lrc_ctc_path_to_padded_token_spans_with_plan(path,
-                                                        emissions,
-                                                        &plan,
-                                                        frame_duration_seconds,
-                                                        spans,
-                                                        result);
+    return lrc_ctc_path_to_padded_spans_with_plan(path,
+                                                  emissions,
+                                                  &plan,
+                                                  frame_duration_seconds,
+                                                  spans,
+                                                  result);
 }
 
 static int32
@@ -4879,7 +4879,7 @@ ctc_align_test_required_frame_count_for_tokens(void) {
 }
 
 static void
-ctc_align_test_score_rejects_too_few_repeated_frames(void) {
+ctc_align_test_score_rejects_few_repeated_frames(void) {
     LrcCtcAlignResult result;
     LrcCtcTrellis trellis = {0};
     LrcCtcEmissions emissions;
@@ -5514,7 +5514,7 @@ ctc_align_test_backtracks_segment_stars(void) {
 }
 
 static void
-ctc_align_test_edge_stars_reject_bad_star_token(void) {
+ctc_align_test_edge_stars_reject_bad_token(void) {
     LrcCtcAlignResult result;
     LrcCtcTrellis trellis = {0};
     LrcCtcEmissions emissions;
@@ -5628,7 +5628,7 @@ ctc_align_test_backtrack_rejects_invalid_trellis(void) {
 }
 
 static void
-ctc_align_test_path_segments_merge_blanks_and_tokens(void) {
+ctc_align_test_path_segments_merge_blank_tokens(void) {
     LrcCtcAlignResult result;
     LrcCtcPath path = {0};
     LrcCtcEmissions emissions;
@@ -5706,7 +5706,7 @@ ctc_align_test_path_segments_merge_blanks_and_tokens(void) {
 }
 
 static void
-ctc_align_test_path_segments_split_repeated_token_after_blank(void) {
+ctc_align_test_segments_split_repeated_after_blank(void) {
     LrcCtcAlignResult result;
     LrcCtcPath path = {0};
     LrcCtcEmissions emissions;
@@ -5822,7 +5822,7 @@ ctc_align_test_path_segments_keep_stars(void) {
 }
 
 static void
-ctc_align_test_aligned_intervals_keep_edge_star_order(void) {
+ctc_align_test_intervals_keep_edge_star_order(void) {
     LrcCtcAlignResult result;
     LrcCtcPathSegments segments = {0};
     LrcCtcAlignedTokenIntervals intervals = {0};
@@ -5880,7 +5880,7 @@ ctc_align_test_aligned_intervals_keep_edge_star_order(void) {
 }
 
 static void
-ctc_align_test_aligned_intervals_keep_segment_star_order(void) {
+ctc_align_test_intervals_keep_segment_star_order(void) {
     LrcCtcAlignResult result;
     LrcCtcPathSegments segments = {0};
     LrcCtcAlignedTokenIntervals intervals = {0};
@@ -6278,7 +6278,7 @@ ctc_align_test_token_spans_reject_bad_inputs(void) {
 }
 
 static void
-ctc_align_test_token_spans_reject_out_of_order_targets(void) {
+ctc_align_test_spans_reject_unordered_targets(void) {
     LrcCtcAlignResult result;
     LrcCtcPath path = {0};
     LrcCtcEmissions emissions;
@@ -6305,7 +6305,7 @@ ctc_align_test_token_spans_reject_out_of_order_targets(void) {
 }
 
 static void
-ctc_align_test_padded_token_spans_use_blank_boundaries(void) {
+ctc_align_test_padded_spans_use_blank_boundaries(void) {
     LrcCtcAlignResult result;
     LrcCtcPath path = {0};
     LrcCtcEmissions emissions;
@@ -6371,7 +6371,7 @@ ctc_align_test_padded_token_spans_use_blank_boundaries(void) {
 }
 
 static void
-ctc_align_test_synthetic_lrc_uses_active_token_boundaries(void) {
+ctc_align_test_synthetic_lrc_uses_active_boundaries(void) {
     LrcLyrics lyrics = {0};
     LrcLyricsNormalized normalized = {0};
     LrcCtcTokenizer tokenizer;
@@ -6599,7 +6599,7 @@ ctc_align_test_synthetic_lrc_uses_active_token_boundaries(void) {
 }
 
 static void
-ctc_align_test_word_spans_use_active_token_boundaries(void) {
+ctc_align_test_word_spans_use_active_boundaries(void) {
     LrcLyrics lyrics;
     LrcLyricsNormalized normalized;
     LrcCtcTokenizer tokenizer;
@@ -6667,7 +6667,7 @@ ctc_align_test_word_spans_use_active_token_boundaries(void) {
 }
 
 static void
-ctc_align_test_segment_word_spans_use_active_token_boundaries(void) {
+ctc_align_test_segment_words_use_active_boundaries(void) {
     LrcLyrics lyrics;
     LrcLyricsNormalized normalized = {0};
     LrcLyricsPreprocessOptions options;
@@ -6829,7 +6829,7 @@ ctc_align_test_word_spans_group_generated_words(void) {
 }
 
 static void
-ctc_align_test_word_spans_use_skipped_space_gaps(void) {
+ctc_align_test_word_spans_use_space_gaps(void) {
     LrcLyrics lyrics;
     LrcLyricsNormalized normalized = {0};
     LrcCtcTokenizer tokenizer;
@@ -7036,7 +7036,7 @@ ctc_align_test_word_spans_follow_reference_segments(void) {
 }
 
 static void
-ctc_align_test_word_spans_keep_repeated_token_positions(void) {
+ctc_align_test_words_keep_repeated_token_positions(void) {
     LrcLyrics lyrics;
     LrcLyricsNormalized normalized;
     LrcCtcTokenizer tokenizer;
@@ -8764,7 +8764,7 @@ main(void) {
     ctc_align_test_graph_rejects_bad_inputs();
     ctc_align_test_graph_transition_rules();
     ctc_align_test_required_frame_count_for_tokens();
-    ctc_align_test_score_rejects_too_few_repeated_frames();
+    ctc_align_test_score_rejects_few_repeated_frames();
     ctc_align_test_allocate_initializes_to_negative_infinity();
     ctc_align_test_rejects_invalid_dimensions();
     ctc_align_test_prepare_initializes_start_state();
@@ -8779,30 +8779,30 @@ main(void) {
     ctc_align_test_backtracks_repeated_tokens();
     ctc_align_test_backtracks_edge_stars();
     ctc_align_test_backtracks_segment_stars();
-    ctc_align_test_edge_stars_reject_bad_star_token();
+    ctc_align_test_edge_stars_reject_bad_token();
     ctc_align_test_backtrack_rejects_impossible_alignment();
     ctc_align_test_backtrack_rejects_invalid_trellis();
-    ctc_align_test_path_segments_merge_blanks_and_tokens();
-    ctc_align_test_path_segments_split_repeated_token_after_blank();
+    ctc_align_test_path_segments_merge_blank_tokens();
+    ctc_align_test_segments_split_repeated_after_blank();
     ctc_align_test_path_segments_keep_stars();
-    ctc_align_test_aligned_intervals_keep_edge_star_order();
-    ctc_align_test_aligned_intervals_keep_segment_star_order();
+    ctc_align_test_intervals_keep_edge_star_order();
+    ctc_align_test_intervals_keep_segment_star_order();
     ctc_align_test_pad_intervals_distributes_blank_frames();
     ctc_align_test_pad_intervals_counts_initial_star();
     ctc_align_test_token_spans_from_backtracked_path();
     ctc_align_test_token_spans_preserve_repeated_tokens();
     ctc_align_test_token_spans_collapse_contiguous_steps();
     ctc_align_test_token_spans_reject_bad_inputs();
-    ctc_align_test_token_spans_reject_out_of_order_targets();
-    ctc_align_test_padded_token_spans_use_blank_boundaries();
-    ctc_align_test_synthetic_lrc_uses_active_token_boundaries();
-    ctc_align_test_word_spans_use_active_token_boundaries();
-    ctc_align_test_segment_word_spans_use_active_token_boundaries();
+    ctc_align_test_spans_reject_unordered_targets();
+    ctc_align_test_padded_spans_use_blank_boundaries();
+    ctc_align_test_synthetic_lrc_uses_active_boundaries();
+    ctc_align_test_word_spans_use_active_boundaries();
+    ctc_align_test_segment_words_use_active_boundaries();
     ctc_align_test_word_spans_group_generated_words();
-    ctc_align_test_word_spans_use_skipped_space_gaps();
+    ctc_align_test_word_spans_use_space_gaps();
     ctc_align_test_word_spans_handle_removed_punctuation();
     ctc_align_test_word_spans_follow_reference_segments();
-    ctc_align_test_word_spans_keep_repeated_token_positions();
+    ctc_align_test_words_keep_repeated_token_positions();
     ctc_align_test_word_spans_reject_bad_inputs();
     ctc_align_test_line_timestamps_from_generated_words();
     ctc_align_test_line_timestamps_reject_bad_inputs();

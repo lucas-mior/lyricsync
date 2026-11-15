@@ -1909,7 +1909,7 @@ ctc_inference_test_rank3_probability_trim_before_convert(void) {
 }
 
 static void
-ctc_inference_test_rank3_accepts_short_actual_model_length(void) {
+ctc_inference_test_rank3_accepts_short_model_length(void) {
     LrcCtcInferenceBackend backend;
     LrcCtcInferenceResult result;
     LrcCtcFakeInference fake = {0};
@@ -1966,7 +1966,7 @@ ctc_inference_test_rank3_accepts_short_actual_model_length(void) {
 }
 
 static void
-ctc_inference_test_rank3_accepts_wav2vec_actual_chunk_length(void) {
+ctc_inference_test_rank3_accepts_wav2vec_chunk_length(void) {
     LrcCtcInferenceBackend backend;
     LrcCtcInferenceResult result;
     LrcCtcFakeInference fake = {0};
@@ -2618,8 +2618,8 @@ main(void) {
     ctc_inference_test_rank3_extension_truncated();
     ctc_inference_test_rank3_logits_converted_after_trim();
     ctc_inference_test_rank3_probability_trim_before_convert();
-    ctc_inference_test_rank3_accepts_short_actual_model_length();
-    ctc_inference_test_rank3_accepts_wav2vec_actual_chunk_length();
+    ctc_inference_test_rank3_accepts_short_model_length();
+    ctc_inference_test_rank3_accepts_wav2vec_chunk_length();
     ctc_inference_test_rank3_python_slicing_vectors();
     ctc_inference_test_rank3_repeated_boundary_frames();
     ctc_inference_test_progress_disabled_is_silent();

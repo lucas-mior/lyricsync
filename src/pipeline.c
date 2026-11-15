@@ -1488,12 +1488,12 @@ lrc_pipeline_path_to_padded_token_spans(LrcCtcPath *path,
                                         LrcPipelineGenerateResult *result) {
     bool ok;
 
-    ok = lrc_ctc_path_to_padded_token_spans_with_plan(path,
-                                                      emissions,
-                                                      plan,
-                                                      frame_duration_seconds,
-                                                      token_spans,
-                                                      align_result);
+    ok = lrc_ctc_path_to_padded_spans_with_plan(path,
+                                                emissions,
+                                                plan,
+                                                frame_duration_seconds,
+                                                token_spans,
+                                                align_result);
 
     return lrc_pipeline_ctc_align_ok(ok, align_result, result);
 }
@@ -2848,12 +2848,12 @@ lrc_ctc_path_to_token_spans(LrcCtcPath *path, LrcCtcEmissions *emissions,
 }
 
 static bool
-lrc_ctc_path_to_padded_token_spans_with_plan(LrcCtcPath *path,
-                                             LrcCtcEmissions *emissions,
-                                             LrcCtcAlignPlan *plan,
-                                             float frame_duration_seconds,
-                                             LrcCtcTokenSpans *spans,
-                                             LrcCtcAlignResult *result) {
+lrc_ctc_path_to_padded_spans_with_plan(LrcCtcPath *path,
+                                       LrcCtcEmissions *emissions,
+                                       LrcCtcAlignPlan *plan,
+                                       float frame_duration_seconds,
+                                       LrcCtcTokenSpans *spans,
+                                       LrcCtcAlignResult *result) {
     (void)path;
     (void)emissions;
     (void)plan;

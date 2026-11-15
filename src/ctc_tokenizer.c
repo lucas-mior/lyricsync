@@ -1188,7 +1188,7 @@ ctc_tokenizer_test_rejects_unsupported_normalized_token(void) {
 }
 
 static void
-ctc_tokenizer_test_unknown_token_covers_one_utf8_rune(void) {
+ctc_tokenizer_test_unknown_covers_one_utf8_rune(void) {
     LrcCtcTokenizer tokenizer;
     LrcCtcTokenizedText tokens = {0};
     LrcCtcTokenizeResult result;
@@ -1242,7 +1242,7 @@ ctc_tokenizer_test_unknown_token_covers_one_utf8_rune(void) {
 }
 
 static void
-ctc_tokenizer_test_word_target_prevents_multi_character_match(void) {
+ctc_tokenizer_test_word_target_prevents_multi_match(void) {
     LrcCtcTokenizer tokenizer;
     LrcCtcTokenizedText tokens = {0};
     LrcCtcTokenizeResult result;
@@ -1451,8 +1451,8 @@ main(void) {
     ctc_tokenizer_test_missing_path();
     ctc_tokenizer_test_tokenizes_normalized_text();
     ctc_tokenizer_test_rejects_unsupported_normalized_token();
-    ctc_tokenizer_test_unknown_token_covers_one_utf8_rune();
-    ctc_tokenizer_test_word_target_prevents_multi_character_match();
+    ctc_tokenizer_test_unknown_covers_one_utf8_rune();
+    ctc_tokenizer_test_word_target_prevents_multi_match();
     ctc_tokenizer_test_marks_segment_starts();
     ctc_tokenizer_test_skips_unmatched_spaces();
 

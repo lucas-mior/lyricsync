@@ -215,7 +215,7 @@ static bool lrc_ctc_path_to_token_spans(LrcCtcPath *path,
                                         float frame_duration_seconds,
                                         LrcCtcTokenSpans *spans,
                                         LrcCtcAlignResult *result);
-static bool lrc_ctc_path_to_padded_token_spans_with_plan(
+static bool lrc_ctc_path_to_padded_spans_with_plan(
     LrcCtcPath *path, LrcCtcEmissions *emissions, LrcCtcAlignPlan *plan,
     float frame_duration_seconds, LrcCtcTokenSpans *spans,
     LrcCtcAlignResult *result);
